@@ -5,25 +5,30 @@
 \alias{iris_var3}
 \title{Iris Dataset Variation 3}
 \format{
-A data frame with 150 rows and 5 variables:
+A \code{data.frame} with 150 rows and 5 variables:
 \describe{
-\item{SL}{Character Sepal length in cm, originally numeric, with one NA value.}
-\item{SW}{Mixed types. Numeric Sepal width > 3.5, otherwise "Wide".}
-\item{PL}{Numeric Petal length in cm.}
-\item{PW}{Numeric Petal width in cm.}
-\item{Species}{Factor w/ 3 levels "setosa","versicolor","virginica"}
+\item{SL}{Character, originally numeric, with one NA value.}
+\item{SW}{Numeric, Sepal width in cm.}
+\item{PL}{Numeric, Petal length in cm.}
+\item{PW}{Numeric, Petal width in cm.}
+\item{Species}{Factor with levels: "setosa","versicolor","virginica".}
 }
 }
 \source{
-Modified iris dataset with column renaming and type conversion.
+Modified \code{iris} dataset.
 }
 \usage{
 iris_var3
 }
 \description{
-This dataset variation tests column name changes, type conversion from numeric to character,
-and the introduction of a missing value. The \code{Sepal.Length} column is renamed to \code{SL} and converted to
-character type, with one NA value introduced. It assesses the package's ability to handle column renaming,
-type mismatches, and missing data.
+This dataset variation includes:
+\itemize{
+\item Column name changes (e.g., \code{Sepal.Length} to \code{SL}).
+\item Conversion of numeric to character type for the \code{Sepal.Length} (now \code{SL}) column.
+\item An NA value introduced into the \code{SL} column.
+}
+}
+\details{
+This variation tests the package's ability to correctly identify and handle column renaming, type conversion, and missing values.
 }
 \keyword{datasets}

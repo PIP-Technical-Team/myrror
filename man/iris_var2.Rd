@@ -7,22 +7,28 @@
 \format{
 A data frame with 150 rows and 5 variables, row order shuffled:
 \describe{
-\item{Sepal.Length}{Numeric Sepal length in cm, modified by adding random values.}
-\item{Sepal.Width}{Numeric Sepal width in cm, with some NaN values.}
-\item{Petal.Length}{Numeric Petal length in cm.}
-\item{Petal.Width}{Numeric Petal width in cm.}
-\item{Species}{Factor w/ 3 levels "setosa","versicolor","virginica"}
+\item{Sepal.Length}{Numeric, Sepal length in cm, modified by adding random values.}
+\item{Sepal.Width}{Numeric, Sepal width in cm, with some NaN values.}
+\item{Petal.Length}{Numeric, Petal length in cm.}
+\item{Petal.Width}{Numeric, Petal width in cm.}
+\item{Species}{Factor with levels: "setosa","versicolor","virginica".}
 }
 }
 \source{
-Modified iris dataset with randomized alterations.
+Modified \code{iris} dataset.
 }
 \usage{
 iris_var2
 }
 \description{
-This variation introduces \code{NaN} values into the \code{Sepal.Width} column, adds random values to
-\code{Sepal.Length} to create different numeric values, and shuffles the row order. It is designed to test
-the handling of \code{NaN} values, comparison of numeric differences, and insensitivity to row order.
+This dataset variation includes:
+\itemize{
+\item NaN values in the \code{Sepal.Width} column.
+\item Random adjustments to \code{Sepal.Length} to create a range of different values.
+\item A shuffled order of rows to test comparison without reliance on row order.
+}
+}
+\details{
+It is designed to test the handling of \code{NaN} values, comparison of numeric differences, and insensitivity to row order.
 }
 \keyword{datasets}
