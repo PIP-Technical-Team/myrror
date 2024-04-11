@@ -3,11 +3,16 @@ Title: Compare two Data Frames and Summarize Differences
 Version: 0.0.0.9000
 Authors@R: 
     person("Giorgia", "Cecchinato", , "first.last@example.com", role = c("aut", "cre"))
-Description: Convenience functions to compare two dataframes, explore, visualize and summarize similarities and differences.
+Description: Convenience functions to compare two dataframes, explore,
+    visualize and summarize similarities and differences.
 License: MIT + file LICENSE
-Encoding: UTF-8
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
 Depends: 
     R (>= 2.10)
+Imports: 
+    cli (>= 3.6.2),
+    data.table (>= 1.15.4),
+    glue
+Encoding: UTF-8
 LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
