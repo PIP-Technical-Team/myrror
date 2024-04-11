@@ -25,12 +25,6 @@ myrror <- function(dfx,
   # - if NULL, say that that there is a NULL, and stop.
   # - if list, check it could be transformed into a data.frame, and then transform.
 
-
-  # Check if dfx or dfy are empty
-  if (nrow(dfx) == 0 || nrow(dfy) == 0) {
-    stop("Input data frame(s) cannot be empty.")
-  }
-
   # Check if dfx or dfy are NULL
   if (is.null(dfx) || is.null(dfy)) {
     stop("Input data frame(s) cannot be NULL.")
@@ -59,6 +53,11 @@ myrror <- function(dfx,
     } else {
       stop("dfy must be a data frame or a convertible list.")
     }
+  }
+
+  # Check if dfx or dfy are empty
+  if ((!is.null(dfx) && nrow(dfx) == 0) || (!is.null(dfy) && nrow(dfy) == 0)) {
+    stop("Input data frame(s) cannot be empty.")
   }
 
   # Check by, by.x, by.y arguments: ----
@@ -97,16 +96,18 @@ myrror <- function(dfx,
       if (!"rownames" %in% colnames(dfy)) {
         dfy$rownames <- row.names(dfy)
       }
-    } else {
-      stop("No keys provided and no usable row names available. Comparison cannot proceed.")
     }
   }
 
 
-  # Check 1 ----
-  cat("All executed correctly\n")
-  cat("by.x: ", by.x, "\n")
-  cat("by.y: ", by.y, "\n")
+  # Preliminary outputs for checks
+  output <- list()
+  output$processed_dfx<-dfx
+  output$processed_dfy<-dfy
+  output$by.x <- by.x
+  output$by.y <- by.y
+
+  return(output)
 
 }
 
