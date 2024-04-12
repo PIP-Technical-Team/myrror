@@ -43,12 +43,12 @@ prepare_alignment <- function(df,
                               by,
                               factor_to_char = TRUE) {
   # Convert DataFrame to Data Table if it's not already
-  setDT(df)
+  data.table::setDT(df)
 
   # Validate and adjust column names to valid R identifiers
   valid_col_names <- make.names(names(df), unique = TRUE)
   if (!identical(names(df), valid_col_names)) {
-    setnames(df, old = names(df), new = valid_col_names)
+    data.table::setnames(df, old = names(df), new = valid_col_names)
   }
 
   # Ensure the keys are available in the column names

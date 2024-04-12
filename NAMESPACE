@@ -3,5 +3,4 @@
 export(apply_tolerance)
 export(create_myrror_object)
 export(myrror)
-export(prepare_dataset)
 import(data.table)

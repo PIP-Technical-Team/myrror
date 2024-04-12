@@ -6,9 +6,11 @@
 #' @param by.x character, key to be used for dfx
 #' @param by.y character, key to be used for dfy
 #' @param tolerance tolerance list. Can be: NULL, 'no_cap', 'no_symbols', 'no_whitespace'
+#' @param factor_to_char TRUE or FALSE, default to TRUE.
 #'
 #' @return draft: selection of by variables
 #' @export
+#' @import data.table
 #'
 #' @examples
 #' comparison <- myrror(iris, iris_var1)
@@ -22,7 +24,6 @@ myrror <- function(dfx,
 
 
   # 0. Store original datasets ----
-
   original_dfx <- dfx
   original_dfy <- dfy
 
@@ -161,8 +162,8 @@ myrror <- function(dfx,
   }
 
   ## Give row index to x and y (called row.x and row.y)
-  prepared_dfx[, row.x := .I]
-  prepared_dfy[, row.y := .I]
+  prepared_dfx[, 'row.x' := .I]
+  prepared_dfy[, 'row.y' := .I]
 
   ## Merge
   merged_data <- merge(prepared_dfx, prepared_dfy,
@@ -174,19 +175,19 @@ myrror <- function(dfx,
   merged_data_report$merged_data <- merged_data
 
 
-  # 7. Get matched and non-matched ----
+  # . Get matched and non-matched ----
   ## Match
-  matched_data <- merged_data[!is.na(row.x) & !is.na(row.y)]
+  matched_data <- merged_data[!is.na('row.x') & !is.na('row.y')]
 
   ## Identify non-matched rows from both dfx and dfy and combine them
   non_matched_data <- rbind(
-    merged_data[is.na(row.y), .SD],
-    merged_data[is.na(row.x), .SD],
+    merged_data[is.na('row.y'), .SD],
+    merged_data[is.na('row.x'), .SD],
     fill = TRUE  # Fill missing columns with NA in case dfx and dfy have different columns
   )
 
   ## Add a 'source' column to identify which dataset each row came from
-  non_matched_data[, source := ifelse(is.na(row.x), "dfy", "dfx")]
+  non_matched_data[, source := ifelse(is.na('row.x'), "dfy", "dfx")]
 
   ## Store
   merged_data_report$non_matched_data <- non_matched_data

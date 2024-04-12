@@ -10,8 +10,7 @@ Depends:
     R (>= 2.10)
 Imports: 
     cli (>= 3.6.2),
-    data.table (>= 1.15.4),
-    glue
+    data.table (>= 1.15.4)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

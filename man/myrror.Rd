@@ -4,7 +4,15 @@
 \alias{myrror}
 \title{myrror main function}
 \usage{
-myrror(dfx, dfy, by = NULL, by.x = NULL, by.y = NULL, tolerance = NULL)
+myrror(
+  dfx,
+  dfy,
+  by = NULL,
+  by.x = NULL,
+  by.y = NULL,
+  tolerance = NULL,
+  factor_to_char = TRUE
+)
 }
 \arguments{
 \item{dfx}{a non-empty data.frame}
@@ -18,6 +26,8 @@ myrror(dfx, dfy, by = NULL, by.x = NULL, by.y = NULL, tolerance = NULL)
 \item{by.y}{character, key to be used for dfy}
 
 \item{tolerance}{tolerance list. Can be: NULL, 'no_cap', 'no_symbols', 'no_whitespace'}
+
+\item{factor_to_char}{TRUE or FALSE, default to TRUE.}
 }
 \value{
 draft: selection of by variables
