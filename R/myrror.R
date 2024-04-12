@@ -17,7 +17,8 @@ myrror <- function(dfx,
                    by = NULL,
                    by.x = NULL,
                    by.y = NULL,
-                   tolerance = NULL) {
+                   tolerance = NULL,
+                   factor_to_char = TRUE) {
 
 
   # 0. Store original datasets ----
@@ -65,15 +66,28 @@ myrror <- function(dfx,
     stop("Input data frame(s) cannot be empty.")
   }
 
-  # 2. Apply tolerance -----
+  # 2. Apply tolerance to columns and by -----
   # - Check if tolerance vector is non-null.
-  # - Apply specific adjustments (draft, to be updated).
-  # - Record changes (can use tolerance vector)
+  # - Apply specific adjustments (draft, to be updated) -> column names might change.
+  # - Record changes (can use tolerance vector).
 
   if (!is.null(tolerance)) {
-    names(dfx) <- apply_tolerance_colnames(names(dfx), tolerance = tolerance)
-    names(dfy) <- apply_tolerance_colnames(names(dfy), tolerance = tolerance)
+    names(dfx) <- apply_tolerance(names(dfx), tolerance = tolerance)
+    names(dfy) <- apply_tolerance(names(dfy), tolerance = tolerance)
+
+    if (!is.null(by)) {
+      by <- apply_tolerance(by, tolerance = tolerance)
+    }
+
+    if (!is.null(by.x)) {
+      by.x <- apply_tolerance(by.x, tolerance = tolerance)
+    }
+
+    if (!is.null(by.y)) {
+      by.y <- apply_tolerance(by.y, tolerance = tolerance)
+    }
   }
+
 
   # 3. Check by, by.x, by.y arguments: ----
   # - by, by.x, by.y needs to be of 'character' type
@@ -114,17 +128,83 @@ myrror <- function(dfx,
     }
   }
 
+  # 4. Prepare Dataset for Alignment ----
+  # - make into data.table.
+  # - make into valid column names.
+  # - check that by variable are in the colnames of the given dataset.
+  # - factor to character (keep track of this), default = TRUE
+
+  prepared_dfx <- prepare_alignment(dfx, by = by.x, factor_to_char = factor_to_char)
+  prepared_dfy <- prepare_alignment(dfy, by = by.y, factor_to_char = factor_to_char)
+
+  # 5. Align Columns and Merge ----
+  # - check that by.x is not in the non-key columns of dfy and vice versa.
+  # - check that there are no duplicates in x and in y.
+  # - Give row index to x and y (called rowx and rowy)
+  # - use data.table to merge and keep all matching and non-matching observations
 
 
-  # Preliminary outputs for checks
+  ## Check that by.x is not in the non-key columns of dfy and vice versa
+  if (by.x %in% setdiff(names(prepared_dfy), by.y)) {
+    stop("by.x is part of the non-index columns of dfy.")
+  }
+  if (by.y %in% setdiff(names(prepared_dfx), by.x)) {
+    stop("by.y is part of the non-index columns of dfx.")
+  }
+
+  ## Check for duplicate column names in both datasets
+  if (length(unique(names(prepared_dfx))) != length(names(prepared_dfx))) {
+    stop("Duplicate column names found in dfx.")
+  }
+  if (length(unique(names(prepared_dfy))) != length(names(prepared_dfy))) {
+    stop("Duplicate column names found in dfy.")
+  }
+
+  ## Give row index to x and y (called row.x and row.y)
+  prepared_dfx[, row.x := .I]
+  prepared_dfy[, row.y := .I]
+
+  ## Merge
+  merged_data <- merge(prepared_dfx, prepared_dfy,
+                       by.x = by.x, by.y = by.y,
+                       all = TRUE, suffixes = c(".x", ".y"))
+
+  ## Store
+  merged_data_report <- list()
+  merged_data_report$merged_data <- merged_data
+
+
+  # 7. Get matched and non-matched ----
+  ## Match
+  matched_data <- merged_data[!is.na(row.x) & !is.na(row.y)]
+
+  ## Identify non-matched rows from both dfx and dfy and combine them
+  non_matched_data <- rbind(
+    merged_data[is.na(row.y), .SD],
+    merged_data[is.na(row.x), .SD],
+    fill = TRUE  # Fill missing columns with NA in case dfx and dfy have different columns
+  )
+
+  ## Add a 'source' column to identify which dataset each row came from
+  non_matched_data[, source := ifelse(is.na(row.x), "dfy", "dfx")]
+
+  ## Store
+  merged_data_report$non_matched_data <- non_matched_data
+
+
+  # Preliminary outputs for checks (then to be moved to object)
   output <- list()
   output$dfx <- original_dfx
   output$dfy <- original_dfy
   output$tolerance <- tolerance
   output$processed_dfx<-dfx
   output$processed_dfy<-dfy
+  output$prepared_dfy<-prepared_dfy
+  output$prepared_dfx<-prepared_dfx
   output$by.x <- by.x
   output$by.y <- by.y
+  output$merged_data_report <- merged_data_report
+
 
 
   return(output)
