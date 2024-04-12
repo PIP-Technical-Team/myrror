@@ -17,7 +17,7 @@ myrror(dfx, dfy, by = NULL, by.x = NULL, by.y = NULL, tolerance = NULL)
 
 \item{by.y}{character, key to be used for dfy}
 
-\item{tolerance}{tolerance list}
+\item{tolerance}{tolerance list. Can be: NULL, 'no_cap', 'no_symbols', 'no_whitespace'}
 }
 \value{
 draft: selection of by variables

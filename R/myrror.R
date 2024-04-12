@@ -5,7 +5,7 @@
 #' @param by character, key to be used for dfx and dfy
 #' @param by.x character, key to be used for dfx
 #' @param by.y character, key to be used for dfy
-#' @param tolerance tolerance list
+#' @param tolerance tolerance list. Can be: NULL, 'no_cap', 'no_symbols', 'no_whitespace'
 #'
 #' @return draft: selection of by variables
 #' @export
@@ -20,7 +20,12 @@ myrror <- function(dfx,
                    tolerance = NULL) {
 
 
-  # Check dfx and dfy arguments ----
+  # 0. Store original datasets ----
+
+  original_dfx <- dfx
+  original_dfy <- dfy
+
+  # 1. Check dfx and dfy arguments ----
   # - df1 and df2 needs to be data.frames structures and not empty.
   # - if NULL, say that that there is a NULL, and stop.
   # - if list, check it could be transformed into a data.frame, and then transform.
@@ -60,7 +65,17 @@ myrror <- function(dfx,
     stop("Input data frame(s) cannot be empty.")
   }
 
-  # Check by, by.x, by.y arguments: ----
+  # 2. Apply tolerance -----
+  # - Check if tolerance vector is non-null.
+  # - Apply specific adjustments (draft, to be updated).
+  # - Record changes (can use tolerance vector)
+
+  if (!is.null(tolerance)) {
+    names(dfx) <- apply_tolerance_colnames(names(dfx), tolerance = tolerance)
+    names(dfy) <- apply_tolerance_colnames(names(dfy), tolerance = tolerance)
+  }
+
+  # 3. Check by, by.x, by.y arguments: ----
   # - by, by.x, by.y needs to be of 'character' type
   # - either by specified, or by.y AND by.x specified, or NULL
   # - if NULL, it will become a row.names comparison
@@ -100,12 +115,17 @@ myrror <- function(dfx,
   }
 
 
+
   # Preliminary outputs for checks
   output <- list()
+  output$dfx <- original_dfx
+  output$dfy <- original_dfy
+  output$tolerance <- tolerance
   output$processed_dfx<-dfx
   output$processed_dfy<-dfy
   output$by.x <- by.x
   output$by.y <- by.y
+
 
   return(output)
 
