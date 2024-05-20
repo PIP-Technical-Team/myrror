@@ -10,7 +10,7 @@
 #'
 #' @return draft: selection of by variables
 #' @export
-#' @import data.table
+#' @import collapse
 #'
 #' @examples
 #' comparison <- myrror(iris, iris_var1)
@@ -117,14 +117,14 @@ myrror <- function(dfx,
     by.x <- by.y <- by
   } else if (is.null(by.x) || is.null(by.y)) {
     # Default to row.names if no other keys are provided
-    if (!is.null(row.names(dfx)) && !is.null(row.names(dfy))) {
+    if (!is.null(rownames(dfx)) && !is.null(rownames(dfy))) {
       by.x <- by.y <- "rownames"
       # Optionally add row names as columns if they are not already present
       if (!"rownames" %in% colnames(dfx)) {
-        dfx$rownames <- row.names(dfx)
+        dfx$rownames <- rownames(dfx)
       }
       if (!"rownames" %in% colnames(dfy)) {
-        dfy$rownames <- row.names(dfy)
+        dfy$rownames <- rownames(dfy)
       }
     }
   }
@@ -141,8 +141,8 @@ myrror <- function(dfx,
   # 5. Align Columns and Merge ----
   # - check that by.x is not in the non-key columns of dfy and vice versa.
   # - check that there are no duplicates in x and in y.
-  # - Give row index to x and y (called rowx and rowy)
-  # - use data.table to merge and keep all matching and non-matching observations
+  # - Give row index to x and y
+  # - use collapse to merge and keep all matching and non-matching observations
 
 
   ## Check that by.x is not in the non-key columns of dfy and vice versa
@@ -162,35 +162,50 @@ myrror <- function(dfx,
   }
 
   ## Give row index to x and y (called row.x and row.y)
-  prepared_dfx[, 'row.x' := .I]
-  prepared_dfy[, 'row.y' := .I]
+  prepared_dfx[, 'row_index' := .I]
+  prepared_dfy[, 'row_index' := .I]
 
-  ## Merge
-  merged_data <- merge(prepared_dfx, prepared_dfy,
-                       by.x = by.x, by.y = by.y,
-                       all = TRUE, suffixes = c(".x", ".y"))
+  ## Join
+  #merged_data <- merge(prepared_dfx, prepared_dfy,
+  #                     by.x = by.x, by.y = by.y,
+  #                     all = TRUE, suffixes = c(".x", ".y"))
+
+  merged_data <- collapse::join(prepared_dfx,
+                                prepared_dfy,
+                                on=setNames(by.x, by.y),
+                                how='full',
+                                sort = TRUE, # already sorted here !!
+                                multiple = TRUE,
+                                suffix = c(".x",".y"),
+                                keep.col.order = FALSE,
+                                verbose = 0,
+                                column = list("join", c("x", "y", "x_y")),
+                                attr = TRUE)
 
   ## Store
   merged_data_report <- list()
   merged_data_report$merged_data <- merged_data
 
 
-  # . Get matched and non-matched ----
+  # 6. Get matched and non-matched ----
   ## Match
-  matched_data <- merged_data[!is.na('row.x') & !is.na('row.y')]
+  # old: matched_data <- merged_data[!is.na('row.x') & !is.na('row.y')]
+  matched_data <- merged_data |> fsubset(join == 'x_y')
 
   ## Identify non-matched rows from both dfx and dfy and combine them
-  non_matched_data <- rbind(
-    merged_data[is.na('row.y'), .SD],
-    merged_data[is.na('row.x'), .SD],
-    fill = TRUE  # Fill missing columns with NA in case dfx and dfy have different columns
-  )
+  #non_matched_data <- rbind(
+  #  merged_data[is.na('row.y'), .SD],
+  #  merged_data[is.na('row.x'), .SD],
+  # fill = TRUE  # Fill missing columns with NA in case dfx and dfy have different columns
+  #)
+
+  unmatched_data <- merged_data |> fsubset(join != 'x_y')
 
   ## Add a 'source' column to identify which dataset each row came from
-  non_matched_data[, source := ifelse(is.na('row.x'), "dfy", "dfx")]
+  #non_matched_data[, source := ifelse(is.na('row.x'), "dfy", "dfx")]
 
   ## Store
-  merged_data_report$non_matched_data <- non_matched_data
+  merged_data_report$unmatched_data <- unmatched_data
 
 
   # Preliminary outputs for checks (then to be moved to object)
@@ -205,7 +220,6 @@ myrror <- function(dfx,
   output$by.x <- by.x
   output$by.y <- by.y
   output$merged_data_report <- merged_data_report
-
 
 
   return(output)

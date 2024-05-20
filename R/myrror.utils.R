@@ -47,16 +47,15 @@ prepare_alignment <- function(df,
 
   # Validate and adjust column names to valid R identifiers
   valid_col_names <- make.names(names(df), unique = TRUE)
+
   if (!identical(names(df), valid_col_names)) {
-    data.table::setnames(df, old = names(df), new = valid_col_names)
+    collapse::setColnames(df, valid_col_names)
   }
 
   # Ensure the keys are available in the column names
   if (!all(by %in% names(df))) {
     stop("Specified keys are not all present in the column names.")
   }
-
-
 
   # Convert factors to characters
   if (isTRUE(factor_to_char)){
