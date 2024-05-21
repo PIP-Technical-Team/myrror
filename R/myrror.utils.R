@@ -76,9 +76,9 @@ detect_sorting <- function(data){
 }
 
 # 4. Variable comparison utils ----
-process_fselect_matched_pairs <- function(df,
-                                          suffix_x = ".x",
-                                          suffix_y = ".y") {
+process_fselect_col_pairs <- function(df,
+                                      suffix_x = ".x",
+                                      suffix_y = ".y") {
 
   cols_x <- names(df)[grepl(suffix_x, names(df))]
   cols_y <- names(df)[grepl(suffix_y, names(df))]
