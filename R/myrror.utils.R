@@ -76,39 +76,32 @@ detect_sorting <- function(data){
 }
 
 # 4. Variable comparison utils ----
-process_fselect_col_pairs <- function(df,
-                                      suffix_x = ".x",
-                                      suffix_y = ".y") {
+process_fselect_col_pairs <- function(df, suffix_x = ".x", suffix_y = ".y") {
 
   cols_x <- names(df)[grepl(suffix_x, names(df))]
   cols_y <- names(df)[grepl(suffix_y, names(df))]
 
-
   base_names_x <- sub(suffix_x, "", cols_x)
   base_names_y <- sub(suffix_y, "", cols_y)
-  common_base_names <- intersect(base_names_x, base_names_y)
 
+  common_base_names <- intersect(base_names_x, base_names_y)
 
   paired_columns <- Map(function(x, y) c(x, y),
                         paste0(common_base_names, suffix_x),
                         paste0(common_base_names, suffix_y))
 
-
   comparisons <- lapply(paired_columns, function(cols) {
-
     fselected_data <- fselect(df, cols)
-
     compare_column_values(fselected_data[[1]], fselected_data[[2]])
   })
 
-  # Return the list of all comparisons
-  comparisons
+
+  names(comparisons) <- common_base_names
+
+  return(comparisons)
 }
 
-
-compare_column_values <- function(col_x,
-                                  col_y) {
-
+compare_column_values <- function(col_x, col_y) {
   result <- list()
 
   # 4.1 Is it the same type?

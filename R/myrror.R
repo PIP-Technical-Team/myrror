@@ -269,10 +269,6 @@ myrror <- function(dfx,
   output$merged_data_report <- merged_data_report
   output$comparison_report <- comparison_report
 
-
-
-
-
   return(output)
 
 }
