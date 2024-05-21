@@ -2,4 +2,6 @@
 
 export(apply_tolerance)
 export(myrror)
+import(collapse)
 import(data.table)
+import(stats)

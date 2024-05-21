@@ -77,7 +77,6 @@ detect_sorting <- function(data){
 
 # 4. Variable comparison utils ----
 process_fselect_col_pairs <- function(df, suffix_x = ".x", suffix_y = ".y") {
-
   cols_x <- names(df)[grepl(suffix_x, names(df))]
   cols_y <- names(df)[grepl(suffix_y, names(df))]
 
@@ -91,30 +90,43 @@ process_fselect_col_pairs <- function(df, suffix_x = ".x", suffix_y = ".y") {
                         paste0(common_base_names, suffix_y))
 
   comparisons <- lapply(paired_columns, function(cols) {
-    fselected_data <- fselect(df, cols)
-    compare_column_values(fselected_data[[1]], fselected_data[[2]])
-  })
+    col_x = fselect(df, cols[1])
+    col_y = fselect(df, cols[2])
+    idx_x = fselect(df, "row_index.x")
+    idx_y = fselect(df, "row_index.y")
 
+    compare_column_values(col_x[[1]], col_y[[1]], idx_x[[1]], idx_y[[1]])
+  })
 
   names(comparisons) <- common_base_names
 
   return(comparisons)
 }
 
-compare_column_values <- function(col_x, col_y) {
+compare_column_values <- function(col_x, col_y,
+                                  idx_x, idx_y) {
+
   result <- list()
 
   # 4.1 Is it the same type?
-  result$same_type <- class(col_x) == class(col_y)
+  result$same_class <- class(col_x) == class(col_y)
 
   # 4.2. N of new observations in given variable: in x but not in y (deleted), in y but not in x (added).
   result$deleted_from_x = length(setdiff(col_x, col_y))
   result$added_to_y = length(setdiff(col_y, col_x))
 
-  # 3. 4.3 Different value: NA to value, value != value, value to NA.
-  result$na_to_value = sum(is.na(col_x) & !is.na(col_y))
-  result$value_to_na = sum(!is.na(col_x) & is.na(col_y))
-  result$value_changes = sum(!is.na(col_x) & !is.na(col_y) & col_x != col_y)
+  # 4.3 Different value: NA to value, value != value, value to NA.
+  na_to_value_indices = which(is.na(col_x) & !is.na(col_y))
+  value_to_na_indices = which(!is.na(col_x) & is.na(col_y))
+  value_changes_indices = which(!is.na(col_x) & !is.na(col_y) & col_x != col_y)
+
+  result$na_to_value = length(na_to_value_indices)
+  result$value_to_na = length(value_to_na_indices)
+  result$value_changes = length(value_changes_indices)
+  result$na_to_value_row_indexes = idx_x[na_to_value_indices]
+  result$value_to_na_row_indexes = idx_x[value_to_na_indices]
+  result$value_changes_row_indexes_x = idx_x[value_changes_indices]
+  result$value_changes_row_indexes_y = idx_y[value_changes_indices]
 
   return(result)
 }

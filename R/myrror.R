@@ -11,6 +11,8 @@
 #' @return draft: selection of by variables
 #' @export
 #' @import collapse
+#' @import data.table
+#' @import stats
 #'
 #' @examples
 #' comparison <- myrror(iris, iris_var1)
@@ -214,8 +216,8 @@ myrror <- function(dfx,
   # 2. Variables in y but not in x.
 
   ## Remove suffixes
-  clean_columns_x <- gsub("\\.x$", "", names(processed_dfx))
-  clean_columns_y <- gsub("\\.y$", "", names(processed_dfy))
+  clean_columns_x <- gsub("\\.x$", "", names(prepared_dfx))
+  clean_columns_y <- gsub("\\.y$", "", names(prepared_dfy))
 
 
   ## Get the set difference
@@ -234,8 +236,8 @@ myrror <- function(dfx,
   # Was data sorted in y, is so, by which variable?
   # Was data sorted by the same variable?
 
-  sorted_vars_x <- detect_sorting(dfx)
-  sorted_vars_y <- detect_sorting(dfy)
+  sorted_vars_x <- detect_sorting(original_dfx)
+  sorted_vars_y <- detect_sorting(original_dfy)
 
   common_vars <- intersect(sorted_vars_x, sorted_vars_y)
   is_common_sorted = !length(common_vars) == 0
