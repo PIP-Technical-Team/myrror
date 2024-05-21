@@ -64,3 +64,64 @@ prepare_alignment <- function(df,
   }
   return(df)
 }
+
+# 3. Sorting utils ----
+is.sorted <- function(x, ...) {
+  !is.unsorted(x, ...) | !is.unsorted(rev(x), ...)
+}
+
+detect_sorting <- function(data){
+  sorted <- lapply(data, is.sorted)
+  names(which(unlist(sorted) == TRUE))
+}
+
+# 4. Variable comparison utils ----
+process_fselect_matched_pairs <- function(df,
+                                          suffix_x = ".x",
+                                          suffix_y = ".y") {
+
+  cols_x <- names(df)[grepl(suffix_x, names(df))]
+  cols_y <- names(df)[grepl(suffix_y, names(df))]
+
+
+  base_names_x <- sub(suffix_x, "", cols_x)
+  base_names_y <- sub(suffix_y, "", cols_y)
+  common_base_names <- intersect(base_names_x, base_names_y)
+
+
+  paired_columns <- Map(function(x, y) c(x, y),
+                        paste0(common_base_names, suffix_x),
+                        paste0(common_base_names, suffix_y))
+
+
+  comparisons <- lapply(paired_columns, function(cols) {
+
+    fselected_data <- fselect(df, cols)
+
+    compare_column_values(fselected_data[[1]], fselected_data[[2]])
+  })
+
+  # Return the list of all comparisons
+  comparisons
+}
+
+
+compare_column_values <- function(col_x,
+                                  col_y) {
+
+  result <- list()
+
+  # 4.1 Is it the same type?
+  result$same_type <- class(col_x) == class(col_y)
+
+  # 4.2. N of new observations in given variable: in x but not in y (deleted), in y but not in x (added).
+  result$deleted_from_x = length(setdiff(col_x, col_y))
+  result$added_to_y = length(setdiff(col_y, col_x))
+
+  # 3. 4.3 Different value: NA to value, value != value, value to NA.
+  result$na_to_value = sum(is.na(col_x) & !is.na(col_y))
+  result$value_to_na = sum(!is.na(col_x) & is.na(col_y))
+  result$value_changes = sum(!is.na(col_x) & !is.na(col_y) & col_x != col_y)
+
+  return(result)
+}
