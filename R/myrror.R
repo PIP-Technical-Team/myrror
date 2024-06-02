@@ -10,7 +10,9 @@
 #'
 #' @return draft: selection of by variables
 #' @export
+#' @import collapse
 #' @import data.table
+#' @import stats
 #'
 #' @examples
 #' comparison <- myrror(iris, iris_var1)
@@ -117,14 +119,14 @@ myrror <- function(dfx,
     by.x <- by.y <- by
   } else if (is.null(by.x) || is.null(by.y)) {
     # Default to row.names if no other keys are provided
-    if (!is.null(row.names(dfx)) && !is.null(row.names(dfy))) {
+    if (!is.null(rownames(dfx)) && !is.null(rownames(dfy))) {
       by.x <- by.y <- "rownames"
       # Optionally add row names as columns if they are not already present
       if (!"rownames" %in% colnames(dfx)) {
-        dfx$rownames <- row.names(dfx)
+        dfx$rownames <- rownames(dfx)
       }
       if (!"rownames" %in% colnames(dfy)) {
-        dfy$rownames <- row.names(dfy)
+        dfy$rownames <- rownames(dfy)
       }
     }
   }
@@ -138,11 +140,12 @@ myrror <- function(dfx,
   prepared_dfx <- prepare_alignment(dfx, by = by.x, factor_to_char = factor_to_char)
   prepared_dfy <- prepare_alignment(dfy, by = by.y, factor_to_char = factor_to_char)
 
+  # MERGED DATA REPORT ----
   # 5. Align Columns and Merge ----
   # - check that by.x is not in the non-key columns of dfy and vice versa.
   # - check that there are no duplicates in x and in y.
-  # - Give row index to x and y (called rowx and rowy)
-  # - use data.table to merge and keep all matching and non-matching observations
+  # - Give row index to x and y
+  # - use collapse to merge and keep matching and non-matching observations.
 
 
   ## Check that by.x is not in the non-key columns of dfy and vice versa
@@ -161,40 +164,101 @@ myrror <- function(dfx,
     stop("Duplicate column names found in dfy.")
   }
 
-  ## Give row index to x and y (called row.x and row.y)
-  prepared_dfx[, 'row.x' := .I]
-  prepared_dfy[, 'row.y' := .I]
+  ## Give row index to x and y:
+  prepared_dfx[, 'row_index' := .I]
+  prepared_dfy[, 'row_index' := .I]
 
-  ## Merge
-  merged_data <- merge(prepared_dfx, prepared_dfy,
-                       by.x = by.x, by.y = by.y,
-                       all = TRUE, suffixes = c(".x", ".y"))
+  ## Merge using Join
+  merged_data <- collapse::join(prepared_dfx,
+                                prepared_dfy,
+                                on=setNames(by.x, by.y),
+                                how='full',
+                                sort = TRUE, # already sorted here !!
+                                multiple = TRUE,
+                                suffix = c(".x",".y"),
+                                keep.col.order = FALSE,
+                                verbose = 0,
+                                column = list("join", c("x", "y", "x_y")),
+                                attr = TRUE)
 
   ## Store
   merged_data_report <- list()
   merged_data_report$merged_data <- merged_data
 
 
-  # . Get matched and non-matched ----
-  ## Match
-  matched_data <- merged_data[!is.na('row.x') & !is.na('row.y')]
-
-  ## Identify non-matched rows from both dfx and dfy and combine them
-  non_matched_data <- rbind(
-    merged_data[is.na('row.y'), .SD],
-    merged_data[is.na('row.x'), .SD],
-    fill = TRUE  # Fill missing columns with NA in case dfx and dfy have different columns
-  )
-
-  ## Add a 'source' column to identify which dataset each row came from
-  non_matched_data[, source := ifelse(is.na('row.x'), "dfy", "dfx")]
+  # 6. Get matched and non-matched ----
+  ## Subset using join column
+  matched_data <- merged_data |> fsubset(join == 'x_y')
+  unmatched_data <- merged_data |> fsubset(join != 'x_y')
 
   ## Store
-  merged_data_report$non_matched_data <- non_matched_data
+  merged_data_report$matched_data <- matched_data
+  merged_data_report$unmatched_data <- unmatched_data
+
+  # COMPARISON REPORT ----
+  # 7. New Observations ----
+  ## 1. Rows in x but not in y.
+  ## 2. Rows in y but not in x.
+
+  x_not_in_y <- unmatched_data |> fsubset(join == 'x')
+  y_not_in_x <- unmatched_data |> fsubset(join == 'y')
+
+  #x_not_in_y_count <- x_not_in_y |> fnrow() Can add directly to summary?
+  #y_not_in_x_count <- y_not_in_x |> fnrow()
+
+  ## Store
+  comparison_report <- list()
+  comparison_report$y_not_in_x <- y_not_in_x
+  comparison_report$x_not_in_y <- x_not_in_y
+
+  # 8. New Variables ----
+  # 1. Variables in x but not in y.
+  # 2. Variables in y but not in x.
+
+  ## Remove suffixes
+  clean_columns_x <- gsub("\\.x$", "", names(prepared_dfx))
+  clean_columns_y <- gsub("\\.y$", "", names(prepared_dfy))
+
+
+  ## Get the set difference
+  variables_only_in_x <- setdiff(clean_columns_x, clean_columns_y)
+  variables_only_in_y <- setdiff(clean_columns_y, clean_columns_x)
+
+  #variables_only_in_x_count <- variables_only_in_x |> length() Can add directly to summary
+  #variables_only_in_y_count <- variables_only_in_y |> length()
+
+  ## Store
+  comparison_report$variables_only_in_x <- variables_only_in_x
+  comparison_report$variables_only_in_y <- variables_only_in_y
+
+  # 9. Sorting: ----
+  # Was data sorted in x, if so, by which variable?
+  # Was data sorted in y, is so, by which variable?
+  # Was data sorted by the same variable?
+
+  sorted_vars_x <- detect_sorting(original_dfx)
+  sorted_vars_y <- detect_sorting(original_dfy)
+
+  common_vars <- intersect(sorted_vars_x, sorted_vars_y)
+  is_common_sorted = !length(common_vars) == 0
+
+  ## Store
+  comparison_report$sorted_vars_x <- sorted_vars_x
+  comparison_report$sorted_vars_y <- sorted_vars_y
+
+  # 10. Variable comparison: ----
+  ## 4.1 Is it the same type?
+  ## 4.2 N of new observations in given variable: in x but not in y (deleted), in y but not in x (added).
+  ## 4.3 Different value: NA to value, value != value, value to NA.
+
+  variable_comparison <- process_fselect_col_pairs(merged_data)
+
+  comparison_report$variable_comparison <- variable_comparison
 
 
   # Preliminary outputs for checks (then to be moved to object)
   output <- list()
+
   output$dfx <- original_dfx
   output$dfy <- original_dfy
   output$tolerance <- tolerance
@@ -205,8 +269,7 @@ myrror <- function(dfx,
   output$by.x <- by.x
   output$by.y <- by.y
   output$merged_data_report <- merged_data_report
-
-
+  output$comparison_report <- comparison_report
 
   return(output)
 

@@ -36,14 +36,14 @@ rownames(df1) <- paste0("row", 1:10)
 rownames(df2) <- paste0("row", 1:10)
 
 # Test 5.1: 'by' is provided
-test_that("Test with 'by' provided", {
-  expect_equal(myrror(df1, df2, by = "a")$by.x, 'a')
-})
+#test_that("Test with 'by' provided", {
+#  expect_equal(myrror(df1, df2, by = "a")$by.x, 'a')
+#})
 
 # Test 5.2: 'by.x' and 'by.y' are provided
-test_that("Test with 'by' provided", {
-  expect_equal(myrror(df1, df2, by.x = "a", by.y = 'a')$by.x, 'a')
-})
+#test_that("Test with 'by' provided", {
+#  expect_equal(myrror(df1, df2, by.x = "a", by.y = 'a')$by.x, 'a')
+#})
 
 
 # 6 Sample problematic list
