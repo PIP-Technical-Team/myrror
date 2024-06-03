@@ -34,62 +34,31 @@ myrror <- function(dfx,
   # - if NULL, say that that there is a NULL, and stop.
   # - if list, check it could be transformed into a data.frame, and then transform.
 
-  # Check if dfx or dfy are NULL
-  if (is.null(dfx) || is.null(dfy)) {
-    stop("Input data frame(s) cannot be NULL.")
-  }
-
-  # Check if dfx or dfy are data frames, if not, try to convert them if they are lists
-  if (!is.data.frame(dfx)) {
-    if (is.list(dfx)) {
-      tryCatch({
-        dfx <- as.data.frame(dfx)
-      }, error = function(e) {
-        stop("dfx is a list but cannot be converted to a data frame.")
-      })
-    } else {
-      stop("dfx must be a data frame or a convertible list.")
-    }
-  }
-
-  if (!is.data.frame(dfy)) {
-    if (is.list(dfy)) {
-      tryCatch({
-        dfy <- as.data.frame(dfy)
-      }, error = function(e) {
-        stop("dfy is a list but cannot be converted to a data frame.")
-      })
-    } else {
-      stop("dfy must be a data frame or a convertible list.")
-    }
-  }
-
-  # Check if dfx or dfy are empty
-  if ((!is.null(dfx) && nrow(dfx) == 0) || (!is.null(dfy) && nrow(dfy) == 0)) {
-    stop("Input data frame(s) cannot be empty.")
-  }
+  dfx <- check_df(dfx)
+  dfy <- check_df(dfy)
 
   # 2. Apply tolerance to columns and by -----
   # - Check if tolerance vector is non-null.
   # - Apply specific adjustments (draft, to be updated) -> column names might change.
   # - Record changes (can use tolerance vector).
+  # !!! POSTPONED for NOW
 
-  if (!is.null(tolerance)) {
-    names(dfx) <- apply_tolerance(names(dfx), tolerance = tolerance)
-    names(dfy) <- apply_tolerance(names(dfy), tolerance = tolerance)
-
-    if (!is.null(by)) {
-      by <- apply_tolerance(by, tolerance = tolerance)
-    }
-
-    if (!is.null(by.x)) {
-      by.x <- apply_tolerance(by.x, tolerance = tolerance)
-    }
-
-    if (!is.null(by.y)) {
-      by.y <- apply_tolerance(by.y, tolerance = tolerance)
-    }
-  }
+  # if (!is.null(tolerance)) {
+  #   names(dfx) <- apply_tolerance(names(dfx), tolerance = tolerance)
+  #   names(dfy) <- apply_tolerance(names(dfy), tolerance = tolerance)
+  #
+  #   if (!is.null(by)) {
+  #     by <- apply_tolerance(by, tolerance = tolerance)
+  #   }
+  #
+  #   if (!is.null(by.x)) {
+  #     by.x <- apply_tolerance(by.x, tolerance = tolerance)
+  #   }
+  #
+  #   if (!is.null(by.y)) {
+  #     by.y <- apply_tolerance(by.y, tolerance = tolerance)
+  #   }
+  # }
 
 
   # 3. Check by, by.x, by.y arguments: ----
@@ -255,23 +224,34 @@ myrror <- function(dfx,
 
   comparison_report$variable_comparison <- variable_comparison
 
+  # Prepare output structure for 'myrror_object'
+  output <- list(
+    dfx = original_dfx,
+    dfy = original_dfy,
+    tolerance = tolerance,
+    processed_dfx = dfx,
+    processed_dfy = dfy,
+    prepared_dfy = prepared_dfy,
+    prepared_dfx = prepared_dfx,
+    by.x = by.x,
+    by.y = by.y,
+    merged_data_report = merged_data_report,
+    comparison_report = comparison_report
+  )
 
-  # Preliminary outputs for checks (then to be moved to object)
-  output <- list()
+  # Set-up structure of 'myrror_object'
+  structure(output, class = "myrror_object")
+}
 
-  output$dfx <- original_dfx
-  output$dfy <- original_dfy
-  output$tolerance <- tolerance
-  output$processed_dfx<-dfx
-  output$processed_dfy<-dfy
-  output$prepared_dfy<-prepared_dfy
-  output$prepared_dfx<-prepared_dfx
-  output$by.x <- by.x
-  output$by.y <- by.y
-  output$merged_data_report <- merged_data_report
-  output$comparison_report <- comparison_report
 
-  return(output)
-
+#' @rdname myrror
+#' @export
+print.myrror_object <- function(x)
+{
+  cat("Compare Object\n\n")
+  cat("Function Call: \n")
+  print(x$comparison_report)
+  cat("\n")
+  invisible(x)
 }
 

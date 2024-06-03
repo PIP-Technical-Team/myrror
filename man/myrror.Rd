@@ -2,6 +2,7 @@
 % Please edit documentation in R/myrror.R
 \name{myrror}
 \alias{myrror}
+\alias{print.myrror_object}
 \title{myrror main function}
 \usage{
 myrror(
@@ -13,6 +14,8 @@ myrror(
   tolerance = NULL,
   factor_to_char = TRUE
 )
+
+\method{print}{myrror_object}(x)
 }
 \arguments{
 \item{dfx}{a non-empty data.frame}

@@ -1,5 +1,42 @@
 # Functions used within myrror()
 
+# 1. Arguments Checks Utils ----
+## 1.1 dfx dfy ----
+#' Check if the df arguments are valid, makes them into a data.frame if they are a list.
+#' @param dfx data frame
+#'
+#' @examples
+#' check_dfs(iris, iris_var_v1)
+#'
+check_df <- function(df) {
+  # Check if dfx or dfy are NULL
+  if (is.null(df)) {
+    stop("Input data frame(s) cannot be NULL.")
+  }
+
+  # Check if dfx or dfy are data frames, if not, try to convert them if they are lists
+  if (!is.data.frame(df)) {
+    if (is.list(df)) {
+      tryCatch({
+        df <- as.data.frame(df)
+      }, error = function(e) {
+        stop("df is a list but cannot be converted to a data frame.")
+      })
+    } else {
+      stop("df must be a data frame or a convertible list.")
+    }
+  }
+
+  # Check if dfx is empty
+  if ((!is.null(df) && nrow(df) == 0)) {
+    stop("Input data frame(s) cannot be empty.")
+  }
+
+  return(df)
+
+}
+
+
 
 # 1. Normalize (column) names based on tolerance settings ----
 #' Apply Tolerance to Column Names
@@ -12,7 +49,8 @@
 #'
 #' @examples
 #' processed_names <- apply_tolerance(names(iris), tolerance = 'no_cap')
-apply_tolerance <- function(names, tolerance) {
+apply_tolerance <- function(names,
+                            tolerance) {
   # Ensure tolerance is treated as a list for uniform processing
   if (!is.null(tolerance)) {
     if (is.character(tolerance)) {
@@ -76,6 +114,7 @@ detect_sorting <- function(data){
 }
 
 # 4. Variable comparison utils ----
+## 4.2 Process col pairs ----
 process_fselect_col_pairs <- function(df, suffix_x = ".x", suffix_y = ".y") {
   cols_x <- names(df)[grepl(suffix_x, names(df))]
   cols_y <- names(df)[grepl(suffix_y, names(df))]
@@ -103,6 +142,8 @@ process_fselect_col_pairs <- function(df, suffix_x = ".x", suffix_y = ".y") {
   return(comparisons)
 }
 
+
+## 4.3 Compare col values ----
 compare_column_values <- function(col_x, col_y,
                                   idx_x, idx_y) {
 
