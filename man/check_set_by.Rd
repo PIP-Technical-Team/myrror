@@ -4,7 +4,7 @@
 \alias{check_set_by}
 \title{Check if the df arguments are valid, makes them into a data.frame if they are a list.}
 \usage{
-check_set_by(by, by.x, by.y)
+check_set_by(by = NULL, by.x = NULL, by.y = NULL)
 }
 \arguments{
 \item{by}{character vector}

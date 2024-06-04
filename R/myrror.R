@@ -64,41 +64,15 @@ myrror <- function(dfx,
   # 3. Check by, by.x, by.y arguments: ----
   # - by, by.x, by.y needs to be of 'character' type.
   # - either by specified, or by.y AND by.x specified, or NULL.
-  # - if NULL, it will become a row.names comparison.
-  # - if row.names comparison, then add row names as columns and assign them to keys
+  # - if NULL, it will become a row.names comparison (by = "rn")
 
-  # Validate by, by.x, by.y for non-empty character vectors
-  if (!is.null(by) && (!is.character(by) || length(by) == 0)) {
-    stop("The 'by' argument must be a non-empty character vector.")
-  }
-  if (!is.null(by.x) && (!is.character(by.x) || length(by.x) == 0)) {
-    stop("The 'by.x' argument must be a non-empty character vector.")
-  }
-  if (!is.null(by.y) && (!is.character(by.y) || length(by.y) == 0)) {
-    stop("The 'by.y' argument must be a non-empty character vector.")
-  }
+  set_by <- check_set_by(by, by.x, by.y)
 
-  # Check if 'row.names' is used as an actual column name
-  if ("rownames" %in% colnames(dfx) || "rownames" %in% colnames(dfy)) {
-    stop("'rownames' should not be used as a column name in the datasets.")
-  }
+  # Now the by keys are stored here:
+  #set_by$by
+  #set_by$by.x
+  #set_by$by.y
 
-  # Handle the keys for comparison
-  if (!is.null(by)) {
-    by.x <- by.y <- by
-  } else if (is.null(by.x) || is.null(by.y)) {
-    # Default to row.names if no other keys are provided
-    if (!is.null(rownames(dfx)) && !is.null(rownames(dfy))) {
-      by.x <- by.y <- "rownames"
-      # Optionally add row names as columns if they are not already present
-      if (!"rownames" %in% colnames(dfx)) {
-        dfx$rownames <- rownames(dfx)
-      }
-      if (!"rownames" %in% colnames(dfy)) {
-        dfy$rownames <- rownames(dfy)
-      }
-    }
-  }
 
   # 4. Prepare Dataset for Alignment ----
   # - make into data.table.
@@ -114,14 +88,6 @@ myrror <- function(dfx,
                                     by = by.y,
                                     factor_to_char = factor_to_char)
 
-  # MERGED DATA REPORT ----
-  # 5. Align Columns and Merge ----
-  # - check that by.x is not in the non-key columns of dfy and vice versa.
-  # - check that there are no duplicates in x and in y.
-  # - Give row index to x and y
-  # - use collapse to merge and keep matching and non-matching observations.
-
-
   ## Check that by.x is not in the non-key columns of dfy and vice versa
   if (by.x %in% setdiff(names(prepared_dfy), by.y)) {
     stop("by.x is part of the non-index columns of dfy.")
@@ -129,6 +95,13 @@ myrror <- function(dfx,
   if (by.y %in% setdiff(names(prepared_dfx), by.x)) {
     stop("by.y is part of the non-index columns of dfx.")
   }
+
+  # MERGED DATA REPORT ----
+  # 5. Align Columns and Merge ----
+  # - check that by.x is not in the non-key columns of dfy and vice versa.
+  # - check that there are no duplicates in x and in y.
+  # - Give row index to x and y
+  # - use collapse to merge and keep matching and non-matching observations.
 
   ## Check for duplicate column names in both datasets
   if (length(unique(names(prepared_dfx))) != length(names(prepared_dfx))) {

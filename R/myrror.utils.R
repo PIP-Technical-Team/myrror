@@ -48,9 +48,9 @@ check_df <- function(df) {
 #' check_set_by("id", NULL, NULL) # by set
 #' check_set_by(NULL, "id", "id") # by.x and by.y set
 #'
-check_set_by <- function(by,
-                         by.x,
-                         by.y){
+check_set_by <- function(by = NULL,
+                         by.x = NULL,
+                         by.y = NULL){
 
   # Validate inputs are non-empty character vectors if provided
   if (!is.null(by) && (!is.character(by) || length(by) == 0)) {
@@ -86,7 +86,7 @@ check_set_by <- function(by,
 
 
 
-# 1. Normalize (column) names based on tolerance settings ----
+# 2. Normalize (column) names based on tolerance settings ----
 #' Apply Tolerance to Column Names
 #'
 #' @param names character vector
@@ -125,35 +125,66 @@ apply_tolerance <- function(names,
 }
 
 
-# 2.Prepare dataset for join  ----
+# 3.Prepare dataset for join  ----
+#' Prepares dataset for join
+#' @param df data.frame or data.table
+#' @param by character vector
+#' @param factor_to_char logical
+#'
+#' @examples
+#' prepare_df(iris_var1, by = NULL) # adds "rn" variable
+#'
 prepare_df <- function(df,
                        by,
                        factor_to_char = TRUE) {
 
-  ## 1. Convert DataFrame to Data Table if it's not already.
-  data.table::setDT(df)
-
-  ## 2. Validate colnames (make.names) and replace if needed.
-  valid_col_names <- make.names(names(df), unique = TRUE)
-
-  if (!identical(names(df), valid_col_names)) {
-    collapse::setColnames(df, valid_col_names)
+  ## 1. Check that "rn" is not in the colnames
+  if ("rn" %in% colnames(df)) {
+    stop("'rn' present in colnames but it cannot be a column name.")
   }
 
+  ## 2. Convert DataFrame to Data Table if it's not already.
+  # We keep rownames ("rn") regardless.
+  if (is.data.table(df)) {
+
+    dt <- copy(df)
+    dt <- df |> fmutate(rn = row.names(df))
+  }
+
+  else {
+    dt <- copy(df)
+    data.table::setDT(dt, keep.rownames = TRUE)
+    }
+
+  ## N. Validate colnames (make.names) and replace if needed.
+  # If we work in data.table we don't need to check names.
+  # valid_col_names <- make.names(names(dt), unique = TRUE)
+  #
+  # if (!identical(names(dt), valid_col_names)) {
+  #   collapse::setColnames(dt, valid_col_names)
+  # }
+
   ## 3. Ensure the by keys are available in the column names
-  if (!all(by %in% names(df))) {
+  if (!all(by %in% names(dt))) {
     stop("Specified by keys are not all present in the column names.")
   }
 
-  ## 4. Convert factors to characters
-  if (isTRUE(factor_to_char)){
-  factor_cols <- names(df)[sapply(df, is.factor)]
-  df[, (factor_cols) := lapply(.SD, as.character), .SDcols = factor_cols]
+  ## 4. Check for duplicate column names in both datasets
+  if (length(unique(names(dt))) != length(names(dt))) {
+    stop("Duplicate column names found in dataframe.")
+    # Note: cli addition needed
   }
-  return(df)
+
+  ## 5. Convert factors to characters
+  if (isTRUE(factor_to_char)){
+    dt <- dt |>
+      fmutate(across(is.factor, as.character))
+  }
+
+  return(dt)
 }
 
-# 3. Sorting utils ----
+# 4. Sorting utils ----
 is.sorted <- function(x, ...) {
   !is.unsorted(x, ...) | !is.unsorted(rev(x), ...)
 }

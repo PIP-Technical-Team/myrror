@@ -49,4 +49,72 @@ test_that("check_df returns the data frame if valid", {
 
 
 
-# check_by() ----
+# check_set_by() ----
+# Test 1: Valid input with all parameters provided
+test_that("Valid input with all parameters provided works", {
+  result <- check_set_by(by = "id", by.x = "id1", by.y = "id2")
+  expect_equal(result$by, "id")
+  expect_equal(result$by.x, "id")
+  expect_equal(result$by.y, "id")
+})
+
+# Test 2: Valid input with 'by' only
+test_that("Valid input with 'by' only sets by.x and by.y", {
+  result <- check_set_by(by = "id")
+  expect_equal(result$by.x, "id")
+  expect_equal(result$by.y, "id")
+})
+
+# Test 3: Invalid input types
+test_that("Function stops with non-character or empty inputs", {
+  expect_error(check_set_by(by = 123), "non-empty character vector")
+  expect_error(check_set_by(by.x = FALSE), "non-empty character vector")
+})
+
+# Test 4: Only one of by.x or by.y is provided
+test_that("Function stops if only one of by.x or by.y is provided", {
+  expect_error(check_set_by(by.x = "id"), "by.y also needs to be specified")
+  expect_error(check_set_by(by.y = "id"), "by.x also needs to be specified")
+})
+
+# Test 5: Default setting when both by.x and by.y are NULL
+test_that("Defaults to 'rn' when both by.x and by.y are NULL", {
+  result <- check_set_by()
+  expect_equal(result$by.x, "rn")
+  expect_equal(result$by.y, "rn")
+})
+
+# prepare_df() ----
+# Test 1: Conversion of DataFrame to Data Table
+test_that("DataFrame is converted to Data Table", {
+  df <- data.frame(a = 1:3, b = as.factor(c("one", "two", "three")))
+  result <- prepare_df(df, by = "a")
+  expect_true(is.data.table(result))
+  expect_true("rn" %in% colnames(result))
+})
+
+# Test 2: Error when 'rn' is an existing column name
+test_that("'rn' present in colnames triggers an error", {
+  df <- data.frame(rn = 1:3, b = 2:4)
+  expect_error(prepare_df(df, by = "rn"), "'rn' present in colnames")
+})
+
+# Test 3: Verify handling of 'by' keys
+test_that("Error if 'by' keys not present in column names", {
+  df <- data.frame(a = 1:3, b = 4:6)
+  expect_error(prepare_df(df, by = "c"), "Specified by keys are not all present")
+})
+
+# Test 4: Detection of duplicate column names
+test_that("Function detects duplicate column names", {
+  df <- data.frame(a = 1:3, a = 4:6, check.names = FALSE)
+  expect_error(prepare_df(df, by = "a"), "Duplicate column names found")
+})
+
+# Test 5: Conversion of factors to characters
+test_that("Factors are converted to characters", {
+  df <- data.frame(a = 1:3, b = as.factor(c("one", "two", "three")))
+  result <- prepare_df(df, by = "a", factor_to_char = TRUE)
+  expect_true(is.character(result$b))
+})
+
