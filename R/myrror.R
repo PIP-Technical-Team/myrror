@@ -21,7 +21,7 @@ myrror <- function(dfx,
                    by = NULL,
                    by.x = NULL,
                    by.y = NULL,
-                   tolerance = NULL,
+                   #tolerance = NULL, POSTPONED
                    factor_to_char = TRUE) {
 
 
@@ -41,7 +41,7 @@ myrror <- function(dfx,
   # - Check if tolerance vector is non-null.
   # - Apply specific adjustments (draft, to be updated) -> column names might change.
   # - Record changes (can use tolerance vector).
-  # !!! POSTPONED for NOW
+  # !!! POSTPONED for NOW.
 
   # if (!is.null(tolerance)) {
   #   names(dfx) <- apply_tolerance(names(dfx), tolerance = tolerance)
@@ -62,9 +62,9 @@ myrror <- function(dfx,
 
 
   # 3. Check by, by.x, by.y arguments: ----
-  # - by, by.x, by.y needs to be of 'character' type
-  # - either by specified, or by.y AND by.x specified, or NULL
-  # - if NULL, it will become a row.names comparison
+  # - by, by.x, by.y needs to be of 'character' type.
+  # - either by specified, or by.y AND by.x specified, or NULL.
+  # - if NULL, it will become a row.names comparison.
   # - if row.names comparison, then add row names as columns and assign them to keys
 
   # Validate by, by.x, by.y for non-empty character vectors
@@ -106,8 +106,13 @@ myrror <- function(dfx,
   # - check that by variable are in the colnames of the given dataset.
   # - factor to character (keep track of this), default = TRUE
 
-  prepared_dfx <- prepare_alignment(dfx, by = by.x, factor_to_char = factor_to_char)
-  prepared_dfy <- prepare_alignment(dfy, by = by.y, factor_to_char = factor_to_char)
+  prepared_dfx <- prepare_alignment(dfx,
+                                    by = by.x,
+                                    factor_to_char = factor_to_char)
+
+  prepared_dfy <- prepare_alignment(dfy,
+                                    by = by.y,
+                                    factor_to_char = factor_to_char)
 
   # MERGED DATA REPORT ----
   # 5. Align Columns and Merge ----

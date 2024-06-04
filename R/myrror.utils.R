@@ -36,6 +36,54 @@ check_df <- function(df) {
 
 }
 
+## 1.2 by.y by.x ----
+#' Check if the df arguments are valid, makes them into a data.frame if they are a list.
+#' @param by character vector
+#' @param by.x character vector
+#' @param by.y character vector
+#'
+#' @examples
+#' check_set_by(NULL, NULL, "id") # error
+#' check_set_by(NULL, NULL, NULL) # rn set
+#' check_set_by("id", NULL, NULL) # by set
+#' check_set_by(NULL, "id", "id") # by.x and by.y set
+#'
+check_set_by <- function(by,
+                         by.x,
+                         by.y){
+
+  # Validate inputs are non-empty character vectors if provided
+  if (!is.null(by) && (!is.character(by) || length(by) == 0)) {
+    stop("The 'by' argument must be a non-empty character vector.")
+  }
+  if (!is.null(by.x) && (!is.character(by.x) || length(by.x) == 0)) {
+    stop("The 'by.x' argument must be a non-empty character vector.")
+  }
+  if (!is.null(by.y) && (!is.character(by.y) || length(by.y) == 0)) {
+    stop("The 'by.y' argument must be a non-empty character vector.")
+  }
+
+
+  # Check and set by.x and by.y based on the presence of by
+  if (!is.null(by)) {
+
+    by.x <- by.y <- by
+
+  } else if (is.null(by.x) || is.null(by.y)) {
+    if (is.null(by.x) && !is.null(by.y)) {
+      stop("Argument by.x is NULL. If using by.y, by.x also needs to be specified.")
+    }
+    if (!is.null(by.x) && is.null(by.y)) {
+      stop("Argument by.y is NULL. If using by.x, by.y also needs to be specified.")
+    }
+    # Set defaults if both are NULL
+    by.x <- by.y <- "rn"
+  }
+
+  # Return the possibly modified by variables
+  return(list(by = by, by.x = by.x, by.y = by.y))
+}
+
 
 
 # 1. Normalize (column) names based on tolerance settings ----
@@ -76,26 +124,28 @@ apply_tolerance <- function(names,
 
 }
 
-# 2.Prepare dataset for alignment  ----
-prepare_alignment <- function(df,
-                              by,
-                              factor_to_char = TRUE) {
-  # Convert DataFrame to Data Table if it's not already
+
+# 2.Prepare dataset for join  ----
+prepare_df <- function(df,
+                       by,
+                       factor_to_char = TRUE) {
+
+  ## 1. Convert DataFrame to Data Table if it's not already.
   data.table::setDT(df)
 
-  # Validate and adjust column names to valid R identifiers
+  ## 2. Validate colnames (make.names) and replace if needed.
   valid_col_names <- make.names(names(df), unique = TRUE)
 
   if (!identical(names(df), valid_col_names)) {
     collapse::setColnames(df, valid_col_names)
   }
 
-  # Ensure the keys are available in the column names
+  ## 3. Ensure the by keys are available in the column names
   if (!all(by %in% names(df))) {
-    stop("Specified keys are not all present in the column names.")
+    stop("Specified by keys are not all present in the column names.")
   }
 
-  # Convert factors to characters
+  ## 4. Convert factors to characters
   if (isTRUE(factor_to_char)){
   factor_cols <- names(df)[sapply(df, is.factor)]
   df[, (factor_cols) := lapply(.SD, as.character), .SDcols = factor_cols]

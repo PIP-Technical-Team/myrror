@@ -1,4 +1,4 @@
-# Tests for myrror.utils
+# Tests for myrror.utils.R
 # check_df() ----
 # Test 1: Input is NULL
 test_that("check_df stops with NULL input", {
@@ -48,3 +48,5 @@ test_that("check_df returns the data frame if valid", {
 
 
 
+
+# check_by() ----

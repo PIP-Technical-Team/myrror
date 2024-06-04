@@ -5,15 +5,7 @@
 \alias{print.myrror_object}
 \title{myrror main function}
 \usage{
-myrror(
-  dfx,
-  dfy,
-  by = NULL,
-  by.x = NULL,
-  by.y = NULL,
-  tolerance = NULL,
-  factor_to_char = TRUE
-)
+myrror(dfx, dfy, by = NULL, by.x = NULL, by.y = NULL, factor_to_char = TRUE)
 
 \method{print}{myrror_object}(x)
 }
@@ -28,9 +20,9 @@ myrror(
 
 \item{by.y}{character, key to be used for dfy}
 
-\item{tolerance}{tolerance list. Can be: NULL, 'no_cap', 'no_symbols', 'no_whitespace'}
-
 \item{factor_to_char}{TRUE or FALSE, default to TRUE.}
+
+\item{tolerance}{tolerance list. Can be: NULL, 'no_cap', 'no_symbols', 'no_whitespace'}
 }
 \value{
 draft: selection of by variables
