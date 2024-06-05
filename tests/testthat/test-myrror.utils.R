@@ -145,43 +145,33 @@ test_that("Function detects sorted data frame", {
 # Test 2: Unsorted data frame
 test_that("Function detects unsorted data frame", {
   df <- data.frame(a = c(1, 3, 2), b = c(4, 3, 7))
-  expect_equal(detect_sorting(df), c(as.character()))
+  expect_equal(detect_sorting(df), c("not sorted"))
 })
 
 
 # is_dataframe_sorted_by() ----
-# Test 1: Data frame sorted by 'a'
-test_that("Function detects data frame sorted by 'a'", {
+# Test 1: Data frame sorted by the specified column
+test_that("Function detects data frame sorted by specified column", {
   df <- data.frame(a = 1:3, b = 4:6)
-  expect_true(is_dataframe_sorted_by(df, by = "a"))
+  expect_equal(is_dataframe_sorted_by(df, "a"), list("sorted by key", "a"))
 })
 
-# Test 2: Data frame sorted by two nested variables (person_id, year)
-test_that("Function detects data frame sorted by two nested variables", {
-  df <- data.frame(person_id = c(1, 1, 2, 2, 3, 3),
-                   year = c(2010, 2011, 2010, 2011, 2010, 2011),
-                   value = 1:6)
-  expect_true(is_dataframe_sorted_by(df, by = c("person_id", "year")))
+# Test 2: Data frame not sorted by the specified column
+test_that("Function detects data frame not sorted by specified column", {
+  df <- data.frame(a = c(1, 3, 2), b = c(4, 3, 7))
+  expect_equal(is_dataframe_sorted_by(df, "a"), list("not sorted by key", "not sorted"))
 })
 
-# Test 3: Data frame not sorted by 'a'
-test_that("Function detects data frame not sorted by 'a'", {
-  df <- data.frame(a = c(1, 3, 2), b = 4:6)
-  expect_false(is_dataframe_sorted_by(df, by = "a"))
+# Test 3: Data frame sorted by "rn" (default) and by "a" and "b
+test_that("Function detects data frame sorted by 'rn'", {
+  df <- data.frame(a = 1:3, b = 4:6, rn = 1:3)
+  expect_equal(is_dataframe_sorted_by(df, "rn"), list("not sorted by key", c("a", "b", "rn")))
 })
 
-# Test 4: Data frame sorted by 'a' in decreasing order
-test_that("Function detects data frame sorted by 'a' in decreasing order", {
-  df <- data.frame(a = c(3, 2, 1), b = 4:6)
-  expect_true(is_dataframe_sorted_by(df, by = "a", decreasing = TRUE))
-})
-
-# Test 5: Data frame not sorted by two variables (person_id, year)
-test_that("Function detects data frame not sorted by two variables", {
-  df <- data.frame(person_id = c(1, 1, 2, 2, 3, 3),
-                   year = c(2011, 2010, 2010, 2011, 2010, 2011),
-                   value = 1:6)
-  expect_false(is_dataframe_sorted_by(df, by = c("person_id", "year")))
+# Test 4: Data frame not sorted by the specified column but by another column
+test_that("Function detects data frame sorted by another column", {
+  df <- data.frame(a = c(1, 3, 2), b = c(4, 3, 7), other_column = 1:3)
+  expect_equal(is_dataframe_sorted_by(df, "a"), list("not sorted by key", "other_column"))
 })
 
 

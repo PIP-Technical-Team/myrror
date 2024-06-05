@@ -14,7 +14,7 @@ is_dataframe_sorted_by(df, by, decreasing = FALSE)
 \item{decreasing}{logical}
 }
 \value{
-logical
+list
 }
 \description{
 Detect sorting in a data frame

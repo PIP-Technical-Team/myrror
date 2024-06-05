@@ -216,7 +216,13 @@ is.sorted <- function(x, ...) {
 #'
 detect_sorting <- function(data) {
   sorted <- lapply(data, is.sorted)
-  names(which(unlist(sorted) == TRUE))
+  sort_variable <- names(which(unlist(sorted) == TRUE))
+
+  if (length(sort_variable) == 0) {
+    return("not sorted")
+  } else {
+    return(sort_variable)
+  }
 }
 
 ## 4.3 Detect sorting in a data frame ----
@@ -232,6 +238,7 @@ detect_sorting <- function(data) {
 is_dataframe_sorted_by <- function(df,
                                    by,
                                    decreasing = FALSE) {
+
   # Generate the order indices for the dataframe based on given by argument
   order_indices <- do.call(order, c(df[, by, drop = FALSE],
                                     list(decreasing = decreasing)))
@@ -239,7 +246,21 @@ is_dataframe_sorted_by <- function(df,
   # Check if the order indices match the original row indices
   is_sorted_by <- identical(order_indices, seq_len(nrow(df)))
 
-  return(is_sorted_by)
+  if (by == "rn") {
+
+    other_sort <- detect_sorting(df)
+    return(list("not sorted by key", other_sort))
+
+  } else if (by != "rn" & is_sorted_by) {
+
+    return(list("sorted by key", by))
+
+  } else {
+
+    other_sort <- detect_sorting(df)
+    return(list("not sorted by key", other_sort))
+  }
+
 }
 
 

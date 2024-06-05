@@ -10,7 +10,7 @@ detect_sorting(data)
 \item{data}{data.frame}
 }
 \value{
-character vector
+list
 }
 \description{
 Detect sorting in a data frame

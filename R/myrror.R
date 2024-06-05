@@ -25,7 +25,7 @@ myrror <- function(dfx,
                    factor_to_char = TRUE) {
 
 
-  # 0. Store original datasets ----
+  # 0. Store original datasets and orginal dataset characteristics ----
   original_dfx <- dfx
   original_dfy <- dfy
 
@@ -73,8 +73,37 @@ myrror <- function(dfx,
   #set_by$by.x
   #set_by$by.y
 
+  # 4. Original Dataset Characteristics ----
+  ## 4.1 Characteristics ----
 
-  # 4. Prepare Dataset for Join ----
+  dfx_char <- list(
+    nrow = nrow(original_dfx),
+    ncol = ncol(original_dfx)
+  )
+
+  dfy_char <- list(
+    nrow = nrow(original_dfy),
+    ncol = ncol(original_dfy)
+  )
+
+  ## 4.2 Sorting ----
+  # Is data sorted by which variable? After the check_set_by(), default will be 'rn'.
+  # If 'rn', was data sorted in dfx/dfy by another variable, then?
+  # Was data sorted by the same variable?
+
+  sorting_dfx <- is_dataframe_sorted_by(original_dfx, set_by$by.x)
+  sorting_dfy <- is_dataframe_sorted_by(original_dfy, set_by$by.y)
+
+  common_vars <- intersect(sorting_dfx[[2]], sorting_dfy[[2]])
+  is_common_sorted = !length(common_vars) == 0
+
+  ## Store
+  comparison_report$sorting_dfx <- sorting_dfx
+  comparison_report$soring_dfy <- sorting_dfy
+  comparison_report$is_common_sorted <- is_common_sorted
+
+
+  # 5. Prepare Dataset for Join ----
   # - make into data.table.
   # - make into valid column names.
   # - check that by variable are in the colnames of the given dataset.
@@ -163,26 +192,6 @@ myrror <- function(dfx,
   comparison_report$variables_only_in_x <- variables_only_in_x
   comparison_report$variables_only_in_y <- variables_only_in_y
 
-  # 9. Sorting: ----
-  # Was data sorted in dfx/dfy by the "by" variables?
-  # If not, was data sorted in dfx/dfy by another variable, then?
-  # Was data sorted by the same variable?
-
-
-
-
-
-
-
-  sorted_vars_x <- detect_sorting(original_dfx)
-  sorted_vars_y <- detect_sorting(original_dfy)
-
-  common_vars <- intersect(sorted_vars_x, sorted_vars_y)
-  is_common_sorted = !length(common_vars) == 0
-
-  ## Store
-  comparison_report$sorted_vars_x <- sorted_vars_x
-  comparison_report$sorted_vars_y <- sorted_vars_y
 
   # 10. Variable comparison: ----
   ## 4.1 Is it the same type?
