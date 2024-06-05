@@ -74,7 +74,7 @@ myrror <- function(dfx,
   #set_by$by.y
 
 
-  # 4. Prepare Dataset for Alignment ----
+  # 4. Prepare Dataset for Join ----
   # - make into data.table.
   # - make into valid column names.
   # - check that by variable are in the colnames of the given dataset.
@@ -88,7 +88,7 @@ myrror <- function(dfx,
                              by = by.y,
                              factor_to_char = factor_to_char)
 
-  # - Check that by.x is not in the non-key columns of dfy and vice versa
+  # - Check that by.x is not in the non-key columns of dfy and vice-versa
   if (by.x %in% setdiff(names(prepared_dfy), by.y)) {
     stop("by.x is part of the non-index columns of dfy.")
   }
@@ -99,12 +99,6 @@ myrror <- function(dfx,
   # MERGED DATA REPORT ----
   # 5. Merge ----
   # - use collapse to merge and keep matching and non-matching observations.
-
-
-
-  ## Give row index to x and y:
-  prepared_dfx[, 'row_index' := .I]
-  prepared_dfy[, 'row_index' := .I]
 
   ## Merge using Join
   merged_data <- collapse::join(prepared_dfx,

@@ -148,14 +148,12 @@ prepare_df <- function(df,
 
   ## 2. Convert DataFrame to Data Table if it's not already.
   # We keep rownames ("rn") regardless.
-  if (is.data.table(df)) {
+  if (data.table::is.data.table(df)) {
 
     dt <- copy(df)
-    dt <- df |> 
+    dt <- df |>
           collapse::fmutate(rn = row.names(df),
                   row_index = 1:nrow(df))
-
-    )
   }
 
   else {
@@ -194,11 +192,29 @@ prepare_df <- function(df,
 }
 
 # 4. Sorting utils ----
+## 4.1 Is it sorted? ----
+#' Check if a vector is sorted
+#' @param x vector
+#' @param ... additional arguments of is.sorted()
+#' @return logical
+#'
+#' @examples
+#' is.sorted(iris$Sepal.Length)
+#'
 is.sorted <- function(x, ...) {
+  # Note: I used the ellipsis to pass the options of is.unsorted(.).
   !is.unsorted(x, ...) | !is.unsorted(rev(x), ...)
 }
 
-detect_sorting <- function(data){
+## 4.2 Detect sorting ----
+#' Detect sorting in a data frame
+#' @param data data.frame
+#' @return character vector
+#'
+#' @examples
+#' detect_sorting(iris)
+#'
+detect_sorting <- function(data) {
   sorted <- lapply(data, is.sorted)
   names(which(unlist(sorted) == TRUE))
 }
@@ -219,10 +235,10 @@ process_fselect_col_pairs <- function(df, suffix_x = ".x", suffix_y = ".y") {
                         paste0(common_base_names, suffix_y))
 
   comparisons <- lapply(paired_columns, function(cols) {
-    col_x = fselect(df, cols[1])
-    col_y = fselect(df, cols[2])
-    idx_x = fselect(df, "row_index.x")
-    idx_y = fselect(df, "row_index.y")
+    col_x <- fselect(df, cols[1])
+    col_y <- fselect(df, cols[2])
+    idx_x <- fselect(df, "row_index.x")
+    idx_y <- fselect(df, "row_index.y")
 
     compare_column_values(col_x[[1]], col_y[[1]], idx_x[[1]], idx_y[[1]])
   })
