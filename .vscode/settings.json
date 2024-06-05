@@ -1,0 +1,10 @@
+{
+    "r.lsp.promptToInstall": false,
+    "http.proxyStrictSSL": false,
+    "http.proxyAuthorization": null,
+    "http.proxySupport": "override",
+    "http.systemCertificates": true,
+    "github.copilot.advanced": {
+    "debug.useNodeFetcher": true
+    }
+}
