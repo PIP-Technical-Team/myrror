@@ -146,7 +146,13 @@ prepare_df <- function(df,
     stop("'rn' present in colnames but it cannot be a column name.")
   }
 
-  ## 2. Convert DataFrame to Data Table if it's not already.
+  ## 2. Check for duplicate column names in both datasets
+  if (length(unique(names(df))) != length(names(df))) {
+    stop("Duplicate column names found in dataframe.")
+    # Note: cli additions needed.
+  }
+
+  ## 3. Convert DataFrame to Data Table if it's not already.
   # We keep rownames ("rn") regardless.
   if (data.table::is.data.table(df)) {
 
@@ -171,15 +177,9 @@ prepare_df <- function(df,
   #   collapse::setColnames(dt, valid_col_names)
   # }
 
-  ## 3. Ensure the by keys are available in the column names
+  ## 4. Ensure the by keys are available in the column names
   if (!all(by %in% names(dt))) {
     stop("Specified by keys are not all present in the column names.")
-  }
-
-  ## 4. Check for duplicate column names in both datasets
-  if (length(unique(names(dt))) != length(names(dt))) {
-    stop("Duplicate column names found in dataframe.")
-    # Note: cli additions needed.
   }
 
   ## 5. Convert factors to characters
@@ -218,6 +218,31 @@ detect_sorting <- function(data) {
   sorted <- lapply(data, is.sorted)
   names(which(unlist(sorted) == TRUE))
 }
+
+## 4.3 Detect sorting in a data frame ----
+#' Detect sorting in a data frame
+#' @param df data.frame
+#' @param by character vector
+#' @param decreasing logical
+#' @return logical
+#'
+#' @examples
+#' is_dataframe_sorted_by(iris, by = "Sepal.Length")
+#'
+is_dataframe_sorted_by <- function(df,
+                                   by,
+                                   decreasing = FALSE) {
+  # Generate the order indices for the dataframe based on given by argument
+  order_indices <- do.call(order, c(df[, by, drop = FALSE],
+                                    list(decreasing = decreasing)))
+
+  # Check if the order indices match the original row indices
+  is_sorted_by <- identical(order_indices, seq_len(nrow(df)))
+
+  return(is_sorted_by)
+}
+
+
 
 # 4. Variable comparison utils ----
 ## 4.2 Process col pairs ----

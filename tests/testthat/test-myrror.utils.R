@@ -118,3 +118,78 @@ test_that("Factors are converted to characters", {
   expect_true(is.character(result$b))
 })
 
+
+# is.sorted() ----
+# Test 1: Sorted vector
+test_that("Function detects sorted vector", {
+  expect_true(is.sorted(1:10))
+})
+
+# Test 2: Unsorted vector
+test_that("Function detects unsorted vector", {
+  expect_false(is.sorted(c(1, 3, 2, 4)))
+})
+
+# Test 5: Sorted vector with ties
+test_that("Function detects sorted vector with ties", {
+  expect_true(is.sorted(c(1, 1, 2, 3, 3)))
+})
+
+# detect_sorting() ----
+# Test 1: Sorted data frame
+test_that("Function detects sorted data frame", {
+  df <- data.frame(a = 1:3, b = 4:6)
+  expect_equal(detect_sorting(df), c('a', 'b'))
+})
+
+# Test 2: Unsorted data frame
+test_that("Function detects unsorted data frame", {
+  df <- data.frame(a = c(1, 3, 2), b = c(4, 3, 7))
+  expect_equal(detect_sorting(df), c(as.character()))
+})
+
+
+# is_dataframe_sorted_by() ----
+# Test 1: Data frame sorted by 'a'
+test_that("Function detects data frame sorted by 'a'", {
+  df <- data.frame(a = 1:3, b = 4:6)
+  expect_true(is_dataframe_sorted_by(df, by = "a"))
+})
+
+# Test 2: Data frame sorted by two nested variables (person_id, year)
+test_that("Function detects data frame sorted by two nested variables", {
+  df <- data.frame(person_id = c(1, 1, 2, 2, 3, 3),
+                   year = c(2010, 2011, 2010, 2011, 2010, 2011),
+                   value = 1:6)
+  expect_true(is_dataframe_sorted_by(df, by = c("person_id", "year")))
+})
+
+# Test 3: Data frame not sorted by 'a'
+test_that("Function detects data frame not sorted by 'a'", {
+  df <- data.frame(a = c(1, 3, 2), b = 4:6)
+  expect_false(is_dataframe_sorted_by(df, by = "a"))
+})
+
+# Test 4: Data frame sorted by 'a' in decreasing order
+test_that("Function detects data frame sorted by 'a' in decreasing order", {
+  df <- data.frame(a = c(3, 2, 1), b = 4:6)
+  expect_true(is_dataframe_sorted_by(df, by = "a", decreasing = TRUE))
+})
+
+# Test 5: Data frame not sorted by two variables (person_id, year)
+test_that("Function detects data frame not sorted by two variables", {
+  df <- data.frame(person_id = c(1, 1, 2, 2, 3, 3),
+                   year = c(2011, 2010, 2010, 2011, 2010, 2011),
+                   value = 1:6)
+  expect_false(is_dataframe_sorted_by(df, by = c("person_id", "year")))
+})
+
+
+
+
+
+
+
+
+
+

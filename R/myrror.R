@@ -164,9 +164,15 @@ myrror <- function(dfx,
   comparison_report$variables_only_in_y <- variables_only_in_y
 
   # 9. Sorting: ----
-  # Was data sorted in x, if so, by which variable?
-  # Was data sorted in y, is so, by which variable?
+  # Was data sorted in dfx/dfy by the "by" variables?
+  # If not, was data sorted in dfx/dfy by another variable, then?
   # Was data sorted by the same variable?
+
+
+
+
+
+
 
   sorted_vars_x <- detect_sorting(original_dfx)
   sorted_vars_y <- detect_sorting(original_dfy)
