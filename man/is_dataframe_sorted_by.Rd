@@ -4,7 +4,7 @@
 \alias{is_dataframe_sorted_by}
 \title{Detect sorting in a data frame}
 \usage{
-is_dataframe_sorted_by(df, by, decreasing = FALSE)
+is_dataframe_sorted_by(df, by = NULL, decreasing = FALSE)
 }
 \arguments{
 \item{df}{data.frame}

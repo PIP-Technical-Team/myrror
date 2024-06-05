@@ -152,7 +152,7 @@ test_that("Function detects unsorted data frame", {
 # is_dataframe_sorted_by() ----
 # Test 1: Data frame sorted by the specified column
 test_that("Function detects data frame sorted by specified column", {
-  df <- data.frame(a = 1:3, b = 4:6)
+  df <- data.frame(a = 1:3, b = c(4, 3, 7))
   expect_equal(is_dataframe_sorted_by(df, "a"), list("sorted by key", "a"))
 })
 

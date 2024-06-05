@@ -26,6 +26,9 @@ myrror <- function(dfx,
 
 
   # 0. Store original datasets and orginal dataset characteristics ----
+  original_call <- match.call()
+  dfx_name <- as.character(original_call[['dfx']])
+  dfy_name <- as.character(original_call[['dfy']])
   original_dfx <- dfx
   original_dfy <- dfy
 
@@ -73,6 +76,7 @@ myrror <- function(dfx,
   #set_by$by.x
   #set_by$by.y
 
+  # DATASET REPORT ----
   # 4. Original Dataset Characteristics ----
   ## 4.1 Characteristics ----
 
@@ -98,9 +102,12 @@ myrror <- function(dfx,
   is_common_sorted = !length(common_vars) == 0
 
   ## Store
-  comparison_report$sorting_dfx <- sorting_dfx
-  comparison_report$soring_dfy <- sorting_dfy
-  comparison_report$is_common_sorted <- is_common_sorted
+  datasets_report <- list()
+  datasets_report$dfx_char <- dfx_char
+  datasets_report$dfy_char <- dfy_char
+  datasets_report$sorting_dfx <- sorting_dfx
+  datasets_report$sorting_dfy <- sorting_dfy
+  datasets_report$is_common_sorted <- is_common_sorted
 
 
   # 5. Prepare Dataset for Join ----
@@ -110,18 +117,20 @@ myrror <- function(dfx,
   # - factor to character (keep track of this), default = TRUE.
 
   prepared_dfx <- prepare_df(dfx,
-                             by = by.x,
+                             by = set_by$by.x,
                              factor_to_char = factor_to_char)
 
   prepared_dfy <- prepare_df(dfy,
-                             by = by.y,
+                             by = set_by$by.y,
                              factor_to_char = factor_to_char)
 
-  # - Check that by.x is not in the non-key columns of dfy and vice-versa
-  if (by.x %in% setdiff(names(prepared_dfy), by.y)) {
+  # - Check that set_by$by.x is not in the non-key columns of dfy and vice-versa.
+  # Note: this step needs to be done here because the column names might
+  # change in the prepare_df() function.
+  if (set_by$by.x %in% setdiff(names(prepared_dfy), set_by$by.y)) {
     stop("by.x is part of the non-index columns of dfy.")
   }
-  if (by.y %in% setdiff(names(prepared_dfx), by.x)) {
+  if (set_by$by.y %in% setdiff(names(prepared_dfx), set_by$by.x)) {
     stop("by.y is part of the non-index columns of dfx.")
   }
 
@@ -132,9 +141,9 @@ myrror <- function(dfx,
   ## Merge using Join
   merged_data <- collapse::join(prepared_dfx,
                                 prepared_dfy,
-                                on=setNames(by.x, by.y),
+                                on=setNames(set_by$by.x, set_by$by.y),
                                 how='full',
-                                sort = TRUE, # already sorted here !!
+                                sort = TRUE, # now we sort the data by the key
                                 multiple = TRUE,
                                 suffix = c(".x",".y"),
                                 keep.col.order = FALSE,
@@ -144,7 +153,7 @@ myrror <- function(dfx,
 
   ## Store
   merged_data_report <- list()
-  merged_data_report$merged_data <- merged_data
+  # merged_data_report$merged_data <- merged_data # Can be too big to store
 
 
   # 6. Get matched and non-matched ----
@@ -204,21 +213,28 @@ myrror <- function(dfx,
 
   # Prepare output structure for 'myrror_object'
   output <- list(
+    original_call = original_call,
+    name_dfx = dfx_name,
+    name_dfy = dfy_name,
     dfx = original_dfx,
     dfy = original_dfy,
-    tolerance = tolerance,
+    #tolerance = tolerance,
     processed_dfx = dfx,
     processed_dfy = dfy,
     prepared_dfy = prepared_dfy,
     prepared_dfx = prepared_dfx,
-    by.x = by.x,
-    by.y = by.y,
+    original_by.x = by.x,
+    original_by.y = by.y,
+    set_by.y = set_by$by.y,
+    set_by.x = set_by$by.x,
+    datasets_report = datasets_report,
     merged_data_report = merged_data_report,
     comparison_report = comparison_report
   )
 
   # Set-up structure of 'myrror_object'
   structure(output, class = "myrror_object")
+
 }
 
 
@@ -226,10 +242,33 @@ myrror <- function(dfx,
 #' @export
 print.myrror_object <- function(x)
 {
-  cat("Compare Object\n\n")
-  cat("Function Call: \n")
-  print(x$comparison_report)
+  cat("Myrror Object\n")
   cat("\n")
+  cat("Datasets Characteristics\n")
+  cat("--------------------------------------------------\n")
+  print(data.frame(row.names = c("dfx", "dfy"),
+                   dataset = c(x$name_dfx, x$name_dfy),
+                   nrow = c(x$datasets_report$dfx_char$nrow, x$datasets_report$dfy_char$nrow),
+                   ncol = c(x$datasets_report$dfx_char$ncol, x$datasets_report$dfy_char$ncol),
+                   set_by = c(x$set_by.x, x$set_by.y)))
+  cat("\n")
+  cat("\n")
+  cat("Variables Comparison\n")
+  cat("--------------------------------------------------\n")
+  print(data.frame(row.names = c("Variables only in dfx", "Variables only in dfy"),
+                   count = c(length(x$comparison_report$variables_only_in_x), length(x$comparison_report$variables_only_in_y)),
+                   variables = c(paste(x$comparison_report$variables_only_in_x, collapse = ", "),
+                                 paste(x$comparison_report$variables_only_in_y, collapse = ", "))))
+  cat("\n")
+  cat("\n")
+  cat("Observations Comparison\n")
+  cat("--------------------------------------------------\n")
+  print(data.frame(row.names = c("Rows in dfx but not in dfy", "Rows in dfy but not in dfx"),
+                   count = c(x$comparison_report$x_not_in_y |> fnrow(),
+                             x$comparison_report$y_not_in_x |> fnrow())))
+
+
   invisible(x)
+
 }
 

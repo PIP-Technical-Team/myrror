@@ -236,8 +236,15 @@ detect_sorting <- function(data) {
 #' is_dataframe_sorted_by(iris, by = "Sepal.Length")
 #'
 is_dataframe_sorted_by <- function(df,
-                                   by,
+                                   by = NULL,
                                    decreasing = FALSE) {
+
+  if (by == "rn") {
+
+    other_sort <- detect_sorting(df)
+    return(list("not sorted by key", other_sort))
+
+  } else {
 
   # Generate the order indices for the dataframe based on given by argument
   order_indices <- do.call(order, c(df[, by, drop = FALSE],
@@ -246,12 +253,8 @@ is_dataframe_sorted_by <- function(df,
   # Check if the order indices match the original row indices
   is_sorted_by <- identical(order_indices, seq_len(nrow(df)))
 
-  if (by == "rn") {
 
-    other_sort <- detect_sorting(df)
-    return(list("not sorted by key", other_sort))
-
-  } else if (by != "rn" & is_sorted_by) {
+  if (by != "rn" & is_sorted_by) {
 
     return(list("sorted by key", by))
 
@@ -261,21 +264,31 @@ is_dataframe_sorted_by <- function(df,
     return(list("not sorted by key", other_sort))
   }
 
+
+}
 }
 
 
 
 # 4. Variable comparison utils ----
 ## 4.2 Process col pairs ----
-process_fselect_col_pairs <- function(df, suffix_x = ".x", suffix_y = ".y") {
+process_fselect_col_pairs <- function(df,
+                                      suffix_x = ".x",
+                                      suffix_y = ".y") {
+
+  # Clean up the column names from the suffix
+  # Get suffixes
   cols_x <- names(df)[grepl(suffix_x, names(df))]
   cols_y <- names(df)[grepl(suffix_y, names(df))]
 
+  # Get names without suffix
   base_names_x <- sub(suffix_x, "", cols_x)
   base_names_y <- sub(suffix_y, "", cols_y)
 
+  # Get common base names
   common_base_names <- intersect(base_names_x, base_names_y)
 
+  # Pair the columns
   paired_columns <- Map(function(x, y) c(x, y),
                         paste0(common_base_names, suffix_x),
                         paste0(common_base_names, suffix_y))
