@@ -78,17 +78,17 @@ myrror <- function(dfx,
   # - make into data.table.
   # - make into valid column names.
   # - check that by variable are in the colnames of the given dataset.
-  # - factor to character (keep track of this), default = TRUE
+  # - factor to character (keep track of this), default = TRUE.
 
-  prepared_dfx <- prepare_alignment(dfx,
-                                    by = by.x,
-                                    factor_to_char = factor_to_char)
+  prepared_dfx <- prepare_df(dfx,
+                             by = by.x,
+                             factor_to_char = factor_to_char)
 
-  prepared_dfy <- prepare_alignment(dfy,
-                                    by = by.y,
-                                    factor_to_char = factor_to_char)
+  prepared_dfy <- prepare_df(dfy,
+                             by = by.y,
+                             factor_to_char = factor_to_char)
 
-  ## Check that by.x is not in the non-key columns of dfy and vice versa
+  # - Check that by.x is not in the non-key columns of dfy and vice versa
   if (by.x %in% setdiff(names(prepared_dfy), by.y)) {
     stop("by.x is part of the non-index columns of dfy.")
   }
@@ -97,19 +97,10 @@ myrror <- function(dfx,
   }
 
   # MERGED DATA REPORT ----
-  # 5. Align Columns and Merge ----
-  # - check that by.x is not in the non-key columns of dfy and vice versa.
-  # - check that there are no duplicates in x and in y.
-  # - Give row index to x and y
+  # 5. Merge ----
   # - use collapse to merge and keep matching and non-matching observations.
 
-  ## Check for duplicate column names in both datasets
-  if (length(unique(names(prepared_dfx))) != length(names(prepared_dfx))) {
-    stop("Duplicate column names found in dfx.")
-  }
-  if (length(unique(names(prepared_dfy))) != length(names(prepared_dfy))) {
-    stop("Duplicate column names found in dfy.")
-  }
+
 
   ## Give row index to x and y:
   prepared_dfx[, 'row_index' := .I]

@@ -2,7 +2,8 @@
 
 # 1. Arguments Checks Utils ----
 ## 1.1 dfx dfy ----
-#' Check if the df arguments are valid, makes them into a data.frame if they are a list.
+#' Check if the df arguments are valid,
+#' makes them into a data.frame if they are a list.
 #' @param dfx data frame
 #'
 #' @examples
@@ -14,7 +15,8 @@ check_df <- function(df) {
     stop("Input data frame(s) cannot be NULL.")
   }
 
-  # Check if dfx or dfy are data frames, if not, try to convert them if they are lists
+  # Check if dfx or dfy are data frames,
+  # if not, try to convert them if they are lists.
   if (!is.data.frame(df)) {
     if (is.list(df)) {
       tryCatch({
@@ -37,7 +39,8 @@ check_df <- function(df) {
 }
 
 ## 1.2 by.y by.x ----
-#' Check if the df arguments are valid, makes them into a data.frame if they are a list.
+#' Check if the df arguments are valid,
+#' makes them into a data.frame if they are a list.
 #' @param by character vector
 #' @param by.x character vector
 #' @param by.y character vector
@@ -148,12 +151,18 @@ prepare_df <- function(df,
   if (is.data.table(df)) {
 
     dt <- copy(df)
-    dt <- df |> fmutate(rn = row.names(df))
+    dt <- df |> 
+          collapse::fmutate(rn = row.names(df),
+                  row_index = 1:nrow(df))
+
+    )
   }
 
   else {
     dt <- copy(df)
     data.table::setDT(dt, keep.rownames = TRUE)
+    dt <- dt |>
+      collapse::fmutate(row_index = 1:nrow(dt))
     }
 
   ## N. Validate colnames (make.names) and replace if needed.
@@ -172,13 +181,13 @@ prepare_df <- function(df,
   ## 4. Check for duplicate column names in both datasets
   if (length(unique(names(dt))) != length(names(dt))) {
     stop("Duplicate column names found in dataframe.")
-    # Note: cli addition needed
+    # Note: cli additions needed.
   }
 
   ## 5. Convert factors to characters
   if (isTRUE(factor_to_char)){
     dt <- dt |>
-      fmutate(across(is.factor, as.character))
+      collapse::fmutate(across(is.factor, as.character))
   }
 
   return(dt)
