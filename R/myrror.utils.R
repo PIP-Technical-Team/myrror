@@ -209,7 +209,7 @@ is.sorted <- function(x, ...) {
 ## 4.2 Detect sorting ----
 #' Detect sorting in a data frame
 #' @param data data.frame
-#' @return character vector
+#' @return list
 #'
 #' @examples
 #' detect_sorting(iris)
@@ -230,7 +230,7 @@ detect_sorting <- function(data) {
 #' @param df data.frame
 #' @param by character vector
 #' @param decreasing logical
-#' @return logical
+#' @return list
 #'
 #' @examples
 #' is_dataframe_sorted_by(iris, by = "Sepal.Length")
