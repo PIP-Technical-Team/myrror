@@ -4,10 +4,10 @@
 ## 1.1 dfx dfy ----
 #' Check if the df arguments are valid,
 #' makes them into a data.frame if they are a list.
-#' @param dfx data frame
-#'
+#' @param df data frame
+#' @export
 #' @examples
-#' check_dfs(iris, iris_var_v1)
+#' check_df(iris)
 #'
 check_df <- function(df) {
   # Check if dfx or dfy are NULL
@@ -44,9 +44,9 @@ check_df <- function(df) {
 #' @param by character vector
 #' @param by.x character vector
 #' @param by.y character vector
-#'
+#' @export
 #' @examples
-#' check_set_by(NULL, NULL, "id") # error
+#'
 #' check_set_by(NULL, NULL, NULL) # rn set
 #' check_set_by("id", NULL, NULL) # by set
 #' check_set_by(NULL, "id", "id") # by.x and by.y set
@@ -97,6 +97,7 @@ check_set_by <- function(by = NULL,
 #'
 #' @return a list of processed column names
 #' @export
+#' @importFrom data.table copy
 #'
 #' @examples
 #' processed_names <- apply_tolerance(names(iris), tolerance = 'no_cap')
@@ -133,7 +134,7 @@ apply_tolerance <- function(names,
 #' @param df data.frame or data.table
 #' @param by character vector
 #' @param factor_to_char logical
-#'
+#' @export
 #' @examples
 #' prepare_df(iris_var1, by = NULL) # adds "rn" variable
 #'
@@ -156,7 +157,7 @@ prepare_df <- function(df,
   # We keep rownames ("rn") regardless.
   if (data.table::is.data.table(df)) {
 
-    dt <- copy(df)
+    dt <- data.table::copy(df)
     dt <- df |>
           collapse::fmutate(rn = row.names(df),
                   row_index = 1:nrow(df))
@@ -197,7 +198,7 @@ prepare_df <- function(df,
 #' @param x vector
 #' @param ... additional arguments of is.sorted()
 #' @return logical
-#'
+#' @export
 #' @examples
 #' is.sorted(iris$Sepal.Length)
 #'
@@ -210,7 +211,7 @@ is.sorted <- function(x, ...) {
 #' Detect sorting in a data frame
 #' @param data data.frame
 #' @return list
-#'
+#' @export
 #' @examples
 #' detect_sorting(iris)
 #'
@@ -231,7 +232,7 @@ detect_sorting <- function(data) {
 #' @param by character vector
 #' @param decreasing logical
 #' @return list
-#'
+#' @export
 #' @examples
 #' is_dataframe_sorted_by(iris, by = "Sepal.Length")
 #'
@@ -239,34 +240,36 @@ is_dataframe_sorted_by <- function(df,
                                    by = NULL,
                                    decreasing = FALSE) {
 
-  if (by == "rn") {
+  if (identical(by, "rn")) {
 
     other_sort <- detect_sorting(df)
     return(list("not sorted by key", other_sort))
 
   } else {
 
-  # Generate the order indices for the dataframe based on given by argument
-  order_indices <- do.call(order, c(df[, by, drop = FALSE],
-                                    list(decreasing = decreasing)))
 
-  # Check if the order indices match the original row indices
-  is_sorted_by <- identical(order_indices, seq_len(nrow(df)))
+    # Generate the order indices using do.call to pass each by to order()
+    order_indices <- do.call(order, lapply(by, function(col) df[[col]]))
+
+    # Check if the order indices match the original row indices
+    is_sorted_by <- identical(order_indices, seq_len(nrow(df)))
 
 
-  if (by != "rn" & is_sorted_by) {
+    if (all(by != "rn") & is_sorted_by) {
 
-    return(list("sorted by key", by))
+      return(list("sorted by key", by))
 
-  } else {
+    } else {
 
-    other_sort <- detect_sorting(df)
-    return(list("not sorted by key", other_sort))
+      other_sort <- detect_sorting(df)
+      return(list("not sorted by key", other_sort))
+    }
+
   }
 
 
 }
-}
+
 
 
 

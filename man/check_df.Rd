@@ -8,13 +8,13 @@ makes them into a data.frame if they are a list.}
 check_df(df)
 }
 \arguments{
-\item{dfx}{data frame}
+\item{df}{data frame}
 }
 \description{
 Check if the df arguments are valid,
 makes them into a data.frame if they are a list.
 }
 \examples{
-check_dfs(iris, iris_var_v1)
+check_df(iris)
 
 }

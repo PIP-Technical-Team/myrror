@@ -7,7 +7,7 @@
 \usage{
 myrror(dfx, dfy, by = NULL, by.x = NULL, by.y = NULL, factor_to_char = TRUE)
 
-\method{print}{myrror_object}(x)
+\method{print}{myrror_object}(x, ...)
 }
 \arguments{
 \item{dfx}{a non-empty data.frame}
@@ -22,7 +22,7 @@ myrror(dfx, dfy, by = NULL, by.x = NULL, by.y = NULL, factor_to_char = TRUE)
 
 \item{factor_to_char}{TRUE or FALSE, default to TRUE.}
 
-\item{tolerance}{tolerance list. Can be: NULL, 'no_cap', 'no_symbols', 'no_whitespace'}
+\item{x}{an object of class 'myrror_object'}
 }
 \value{
 draft: selection of by variables

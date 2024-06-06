@@ -5,14 +5,11 @@
 #' @param by character, key to be used for dfx and dfy
 #' @param by.x character, key to be used for dfx
 #' @param by.y character, key to be used for dfy
-#' @param tolerance tolerance list. Can be: NULL, 'no_cap', 'no_symbols', 'no_whitespace'
 #' @param factor_to_char TRUE or FALSE, default to TRUE.
 #'
 #' @return draft: selection of by variables
 #' @export
 #' @import collapse
-#' @import data.table
-#' @import stats
 #'
 #' @examples
 #' comparison <- myrror(iris, iris_var1)
@@ -27,8 +24,8 @@ myrror <- function(dfx,
 
   # 0. Store original datasets and orginal dataset characteristics ----
   original_call <- match.call()
-  dfx_name <- as.character(original_call[['dfx']])
-  dfy_name <- as.character(original_call[['dfy']])
+  dfx_name <- deparse(substitute(dfx))
+  dfy_name <- deparse(substitute(dfy))
   original_dfx <- dfx
   original_dfy <- dfy
 
@@ -69,6 +66,7 @@ myrror <- function(dfx,
   # - either by specified, or by.y AND by.x specified, or NULL.
   # - if NULL, it will become a row.names comparison (by = "rn")
 
+
   set_by <- check_set_by(by, by.x, by.y)
 
   # Now the by keys are stored here:
@@ -95,8 +93,10 @@ myrror <- function(dfx,
   # If 'rn', was data sorted in dfx/dfy by another variable, then?
   # Was data sorted by the same variable?
 
+
   sorting_dfx <- is_dataframe_sorted_by(original_dfx, set_by$by.x)
   sorting_dfy <- is_dataframe_sorted_by(original_dfy, set_by$by.y)
+
 
   common_vars <- intersect(sorting_dfx[[2]], sorting_dfy[[2]])
   is_common_sorted = !length(common_vars) == 0
@@ -127,10 +127,10 @@ myrror <- function(dfx,
   # - Check that set_by$by.x is not in the non-key columns of dfy and vice-versa.
   # Note: this step needs to be done here because the column names might
   # change in the prepare_df() function.
-  if (set_by$by.x %in% setdiff(names(prepared_dfy), set_by$by.y)) {
+  if (any(set_by$by.x %in% setdiff(names(prepared_dfy), set_by$by.y))) {
     stop("by.x is part of the non-index columns of dfy.")
   }
-  if (set_by$by.y %in% setdiff(names(prepared_dfx), set_by$by.x)) {
+  if (any(set_by$by.y %in% setdiff(names(prepared_dfx), set_by$by.x))) {
     stop("by.y is part of the non-index columns of dfx.")
   }
 
@@ -141,7 +141,7 @@ myrror <- function(dfx,
   ## Merge using Join
   merged_data <- collapse::join(prepared_dfx,
                                 prepared_dfy,
-                                on=setNames(set_by$by.x, set_by$by.y),
+                                on=stats::setNames(set_by$by.x, set_by$by.y),
                                 how='full',
                                 sort = TRUE, # now we sort the data by the key
                                 multiple = TRUE,
@@ -239,36 +239,36 @@ myrror <- function(dfx,
 
 
 #' @rdname myrror
+#' @param x an object of class 'myrror_object'
 #' @export
-print.myrror_object <- function(x)
+print.myrror_object <- function(x, ...)
 {
-  cat("Myrror Object\n")
-  cat("\n")
-  cat("Datasets Characteristics\n")
-  cat("--------------------------------------------------\n")
-  print(data.frame(row.names = c("dfx", "dfy"),
+  cli::cli_h1("Myrror Object")
+  cli::cli_h2("Datasets Characteristics")
+  print(knitr::kable(data.frame(row.names = c("dfx", "dfy"),
                    dataset = c(x$name_dfx, x$name_dfy),
                    nrow = c(x$datasets_report$dfx_char$nrow, x$datasets_report$dfy_char$nrow),
                    ncol = c(x$datasets_report$dfx_char$ncol, x$datasets_report$dfy_char$ncol),
-                   set_by = c(x$set_by.x, x$set_by.y)))
+                   set_by = c(paste0(x$set_by.x, collapse = ", "), paste0(x$set_by.x, collapse = ", ")),
+                   sorting = c(paste(x$datasets_report$sorting_dfx[[1]], collapse = ", "),
+                               paste(x$datasets_report$sorting_dfy[[1]], collapse = ", ")))),
+        format = "simple", row.names = FALSE, align = 'l')
   cat("\n")
-  cat("\n")
-  cat("Variables Comparison\n")
-  cat("--------------------------------------------------\n")
-  print(data.frame(row.names = c("Variables only in dfx", "Variables only in dfy"),
+  cli::cli_h2("Variables Comparison")
+  print(knitr::kable(data.frame(row.names = c("Variables only in dfx", "Variables only in dfy"),
                    count = c(length(x$comparison_report$variables_only_in_x), length(x$comparison_report$variables_only_in_y)),
                    variables = c(paste(x$comparison_report$variables_only_in_x, collapse = ", "),
-                                 paste(x$comparison_report$variables_only_in_y, collapse = ", "))))
+                                 paste(x$comparison_report$variables_only_in_y, collapse = ", ")))),
+              format = "simple", row.names = FALSE, align = 'l')
   cat("\n")
-  cat("\n")
-  cat("Observations Comparison\n")
-  cat("--------------------------------------------------\n")
-  print(data.frame(row.names = c("Rows in dfx but not in dfy", "Rows in dfy but not in dfx"),
+  cli::cli_h2("Observations Comparison")
+  print(knitr::kable(data.frame(row.names = c("Rows in dfx but not in dfy", "Rows in dfy but not in dfx"),
                    count = c(x$comparison_report$x_not_in_y |> fnrow(),
-                             x$comparison_report$y_not_in_x |> fnrow())))
-
+                             x$comparison_report$y_not_in_x |> fnrow()))),
+        format = "simple", align = 'l')
+  cat("\n")
+  cli::cli_alert_info("{.strong Note}: 'rn' means datasets were compared by row name.")
 
   invisible(x)
-
 }
 
