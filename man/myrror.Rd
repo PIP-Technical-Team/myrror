@@ -2,17 +2,12 @@
 % Please edit documentation in R/myrror.R
 \name{myrror}
 \alias{myrror}
+\alias{print.myrror_object}
 \title{myrror main function}
 \usage{
-myrror(
-  dfx,
-  dfy,
-  by = NULL,
-  by.x = NULL,
-  by.y = NULL,
-  tolerance = NULL,
-  factor_to_char = TRUE
-)
+myrror(dfx, dfy, by = NULL, by.x = NULL, by.y = NULL, factor_to_char = TRUE)
+
+\method{print}{myrror_object}(x, ...)
 }
 \arguments{
 \item{dfx}{a non-empty data.frame}
@@ -25,9 +20,11 @@ myrror(
 
 \item{by.y}{character, key to be used for dfy}
 
-\item{tolerance}{tolerance list. Can be: NULL, 'no_cap', 'no_symbols', 'no_whitespace'}
-
 \item{factor_to_char}{TRUE or FALSE, default to TRUE.}
+
+\item{x}{an object of class 'myrror_object'}
+
+\item{...}{additional arguments}
 }
 \value{
 draft: selection of by variables

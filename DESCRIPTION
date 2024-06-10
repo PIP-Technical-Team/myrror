@@ -12,7 +12,8 @@ Imports:
     cli (>= 3.6.2),
     data.table (>= 1.15.4),
     collapse,
-    stats
+    stats,
+    knitr
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

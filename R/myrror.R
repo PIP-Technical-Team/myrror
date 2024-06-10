@@ -5,14 +5,11 @@
 #' @param by character, key to be used for dfx and dfy
 #' @param by.x character, key to be used for dfx
 #' @param by.y character, key to be used for dfy
-#' @param tolerance tolerance list. Can be: NULL, 'no_cap', 'no_symbols', 'no_whitespace'
 #' @param factor_to_char TRUE or FALSE, default to TRUE.
 #'
 #' @return draft: selection of by variables
 #' @export
 #' @import collapse
-#' @import data.table
-#' @import stats
 #'
 #' @examples
 #' comparison <- myrror(iris, iris_var1)
@@ -21,11 +18,14 @@ myrror <- function(dfx,
                    by = NULL,
                    by.x = NULL,
                    by.y = NULL,
-                   tolerance = NULL,
+                   #tolerance = NULL, POSTPONED
                    factor_to_char = TRUE) {
 
 
-  # 0. Store original datasets ----
+  # 0. Store original datasets and orginal dataset characteristics ----
+  original_call <- match.call()
+  dfx_name <- deparse(substitute(dfx))
+  dfy_name <- deparse(substitute(dfy))
   original_dfx <- dfx
   original_dfy <- dfy
 
@@ -34,146 +34,116 @@ myrror <- function(dfx,
   # - if NULL, say that that there is a NULL, and stop.
   # - if list, check it could be transformed into a data.frame, and then transform.
 
-  # Check if dfx or dfy are NULL
-  if (is.null(dfx) || is.null(dfy)) {
-    stop("Input data frame(s) cannot be NULL.")
-  }
-
-  # Check if dfx or dfy are data frames, if not, try to convert them if they are lists
-  if (!is.data.frame(dfx)) {
-    if (is.list(dfx)) {
-      tryCatch({
-        dfx <- as.data.frame(dfx)
-      }, error = function(e) {
-        stop("dfx is a list but cannot be converted to a data frame.")
-      })
-    } else {
-      stop("dfx must be a data frame or a convertible list.")
-    }
-  }
-
-  if (!is.data.frame(dfy)) {
-    if (is.list(dfy)) {
-      tryCatch({
-        dfy <- as.data.frame(dfy)
-      }, error = function(e) {
-        stop("dfy is a list but cannot be converted to a data frame.")
-      })
-    } else {
-      stop("dfy must be a data frame or a convertible list.")
-    }
-  }
-
-  # Check if dfx or dfy are empty
-  if ((!is.null(dfx) && nrow(dfx) == 0) || (!is.null(dfy) && nrow(dfy) == 0)) {
-    stop("Input data frame(s) cannot be empty.")
-  }
+  dfx <- check_df(dfx)
+  dfy <- check_df(dfy)
 
   # 2. Apply tolerance to columns and by -----
   # - Check if tolerance vector is non-null.
   # - Apply specific adjustments (draft, to be updated) -> column names might change.
   # - Record changes (can use tolerance vector).
+  # !!! POSTPONED for NOW.
 
-  if (!is.null(tolerance)) {
-    names(dfx) <- apply_tolerance(names(dfx), tolerance = tolerance)
-    names(dfy) <- apply_tolerance(names(dfy), tolerance = tolerance)
-
-    if (!is.null(by)) {
-      by <- apply_tolerance(by, tolerance = tolerance)
-    }
-
-    if (!is.null(by.x)) {
-      by.x <- apply_tolerance(by.x, tolerance = tolerance)
-    }
-
-    if (!is.null(by.y)) {
-      by.y <- apply_tolerance(by.y, tolerance = tolerance)
-    }
-  }
+  # if (!is.null(tolerance)) {
+  #   names(dfx) <- apply_tolerance(names(dfx), tolerance = tolerance)
+  #   names(dfy) <- apply_tolerance(names(dfy), tolerance = tolerance)
+  #
+  #   if (!is.null(by)) {
+  #     by <- apply_tolerance(by, tolerance = tolerance)
+  #   }
+  #
+  #   if (!is.null(by.x)) {
+  #     by.x <- apply_tolerance(by.x, tolerance = tolerance)
+  #   }
+  #
+  #   if (!is.null(by.y)) {
+  #     by.y <- apply_tolerance(by.y, tolerance = tolerance)
+  #   }
+  # }
 
 
   # 3. Check by, by.x, by.y arguments: ----
-  # - by, by.x, by.y needs to be of 'character' type
-  # - either by specified, or by.y AND by.x specified, or NULL
-  # - if NULL, it will become a row.names comparison
-  # - if row.names comparison, then add row names as columns and assign them to keys
+  # - by, by.x, by.y needs to be of 'character' type.
+  # - either by specified, or by.y AND by.x specified, or NULL.
+  # - if NULL, it will become a row.names comparison (by = "rn")
 
-  # Validate by, by.x, by.y for non-empty character vectors
-  if (!is.null(by) && (!is.character(by) || length(by) == 0)) {
-    stop("The 'by' argument must be a non-empty character vector.")
-  }
-  if (!is.null(by.x) && (!is.character(by.x) || length(by.x) == 0)) {
-    stop("The 'by.x' argument must be a non-empty character vector.")
-  }
-  if (!is.null(by.y) && (!is.character(by.y) || length(by.y) == 0)) {
-    stop("The 'by.y' argument must be a non-empty character vector.")
-  }
 
-  # Check if 'row.names' is used as an actual column name
-  if ("rownames" %in% colnames(dfx) || "rownames" %in% colnames(dfy)) {
-    stop("'rownames' should not be used as a column name in the datasets.")
-  }
+  set_by <- check_set_by(by, by.x, by.y)
 
-  # Handle the keys for comparison
-  if (!is.null(by)) {
-    by.x <- by.y <- by
-  } else if (is.null(by.x) || is.null(by.y)) {
-    # Default to row.names if no other keys are provided
-    if (!is.null(rownames(dfx)) && !is.null(rownames(dfy))) {
-      by.x <- by.y <- "rownames"
-      # Optionally add row names as columns if they are not already present
-      if (!"rownames" %in% colnames(dfx)) {
-        dfx$rownames <- rownames(dfx)
-      }
-      if (!"rownames" %in% colnames(dfy)) {
-        dfy$rownames <- rownames(dfy)
-      }
-    }
-  }
+  # Now the by keys are stored here:
+  #set_by$by
+  #set_by$by.x
+  #set_by$by.y
 
-  # 4. Prepare Dataset for Alignment ----
+  # DATASET REPORT ----
+  # 4. Original Dataset Characteristics ----
+  ## 4.1 Characteristics ----
+
+  dfx_char <- list(
+    nrow = nrow(original_dfx),
+    ncol = ncol(original_dfx)
+  )
+
+  dfy_char <- list(
+    nrow = nrow(original_dfy),
+    ncol = ncol(original_dfy)
+  )
+
+  ## 4.2 Sorting ----
+  # Is data sorted by which variable? After the check_set_by(), default will be 'rn'.
+  # If 'rn', was data sorted in dfx/dfy by another variable, then?
+  # Was data sorted by the same variable?
+
+
+  sorting_dfx <- is_dataframe_sorted_by(original_dfx, set_by$by.x)
+  sorting_dfy <- is_dataframe_sorted_by(original_dfy, set_by$by.y)
+
+
+  common_vars <- intersect(sorting_dfx[[2]], sorting_dfy[[2]])
+  is_common_sorted = !length(common_vars) == 0
+
+  ## Store
+  datasets_report <- list()
+  datasets_report$dfx_char <- dfx_char
+  datasets_report$dfy_char <- dfy_char
+  datasets_report$sorting_dfx <- sorting_dfx
+  datasets_report$sorting_dfy <- sorting_dfy
+  datasets_report$is_common_sorted <- is_common_sorted
+
+
+  # 5. Prepare Dataset for Join ----
   # - make into data.table.
   # - make into valid column names.
   # - check that by variable are in the colnames of the given dataset.
-  # - factor to character (keep track of this), default = TRUE
+  # - factor to character (keep track of this), default = TRUE.
 
-  prepared_dfx <- prepare_alignment(dfx, by = by.x, factor_to_char = factor_to_char)
-  prepared_dfy <- prepare_alignment(dfy, by = by.y, factor_to_char = factor_to_char)
+  prepared_dfx <- prepare_df(dfx,
+                             by = set_by$by.x,
+                             factor_to_char = factor_to_char)
 
-  # MERGED DATA REPORT ----
-  # 5. Align Columns and Merge ----
-  # - check that by.x is not in the non-key columns of dfy and vice versa.
-  # - check that there are no duplicates in x and in y.
-  # - Give row index to x and y
-  # - use collapse to merge and keep matching and non-matching observations.
+  prepared_dfy <- prepare_df(dfy,
+                             by = set_by$by.y,
+                             factor_to_char = factor_to_char)
 
-
-  ## Check that by.x is not in the non-key columns of dfy and vice versa
-  if (by.x %in% setdiff(names(prepared_dfy), by.y)) {
+  # - Check that set_by$by.x is not in the non-key columns of dfy and vice-versa.
+  # Note: this step needs to be done here because the column names might
+  # change in the prepare_df() function.
+  if (any(set_by$by.x %in% setdiff(names(prepared_dfy), set_by$by.y))) {
     stop("by.x is part of the non-index columns of dfy.")
   }
-  if (by.y %in% setdiff(names(prepared_dfx), by.x)) {
+  if (any(set_by$by.y %in% setdiff(names(prepared_dfx), set_by$by.x))) {
     stop("by.y is part of the non-index columns of dfx.")
   }
 
-  ## Check for duplicate column names in both datasets
-  if (length(unique(names(prepared_dfx))) != length(names(prepared_dfx))) {
-    stop("Duplicate column names found in dfx.")
-  }
-  if (length(unique(names(prepared_dfy))) != length(names(prepared_dfy))) {
-    stop("Duplicate column names found in dfy.")
-  }
-
-  ## Give row index to x and y:
-  prepared_dfx[, 'row_index' := .I]
-  prepared_dfy[, 'row_index' := .I]
+  # MERGED DATA REPORT ----
+  # 5. Merge ----
+  # - use collapse to merge and keep matching and non-matching observations.
 
   ## Merge using Join
   merged_data <- collapse::join(prepared_dfx,
                                 prepared_dfy,
-                                on=setNames(by.x, by.y),
+                                on=stats::setNames(set_by$by.x, set_by$by.y),
                                 how='full',
-                                sort = TRUE, # already sorted here !!
+                                sort = TRUE, # now we sort the data by the key
                                 multiple = TRUE,
                                 suffix = c(".x",".y"),
                                 keep.col.order = FALSE,
@@ -183,7 +153,7 @@ myrror <- function(dfx,
 
   ## Store
   merged_data_report <- list()
-  merged_data_report$merged_data <- merged_data
+  # merged_data_report$merged_data <- merged_data # Can be too big to store
 
 
   # 6. Get matched and non-matched ----
@@ -231,20 +201,6 @@ myrror <- function(dfx,
   comparison_report$variables_only_in_x <- variables_only_in_x
   comparison_report$variables_only_in_y <- variables_only_in_y
 
-  # 9. Sorting: ----
-  # Was data sorted in x, if so, by which variable?
-  # Was data sorted in y, is so, by which variable?
-  # Was data sorted by the same variable?
-
-  sorted_vars_x <- detect_sorting(original_dfx)
-  sorted_vars_y <- detect_sorting(original_dfy)
-
-  common_vars <- intersect(sorted_vars_x, sorted_vars_y)
-  is_common_sorted = !length(common_vars) == 0
-
-  ## Store
-  comparison_report$sorted_vars_x <- sorted_vars_x
-  comparison_report$sorted_vars_y <- sorted_vars_y
 
   # 10. Variable comparison: ----
   ## 4.1 Is it the same type?
@@ -255,23 +211,65 @@ myrror <- function(dfx,
 
   comparison_report$variable_comparison <- variable_comparison
 
+  # Prepare output structure for 'myrror_object'
+  output <- list(
+    original_call = original_call,
+    name_dfx = dfx_name,
+    name_dfy = dfy_name,
+    dfx = original_dfx,
+    dfy = original_dfy,
+    #tolerance = tolerance,
+    processed_dfx = dfx,
+    processed_dfy = dfy,
+    prepared_dfy = prepared_dfy,
+    prepared_dfx = prepared_dfx,
+    original_by.x = by.x,
+    original_by.y = by.y,
+    set_by.y = set_by$by.y,
+    set_by.x = set_by$by.x,
+    datasets_report = datasets_report,
+    merged_data_report = merged_data_report,
+    comparison_report = comparison_report
+  )
 
-  # Preliminary outputs for checks (then to be moved to object)
-  output <- list()
+  # Set-up structure of 'myrror_object'
+  structure(output, class = "myrror_object")
 
-  output$dfx <- original_dfx
-  output$dfy <- original_dfy
-  output$tolerance <- tolerance
-  output$processed_dfx<-dfx
-  output$processed_dfy<-dfy
-  output$prepared_dfy<-prepared_dfy
-  output$prepared_dfx<-prepared_dfx
-  output$by.x <- by.x
-  output$by.y <- by.y
-  output$merged_data_report <- merged_data_report
-  output$comparison_report <- comparison_report
+}
 
-  return(output)
 
+#' @rdname myrror
+#' @param x an object of class 'myrror_object'
+#' @param ... additional arguments
+#' @export
+print.myrror_object <- function(x, ...)
+{
+  cli::cli_h1("Myrror Object")
+  cli::cli_h2("Datasets Characteristics")
+  print(knitr::kable(data.frame(row.names = c("dfx", "dfy"),
+                   dataset = c(x$name_dfx, x$name_dfy),
+                   nrow = c(x$datasets_report$dfx_char$nrow, x$datasets_report$dfy_char$nrow),
+                   ncol = c(x$datasets_report$dfx_char$ncol, x$datasets_report$dfy_char$ncol),
+                   set_by = c(paste0(x$set_by.x, collapse = ", "), paste0(x$set_by.x, collapse = ", ")),
+                   sorting = c(paste(x$datasets_report$sorting_dfx[[1]], collapse = ", "),
+                               paste(x$datasets_report$sorting_dfy[[1]], collapse = ", ")))),
+        format = "simple", row.names = FALSE, align = 'l')
+  cat("\n")
+  cli::cli_h2("Variables Comparison")
+  print(knitr::kable(data.frame(row.names = c("Variables only in dfx", "Variables only in dfy"),
+                   count = c(length(x$comparison_report$variables_only_in_x), length(x$comparison_report$variables_only_in_y)),
+                   variables = c(paste(x$comparison_report$variables_only_in_x, collapse = ", "),
+                                 paste(x$comparison_report$variables_only_in_y, collapse = ", ")))),
+              format = "simple", row.names = FALSE, align = 'l')
+  cat("\n")
+  cli::cli_h2("Observations Comparison")
+  print(knitr::kable(data.frame(row.names = c("Rows in dfx but not in dfy", "Rows in dfy but not in dfx"),
+                   count = c(x$comparison_report$x_not_in_y |> fnrow(),
+                             x$comparison_report$y_not_in_x |> fnrow()))),
+        format = "simple", align = 'l')
+  cat("\n")
+  cli::cli_alert_info("{.strong Note}: 'rn' means datasets were compared by row name.")
+
+  invisible(x)
 }
 
