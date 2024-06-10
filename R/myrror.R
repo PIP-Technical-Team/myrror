@@ -240,6 +240,7 @@ myrror <- function(dfx,
 
 #' @rdname myrror
 #' @param x an object of class 'myrror_object'
+#' @param ... additional arguments
 #' @export
 print.myrror_object <- function(x, ...)
 {

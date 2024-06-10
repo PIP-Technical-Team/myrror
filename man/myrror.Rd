@@ -23,6 +23,8 @@ myrror(dfx, dfy, by = NULL, by.x = NULL, by.y = NULL, factor_to_char = TRUE)
 \item{factor_to_char}{TRUE or FALSE, default to TRUE.}
 
 \item{x}{an object of class 'myrror_object'}
+
+\item{...}{additional arguments}
 }
 \value{
 draft: selection of by variables
