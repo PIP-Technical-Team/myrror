@@ -3,4 +3,5 @@
 ^LICENSE\.md$
 ^data-raw$
 ^\.vscode$
+^playground\.R$
 
