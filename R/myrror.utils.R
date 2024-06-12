@@ -84,7 +84,9 @@ check_set_by <- function(by = NULL,
   }
 
   # Return the possibly modified by variables
-  return(list(by = by, by.x = by.x, by.y = by.y))
+  return(list(by = by,
+              by.x = by.x,
+              by.y = by.y))
 }
 
 
@@ -183,7 +185,14 @@ prepare_df <- function(df,
     stop("Specified by keys are not all present in the column names.")
   }
 
-  ## 5. Convert factors to characters
+  df_name <- deparse(substitute(df))
+
+  ## 5. Check that the keys provided identify the dataset correctly
+  if (isFALSE(joyn:::is_id(dt, by, verbose = FALSE))) {
+    cli::cli_abort("The by keys provided ({.val {by}}) do not uniquely identify the dataset ({.val {df_name}})")
+  }
+
+  ## 6. Convert factors to characters
   if (isTRUE(factor_to_char)){
     dt <- dt |>
       collapse::fmutate(across(is.factor, as.character))

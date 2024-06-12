@@ -1,3 +1,4 @@
+# Workhorse function
 #' myrror main function
 #'
 #' @param dfx a non-empty data.frame
@@ -94,20 +95,17 @@ myrror <- function(dfx,
   # Was data sorted by the same variable?
 
 
-  sorting_dfx <- is_dataframe_sorted_by(original_dfx, set_by$by.x)
-  sorting_dfy <- is_dataframe_sorted_by(original_dfy, set_by$by.y)
-
-
-  common_vars <- intersect(sorting_dfx[[2]], sorting_dfy[[2]])
-  is_common_sorted = !length(common_vars) == 0
+  # sorting_dfx <- is_dataframe_sorted_by(original_dfx, set_by$by.x)
+  # sorting_dfy <- is_dataframe_sorted_by(original_dfy, set_by$by.y)
+  #
+  #
+  # common_vars <- intersect(sorting_dfx[[2]], sorting_dfy[[2]])
+  # is_common_sorted = !length(common_vars) == 0
 
   ## Store
   datasets_report <- list()
   datasets_report$dfx_char <- dfx_char
   datasets_report$dfy_char <- dfy_char
-  datasets_report$sorting_dfx <- sorting_dfx
-  datasets_report$sorting_dfy <- sorting_dfy
-  datasets_report$is_common_sorted <- is_common_sorted
 
 
   # 5. Prepare Dataset for Join ----
@@ -233,7 +231,7 @@ myrror <- function(dfx,
   )
 
   # Set-up structure of 'myrror_object'
-  structure(output, class = "myrror_object")
+  structure(output, class = "myrror")
 
 }
 
@@ -251,8 +249,9 @@ print.myrror_object <- function(x, ...)
                    nrow = c(x$datasets_report$dfx_char$nrow, x$datasets_report$dfy_char$nrow),
                    ncol = c(x$datasets_report$dfx_char$ncol, x$datasets_report$dfy_char$ncol),
                    set_by = c(paste0(x$set_by.x, collapse = ", "), paste0(x$set_by.x, collapse = ", ")),
-                   sorting = c(paste(x$datasets_report$sorting_dfx[[1]], collapse = ", "),
-                               paste(x$datasets_report$sorting_dfy[[1]], collapse = ", ")))),
+                   # sorting = c(paste(x$datasets_report$sorting_dfx[[1]], collapse = ", "),
+                   #             paste(x$datasets_report$sorting_dfy[[1]], collapse = ", "))
+                   )),
         format = "simple", row.names = FALSE, align = 'l')
   cat("\n")
   cli::cli_h2("Variables Comparison")
