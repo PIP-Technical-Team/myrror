@@ -50,10 +50,7 @@ create_myrror_object <- function(dfx,
   #set_by$by.x
   #set_by$by.y
 
-  # DATASET REPORT ----
-  # 4. Original Dataset Characteristics ----
-  ## 4.1 Characteristics ----
-
+  # 4. Datasets characteristics ----
   dfx_char <- list(
     nrow = nrow(original_dfx),
     ncol = ncol(original_dfx)
@@ -69,7 +66,7 @@ create_myrror_object <- function(dfx,
   datasets_report$dfx_char <- dfx_char
   datasets_report$dfy_char <- dfy_char
 
-  # 5. Prepare Dataset for Join ----
+  # 5. Prepare Datasets for Join ----
   # - make into data.table.
   # - make into valid column names.
   # - check that by variable are in the colnames of the given dataset.
@@ -93,12 +90,11 @@ create_myrror_object <- function(dfx,
     stop("by.y is part of the non-index columns of dfx.")
   }
 
-  # MERGED DATA REPORT ----
   # 5. Merge ----
   # - use collapse to merge and keep matching and non-matching observations.
 
-  ## Merge using Join
-  merged_data <- joyn(prepared_dfx,
+  ## Merge using Joyn
+  merged_data <- joyn:::joyn(prepared_dfx,
                       prepared_dfy,
                       by = stats::setNames(set_by$by.x, set_by$by.y),
                       match_type = c("1:1"),
@@ -112,7 +108,6 @@ create_myrror_object <- function(dfx,
   merged_data_report <- list()
 
   # 6. Get matched and non-matched ----
-  ## Subset using join column
   matched_data <- merged_data |> fsubset(.joyn == 'x & y')
   unmatched_data <- merged_data |> fsubset(.joyn != 'x & y')
 
@@ -120,13 +115,12 @@ create_myrror_object <- function(dfx,
   merged_data_report$matched_data <- matched_data
   merged_data_report$unmatched_data <- unmatched_data
 
-  # 7. Prepare output structure for 'myrror_object' ----
+  # 7. Set-up output structure ----
+  ## GC Note: this is a draft, we might reduce the number of items stored.
   output <- list(
     original_call = original_call,
     name_dfx = dfx_name,
     name_dfy = dfy_name,
-    dfx = original_dfx,
-    dfy = original_dfy,
     prepared_dfy = prepared_dfy,
     prepared_dfx = prepared_dfx,
     original_by.x = by.x,
@@ -137,7 +131,8 @@ create_myrror_object <- function(dfx,
     merged_data_report = merged_data_report
   )
 
-  # Set-up structure of 'myrror_object'
-  structure(output, class = "myrror_object_new")
+  # 8. Return myrror object ----
+  structure(output,
+            class = "myrror")
 
 }
