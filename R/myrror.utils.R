@@ -132,16 +132,17 @@ apply_tolerance <- function(names,
 
 
 # 3.Prepare dataset for join  ----
-#' Prepares dataset for join
+#' Prepares dataset for join, internal function.
 #' @param df data.frame or data.table
 #' @param by character vector
 #' @param factor_to_char logical
 #' @export
 #' @examples
-#' prepare_df(iris_var1, by = NULL) # adds "rn" variable
+#' dataset <- data.frame(a = 1:10, b = letters[1:10])
+#' prepare_df(dataset, by = "a")
 #'
 prepare_df <- function(df,
-                       by,
+                       by = NULL,
                        factor_to_char = TRUE) {
 
   ## 1. Check that "rn" is not in the colnames
@@ -188,7 +189,7 @@ prepare_df <- function(df,
   df_name <- deparse(substitute(df))
 
   ## 5. Check that the keys provided identify the dataset correctly
-  if (isFALSE(joyn:::is_id(dt, by, verbose = FALSE))) {
+  if (isFALSE(joyn::is_id(dt, by, verbose = FALSE))) {
     cli::cli_abort("The by keys provided ({.val {by}}) do not uniquely identify the dataset ({.val {df_name}})")
   }
 

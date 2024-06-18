@@ -19,7 +19,7 @@ myrror <- function(dfx,
                    by = NULL,
                    by.x = NULL,
                    by.y = NULL,
-                   #tolerance = NULL, POSTPONED
+                   compare_type = TRUE,
                    factor_to_char = TRUE) {
 
  # 1. Create myrror object
@@ -30,14 +30,21 @@ myrror <- function(dfx,
                                         by.y = by.y,
                                         factor_to_char = factor_to_char)
 
-  # 2. Compare datasets
-  # Example: comparison <- compare_datasets(myrror_object)
+  # 2. Compare datasets ----
+  if (compare_type) {
+    ct <- compare_type(myrror_object = myrror_object,
+                       output = "myrror")
+  } else {
+    ct <- list()
+  }
+
 
   # 3. Return comparison
-  # return(comparison)
+  output <- list(
+    ct = ct
+  )
 
-  return(myrror_object)
-
+  return(ct)
 
 }
 
