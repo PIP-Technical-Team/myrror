@@ -136,6 +136,8 @@ apply_tolerance <- function(names,
 #' @param df data.frame or data.table
 #' @param by character vector
 #' @param factor_to_char logical
+#'
+#' @import collapse
 #' @export
 #' @examples
 #' dataset <- data.frame(a = 1:10, b = letters[1:10])
@@ -196,7 +198,7 @@ prepare_df <- function(df,
   ## 6. Convert factors to characters
   if (isTRUE(factor_to_char)){
     dt <- dt |>
-      collapse::fmutate(across(is.factor, as.character))
+      collapse::fmutate(acr(is.factor, as.character))
   }
 
   return(dt)
@@ -285,14 +287,24 @@ is_dataframe_sorted_by <- function(df,
 
 # 4. Variable comparison utils ----
 ## 4.2 Process col pairs ----
-process_fselect_col_pairs <- function(df,
-                                      suffix_x = ".x",
-                                      suffix_y = ".y") {
+#' Title
+#'
+#' @param merged_data joined prepared_dfx and prepared_dfy
+#' @param suffix_x
+#' @param suffix_y
+#'
+#' @return paired_columns
+#'
+#'
+#' @examples
+pair_columns <- function(merged_data,
+                         suffix_x = ".x",
+                         suffix_y = ".y") {
 
   # Clean up the column names from the suffix
   # Get suffixes
-  cols_x <- names(df)[grepl(suffix_x, names(df))]
-  cols_y <- names(df)[grepl(suffix_y, names(df))]
+  cols_x <- names(merged_data)[grepl(suffix_x, names(merged_data))]
+  cols_y <- names(merged_data)[grepl(suffix_y, names(merged_data))]
 
   # Get names without suffix
   base_names_x <- sub(suffix_x, "", cols_x)
@@ -301,24 +313,19 @@ process_fselect_col_pairs <- function(df,
   # Get common base names
   common_base_names <- intersect(base_names_x, base_names_y)
 
-  # Pair the columns
-  paired_columns <- Map(function(x, y) c(x, y),
-                        paste0(common_base_names, suffix_x),
-                        paste0(common_base_names, suffix_y))
+  # Pair them up
+  pairs <- data.table(
+    col_x = paste0(common_base_names, suffix_x),
+    col_y = paste0(common_base_names, suffix_y)
+  )
+  return(pairs)
 
-  comparisons <- lapply(paired_columns, function(cols) {
-    col_x <- fselect(df, cols[1])
-    col_y <- fselect(df, cols[2])
-    idx_x <- fselect(df, "row_index.x")
-    idx_y <- fselect(df, "row_index.y")
-
-    compare_column_values(col_x[[1]], col_y[[1]], idx_x[[1]], idx_y[[1]])
-  })
-
-  names(comparisons) <- common_base_names
-
-  return(comparisons)
 }
+
+
+
+
+
 
 
 ## 4.3 Compare col values ----
