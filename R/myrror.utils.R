@@ -297,28 +297,39 @@ is_dataframe_sorted_by <- function(df,
 #'
 #'
 #' @examples
-pair_columns <- function(merged_data,
+pair_columns <- function(merged_data_report,
                          suffix_x = ".x",
                          suffix_y = ".y") {
 
   # Clean up the column names from the suffix
   # Get suffixes
-  cols_x <- names(merged_data)[grepl(suffix_x, names(merged_data))]
-  cols_y <- names(merged_data)[grepl(suffix_y, names(merged_data))]
+  cols_x <- names(merged_data_report$matched_data)[grepl(suffix_x, names(merged_data_report$matched_data), fixed = TRUE)]
+  cols_y <- names(merged_data_report$matched_data)[grepl(suffix_y, names(merged_data_report$matched_data), fixed = TRUE)]
 
   # Get names without suffix
-  base_names_x <- sub(suffix_x, "", cols_x)
-  base_names_y <- sub(suffix_y, "", cols_y)
+  base_names_x <- gsub(suffix_x, "", cols_x, fixed = TRUE)
+  base_names_y <- gsub(suffix_y, "", cols_y, fixed = TRUE)
+
 
   # Get common base names
-  common_base_names <- intersect(base_names_x, base_names_y)
+  common_base_names <- setdiff(intersect(base_names_x, base_names_y), "row_index")
 
   # Pair them up
   pairs <- data.table(
     col_x = paste0(common_base_names, suffix_x),
     col_y = paste0(common_base_names, suffix_y)
   )
-  return(pairs)
+
+  # Identify unmatched columns
+
+  nonshared_cols_dfx <- setdiff(c(merged_data_report$colnames_dfx), c("row_index", "rn", base_names_x))
+  nonshared_cols_dfy <- setdiff(c(merged_data_report$colnames_dfy), c("row_index", "rn", base_names_y))
+
+
+  # Return both pairs and unmatched columns in a list or separately as needed
+  list(pairs = pairs,
+       nonshared_cols_dfx = nonshared_cols_dfx,
+       nonshared_cols_dfy = nonshared_cols_dfy)
 
 }
 

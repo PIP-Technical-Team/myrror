@@ -31,20 +31,19 @@ compare_type <- function(dfx = NULL,
   }
 
   # 4. Pair columns ----
-  matched_data <- myrror_object$merged_data$matched_data
+  merged_data_report <- myrror_object$merged_data_report
 
-  pairs <- pair_columns(matched_data)
-  print(pairs)
+  pairs <- pair_columns(merged_data_report)
 
   # 5. Compare types ----
-  results <- lapply(seq_len(nrow(pairs)), function(i) {
-    row <- pairs[i, ]
+  results <- lapply(seq_len(nrow(pairs$pairs)), function(i) {
+    row <- pairs$pairs[i, ]
     list(
       column_x = row$col_x,
       column_y = row$col_y,
-      class_x = class(matched_data[[row$col_x]]),
-      class_y = class(matched_data[[row$col_y]]),
-      same_class = class(matched_data[[row$col_x]]) == class(matched_data[[row$col_y]])
+      class_x = class(merged_data_report$matched_data[[row$col_x]]),
+      class_y = class(merged_data_report$matched_data[[row$col_y]]),
+      same_class = class(merged_data_report$matched_data[[row$col_x]]) == class(merged_data_report$matched_data[[row$col_y]])
     )
   })
 
@@ -57,7 +56,7 @@ compare_type <- function(dfx = NULL,
   # 2. Output ----
   if (output == "compare") {
 
-    shared_cols_n <- nrow(pairs)
+    shared_cols_n <- nrow(pairs$pairs)
     nonshared_dfx_cols_n <- myrror_object$datasets_report$dfx_char$ncol - shared_cols_n
     nonshared_dfy_cols_n <- myrror_object$datasets_report$dfy_char$ncol - shared_cols_n
     name_dfx <- myrror_object$name_dfx
@@ -68,12 +67,13 @@ compare_type <- function(dfx = NULL,
     cli::cli_alert_success("Total shared columns: {shared_cols_n}")
     cli::cli_alert_warning("Non-shared columns in {name_dfx}: {nonshared_dfx_cols_n}")
     cli::cli_alert_warning("Non-shared columns in {name_dfy}: {nonshared_dfy_cols_n}")
-    cli::cli_h1("Shared Variables Class Comparison")
+    cli::cli_h1("Shared Columns Class Comparison")
 
-    return(results_dt)
+    print(results_dt)
 
-    cli::cli_h1("Non-Shared Variables")
-
+    cli::cli_h1("Non-Shared Columns")
+    cli::cli_text("Columns only in {name_dfx}: {pairs$nonshared_cols_dfx}")
+    cli::cli_text("Columns only in {name_dfy}: {pairs$nonshared_cols_dfy}")
 
 
   } else {

@@ -114,6 +114,8 @@ create_myrror_object <- function(dfx,
   ## Store
   merged_data_report$matched_data <- matched_data
   merged_data_report$unmatched_data <- unmatched_data
+  merged_data_report$colnames_dfx <- colnames(prepared_dfx)
+  merged_data_report$colnames_dfy <- colnames(prepared_dfy)
 
   # 7. Set-up output structure ----
   ## GC Note: this is a draft, we might reduce the number of items stored.
