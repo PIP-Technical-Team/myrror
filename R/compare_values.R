@@ -1,13 +1,21 @@
 # compare_values ---------------------------------------------------------------
 compare_values <- function(myrror_object,
                             pairs) {
+  pairs_list <- lapply(seq_len(nrow(pairs$pairs)), function(i) {
+    c(pairs$pairs$col_x[i], pairs$pairs$col_y[i])
+  })
 
+  value_to_na <- get_value_to_na(myrror_object$merged_data_report, pairs_list)
+  na_to_value <- get_na_to_value(myrror_object$merged_data_report, pairs_list)
+  change_in_value <- get_change_in_value(myrror_object$merged_data_report, pairs_list)
 
+  all_changes <- mapply(function(x, y, z) {
+    rbind(x, y, z)
+  }, value_to_na, na_to_value, change_in_value, SIMPLIFY = FALSE)
 
+  return(all_changes)
 }
 
-compare_values(myrror_object,
-              pairs = pairs)
 
 
 # compare_values utils ---------------------------------------------------------
@@ -73,6 +81,9 @@ get_change_in_value <- function(matched_data,
   return(result)
 
 }
+
+
+
 
 
 
