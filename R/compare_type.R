@@ -56,11 +56,14 @@ compare_type <- function(dfx = NULL,
   # 2. Output ----
   if (output == "compare") {
 
+    # maybe this we need to move to the core of the function (before the if statement)
+    # also we need to figure out how this is printed out only when object printed?
     shared_cols_n <- nrow(pairs$pairs)
     nonshared_dfx_cols_n <- myrror_object$datasets_report$dfx_char$ncol - shared_cols_n
     nonshared_dfy_cols_n <- myrror_object$datasets_report$dfy_char$ncol - shared_cols_n
     name_dfx <- myrror_object$name_dfx
     name_dfy <- myrror_object$name_dfy
+
 
 
     cli::cli_h2("Note: comparison is done for shared columns.")

@@ -336,21 +336,18 @@ pair_columns <- function(merged_data_report,
 
 
 
-
-
-
 ## 4.3 Compare col values ----
-compare_column_values <- function(col_x, col_y,
-                                  idx_x, idx_y) {
+compare_column_values <- function(col_x,
+                                  col_y,
+                                  idx_x,
+                                  idx_y) {
 
   result <- list()
 
-  # 4.1 Is it the same type?
-  result$same_class <- class(col_x) == class(col_y)
-
   # 4.2. N of new observations in given variable: in x but not in y (deleted), in y but not in x (added).
-  result$deleted_from_x = length(setdiff(col_x, col_y))
-  result$added_to_y = length(setdiff(col_y, col_x))
+  # result$deleted_from_x = length(setdiff(col_x, col_y))
+  # result$added_to_y = length(setdiff(col_y, col_x))
+  # redundant as we can already get this from the unmatched data.
 
   # 4.3 Different value: NA to value, value != value, value to NA.
   na_to_value_indices = which(is.na(col_x) & !is.na(col_y))
