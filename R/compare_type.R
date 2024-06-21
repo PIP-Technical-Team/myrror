@@ -30,12 +30,12 @@ compare_type <- function(dfx = NULL,
 
   }
 
-  # 4. Pair columns ----
+  # 3. Pair columns ----
   merged_data_report <- myrror_object$merged_data_report
 
   pairs <- pair_columns(merged_data_report)
 
-  # 5. Compare types ----
+  # 4. Compare types ----
   results <- lapply(seq_len(nrow(pairs$pairs)), function(i) {
     row <- pairs$pairs[i, ]
     list(
@@ -63,7 +63,6 @@ compare_type <- function(dfx = NULL,
     nonshared_dfy_cols_n <- myrror_object$datasets_report$dfy_char$ncol - shared_cols_n
     name_dfx <- myrror_object$name_dfx
     name_dfy <- myrror_object$name_dfy
-
 
 
     cli::cli_h2("Note: comparison is done for shared columns.")
