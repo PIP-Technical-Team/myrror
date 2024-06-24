@@ -13,6 +13,7 @@
 compare_type <- function(dfx = NULL,
                          dfy = NULL,
                          myrror_object = NULL,
+                         verbose = TRUE,
                          output = c("compare", "myrror")) {
   # 1. Arguments check ----
   output <- match.arg(output)
@@ -30,28 +31,10 @@ compare_type <- function(dfx = NULL,
 
   }
 
-  # 3. Pair columns ----
-  merged_data_report <- myrror_object$merged_data_report
+  # 3. Run compare_type_int() ----
+  myrror_object$compare_type <- compare_type_int(myrror_object)
 
-  pairs <- pair_columns(merged_data_report)
 
-  # 4. Compare types ----
-  results <- lapply(seq_len(nrow(pairs$pairs)), function(i) {
-    row <- pairs$pairs[i, ]
-    list(
-      column_x = row$col_x,
-      column_y = row$col_y,
-      class_x = class(merged_data_report$matched_data[[row$col_x]]),
-      class_y = class(merged_data_report$matched_data[[row$col_y]]),
-      same_class = class(merged_data_report$matched_data[[row$col_x]]) == class(merged_data_report$matched_data[[row$col_y]])
-    )
-  })
-
-  results_dt <- rbindlist(results)
-
-  results_dt <- results_dt |>
-    fmutate(variable = gsub(".x", "", column_x))|>
-    fselect(variable, class_x, class_y, same_class)
 
   # 2. Output ----
   if (output == "compare") {
@@ -81,5 +64,33 @@ compare_type <- function(dfx = NULL,
   } else {
     return(results_dt)
   }
+
+}
+
+
+compare_type_int <- function(myrror_object = NULL){
+
+  # 3. Pair columns ----
+  merged_data_report <- myrror_object$merged_data_report
+
+  pairs <- pair_columns(merged_data_report)
+
+  # 4. Compare types ----
+  results <- lapply(seq_len(nrow(pairs$pairs)), function(i) {
+    row <- pairs$pairs[i, ]
+    list(
+      column_x = row$col_x,
+      column_y = row$col_y,
+      class_x = class(merged_data_report$matched_data[[row$col_x]]),
+      class_y = class(merged_data_report$matched_data[[row$col_y]]),
+      same_class = class(merged_data_report$matched_data[[row$col_x]]) == class(merged_data_report$matched_data[[row$col_y]])
+    )
+  })
+
+  results_dt <- rbindlist(results)
+
+  results_dt <- results_dt |>
+    fmutate(variable = gsub(".x", "", column_x))|>
+    fselect(variable, class_x, class_y, same_class)
 
 }

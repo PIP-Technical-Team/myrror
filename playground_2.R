@@ -15,6 +15,7 @@ compare_type <- function(x       = NULL,
   if (!is.null(mo)) {
     mo <- create_myrror_object(x,y)
   }
+
   mo <- compare_type_int(mo) # mo$compare_type
 
   if (verbose) {
