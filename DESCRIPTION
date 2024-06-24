@@ -13,7 +13,7 @@ Imports:
     data.table (>= 1.15.4),
     collapse,
     stats,
-    knitr
+    joyn
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

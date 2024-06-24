@@ -2,9 +2,9 @@
 % Please edit documentation in R/myrror.utils.R
 \name{prepare_df}
 \alias{prepare_df}
-\title{Prepares dataset for join}
+\title{Prepares dataset for join, internal function.}
 \usage{
-prepare_df(df, by, factor_to_char = TRUE)
+prepare_df(df, by = NULL, factor_to_char = TRUE)
 }
 \arguments{
 \item{df}{data.frame or data.table}
@@ -14,9 +14,10 @@ prepare_df(df, by, factor_to_char = TRUE)
 \item{factor_to_char}{logical}
 }
 \description{
-Prepares dataset for join
+Prepares dataset for join, internal function.
 }
 \examples{
-prepare_df(iris_var1, by = NULL) # adds "rn" variable
+dataset <- data.frame(a = 1:10, b = letters[1:10])
+prepare_df(dataset, by = "a")
 
 }

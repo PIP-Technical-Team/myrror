@@ -175,7 +175,17 @@ test_that("Function detects data frame sorted by another column", {
 })
 
 
+# pair columns() ----
+test_that("pair_columns returns correct pairs", {
+  test_report <- create_myrror_object(iris, iris_var3)
+  result <- pair_columns(test_report$merged_data_report)
 
+  expect_equal(nrow(result$pairs), 1)
+  expect_equal(result$pairs$col_x, "Species.x")
+  expect_equal(result$nonshared_cols_dfx, c("Sepal.Length", "Sepal.Width",
+                                            "Petal.Length", "Petal.Width"))
+
+})
 
 
 

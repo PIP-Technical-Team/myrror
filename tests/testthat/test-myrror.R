@@ -1,32 +1,32 @@
 
-# First batch of tests for myrror
+# First batch of tests for create_myrror_object
 
 # 1 Test that the function stops for NULL inputs
 test_that("function stops for NULL inputs", {
-  expect_error(myrror(NULL, iris), "cannot be NULL")
-  expect_error(myrror(iris, NULL), "cannot be NULL")
+  expect_error(create_myrror_object(NULL, iris), "cannot be NULL")
+  expect_error(create_myrror_object(iris, NULL), "cannot be NULL")
 })
 
 # 2 Test that the function stops for empty data frames
 test_that("function stops for empty data frames", {
   empty_df <- data.frame()
-  expect_error(myrror(empty_df, iris), "cannot be empty")
-  expect_error(myrror(iris, empty_df), "cannot be empty")
+  expect_error(create_myrror_object(empty_df, iris), "cannot be empty")
+  expect_error(create_myrror_object(iris, empty_df), "cannot be empty")
 })
 
 # 3 Test handling of non-data.frame inputs that are lists
 test_that("function converts list inputs to data frames", {
   list_input <- list(a = 1:10, b = letters[1:10])
-  result <- myrror(list_input, list_input)
-  expect_true(is.data.frame(result$processed_dfx))
-  expect_true(is.data.frame(result$processed_dfy))
+  result <- create_myrror_object(list_input, list_input)
+  expect_true(is.data.frame(result$prepared_dfx))
+  expect_true(is.data.frame(result$prepared_dfy))
 })
 
 # 4 Test by, by.x, by.y validation
 test_that("function stops for invalid by, by.x, by.y inputs", {
-  expect_error(myrror(iris, iris, by = 123), "must be a non-empty character vector")
-  expect_error(myrror(iris, iris, by.x = 123), "must be a non-empty character vector")
-  expect_error(myrror(iris, iris, by.y = 123), "must be a non-empty character vector")
+  expect_error(create_myrror_object(iris, iris, by = 123), "must be a non-empty character vector")
+  expect_error(create_myrror_object(iris, iris, by.x = 123), "must be a non-empty character vector")
+  expect_error(create_myrror_object(iris, iris, by.y = 123), "must be a non-empty character vector")
 })
 
 # 5 series of by tests
@@ -55,7 +55,7 @@ problematic_list <- list(
 # Define the test
 test_that("Test with a list that cannot be converted to a data frame", {
   expect_error(
-    myrror(problematic_list, df2),  # df2 is a normal data frame for comparison
+    create_myrror_object(problematic_list, df2),  # df2 is a normal data frame for comparison
     "cannot be converted to a data frame"
   )
 })

@@ -84,7 +84,9 @@ check_set_by <- function(by = NULL,
   }
 
   # Return the possibly modified by variables
-  return(list(by = by, by.x = by.x, by.y = by.y))
+  return(list(by = by,
+              by.x = by.x,
+              by.y = by.y))
 }
 
 
@@ -130,16 +132,19 @@ apply_tolerance <- function(names,
 
 
 # 3.Prepare dataset for join  ----
-#' Prepares dataset for join
+#' Prepares dataset for join, internal function.
 #' @param df data.frame or data.table
 #' @param by character vector
 #' @param factor_to_char logical
+#'
+#' @import collapse
 #' @export
 #' @examples
-#' prepare_df(iris_var1, by = NULL) # adds "rn" variable
+#' dataset <- data.frame(a = 1:10, b = letters[1:10])
+#' prepare_df(dataset, by = "a")
 #'
 prepare_df <- function(df,
-                       by,
+                       by = NULL,
                        factor_to_char = TRUE) {
 
   ## 1. Check that "rn" is not in the colnames
@@ -183,10 +188,17 @@ prepare_df <- function(df,
     stop("Specified by keys are not all present in the column names.")
   }
 
-  ## 5. Convert factors to characters
+  df_name <- deparse(substitute(df))
+
+  ## 5. Check that the keys provided identify the dataset correctly
+  if (isFALSE(joyn::is_id(dt, by, verbose = FALSE))) {
+    cli::cli_abort("The by keys provided ({.val {by}}) do not uniquely identify the dataset ({.val {df_name}})")
+  }
+
+  ## 6. Convert factors to characters
   if (isTRUE(factor_to_char)){
     dt <- dt |>
-      collapse::fmutate(across(is.factor, as.character))
+      collapse::fmutate(acr(is.factor, as.character))
   }
 
   return(dt)
@@ -275,54 +287,67 @@ is_dataframe_sorted_by <- function(df,
 
 # 4. Variable comparison utils ----
 ## 4.2 Process col pairs ----
-process_fselect_col_pairs <- function(df,
-                                      suffix_x = ".x",
-                                      suffix_y = ".y") {
+#' Title
+#'
+#' @param merged_data joined prepared_dfx and prepared_dfy
+#' @param suffix_x
+#' @param suffix_y
+#'
+#' @return paired_columns
+#'
+#'
+#' @examples
+pair_columns <- function(merged_data_report,
+                         suffix_x = ".x",
+                         suffix_y = ".y") {
 
   # Clean up the column names from the suffix
   # Get suffixes
-  cols_x <- names(df)[grepl(suffix_x, names(df))]
-  cols_y <- names(df)[grepl(suffix_y, names(df))]
+  cols_x <- names(merged_data_report$matched_data)[grepl(suffix_x, names(merged_data_report$matched_data), fixed = TRUE)]
+  cols_y <- names(merged_data_report$matched_data)[grepl(suffix_y, names(merged_data_report$matched_data), fixed = TRUE)]
 
   # Get names without suffix
-  base_names_x <- sub(suffix_x, "", cols_x)
-  base_names_y <- sub(suffix_y, "", cols_y)
+  base_names_x <- gsub(suffix_x, "", cols_x, fixed = TRUE)
+  base_names_y <- gsub(suffix_y, "", cols_y, fixed = TRUE)
+
 
   # Get common base names
-  common_base_names <- intersect(base_names_x, base_names_y)
+  common_base_names <- setdiff(intersect(base_names_x, base_names_y), "row_index")
 
-  # Pair the columns
-  paired_columns <- Map(function(x, y) c(x, y),
-                        paste0(common_base_names, suffix_x),
-                        paste0(common_base_names, suffix_y))
+  # Pair them up
+  pairs <- data.table(
+    col_x = paste0(common_base_names, suffix_x),
+    col_y = paste0(common_base_names, suffix_y)
+  )
 
-  comparisons <- lapply(paired_columns, function(cols) {
-    col_x <- fselect(df, cols[1])
-    col_y <- fselect(df, cols[2])
-    idx_x <- fselect(df, "row_index.x")
-    idx_y <- fselect(df, "row_index.y")
+  # Identify unmatched columns
 
-    compare_column_values(col_x[[1]], col_y[[1]], idx_x[[1]], idx_y[[1]])
-  })
+  nonshared_cols_dfx <- setdiff(c(merged_data_report$colnames_dfx), c("row_index", "rn", base_names_x))
+  nonshared_cols_dfy <- setdiff(c(merged_data_report$colnames_dfy), c("row_index", "rn", base_names_y))
 
-  names(comparisons) <- common_base_names
 
-  return(comparisons)
+  # Return both pairs and unmatched columns in a list or separately as needed
+  list(pairs = pairs,
+       nonshared_cols_dfx = nonshared_cols_dfx,
+       nonshared_cols_dfy = nonshared_cols_dfy)
+
 }
 
 
+
+
 ## 4.3 Compare col values ----
-compare_column_values <- function(col_x, col_y,
-                                  idx_x, idx_y) {
+compare_column_values <- function(col_x,
+                                  col_y,
+                                  idx_x,
+                                  idx_y) {
 
   result <- list()
 
-  # 4.1 Is it the same type?
-  result$same_class <- class(col_x) == class(col_y)
-
   # 4.2. N of new observations in given variable: in x but not in y (deleted), in y but not in x (added).
-  result$deleted_from_x = length(setdiff(col_x, col_y))
-  result$added_to_y = length(setdiff(col_y, col_x))
+  # result$deleted_from_x = length(setdiff(col_x, col_y))
+  # result$added_to_y = length(setdiff(col_y, col_x))
+  # redundant as we can already get this from the unmatched data.
 
   # 4.3 Different value: NA to value, value != value, value to NA.
   na_to_value_indices = which(is.na(col_x) & !is.na(col_y))
