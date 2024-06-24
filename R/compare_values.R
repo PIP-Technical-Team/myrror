@@ -76,6 +76,7 @@ compare_values <- function(dfx = NULL,
     cli::cli_alert_warning("Non-shared columns in {name_dfx}: {nonshared_dfx_cols_n}")
     cli::cli_alert_warning("Non-shared columns in {name_dfy}: {nonshared_dfy_cols_n}")
     cli::cli_h1("Shared Columns Value Comparison")
+
     print(all_changes)
 
   } else {
