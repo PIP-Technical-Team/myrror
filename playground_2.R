@@ -23,10 +23,11 @@ compare_type <- function(x       = NULL,
     mo$print$compare_type <- TRUE
     print(mo)
   }
+
   if (output == "myrror_object") {
     return(invisible(mo))
   } else if (output == "simple") {
-    return(invisible(mo$compare_type)) # think of classes...
+    return(invisible(mo$compare_type))
   }
 
 }
