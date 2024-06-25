@@ -99,12 +99,12 @@ compare_type <- function(dfx = NULL,
 #' compare_type_object <- compare_type_int(mo)
 compare_type_int <- function(myrror_object = NULL){
 
-  # 3. Pair columns ----
+  # 1. Pair columns ----
   merged_data_report <- myrror_object$merged_data_report
   pairs <- myrror_object$pairs
 
 
-  # 4. Compare types ----
+  # 2. Compare types ----
   compare_type <- lapply(seq_len(nrow(pairs$pairs)), function(i) {
     row <- pairs$pairs[i, ]
     list(
@@ -122,6 +122,7 @@ compare_type_int <- function(myrror_object = NULL){
     fmutate(variable = gsub(".x", "", column_x))|>
     fselect(variable, class_x, class_y, same_class)
 
+  # 3. Resturn results ----
   return(compare_type)
 
 }
