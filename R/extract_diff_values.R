@@ -11,7 +11,87 @@
 # 2. Another pivoted "complete" data.table (all variables with id) with all observations
 # for which variables are different: the user can then select the variables they want to keep.
 
-extract_diff_value_int <- function(myrror_object = NULL) {
+
+
+
+#' Extract Different Values - User-facing
+#' Function to extract rows with different values between two dataframes.
+#'
+#'
+#' @param dfx
+#' @param dfy
+#' @param myrror_object
+#' @param verbose
+#' @param output
+#'
+#' @return list, if verbose == TRUE, it will print the object.
+#' @export
+#'
+#' @examples
+#'
+#' extract_diff_values(iris, iris_var1)
+extract_diff_values <- function(dfx = NULL,
+                                dfy = NULL,
+                                myrror_object = NULL,
+                                verbose = TRUE, # so that it actually prints the object.
+                                output = c("myrror_object", "simple")) {
+
+  # 1. Arguments check ----
+  output <- match.arg(output)
+
+  # 2. Create object if not supplied ----
+  if (is.null(myrror_object)) {
+    if (is.null(dfx) || is.null(dfy)) {
+      stop("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied.")
+    }
+
+    myrror_object <- create_myrror_object(dfx = dfx, dfy = dfy)
+
+    ## Re-assign names from within this call:
+    myrror_object$name_dfx <- deparse(substitute(dfx))
+    myrror_object$name_dfy <- deparse(substitute(dfy))
+
+  }
+
+  # 3. Run extract_values_int() ----
+  myrror_object$extract_diff_values <- extract_diff_values_int(myrror_object)
+
+  # 4. Output ----
+  # If verbose true -> print myrror_object using print method with extract_diff_values == TRUE:
+  if (verbose) {
+    myrror_object$print$extract_diff_values <- TRUE # rest is FALSE by default
+    print(myrror_object)
+  }
+
+  # And return an invisible copy of the object
+  if (output == "myrror_object") {
+
+    return(invisible(myrror_object))
+
+  } else if (output == "simple") {
+
+    return(invisible(myrror_object$extract_diff_values))
+
+  }
+}
+
+
+
+
+
+#' Extract Different Values - Internal
+#'
+#' @param myrror_object
+#'
+#' @return list with two elements:
+#' 1. diff_list
+#' 2. diff_table
+#'
+#'
+#' @examples
+#' extract_diff_value_int(myrror_object = myrror_object)
+#'
+extract_diff_values_int <- function(myrror_object = NULL) {
 
   # 1. Get indexes and data ----
   compare_values_object <- compare_values_int(myrror_object = myrror_object)
@@ -35,7 +115,7 @@ extract_diff_value_int <- function(myrror_object = NULL) {
 
   })
 
-  non_empty_diff_list <- purrr::keep(processed_list, ~ nrow(.x) > 0)
+  non_empty_diff_list <- purrr::keep(diff_list, ~ nrow(.x) > 0)
 
   # 3. Table option ----
   diff_table <- rowbind(compare_values_object, idcol = "variable") |>
@@ -55,6 +135,8 @@ extract_diff_value_int <- function(myrror_object = NULL) {
   return(result)
 
 }
+
+
 
 
 
