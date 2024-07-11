@@ -13,12 +13,50 @@
 
 extract_diff_value_int <- function(myrror_object = NULL) {
 
-  # 1. Get indexes ----
-  compare_values_output <- compare_values_int(myrror_object = myrror_object)
+  # 1. Get indexes and data ----
+  compare_values_object <- compare_values_int(myrror_object = myrror_object)
+  matched_data <- myrror_object$merged_data_report$matched_data
 
-  # Return
-  return(compare_values_output)
+
+  # 2. List option -----
+  diff_list <- purrr::imap(compare_values_object, function(df, variable) {
+    column_x <- paste0(variable, ".x")
+    column_y <- paste0(variable, ".y")
+
+    df %>%
+      dplyr::filter(count > 0) |>
+      dplyr::select(-count) |>
+      tidyr::unnest(cols = c(indexes)) %>%
+      dplyr::mutate(indexes = as.character(indexes)) |>
+      dplyr::left_join(matched_data |>
+                         dplyr::select(rn, all_of(column_x),
+                                       all_of(column_y)),
+                       by = c("indexes" = "rn"))
+
+  })
+
+  non_empty_diff_list <- purrr::keep(processed_list, ~ nrow(.x) > 0)
+
+  # 3. Table option ----
+  diff_table <- rowbind(compare_values_object, idcol = "variable") |>
+    fsubset(count > 0) |>
+    fselect(-count)|>
+    tidyr::unnest(cols = c(indexes)) |> # is there a better version of unnest?
+    fmutate(indexes = as.character(indexes)) |>
+    dplyr::left_join(matched_data, by = c("indexes" = "rn"))
+
+
+  # 4. Store and Return ----
+  result <- list(
+    diff_list = diff_list,
+    diff_table = diff_table
+  )
+
+  return(result)
 
 }
+
+
+
 
 
