@@ -135,7 +135,12 @@ create_myrror_object <- function(dfx,
     set_by.x = set_by$by.x,
     datasets_report = datasets_report,
     merged_data_report = merged_data_report,
-    pairs = pairs
+    pairs = pairs,
+    print = list(
+      compare_type = FALSE,
+      compare_values = FALSE,
+      extract_diff_values = FALSE
+    )
   )
 
   # 8. Return myrror object ----

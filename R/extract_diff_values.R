@@ -128,7 +128,7 @@ extract_diff_values_int <- function(myrror_object = NULL) {
 
   # 4. Store and Return ----
   result <- list(
-    diff_list = diff_list,
+    diff_list = non_empty_diff_list,
     diff_table = diff_table
   )
 

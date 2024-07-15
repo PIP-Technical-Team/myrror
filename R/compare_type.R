@@ -31,7 +31,7 @@ compare_type <- function(dfx = NULL,
 
   }
 
-  # 3. Run compare_type_int() ----
+  # 3. Run compare_type_int() and update myrror_object ----
   myrror_object$compare_type <- compare_type_int(myrror_object)
 
 
@@ -41,13 +41,14 @@ compare_type <- function(dfx = NULL,
   # If verbose true -> print myrror_object using print method with compare_type == TRUE:
   if (verbose) {
     myrror_object$print$compare_type <- TRUE
-    print(myrror_object)
+    #print(myrror_object)
   }
 
-  # And return an invisible copy of the object
+  # And return an invisible copy of the object:
   if (output == "myrror_object") {
 
     return(invisible(myrror_object))
+    # and it will be printed
 
   } else if (output == "simple") {
 
