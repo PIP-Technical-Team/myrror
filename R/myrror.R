@@ -20,6 +20,8 @@ myrror <- function(dfx,
                    by.x = NULL,
                    by.y = NULL,
                    compare_type = TRUE,
+                   compare_values = TRUE,
+                   extract_diff_values = TRUE,
                    factor_to_char = TRUE) {
 
  # 1. Create myrror object
@@ -30,21 +32,26 @@ myrror <- function(dfx,
                                         by.y = by.y,
                                         factor_to_char = factor_to_char)
 
-  # 2. Compare datasets ----
+  # 2. Compare Type ----
   if (compare_type) {
-    ct <- compare_type(myrror_object = myrror_object,
-                       output = "myrror")
-  } else {
-    ct <- list()
+    myrror_object <- compare_type(myrror_object = myrror_object,
+                                  output = "silent")
   }
 
+  # 3. Compare Values ----
+  if (compare_values) {
+    myrror_object <- compare_values(myrror_object = myrror_object,
+                                    output = "silent")
+  }
 
-  # 3. Return comparison
-  output <- list(
-    ct = ct
-  )
+  # 4. Extract different values ----
+  if (extract_diff_values) {
+    myrror_object <- extract_diff_values(myrror_object = myrror_object,
+                                         output = "silent")
+  }
 
-  return(ct)
+  # 5. Return myrror_object ----
+  return(myrror_object)
 
 }
 

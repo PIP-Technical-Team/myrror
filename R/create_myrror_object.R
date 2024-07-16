@@ -9,7 +9,7 @@
 #' @param factor_to_char TRUE or FALSE, default to TRUE.
 #'
 #' @return object of class myrror_object
-#' @export
+#'
 #' @import collapse
 #'
 #' @examples
@@ -117,7 +117,11 @@ create_myrror_object <- function(dfx,
   merged_data_report$colnames_dfx <- colnames(prepared_dfx)
   merged_data_report$colnames_dfy <- colnames(prepared_dfy)
 
-  # 7. Set-up output structure ----
+  # 7. Pair columns ----
+  pairs <- pair_columns(merged_data_report)
+
+
+  # 8. Set-up output structure ----
   ## GC Note: this is a draft, we might reduce the number of items stored.
   output <- list(
     original_call = original_call,
@@ -130,11 +134,17 @@ create_myrror_object <- function(dfx,
     set_by.y = set_by$by.y,
     set_by.x = set_by$by.x,
     datasets_report = datasets_report,
-    merged_data_report = merged_data_report
+    merged_data_report = merged_data_report,
+    pairs = pairs,
+    print = list(
+      compare_type = FALSE,
+      compare_values = FALSE,
+      extract_diff_values = FALSE
+    )
   )
 
-  # 8. Return myrror object ----
-  structure(output,
-            class = "myrror")
+  # 8. Return myrror object (invisible) ----
+  return(invisible(structure(output,
+            class = "myrror")))
 
 }
