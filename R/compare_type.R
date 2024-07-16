@@ -83,7 +83,7 @@ compare_type <- function(dfx = NULL,
     # cli::cli_text("Columns only in {name_dfy}: {pairs$nonshared_cols_dfy}")
 
 
-}
+
 
 
 #' Compare type of variables, internal function.
