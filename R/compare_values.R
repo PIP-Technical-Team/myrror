@@ -89,6 +89,10 @@ compare_values_int <- function(myrror_object = NULL) {
     rbind(x, y, z)
   }, value_to_na, na_to_value, change_in_value, SIMPLIFY = FALSE)
 
+  # Filter results to exclude variables where all counts are zero
+  all_changes <- Filter(function(x) any(x$count > 0), all_changes)
+
+
   # 6. Return ----
   return(all_changes)
 
