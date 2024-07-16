@@ -9,7 +9,7 @@
 #' @param factor_to_char TRUE or FALSE, default to TRUE.
 #'
 #' @return object of class myrror_object
-#' @export
+#'
 #' @import collapse
 #'
 #' @examples
@@ -143,8 +143,8 @@ create_myrror_object <- function(dfx,
     )
   )
 
-  # 8. Return myrror object ----
-  structure(output,
-            class = "myrror")
+  # 8. Return myrror object (invisible) ----
+  return(invisible(structure(output,
+            class = "myrror")))
 
 }

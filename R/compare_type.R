@@ -13,8 +13,7 @@
 compare_type <- function(dfx = NULL,
                          dfy = NULL,
                          myrror_object = NULL,
-                         verbose = TRUE,
-                         output = c("myrror_object", "simple")) {
+                         output = c("full", "simple", "silent")) {
   # 1. Arguments check ----
   output <- match.arg(output)
 
@@ -38,23 +37,22 @@ compare_type <- function(dfx = NULL,
 
   # 2. Output ----
 
-  # If verbose true -> print myrror_object using print method with compare_type == TRUE:
-  if (verbose) {
-    myrror_object$print$compare_type <- TRUE
-    #print(myrror_object)
-  }
+  ## Handle the output type
+  switch(output,
+         full = {
+           myrror_object$print$compare_type <- TRUE
+           return(myrror_object)
+         },
+         silent = {
+           myrror_object$print$compare_type <- TRUE
+           return(invisible(myrror_object))
+         },
+         simple = {
+           return(myrror_object$compare_type)
+         }
+  )
 
-  # And return an invisible copy of the object:
-  if (output == "myrror_object") {
-
-    return(invisible(myrror_object))
-    # and it will be printed
-
-  } else if (output == "simple") {
-
-    return(invisible(myrror_object$compare_type))
-
-  }
+}
 
 
 

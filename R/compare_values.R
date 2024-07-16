@@ -16,8 +16,7 @@
 compare_values <- function(dfx = NULL,
                            dfy = NULL,
                            myrror_object = NULL,
-                           verbose = TRUE,
-                           output = c("myrror_object", "simple")) {
+                           output = c("full", "simple", "silent")) {
 
   # 1. Arguments check ----
   output <- match.arg(output)
@@ -44,41 +43,21 @@ compare_values <- function(dfx = NULL,
 
   # 2. Output ----
 
-  # If verbose true -> print myrror_object using print method with compare_type == TRUE:
-  if (verbose) {
-    myrror_object$print$compare_values <- TRUE
-    print(myrror_object)
-  }
+  ## Handle the output type
+  switch(output,
+         full = {
+           myrror_object$print$compare_values <- TRUE
+           return(myrror_object)
+         },
+         silent = {
+           myrror_object$print$compare_values <- TRUE
+           return(invisible(myrror_object))
+         },
+         simple = {
+           return(myrror_object$compare_values)
+         }
+  )
 
-  # And return an invisible copy of the object
-  if (output == "myrror_object") {
-
-    return(invisible(myrror_object))
-
-  } else if (output == "simple") {
-
-    return(invisible(myrror_object$compare_values))
-
-  }
-
-  # Old print which needs to be moved to the print method
-  #   # GC Note: need to change here to print out the results
-  #   # maybe this we need to move to the core of the function (before the if statement)
-  #   # also we need to figure out how this is printed out only when object printed?
-  #   shared_cols_n <- nrow(pairs$pairs)
-  #   nonshared_dfx_cols_n <- myrror_object$datasets_report$dfx_char$ncol - shared_cols_n
-  #   nonshared_dfy_cols_n <- myrror_object$datasets_report$dfy_char$ncol - shared_cols_n
-  #   name_dfx <- myrror_object$name_dfx
-  #   name_dfy <- myrror_object$name_dfy
-  #
-  #
-  #   cli::cli_h2("Note: comparison is done for shared columns.")
-  #   cli::cli_alert_success("Total shared columns: {shared_cols_n}")
-  #   cli::cli_alert_warning("Non-shared columns in {name_dfx}: {nonshared_dfx_cols_n}")
-  #   cli::cli_alert_warning("Non-shared columns in {name_dfy}: {nonshared_dfy_cols_n}")
-  #   cli::cli_h1("Shared Columns Value Comparison")
-  #
-  #   print(all_changes)
 
 }
 

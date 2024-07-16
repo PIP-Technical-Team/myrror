@@ -33,8 +33,7 @@
 extract_diff_values <- function(dfx = NULL,
                                 dfy = NULL,
                                 myrror_object = NULL,
-                                verbose = TRUE, # so that it actually prints the object.
-                                output = c("myrror_object", "simple")) {
+                                output = c("full", "simple", "silent")) {
 
   # 1. Arguments check ----
   output <- match.arg(output)
@@ -57,22 +56,21 @@ extract_diff_values <- function(dfx = NULL,
   myrror_object$extract_diff_values <- extract_diff_values_int(myrror_object)
 
   # 4. Output ----
-  # If verbose true -> print myrror_object using print method with extract_diff_values == TRUE:
-  if (verbose) {
-    myrror_object$print$extract_diff_values <- TRUE # rest is FALSE by default
-    print(myrror_object)
-  }
 
-  # And return an invisible copy of the object
-  if (output == "myrror_object") {
-
-    return(invisible(myrror_object))
-
-  } else if (output == "simple") {
-
-    return(invisible(myrror_object$extract_diff_values))
-
-  }
+  ## Handle the output type
+  switch(output,
+         full = {
+           myrror_object$print$extract_diff_values <- TRUE
+           return(myrror_object)
+         },
+         silent = {
+           myrror_object$print$extract_diff_values <- TRUE
+           return(invisible(myrror_object))
+         },
+         simple = {
+           return(myrror_object$extract_diff_values)
+         }
+  )
 }
 
 

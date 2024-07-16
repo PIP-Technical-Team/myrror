@@ -35,19 +35,19 @@ myrror <- function(dfx,
   # 2. Compare Type ----
   if (compare_type) {
     myrror_object <- compare_type(myrror_object = myrror_object,
-                                  output = "myrror_object")
+                                  output = "silent")
   }
 
   # 3. Compare Values ----
   if (compare_values) {
     myrror_object <- compare_values(myrror_object = myrror_object,
-                                    output = "myrror_object")
+                                    output = "silent")
   }
 
   # 4. Extract different values ----
   if (extract_diff_values) {
     myrror_object <- extract_diff_values(myrror_object = myrror_object,
-                                         output = "myrror_object")
+                                         output = "silent")
   }
 
   # 5. Return myrror_object ----
