@@ -39,6 +39,14 @@ compare_values <- function(dfx = NULL,
   # 3. Run compare_values_int() ----
   myrror_object$compare_values <- compare_values_int(myrror_object)
 
+  # Check if results are empty and adjust accordingly
+  if(length(myrror_object$compare_values) == 0) {
+    if(output == "simple") {
+      return(NULL)  # Return NULL for "simple" if no differences are found
+    } else {
+      myrror_object$compare_values <- list(message = "No differences found between the variables.")
+    }
+  }
 
 
   # 2. Output ----
@@ -88,6 +96,7 @@ compare_values_int <- function(myrror_object = NULL) {
   all_changes <- mapply(function(x, y, z) {
     rbind(x, y, z)
   }, value_to_na, na_to_value, change_in_value, SIMPLIFY = FALSE)
+
 
   # Filter results to exclude variables where all counts are zero
   all_changes <- Filter(function(x) any(x$count > 0), all_changes)

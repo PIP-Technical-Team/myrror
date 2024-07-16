@@ -55,6 +55,15 @@ extract_diff_values <- function(dfx = NULL,
   # 3. Run extract_values_int() ----
   myrror_object$extract_diff_values <- extract_diff_values_int(myrror_object)
 
+  # Check if results are empty and adjust accordingly
+  if(length(myrror_object$extract_diff_values) == 0) {
+    if(output == "simple") {
+      return(NULL)  # Return NULL for "simple" if no differences are found
+    } else {
+      myrror_object$extract_diff_values <- list(message = "No differences found between the variables.")
+    }
+  }
+
   # 4. Output ----
 
   ## Handle the output type
@@ -95,6 +104,14 @@ extract_diff_values_int <- function(myrror_object = NULL) {
   compare_values_object <- compare_values_int(myrror_object = myrror_object)
   matched_data <- myrror_object$merged_data_report$matched_data
 
+  # Check if results are empty and adjust accordingly
+  if(length(compare_values_object) == 0) {
+
+    # Exit early with NULL
+    return(NULL)
+
+  } else {
+
 
   # 2. List option -----
   diff_list <- purrr::imap(compare_values_object, function(df, variable) {
@@ -131,6 +148,7 @@ extract_diff_values_int <- function(myrror_object = NULL) {
   )
 
   return(result)
+  }
 
 }
 
