@@ -35,15 +35,25 @@ levels(iris_var4$Species) <- toupper(levels(iris_var4$Species))  # Modify factor
 iris_var4 <- rbind(iris_var4, iris_var4[1:10, ])  # Duplicate rows
 iris_var4$Petal.Width <- iris_var4$Petal.Width * 10  # Altered scale
 
+# Variation 5: Columns with different type and column with different values
+iris_var5 <- iris
+iris_var5$Sepal.Length <- as.character(iris_var5$Sepal.Length)
+iris_var5$Sepal.Length[1] <- "1000"
+
+
 # Ensuring the variations are data.tables if needed
 iris_var1 <- as.data.table(iris_var1)
 iris_var2 <- as.data.table(iris_var2)
 iris_var3 <- as.data.table(iris_var3)
 iris_var4 <- as.data.table(iris_var4)
+iris_var5 <- as.data.table(iris_var5)
+
 
 
 usethis::use_data(iris_var1, overwrite = TRUE)
 usethis::use_data(iris_var2, overwrite = TRUE)
 usethis::use_data(iris_var3, overwrite = TRUE)
 usethis::use_data(iris_var4, overwrite = TRUE)
+usethis::use_data(iris_var5, overwrite = TRUE)
+
 
