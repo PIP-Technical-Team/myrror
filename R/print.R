@@ -1,7 +1,7 @@
 #' Print method for Myrror object.
 #'
-#' @param x
-#' @param ...
+#' @param x an object of class 'myrror_object'
+#' @param ... additional arguments
 #'
 #' @export
 #'

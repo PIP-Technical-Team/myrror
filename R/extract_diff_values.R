@@ -18,18 +18,18 @@
 #' Function to extract rows with different values between two dataframes.
 #'
 #'
-#' @param dfx
-#' @param dfy
-#' @param myrror_object
-#' @param verbose
-#' @param output
+#' @param dfx data.frame object
+#' @param dfy data.frame object
+#' @param myrror_object myrror object
+#' @param output character, one of "full", "simple", "silent"
 #'
-#' @return list, if verbose == TRUE, it will print the object.
+#' @return list object with two items: diff_list and diff_table
 #' @export
 #'
 #' @examples
 #'
 #' extract_diff_values(iris, iris_var1)
+#'
 extract_diff_values <- function(dfx = NULL,
                                 dfy = NULL,
                                 myrror_object = NULL,
@@ -88,15 +88,13 @@ extract_diff_values <- function(dfx = NULL,
 
 #' Extract Different Values - Internal
 #'
-#' @param myrror_object
+#' @param myrror_object myrror object
 #'
 #' @return list with two elements:
 #' 1. diff_list
 #' 2. diff_table
 #'
 #'
-#' @examples
-#' extract_diff_value_int(myrror_object = myrror_object)
 #'
 extract_diff_values_int <- function(myrror_object = NULL) {
 
@@ -118,11 +116,11 @@ extract_diff_values_int <- function(myrror_object = NULL) {
     column_x <- paste0(variable, ".x")
     column_y <- paste0(variable, ".y")
 
-    df %>%
-      dplyr::filter(count > 0) |>
-      dplyr::select(-count) |>
-      tidyr::unnest(cols = c(indexes)) %>%
-      dplyr::mutate(indexes = as.character(indexes)) |>
+    df |>
+      fsubset(count > 0) |>
+      fselect(-count) |>
+      tidyr::unnest(cols = c(indexes)) |>
+      fmutate(indexes = as.character(indexes)) |>
       dplyr::left_join(matched_data |>
                          dplyr::select(rn, all_of(column_x),
                                        all_of(column_y)),

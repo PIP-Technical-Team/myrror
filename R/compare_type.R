@@ -1,15 +1,17 @@
 
 #' Compare type of variables
 #'
-#' @param myrror_object
-#' @param dfx
-#' @param dfy
-#' @param output
+#' @param dfx data.frame object
+#' @param dfy data.frame object
+#' @param myrror_object myrror object
+#' @param output character, one of "full", "simple", "silent"
 #'
 #' @return list object
 #' @export
 #'
 #' @examples
+#' comparison <- compare_type(iris, iris_var1)
+#'
 compare_type <- function(dfx = NULL,
                          dfy = NULL,
                          myrror_object = NULL,
@@ -88,14 +90,14 @@ compare_type <- function(dfx = NULL,
 
 #' Compare type of variables, internal function.
 #'
-#' @param myrror_object
+#' @param myrror_object myrror object
 #'
 #' @return data.table object
 #'
 #'
 #' @examples
-#' mo <- create_myrror_object(iris, iris_var1)
-#' compare_type_object <- compare_type_int(mo)
+#' # mo <- create_myrror_object(iris, iris_var1)
+#' # compare_type_object <- compare_type_int(mo)
 compare_type_int <- function(myrror_object = NULL){
 
   # 1. Pair columns ----

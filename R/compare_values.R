@@ -1,12 +1,12 @@
 # compare_values ---------------------------------------------------------------
 #' Compare values of matched datasets
 #'
-#' @param dfx
-#' @param dfy
-#' @param myrror_object
-#' @param output
+#' @param dfx data.frame object
+#' @param dfy data.frame object
+#' @param myrror_object myrror object
+#' @param output character, one of "full", "simple", "silent"
 #'
-#' @return
+#' @return list object
 #' @export
 #'
 #' @examples

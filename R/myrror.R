@@ -6,6 +6,9 @@
 #' @param by character, key to be used for dfx and dfy
 #' @param by.x character, key to be used for dfx
 #' @param by.y character, key to be used for dfy
+#' @param compare_type TRUE or FALSE, default to TRUE.
+#' @param compare_values TRUE or FALSE, default to TRUE.
+#' @param extract_diff_values TRUE or FALSE, default to TRUE.
 #' @param factor_to_char TRUE or FALSE, default to TRUE.
 #'
 #' @return draft: selection of by variables

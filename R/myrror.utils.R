@@ -289,14 +289,16 @@ is_dataframe_sorted_by <- function(df,
 ## 4.2 Process col pairs ----
 #' Title
 #'
-#' @param merged_data joined prepared_dfx and prepared_dfy
-#' @param suffix_x
-#' @param suffix_y
+#' @param merged_data_report joined prepared_dfx and prepared_dfy
+#' @param suffix_x suffix for dfx (default .x)
+#' @param suffix_y suffix for dfy (default .y)
 #'
 #' @return paired_columns
 #'
 #'
 #' @examples
+#' # mo <- create_myrror_object(iris, iris_var1)
+#' # pair_columns(mo$merged_data_report)
 pair_columns <- function(merged_data_report,
                          suffix_x = ".x",
                          suffix_y = ".y") {

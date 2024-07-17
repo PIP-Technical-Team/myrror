@@ -32,6 +32,3 @@ object of class myrror_object
 \description{
 myrror_object constructor
 }
-\examples{
-myrror_object_example <- create_myrror_object(iris, iris_var1)
-}

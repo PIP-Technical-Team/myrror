@@ -4,7 +4,17 @@
 \alias{myrror}
 \title{myrror main function}
 \usage{
-myrror(dfx, dfy, by = NULL, by.x = NULL, by.y = NULL, factor_to_char = TRUE)
+myrror(
+  dfx,
+  dfy,
+  by = NULL,
+  by.x = NULL,
+  by.y = NULL,
+  compare_type = TRUE,
+  compare_values = TRUE,
+  extract_diff_values = TRUE,
+  factor_to_char = TRUE
+)
 }
 \arguments{
 \item{dfx}{a non-empty data.frame}
@@ -16,6 +26,12 @@ myrror(dfx, dfy, by = NULL, by.x = NULL, by.y = NULL, factor_to_char = TRUE)
 \item{by.x}{character, key to be used for dfx}
 
 \item{by.y}{character, key to be used for dfy}
+
+\item{compare_type}{TRUE or FALSE, default to TRUE.}
+
+\item{compare_values}{TRUE or FALSE, default to TRUE.}
+
+\item{extract_diff_values}{TRUE or FALSE, default to TRUE.}
 
 \item{factor_to_char}{TRUE or FALSE, default to TRUE.}
 }
