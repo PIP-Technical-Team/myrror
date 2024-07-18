@@ -197,8 +197,17 @@ prepare_df <- function(df,
 
   ## 6. Convert factors to characters
   if (isTRUE(factor_to_char)){
-    dt <- dt |>
-      collapse::fmutate(acr(is.factor, as.character))
+
+    # I wanted to implement it like so, but check() would not recognize across() as a collapse:: function
+    #dt <- dt |>
+      #collapse::fmutate(across(is.factor, as.character))
+
+    # Get names of factor columns
+    factor_cols <- names(dt)[sapply(dt, is.factor)]
+
+    # Convert all factor columns to character
+    dt[, (factor_cols) := lapply(.SD, as.character), .SDcols = factor_cols]
+
   }
 
   return(dt)

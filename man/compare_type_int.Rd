@@ -15,7 +15,3 @@ data.table object
 \description{
 Compare type of variables, internal function.
 }
-\examples{
-# mo <- create_myrror_object(iris, iris_var1)
-# compare_type_object <- compare_type_int(mo)
-}
