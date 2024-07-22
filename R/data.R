@@ -90,6 +90,105 @@
 "iris_var4"
 
 
+#' Iris Dataset Variation 5
+#'
+#' This dataset variation includes:
+#' - Column with different type: `Sepal.Length` (character).
+#' - Column with different values: `Sepal.Length` (1 modified value).
+#'
+#' @format A `data.frame` with 160 rows and 5 variables:
+#' \describe{
+#'   \item{Sepal.Length}{Charactert, length in cm.}
+#'   \item{Sepal.Width}{Numeric, width in cm.}
+#'   \item{Petal.Length}{Numeric, length in cm.}
+#'   \item{Petal.Width}{Numeric, Petal width in cm.}
+#'   \item{Species}{Factor with levels: "setosa","versicolor","virginica".}
+#' }
+#'
+#' @source Modified `iris` dataset.
+"iris_var5"
+
+#' Survey Data
+#' A country-year level dataset with 15 rows and 6 variables. 2 countries,
+#' 4 years, and 4 additional variables.
+#' @format A `data.table` with 16 rows and 4 variables:
+#' \describe{
+#'  \item{country}{Factor with levels: "A", "B".}
+#'  \item{year}{Numeric, with values: 2010, 2011, 2012, 2013.}
+#'  \item{variable1}{Numeric.}
+#'  \item{variable2}{Numeric.}
+#'  \item{variable3}{Numeric.}
+#'  \item{variable4}{Numeric.}
+#'  }
+#'  @source Simulated data.
+"survey_data"
+
+#' Survey Data Variation 2
+#' @format A `data.table` with 15 rows and 6 variables:
+#' \describe{
+#' \item{country}{Factor with levels: "A", "B".}
+#' \item{year}{Numeric, with values: 2010, 2011, 2012, 2013.}
+#' \item{variable1}{Numeric.}
+#' \item{variable2}{Numeric. Modified variable values.}
+#' \item{variable3}{Numeric.}
+#' \item{variable4}{Numeric.}
+#' }
+#' @source Simulated data.
+"survey_data_2"
+
+#' Survey Data Variation 3
+#' @format A `data.table` with 15 rows and 6 variables:
+#' \describe{
+#' \item{country}{Factor with levels: "A", "B".}
+#' \item{year}{Numeric, with values: 2010-2017.}
+#' \item{variable1}{Character. Modified variable class.}
+#' \item{variable2}{Numeric.}
+#' \item{variable3}{Numeric.}
+#' \item{variable4}{Numeric.}
+#' }
+#' @source Simulated data.
+"survey_data_3"
+
+#' Survey Data Variation 4
+#' @format A `data.table` with 12 rows (4 missing) and 6 variables:
+#' \describe{
+#' \item{country}{Factor with levels: "A", "B".}
+#' \item{year}{Numeric, with values: 2010-2017.}
+#' \item{variable1}{Numeric.}
+#' \item{variable2}{Numeric.}
+#' \item{variable3}{Numeric.}
+#' \item{variable4}{Numeric.}
+#' }
+#' @source Simulated data.
+"survey_data_4"
+
+#' Survey Data Variation 5
+#' @format A `data.table` with 15 rows and 4 variables (2 missing):
+#' \describe{
+#' \item{country}{Factor with levels: "A", "B".}
+#' \item{year}{Numeric, with values: 2010-2017.}
+#' \item{variable1}{Numeric.}
+#' \item{variable2}{Numeric.}
+#' \item{variable3}{Numeric.}
+#' \item{variable4}{Numeric.}
+#' }
+#' @source Simulated data.
+"survey_data_5"
+
+#' Survey Data Variation 6
+#' @format A `data.table` with 15+15 (duplicated) rows and 4 variables:
+#' \describe{
+#' \item{country}{Factor with levels: "A", "B".}
+#' \item{year}{Numeric, with values: 2010-2017.}
+#' \item{variable1}{Numeric.}
+#' \item{variable2}{Numeric.}
+#' \item{variable3}{Numeric.}
+#' \item{variable4}{Numeric.}
+#' }
+#' @source Simulated data.
+"survey_data_6"
+
+
 
 
 

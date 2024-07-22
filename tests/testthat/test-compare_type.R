@@ -1,6 +1,6 @@
 
 mo5 <- create_myrror_object(iris, iris_var5)
-compare_type_object_5 <- compare_type
+compare_type_object_5 <- compare_type(myrror_object = mo5)
 
 mo1 <- create_myrror_object(iris, iris_var1)
 compare_type_object_1 <- compare_type(myrror_object = mo1)
@@ -11,7 +11,7 @@ compare_type_object_1 <- compare_type(myrror_object = mo1)
 test_that("compare_type() correctly identifies type", {
 
   expect_equal(compare_type_object_1$compare_type$same_class,
-               c(FALSE, TRUE, TRUE, TRUE, TRUE))
+               c(TRUE, TRUE, TRUE, TRUE, TRUE))
   expect_equal(compare_type_object_5$compare_type$same_class,
                c(FALSE, TRUE, TRUE, TRUE, TRUE))
 })
