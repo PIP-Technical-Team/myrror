@@ -92,43 +92,32 @@ check_set_by <- function(by = NULL,
 
 
 # 2. Normalize (column) names based on tolerance settings ----
-#' Apply Tolerance to Column Names
-#'
-#' @param names character vector
-#' @param tolerance character vector, options: 'no_cap', 'no_underscore', 'no_whitespace'
-#'
-#' @return a list of processed column names
-#' @export
-#' @importFrom data.table copy
-#'
-#' @examples
-#' processed_names <- apply_tolerance(names(iris), tolerance = 'no_cap')
-apply_tolerance <- function(names,
-                            tolerance) {
-  # Ensure tolerance is treated as a list for uniform processing
-  if (!is.null(tolerance)) {
-    if (is.character(tolerance)) {
-      tolerance <- as.list(tolerance)
-    }
-    cli::cli_alert_info('Applying tolerance parameters to dataset.')
-  }
-
-  # Apply tolerance settings to column names
-  for (tol in tolerance) {
-    if (tol == "no_underscore") {
-      names <- gsub("_", "", names, fixed = TRUE)
-    }
-    if (tol == "no_cap") {
-      names <- tolower(names)
-    }
-    if (tol == "no_whitespace") {
-      names <- gsub("\\s+", "", names, fixed = TRUE)
-    }
-  }
-
-  return(names)
-
-}
+# apply_tolerance <- function(names,
+#                             tolerance) {
+#   # Ensure tolerance is treated as a list for uniform processing
+#   if (!is.null(tolerance)) {
+#     if (is.character(tolerance)) {
+#       tolerance <- as.list(tolerance)
+#     }
+#     cli::cli_alert_info('Applying tolerance parameters to dataset.')
+#   }
+#
+#   # Apply tolerance settings to column names
+#   for (tol in tolerance) {
+#     if (tol == "no_underscore") {
+#       names <- gsub("_", "", names, fixed = TRUE)
+#     }
+#     if (tol == "no_cap") {
+#       names <- tolower(names)
+#     }
+#     if (tol == "no_whitespace") {
+#       names <- gsub("\\s+", "", names, fixed = TRUE)
+#     }
+#   }
+#
+#   return(names)
+#
+# }
 
 
 # 3.Prepare dataset for join  ----
@@ -197,8 +186,17 @@ prepare_df <- function(df,
 
   ## 6. Convert factors to characters
   if (isTRUE(factor_to_char)){
-    dt <- dt |>
-      collapse::fmutate(acr(is.factor, as.character))
+
+    # I wanted to implement it like so, but check() would not recognize across() as a collapse:: function
+    #dt <- dt |>
+      #collapse::fmutate(across(is.factor, as.character))
+
+    # Get names of factor columns
+    factor_cols <- names(dt)[sapply(dt, is.factor)]
+
+    # Convert all factor columns to character
+    dt[, (factor_cols) := lapply(.SD, as.character), .SDcols = factor_cols]
+
   }
 
   return(dt)
@@ -289,14 +287,16 @@ is_dataframe_sorted_by <- function(df,
 ## 4.2 Process col pairs ----
 #' Title
 #'
-#' @param merged_data joined prepared_dfx and prepared_dfy
-#' @param suffix_x
-#' @param suffix_y
+#' @param merged_data_report joined prepared_dfx and prepared_dfy
+#' @param suffix_x suffix for dfx (default .x)
+#' @param suffix_y suffix for dfy (default .y)
 #'
 #' @return paired_columns
 #'
 #'
 #' @examples
+#' # mo <- create_myrror_object(iris, iris_var1)
+#' # pair_columns(mo$merged_data_report)
 pair_columns <- function(merged_data_report,
                          suffix_x = ".x",
                          suffix_y = ".y") {

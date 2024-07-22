@@ -2,7 +2,7 @@ Package: myrror
 Title: Compare two Data Frames and Summarize Differences
 Version: 0.0.0.9000
 Authors@R: 
-    person("Giorgia", "Cecchinato", , "first.last@example.com", role = c("aut", "cre"))
+    person("Giorgia", "Cecchinato", , "gcecchinato@worldbank.org", role = c("aut", "cre"))
 Description: Convenience functions to compare two dataframes, explore,
     visualize and summarize similarities and differences.
 License: MIT + file LICENSE
@@ -13,7 +13,9 @@ Imports:
     data.table (>= 1.15.4),
     collapse,
     stats,
-    joyn
+    joyn,
+    purrr,
+    tidyr
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

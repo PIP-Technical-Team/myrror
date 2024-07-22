@@ -12,8 +12,6 @@
 #'
 #' @import collapse
 #'
-#' @examples
-#' myrror_object_example <- create_myrror_object(iris, iris_var1)
 create_myrror_object <- function(dfx,
                    dfy,
                    by = NULL,

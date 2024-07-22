@@ -1,15 +1,17 @@
 
 #' Compare type of variables
 #'
-#' @param myrror_object
-#' @param dfx
-#' @param dfy
-#' @param output
+#' @param dfx data.frame object
+#' @param dfy data.frame object
+#' @param myrror_object myrror object
+#' @param output character, one of "full", "simple", "silent"
 #'
 #' @return list object
 #' @export
 #'
 #' @examples
+#' comparison <- compare_type(iris, iris_var1)
+#'
 compare_type <- function(dfx = NULL,
                          dfy = NULL,
                          myrror_object = NULL,
@@ -57,45 +59,12 @@ compare_type <- function(dfx = NULL,
 
 
 
-
-
-
-  # Stuff to move to print method
-    # maybe this we need to move to the core of the function (before the if statement)
-    # also we need to figure out how this is printed out only when object printed?
-    # shared_cols_n <- nrow(pairs$pairs)
-    # nonshared_dfx_cols_n <- myrror_object$datasets_report$dfx_char$ncol - shared_cols_n
-    # nonshared_dfy_cols_n <- myrror_object$datasets_report$dfy_char$ncol - shared_cols_n
-    # name_dfx <- myrror_object$name_dfx
-    # name_dfy <- myrror_object$name_dfy
-    #
-    #
-    # cli::cli_h2("Note: comparison is done for shared columns.")
-    # cli::cli_alert_success("Total shared columns: {shared_cols_n}")
-    # cli::cli_alert_warning("Non-shared columns in {name_dfx}: {nonshared_dfx_cols_n}")
-    # cli::cli_alert_warning("Non-shared columns in {name_dfy}: {nonshared_dfy_cols_n}")
-    # cli::cli_h1("Shared Columns Class Comparison")
-    #
-    # print(results_dt)
-    #
-    # cli::cli_h1("Non-Shared Columns")
-    # cli::cli_text("Columns only in {name_dfx}: {pairs$nonshared_cols_dfx}")
-    # cli::cli_text("Columns only in {name_dfy}: {pairs$nonshared_cols_dfy}")
-
-
-
-
-
 #' Compare type of variables, internal function.
 #'
-#' @param myrror_object
+#' @param myrror_object myrror object
 #'
 #' @return data.table object
 #'
-#'
-#' @examples
-#' mo <- create_myrror_object(iris, iris_var1)
-#' compare_type_object <- compare_type_int(mo)
 compare_type_int <- function(myrror_object = NULL){
 
   # 1. Pair columns ----
@@ -118,8 +87,8 @@ compare_type_int <- function(myrror_object = NULL){
   compare_type <- rbindlist(compare_type)
 
   compare_type <- compare_type |>
-    fmutate(variable = gsub(".x", "", column_x))|>
-    fselect(variable, class_x, class_y, same_class)
+    collapse::fmutate(variable = gsub(".x", "", column_x))|>
+    collapse::fselect(variable, class_x, class_y, same_class)
 
   # 3. Resturn results ----
   return(compare_type)

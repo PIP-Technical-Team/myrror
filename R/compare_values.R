@@ -1,12 +1,12 @@
 # compare_values ---------------------------------------------------------------
 #' Compare values of matched datasets
 #'
-#' @param dfx
-#' @param dfy
-#' @param myrror_object
-#' @param output
+#' @param dfx data.frame object
+#' @param dfy data.frame object
+#' @param myrror_object myrror object
+#' @param output character, one of "full", "simple", "silent"
 #'
-#' @return
+#' @return list object
 #' @export
 #'
 #' @examples
@@ -28,29 +28,38 @@ compare_values <- function(dfx = NULL,
     }
 
     myrror_object <- create_myrror_object(dfx = dfx, dfy = dfy)
-
-    ## Re-assign names from within this call:
-    myrror_object$name_dfx <- deparse(substitute(dfx))
+    myrror_object$name_dfx <- deparse(substitute(dfx)) # Re-assign names from the call.
     myrror_object$name_dfy <- deparse(substitute(dfy))
 
   }
 
 
   # 3. Run compare_values_int() ----
-  myrror_object$compare_values <- compare_values_int(myrror_object)
 
-  # Check if results are empty and adjust accordingly
-  if(length(myrror_object$compare_values) == 0) {
+  compare_values_list <- compare_values_int(myrror_object)
+
+  ## Check if results are empty and adjust:
+  ### If empty then NULL or myrror_object NULL.
+  if(length(compare_values_list) == 0) {
     if(output == "simple") {
       return(NULL)  # Return NULL for "simple" if no differences are found
     } else {
-      myrror_object$compare_values <- list(message = "No differences found between the variables.")
+      myrror_object$compare_values <- NULL
     }
+
+  } else {
+
+  ### else if not empty, then create a tibble with the results.
+  compare_values_df <- purrr::map(compare_values_list, ~.x|>fselect(diff, count)) |>
+    rowbind(idcol = "variable") |>
+    pivot(ids = 1, how = "wider", names = "diff")|>
+    tidyr::as_tibble()
+
+  myrror_object$compare_values <- compare_values_df
+
   }
 
-
-  # 2. Output ----
-
+  # 4. Output ----
   ## Handle the output type
   switch(output,
          full = {

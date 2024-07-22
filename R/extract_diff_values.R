@@ -18,18 +18,18 @@
 #' Function to extract rows with different values between two dataframes.
 #'
 #'
-#' @param dfx
-#' @param dfy
-#' @param myrror_object
-#' @param verbose
-#' @param output
+#' @param dfx data.frame object
+#' @param dfy data.frame object
+#' @param myrror_object myrror object
+#' @param output character, one of "full", "simple", "silent"
 #'
-#' @return list, if verbose == TRUE, it will print the object.
+#' @return list object with two items: diff_list and diff_table
 #' @export
 #'
 #' @examples
 #'
 #' extract_diff_values(iris, iris_var1)
+#'
 extract_diff_values <- function(dfx = NULL,
                                 dfy = NULL,
                                 myrror_object = NULL,
@@ -88,15 +88,13 @@ extract_diff_values <- function(dfx = NULL,
 
 #' Extract Different Values - Internal
 #'
-#' @param myrror_object
+#' @param myrror_object myrror object
 #'
 #' @return list with two elements:
 #' 1. diff_list
 #' 2. diff_table
 #'
 #'
-#' @examples
-#' extract_diff_value_int(myrror_object = myrror_object)
 #'
 extract_diff_values_int <- function(myrror_object = NULL) {
 
@@ -115,18 +113,21 @@ extract_diff_values_int <- function(myrror_object = NULL) {
 
   # 2. List option -----
   diff_list <- purrr::imap(compare_values_object, function(df, variable) {
+
+
     column_x <- paste0(variable, ".x")
     column_y <- paste0(variable, ".y")
 
-    df %>%
-      dplyr::filter(count > 0) |>
-      dplyr::select(-count) |>
-      tidyr::unnest(cols = c(indexes)) %>%
-      dplyr::mutate(indexes = as.character(indexes)) |>
-      dplyr::left_join(matched_data |>
-                         dplyr::select(rn, all_of(column_x),
-                                       all_of(column_y)),
-                       by = c("indexes" = "rn"))
+    df |>
+      collapse::fsubset(count > 0) |>
+      collapse::fselect(-count) |>
+      tidyr::unnest(cols = c("indexes")) |>
+      fmutate(indexes = as.character(indexes)) |>
+      collapse::join(matched_data |>
+                       collapse::fselect(c("rn", column_x, column_y)),
+                     on = c("indexes" = "rn"),
+                     how = "left",
+                     verbose = 0)
 
   })
 
@@ -138,7 +139,10 @@ extract_diff_values_int <- function(myrror_object = NULL) {
     fselect(-count)|>
     tidyr::unnest(cols = c(indexes)) |> # is there a better version of unnest?
     fmutate(indexes = as.character(indexes)) |>
-    dplyr::left_join(matched_data, by = c("indexes" = "rn"))
+    collapse::join(matched_data,
+                   on = c("indexes" = "rn"),
+                   how = "left",
+                   verbose = 0)
 
 
   # 4. Store and Return ----

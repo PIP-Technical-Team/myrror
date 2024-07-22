@@ -84,6 +84,11 @@ test_that("Defaults to 'rn' when both by.x and by.y are NULL", {
   expect_equal(result$by.y, "rn")
 })
 
+# Test 6: by.y argument is an empty vector and gets stopped
+test_that("Function stops with empty by.y argument", {
+  expect_error(check_set_by(by = "id", by.y = character()), "non-empty character vector")
+})
+
 # prepare_df() ----
 # Test 1: Conversion of DataFrame to Data Table
 test_that("DataFrame is converted to Data Table", {
@@ -116,6 +121,13 @@ test_that("Factors are converted to characters", {
   df <- data.frame(a = 1:3, b = as.factor(c("one", "two", "three")))
   result <- prepare_df(df, by = "a", factor_to_char = TRUE)
   expect_true(is.character(result$b))
+})
+
+# Test 6: the keys provided do not uniquely identify the dataset and it is detected:
+test_that("Function stops if the keys provided do not uniquely identify the dataset", {
+  df <- data.frame(a = c(1,1,3), b = 4:6)
+  expect_error(prepare_df(df, by = "a", factor_to_char = TRUE),
+               "do not uniquely identify the dataset")
 })
 
 
