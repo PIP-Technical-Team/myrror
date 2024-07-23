@@ -102,6 +102,20 @@ create_myrror_object <- function(dfx,
                       update_NAs = FALSE,
                       verbose = FALSE)
 
+  ## Adjust rn and row_index:
+  if ("rn.x" %in% colnames(merged_data)) {
+    merged_data <- merged_data |>
+      collapse::fmutate(rn = rn.x) |>
+      collapse::fselect(-rn.x, -rn.y)
+  }
+
+  if ("row_index.x" %in% colnames(merged_data)) {
+    merged_data <- merged_data |>
+      collapse::fmutate(row_index = row_index.x) |>
+      collapse::fselect(-row_index.x, -row_index.y)
+  }
+
+
   ## Store
   merged_data_report <- list()
 
@@ -110,6 +124,7 @@ create_myrror_object <- function(dfx,
   unmatched_data <- merged_data |> fsubset(.joyn != 'x & y')
 
   ## Store
+  merged_data_report$keys <- key(merged_data)
   merged_data_report$matched_data <- matched_data
   merged_data_report$unmatched_data <- unmatched_data
   merged_data_report$colnames_dfx <- colnames(prepared_dfx)

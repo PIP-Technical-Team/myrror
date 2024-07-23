@@ -312,7 +312,7 @@ pair_columns <- function(merged_data_report,
 
 
   # Get common base names
-  common_base_names <- setdiff(intersect(base_names_x, base_names_y), "row_index")
+  common_base_names <- setdiff(intersect(base_names_x, base_names_y), c("row_index", "rn"))
 
   # Pair them up
   pairs <- data.table(
@@ -321,9 +321,22 @@ pair_columns <- function(merged_data_report,
   )
 
   # Identify unmatched columns
+  # Get set_by/keys
+  get_keys_or_default <- function(keys, default = "rn") {
+    if (is.null(keys)) {
+      default
+    } else {
+      keys
+    }
+  }
 
-  nonshared_cols_dfx <- setdiff(c(merged_data_report$colnames_dfx), c("row_index", "rn", base_names_x))
-  nonshared_cols_dfy <- setdiff(c(merged_data_report$colnames_dfy), c("row_index", "rn", base_names_y))
+  # Usage
+  keys <- get_keys_or_default(merged_data_report$keys)
+
+  nonshared_cols_dfx <- setdiff(c(merged_data_report$colnames_dfx),
+                                c("row_index", "rn", base_names_x, keys))
+  nonshared_cols_dfy <- setdiff(c(merged_data_report$colnames_dfy),
+                                c("row_index", "rn", base_names_y, keys))
 
 
   # Return both pairs and unmatched columns in a list or separately as needed

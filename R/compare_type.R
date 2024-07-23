@@ -14,6 +14,9 @@
 #'
 compare_type <- function(dfx = NULL,
                          dfy = NULL,
+                         by = NULL,
+                         by.x = NULL,
+                         by.y = NULL,
                          myrror_object = NULL,
                          output = c("full", "simple", "silent")) {
   # 1. Arguments check ----
@@ -25,7 +28,11 @@ compare_type <- function(dfx = NULL,
       stop("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied.")
     }
 
-    myrror_object <- create_myrror_object(dfx = dfx, dfy = dfy)
+    myrror_object <- create_myrror_object(dfx = dfx,
+                                          dfy = dfy,
+                                          by = by,
+                                          by.x = by.x,
+                                          by.y = by.y)
     ## Re-assign names from within this call:
     myrror_object$name_dfx <- deparse(substitute(dfx))
     myrror_object$name_dfy <- deparse(substitute(dfy))
