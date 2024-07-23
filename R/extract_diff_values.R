@@ -36,7 +36,7 @@ extract_diff_values <- function(dfx = NULL,
                                 by.x = NULL,
                                 by.y = NULL,
                                 myrror_object = NULL,
-                                output = c("full", "simple", "silent")) {
+                                output = c("simple", "full", "silent")) {
 
   # 1. Arguments check ----
   output <- match.arg(output)
@@ -60,7 +60,7 @@ extract_diff_values <- function(dfx = NULL,
   }
 
   # 3. Run extract_values_int() ----
-  myrror_object$extract_diff_values <- extract_diff_values_int(myrror_object)
+  myrror_object$extract_diff_values <- extract_diff_int(myrror_object)
 
   # Check if results are empty and adjust accordingly
   if(length(myrror_object$extract_diff_values) == 0) {
@@ -84,7 +84,66 @@ extract_diff_values <- function(dfx = NULL,
            return(invisible(myrror_object))
          },
          simple = {
-           return(myrror_object$extract_diff_values)
+           return(myrror_object$extract_diff_values$diff_list)
+         }
+  )
+}
+
+extract_diff_table <- function(dfx = NULL,
+                               dfy = NULL,
+                               by = NULL,
+                               by.x = NULL,
+                               by.y = NULL,
+                               myrror_object = NULL,
+                               output = c("simple", "full", "silent")) {
+
+  # 1. Arguments check ----
+  output <- match.arg(output)
+
+  # 2. Create object if not supplied ----
+  if (is.null(myrror_object)) {
+    if (is.null(dfx) || is.null(dfy)) {
+      stop("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied.")
+    }
+
+    myrror_object <- create_myrror_object(dfx = dfx,
+                                          dfy = dfy,
+                                          by = by,
+                                          by.x = by.x,
+                                          by.y = by.y)
+
+    ## Re-assign names from within this call:
+    myrror_object$name_dfx <- deparse(substitute(dfx))
+    myrror_object$name_dfy <- deparse(substitute(dfy))
+
+  }
+
+  # 3. Run extract_values_int() ----
+  myrror_object$extract_diff_values <- extract_diff_int(myrror_object)
+
+  # Check if results are empty and adjust accordingly
+  if(length(myrror_object$extract_diff_values) == 0) {
+    if(output == "simple") {
+      return(NULL)  # Return NULL for "simple" if no differences are found
+    } else {
+      myrror_object$extract_diff_values <- list(message = "No differences found between the variables.")
+    }
+  }
+
+  # 4. Output ----
+
+  ## Handle the output type
+  switch(output,
+         full = {
+           myrror_object$print$extract_diff_values <- TRUE
+           return(myrror_object)
+         },
+         silent = {
+           myrror_object$print$extract_diff_values <- TRUE
+           return(invisible(myrror_object))
+         },
+         simple = {
+           return(myrror_object$extract_diff_values$diff_table)
          }
   )
 }
@@ -103,7 +162,7 @@ extract_diff_values <- function(dfx = NULL,
 #'
 #'
 #'
-extract_diff_values_int <- function(myrror_object = NULL) {
+extract_diff_int <- function(myrror_object = NULL) {
 
   # 1. Get indexes and data ----
   compare_values_object <- compare_values_int(myrror_object = myrror_object)
