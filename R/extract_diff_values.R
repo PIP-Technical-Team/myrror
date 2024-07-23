@@ -11,17 +11,21 @@
 # 2. Another pivoted "complete" data.table (all variables with id) with all observations
 # for which variables are different: the user can then select the variables they want to keep.
 
+# extract_diff_table() will return the pivoted "complete" data.table (all variables with id).
 
 
 
-#' Extract Different Values - User-facing
+#' Extract Different Values - User-facing - List format
 #' Function to extract rows with different values between two dataframes.
 #'
 #'
-#' @param dfx data.frame object
-#' @param dfy data.frame object
-#' @param myrror_object myrror object
-#' @param output character, one of "full", "simple", "silent"
+#' @param dfx data.frame object.
+#' @param dfy data.frame object.
+#' @param by character, key to be used for dfx and dfy.
+#' @param by.x character, key to be used for dfx.
+#' @param by.y character, key to be used for dfy.
+#' @param myrror_object myrror object.
+#' @param output character, one of "simple", "full", "silent".
 #'
 #' @return list object with two items: diff_list and diff_table
 #' @export
@@ -29,6 +33,7 @@
 #' @examples
 #'
 #' extract_diff_values(iris, iris_var1)
+#' extract_diff_values(survey_data, survey_data_2, by=c('country', 'year'))
 #'
 extract_diff_values <- function(dfx = NULL,
                                 dfy = NULL,
@@ -89,6 +94,32 @@ extract_diff_values <- function(dfx = NULL,
   )
 }
 
+
+
+
+
+
+
+
+#' Extract Different Values - User-facing - Table format
+#' Function to extract rows with different values between two dataframes.
+#'
+#' @param dfx data.frame object.
+#' @param dfy data.frame object.
+#' @param by character, key to be used for dfx and dfy.
+#' @param by.x character, key to be used for dfx.
+#' @param by.y character, key to be used for dfy.
+#' @param myrror_object myrror object.
+#' @param output character, one of "simple", "full", "silent".
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#'
+#' extract_diff_table(iris, iris_var1)
+#' extract_diff_table(survey_data, survey_data_2, by=c('country', 'year'))
+#'
 extract_diff_table <- function(dfx = NULL,
                                dfy = NULL,
                                by = NULL,
