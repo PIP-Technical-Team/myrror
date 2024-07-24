@@ -11,17 +11,21 @@
 # 2. Another pivoted "complete" data.table (all variables with id) with all observations
 # for which variables are different: the user can then select the variables they want to keep.
 
+# extract_diff_table() will return the pivoted "complete" data.table (all variables with id).
 
 
 
-#' Extract Different Values - User-facing
+#' Extract Different Values - User-facing - List format
 #' Function to extract rows with different values between two dataframes.
 #'
 #'
-#' @param dfx data.frame object
-#' @param dfy data.frame object
-#' @param myrror_object myrror object
-#' @param output character, one of "full", "simple", "silent"
+#' @param dfx data.frame object.
+#' @param dfy data.frame object.
+#' @param by character, key to be used for dfx and dfy.
+#' @param by.x character, key to be used for dfx.
+#' @param by.y character, key to be used for dfy.
+#' @param myrror_object myrror object.
+#' @param output character, one of "simple", "full", "silent".
 #'
 #' @return list object with two items: diff_list and diff_table
 #' @export
@@ -29,11 +33,15 @@
 #' @examples
 #'
 #' extract_diff_values(iris, iris_var1)
+#' extract_diff_values(survey_data, survey_data_2, by=c('country', 'year'))
 #'
 extract_diff_values <- function(dfx = NULL,
                                 dfy = NULL,
+                                by = NULL,
+                                by.x = NULL,
+                                by.y = NULL,
                                 myrror_object = NULL,
-                                output = c("full", "simple", "silent")) {
+                                output = c("simple", "full", "silent")) {
 
   # 1. Arguments check ----
   output <- match.arg(output)
@@ -44,7 +52,11 @@ extract_diff_values <- function(dfx = NULL,
       stop("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied.")
     }
 
-    myrror_object <- create_myrror_object(dfx = dfx, dfy = dfy)
+    myrror_object <- create_myrror_object(dfx = dfx,
+                                          dfy = dfy,
+                                          by = by,
+                                          by.x = by.x,
+                                          by.y = by.y)
 
     ## Re-assign names from within this call:
     myrror_object$name_dfx <- deparse(substitute(dfx))
@@ -53,7 +65,7 @@ extract_diff_values <- function(dfx = NULL,
   }
 
   # 3. Run extract_values_int() ----
-  myrror_object$extract_diff_values <- extract_diff_values_int(myrror_object)
+  myrror_object$extract_diff_values <- extract_diff_int(myrror_object)
 
   # Check if results are empty and adjust accordingly
   if(length(myrror_object$extract_diff_values) == 0) {
@@ -77,7 +89,92 @@ extract_diff_values <- function(dfx = NULL,
            return(invisible(myrror_object))
          },
          simple = {
-           return(myrror_object$extract_diff_values)
+           return(myrror_object$extract_diff_values$diff_list)
+         }
+  )
+}
+
+
+
+
+
+
+
+
+#' Extract Different Values - User-facing - Table format
+#' Function to extract rows with different values between two dataframes.
+#'
+#' @param dfx data.frame object.
+#' @param dfy data.frame object.
+#' @param by character, key to be used for dfx and dfy.
+#' @param by.x character, key to be used for dfx.
+#' @param by.y character, key to be used for dfy.
+#' @param myrror_object myrror object.
+#' @param output character, one of "simple", "full", "silent".
+#'
+#' @return data.table object with all observations for which at least 1 value is different.
+#' @export
+#'
+#' @examples
+#'
+#' extract_diff_table(iris, iris_var1)
+#' extract_diff_table(survey_data, survey_data_2, by=c('country', 'year'))
+#'
+extract_diff_table <- function(dfx = NULL,
+                               dfy = NULL,
+                               by = NULL,
+                               by.x = NULL,
+                               by.y = NULL,
+                               myrror_object = NULL,
+                               output = c("simple", "full", "silent")) {
+
+  # 1. Arguments check ----
+  output <- match.arg(output)
+
+  # 2. Create object if not supplied ----
+  if (is.null(myrror_object)) {
+    if (is.null(dfx) || is.null(dfy)) {
+      stop("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied.")
+    }
+
+    myrror_object <- create_myrror_object(dfx = dfx,
+                                          dfy = dfy,
+                                          by = by,
+                                          by.x = by.x,
+                                          by.y = by.y)
+
+    ## Re-assign names from within this call:
+    myrror_object$name_dfx <- deparse(substitute(dfx))
+    myrror_object$name_dfy <- deparse(substitute(dfy))
+
+  }
+
+  # 3. Run extract_values_int() ----
+  myrror_object$extract_diff_values <- extract_diff_int(myrror_object)
+
+  # Check if results are empty and adjust accordingly
+  if(length(myrror_object$extract_diff_values) == 0) {
+    if(output == "simple") {
+      return(NULL)  # Return NULL for "simple" if no differences are found
+    } else {
+      myrror_object$extract_diff_values <- list(message = "No differences found between the variables.")
+    }
+  }
+
+  # 4. Output ----
+
+  ## Handle the output type
+  switch(output,
+         full = {
+           myrror_object$print$extract_diff_values <- TRUE
+           return(myrror_object)
+         },
+         silent = {
+           myrror_object$print$extract_diff_values <- TRUE
+           return(invisible(myrror_object))
+         },
+         simple = {
+           return(myrror_object$extract_diff_values$diff_table)
          }
   )
 }
@@ -96,7 +193,7 @@ extract_diff_values <- function(dfx = NULL,
 #'
 #'
 #'
-extract_diff_values_int <- function(myrror_object = NULL) {
+extract_diff_int <- function(myrror_object = NULL) {
 
   # 1. Get indexes and data ----
   compare_values_object <- compare_values_int(myrror_object = myrror_object)

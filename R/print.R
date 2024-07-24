@@ -10,18 +10,36 @@ print.myrror <- function(x, ...) {
 
   # 1. General ----
   shared_cols_n <- nrow(x$pairs$pairs)
-  nonshared_dfx_cols_n <- x$datasets_report$dfx_char$ncol - shared_cols_n
-  nonshared_dfy_cols_n <- x$datasets_report$dfy_char$ncol - shared_cols_n
+  shared_rows_n <- nrow(x$merged_data_report$matched_data)
+  keys_n <- length(setdiff(x$merged_data_report$keys, "rn"))
+  nonshared_dfx_cols_n <- x$datasets_report$dfx_char$ncol - shared_cols_n - keys_n
+  nonshared_dfy_cols_n <- x$datasets_report$dfy_char$ncol - shared_cols_n - keys_n
   name_dfx <- x$name_dfx
   name_dfy <- x$name_dfy
 
   cli::cli_h1("Myrror Report")
 
-  cli::cli_h2("Note: comparison is done for shared columns.")
-  cli::cli_alert_success("Total shared columns: {shared_cols_n}")
+  cli::cli_h2("General Information:")
+  cli::cli_text("{.strong dfx}: {.field {name_dfx}} with {x$datasets_report$dfx_char$nrow} rows and {x$datasets_report$dfx_char$ncol} columns.")
+  cli::cli_text("{.strong dfy}: {.field {name_dfy}} with {x$datasets_report$dfy_char$nrow} rows and {x$datasets_report$dfy_char$ncol} columns.")
+  cli::cli_text("{.strong keys}: {x$merged_data_report$keys}.")
+
+
+
+  cli::cli_h2("Note: comparison is done for shared columns and rows.")
+  cli::cli_alert_success("Total shared columns (no keys): {shared_cols_n}")
   cli::cli_alert_warning("Non-shared columns in {name_dfx}: {nonshared_dfx_cols_n} ({x$pairs$nonshared_cols_dfx})")
   cli::cli_alert_warning("Non-shared columns in {name_dfy}: {nonshared_dfy_cols_n} ({x$pairs$nonshared_cols_dfy})")
   cli::cli_text("\n")
+  cli::cli_alert_success("Total shared rows: {shared_rows_n}")
+  cli::cli_alert_warning("Non-shared rows in {name_dfx}: {x$datasets_report$dfx_char$nrow - shared_rows_n}.")
+  cli::cli_alert_warning("Non-shared rows in {name_dfy}: {x$datasets_report$dfy_char$nrow - shared_rows_n}.")
+
+  if (x$datasets_report$dfx_char$nrow - shared_rows_n > 0 || x$datasets_report$dfy_char$nrow - shared_rows_n > 0) {
+    cli::cli_text("\n")
+    cli::cli_alert_info("Note: run {.fn extract_diff_rows} to extract the missing/new rows.")
+  }
+
 
   # Prompt the User to go ahead:
   response <- readline(prompt = "Press ENTER to continue or type 'q' to stop: ")
@@ -117,7 +135,7 @@ print.myrror <- function(x, ...) {
       }
 
 
-      cli::cli_alert_info("Note: run extract_diff_values() to access the results in list or table format.")
+      cli::cli_alert_info("Note: run {.fn extract_diff_values} or {.fn extract_diff_table} to access the results in list or table format.")
       cli::cli_text("\n")
     }
 

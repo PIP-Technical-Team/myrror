@@ -7,6 +7,9 @@
 compare_type(
   dfx = NULL,
   dfy = NULL,
+  by = NULL,
+  by.x = NULL,
+  by.y = NULL,
   myrror_object = NULL,
   output = c("full", "simple", "silent")
 )
@@ -15,6 +18,12 @@ compare_type(
 \item{dfx}{data.frame object}
 
 \item{dfy}{data.frame object}
+
+\item{by}{character, key to be used for dfx and dfy}
+
+\item{by.x}{character, key to be used for dfx}
+
+\item{by.y}{character, key to be used for dfy}
 
 \item{myrror_object}{myrror object}
 

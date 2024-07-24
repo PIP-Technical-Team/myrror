@@ -33,7 +33,7 @@ test_that("extract_diff_values() returns a NULL compare_values item if no differ
   mo <- create_myrror_object(iris, iris)
   target <- as.list("No differences found between the variables.")
   names(target) <- "message"
-  expect_equal(extract_diff_values(myrror_object = mo)$extract_diff_values, target)
+  expect_equal(extract_diff_values(myrror_object = mo, output = "full")$extract_diff_values, target)
 
 })
 
@@ -44,7 +44,7 @@ test_that("extract_diff_values() returns a simple compare_values item if differe
   mo <- create_myrror_object(iris, iris_var1)
 
   expect_equal(extract_diff_values(myrror_object = mo, output = "simple"),
-               extract_diff_values(myrror_object = mo)$extract_diff_values)
+               extract_diff_values(myrror_object = mo, output = "full")$extract_diff_values$diff_list)
 
 })
 

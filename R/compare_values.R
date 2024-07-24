@@ -1,10 +1,13 @@
 # compare_values ---------------------------------------------------------------
 #' Compare values of matched datasets
 #'
-#' @param dfx data.frame object
-#' @param dfy data.frame object
-#' @param myrror_object myrror object
-#' @param output character, one of "full", "simple", "silent"
+#' @param dfx data.frame object.
+#' @param dfy data.frame object.
+#' @param by character, column name to join on.
+#' @param by.x character, column name to join on in dfx.
+#' @param by.y character, column name to join on in dfy.
+#' @param myrror_object myrror object.
+#' @param output character, one of "full", "simple", "silent".
 #'
 #' @return list object
 #' @export
@@ -15,6 +18,9 @@
 #'
 compare_values <- function(dfx = NULL,
                            dfy = NULL,
+                           by = NULL,
+                           by.x = NULL,
+                           by.y = NULL,
                            myrror_object = NULL,
                            output = c("full", "simple", "silent")) {
 
@@ -27,7 +33,12 @@ compare_values <- function(dfx = NULL,
       stop("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied.")
     }
 
-    myrror_object <- create_myrror_object(dfx = dfx, dfy = dfy)
+    myrror_object <- create_myrror_object(dfx = dfx,
+                                          dfy = dfy,
+                                          by = by,
+                                          by.x = by.x,
+                                          by.y = by.y)
+
     myrror_object$name_dfx <- deparse(substitute(dfx)) # Re-assign names from the call.
     myrror_object$name_dfy <- deparse(substitute(dfy))
 
@@ -129,10 +140,10 @@ get_value_to_na <- function(matched_data,
     col_y <- pair[[2]]
 
     matched_data |>
-      fselect(c(col_x, col_y, "row_index.x", "row_index.y")) |>
+      fselect(c(col_x, col_y, "row_index")) |>
       fsubset(!is.na(get(col_x)) & is.na(get(col_y))) |>
-      fsummarise(indexes = list(row_index.x),
-                 count = fnobs(row_index.x)) |>
+      fsummarise(indexes = list(row_index),
+                 count = fnobs(row_index)) |>
       fmutate(diff = "value_to_na")|>
       colorder(diff, count, indexes)
 
@@ -153,10 +164,10 @@ get_na_to_value <- function(matched_data,
     col_y <- pair[[2]]
 
     matched_data |>
-      fselect(c(col_x, col_y, "row_index.x", "row_index.y")) |>
+      fselect(c(col_x, col_y, "row_index")) |>
       fsubset(is.na(get(col_x)) & !is.na(get(col_y))) |>
-      fsummarise(indexes = list(row_index.x),
-                 count = fnobs(row_index.x)) |>
+      fsummarise(indexes = list(row_index),
+                 count = fnobs(row_index)) |>
       fmutate(diff = "na_to_value")|>
       colorder(diff, count, indexes)
   })
@@ -173,10 +184,10 @@ get_change_in_value <- function(matched_data,
     col_y <- pair[[2]]
 
     matched_data |>
-      fselect(c(col_x, col_y, "row_index.x", "row_index.y")) |>
+      fselect(c(col_x, col_y, "row_index")) |>
       fsubset(get(col_x) != get(col_y)) |>
-      fsummarise(indexes = list(row_index.x),
-                 count = fnobs(row_index.x)) |>
+      fsummarise(indexes = list(row_index),
+                 count = fnobs(row_index)) |>
       fmutate(diff = "change_in_value")|>
       colorder(diff, count, indexes)
   })

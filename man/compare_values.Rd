@@ -7,18 +7,27 @@
 compare_values(
   dfx = NULL,
   dfy = NULL,
+  by = NULL,
+  by.x = NULL,
+  by.y = NULL,
   myrror_object = NULL,
   output = c("full", "simple", "silent")
 )
 }
 \arguments{
-\item{dfx}{data.frame object}
+\item{dfx}{data.frame object.}
 
-\item{dfy}{data.frame object}
+\item{dfy}{data.frame object.}
 
-\item{myrror_object}{myrror object}
+\item{by}{character, column name to join on.}
 
-\item{output}{character, one of "full", "simple", "silent"}
+\item{by.x}{character, column name to join on in dfx.}
+
+\item{by.y}{character, column name to join on in dfy.}
+
+\item{myrror_object}{myrror object.}
+
+\item{output}{character, one of "full", "simple", "silent".}
 }
 \value{
 list object

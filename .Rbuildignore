@@ -5,3 +5,6 @@
 ^\.vscode$
 playground\.R
 
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

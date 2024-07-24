@@ -1,68 +1,54 @@
-compare_type_int <- function(x, y) {
-  if (is.integer(x) && is.integer(y)) {
-    return(TRUE)
-  } else {
-    return(FALSE)
-  }
-}
+# Overview of how the package works:
+# 1. no keys given - no differences ----
+mo1 <- create_myrror_object(survey_data, survey_data)
+
+## 1.1 workhorse function (myrror()) ----
+myrror(survey_data, survey_data)
+
+## 1.2 compare_type() ----
+compare_type(survey_data, survey_data)
+compare_type(myrror_object = mo1) # equivalent
+compare_type(myrror_object = mo1, output = "simple") # just the types.
 
 
-compare_type <- function(x       = NULL,
-                         y       = NULL,
-                         mo      = NULL,
-                         verbose = TRUE,
-                         output  = c("myrror_object", "simple")) {
-  if (!is.null(mo)) {
-    mo <- create_myrror_object(x,y)
-  }
+## 1.3 compare_values() ----
+compare_values(survey_data, survey_data)
+compare_values(myrror_object = mo1) # equivalent
+compare_values(myrror_object = mo1, output = "simple") # just the values.
 
-  mo <- compare_type_int(mo) # mo$compare_type
-
-  if (verbose) {
-    mo$compare_type
-    mo$print$compare_type <- TRUE
-    print(mo)
-  }
-
-  if (output == "myrror_object") {
-    return(invisible(mo))
-  } else if (output == "simple") {
-    return(invisible(mo$compare_type))
-  }
-
-}
+## extract_diff_values() ----
+extract_diff_values(survey_data, survey_data) # default = simple
+extract_diff_values(myrror_object = mo1) # equivalent
+extract_diff_values(myrror_object = mo1, output = "full") # just the differences.
 
 
-myrror <- function(x,y) {
-  if (!is.null(mo)) {
-    mo <- create_myrror_object(x,y)
-  }
-  if (compare_type = TRUE) {
-    mo <- compare_type_int(mo)
-  }
-  if (compare_values = TRUE) {
-    mo <- compare_values_int(mo)
-  }
-
-}
+## extract_diff_table() ----
+extract_diff_table(survey_data, survey_data) # default = simple
+extract_diff_table(myrror_object = mo1) # equivalent
+extract_diff_table(myrror_object = mo1, output = "full") # just the differences.
 
 
 
-print.myrror <- function(x) {
-  if (x$print$compare_type) {
-    cat("Type comparison: ", x$compare_type, "\n")
-  }
-  if (x$print$compare_values) {
-    cat("Value comparison: ", x$compare_values, "\n")
-  }
-}
+
+# 2. no keys given (but mistake) - differences (additional rows) ----
+
+myrror(survey_data, survey_data_4)
+
+myrror(survey_data, survey_data_4, by=c('country', 'year'))
+
+# no keys given - differences (different values) ----
+mo2 <- create_myrror_object(survey_data, survey_data_2)
+extract_diff_values(myrror_object = mo2) # ok
 
 
-print.myrror <- function(x) {
-  if (x$print$compare_type) {
-    cat("Type comparison: ", x$compare_type, "\n")
-  }
-  if (x$print$compare_values) {
-    cat("Value comparison: ", x$compare_values, "\n")
-  }
-}
+# keys given - no differences ----
+mo1k <- create_myrror_object(survey_data, survey_data, by=c('country', 'year'))
+extract_diff_values(myrror_object = mo1k) # ok
+
+# keys given - differences (additional rows)
+mo4k <- create_myrror_object(survey_data, survey_data_4, by=c('country', 'year'))
+extract_diff_values(myrror_object = mo4k) # ok
+
+# keys given - differences (different values)
+mo2k <- create_myrror_object(survey_data, survey_data_2, by=c('country', 'year'))
+extract_diff_values(myrror_object = mo2k) # issue

@@ -3,6 +3,9 @@
 #'
 #' @param dfx data.frame object
 #' @param dfy data.frame object
+#' @param by character, key to be used for dfx and dfy
+#' @param by.x character, key to be used for dfx
+#' @param by.y character, key to be used for dfy
 #' @param myrror_object myrror object
 #' @param output character, one of "full", "simple", "silent"
 #'
@@ -14,6 +17,9 @@
 #'
 compare_type <- function(dfx = NULL,
                          dfy = NULL,
+                         by = NULL,
+                         by.x = NULL,
+                         by.y = NULL,
                          myrror_object = NULL,
                          output = c("full", "simple", "silent")) {
   # 1. Arguments check ----
@@ -25,7 +31,11 @@ compare_type <- function(dfx = NULL,
       stop("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied.")
     }
 
-    myrror_object <- create_myrror_object(dfx = dfx, dfy = dfy)
+    myrror_object <- create_myrror_object(dfx = dfx,
+                                          dfy = dfy,
+                                          by = by,
+                                          by.x = by.x,
+                                          by.y = by.y)
     ## Re-assign names from within this call:
     myrror_object$name_dfx <- deparse(substitute(dfx))
     myrror_object$name_dfy <- deparse(substitute(dfy))
