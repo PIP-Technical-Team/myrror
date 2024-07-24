@@ -19,6 +19,12 @@ compare_type(
 
 \item{dfy}{data.frame object}
 
+\item{by}{character, key to be used for dfx and dfy}
+
+\item{by.x}{character, key to be used for dfx}
+
+\item{by.y}{character, key to be used for dfy}
+
 \item{myrror_object}{myrror object}
 
 \item{output}{character, one of "full", "simple", "silent"}

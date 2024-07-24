@@ -30,6 +30,9 @@ extract_diff_table(
 
 \item{output}{character, one of "simple", "full", "silent".}
 }
+\value{
+data.table object with all observations for which at least 1 value is different.
+}
 \description{
 Extract Different Values - User-facing - Table format
 Function to extract rows with different values between two dataframes.

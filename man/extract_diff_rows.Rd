@@ -41,4 +41,5 @@ Function to extract missing or new rows from comparing two dataframes.
 
 extract_diff_rows(iris, iris_var1)
 extract_diff_rows(survey_data, survey_data_2, by=c('country', 'year'))
+
 }
