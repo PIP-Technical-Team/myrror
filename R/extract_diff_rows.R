@@ -20,7 +20,7 @@
 #'
 #' extract_diff_rows(iris, iris_var1)
 #' extract_diff_rows(survey_data, survey_data_2, by=c('country', 'year'))
-#' @examples
+#'
 extract_diff_rows <- function(dfx = NULL,
                               dfy = NULL,
                               by = NULL,

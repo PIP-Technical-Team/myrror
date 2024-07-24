@@ -1,10 +1,13 @@
 # compare_values ---------------------------------------------------------------
 #' Compare values of matched datasets
 #'
-#' @param dfx data.frame object
-#' @param dfy data.frame object
-#' @param myrror_object myrror object
-#' @param output character, one of "full", "simple", "silent"
+#' @param dfx data.frame object.
+#' @param dfy data.frame object.
+#' @param by character, column name to join on.
+#' @param by.x character, column name to join on in dfx.
+#' @param by.y character, column name to join on in dfy.
+#' @param myrror_object myrror object.
+#' @param output character, one of "full", "simple", "silent".
 #'
 #' @return list object
 #' @export

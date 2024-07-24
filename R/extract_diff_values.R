@@ -112,7 +112,7 @@ extract_diff_values <- function(dfx = NULL,
 #' @param myrror_object myrror object.
 #' @param output character, one of "simple", "full", "silent".
 #'
-#' @return
+#' @return data.table object with all observations for which at least 1 value is different.
 #' @export
 #'
 #' @examples

@@ -7,6 +7,9 @@
 compare_values(
   dfx = NULL,
   dfy = NULL,
+  by = NULL,
+  by.x = NULL,
+  by.y = NULL,
   myrror_object = NULL,
   output = c("full", "simple", "silent")
 )

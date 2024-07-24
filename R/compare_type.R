@@ -3,6 +3,9 @@
 #'
 #' @param dfx data.frame object
 #' @param dfy data.frame object
+#' @param by character, key to be used for dfx and dfy
+#' @param by.x character, key to be used for dfx
+#' @param by.y character, key to be used for dfy
 #' @param myrror_object myrror object
 #' @param output character, one of "full", "simple", "silent"
 #'
