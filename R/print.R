@@ -35,6 +35,11 @@ print.myrror <- function(x, ...) {
   cli::cli_alert_warning("Non-shared rows in {name_dfx}: {x$datasets_report$dfx_char$nrow - shared_rows_n}.")
   cli::cli_alert_warning("Non-shared rows in {name_dfy}: {x$datasets_report$dfy_char$nrow - shared_rows_n}.")
 
+  if (x$datasets_report$dfx_char$nrow - shared_rows_n > 0 || x$datasets_report$dfy_char$nrow - shared_rows_n > 0) {
+    cli::cli_text("\n")
+    cli::cli_alert_info("Note: run {.fn extract_diff_rows} to extract the missing/new rows.")
+  }
+
 
   # Prompt the User to go ahead:
   response <- readline(prompt = "Press ENTER to continue or type 'q' to stop: ")

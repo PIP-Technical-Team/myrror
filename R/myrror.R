@@ -35,6 +35,9 @@ myrror <- function(dfx,
                                         by.y = by.y,
                                         factor_to_char = factor_to_char)
 
+  myrror_object$name_dfx <- deparse(substitute(dfx)) # Re-assign names from the call.
+  myrror_object$name_dfy <- deparse(substitute(dfy))
+
   # 2. Compare Type ----
   if (compare_type) {
     myrror_object <- compare_type(myrror_object = myrror_object,
