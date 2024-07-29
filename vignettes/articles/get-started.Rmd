@@ -23,10 +23,11 @@ It has three types of functions:
 
 2.  **Partial comparison**:
 
--   `compare_type()`: Compares the types of the columns in the two data frames.
--   `compare_values()`: Compares the values of the columns in the two data frames.
+  -   `compare_type()`: Compares the types of the columns in the two data frames.
+
+  -   `compare_values()`: Compares the values of the columns in the two data frames.
 
 3.  **Extract differences**: two functions which allow you to access the rows that differ in values between the two data frames.
 
--   `extract_diff_values()`: Returns the differences in a list format, one table per variable.
--   `extract_diff_table()`: Returns the differences in a table format, all variables.
+  -   `extract_diff_values()`: Returns the differences in a list format, one table per variable.
+  -   `extract_diff_table()`: Returns the differences in a table format, all variables.
