@@ -9,3 +9,4 @@ playground\.R
 ^docs$
 ^pkgdown$
 ^\.github$
+^vignettes/articles$

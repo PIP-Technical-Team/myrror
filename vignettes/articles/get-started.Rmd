@@ -1,0 +1,32 @@
+---
+title: "Get Started"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(myrror)
+```
+
+## Overview
+
+`myrror` is a package that helps you compare two data frames.
+
+It has three types of functions:
+
+1.  **Complete comparison**: `myrror()`, the "workhorse" function which will go through a complete comparison of two datastes.
+
+2.  **Partial comparison**:
+
+-   `compare_type()`: Compares the types of the columns in the two data frames.
+-   `compare_values()`: Compares the values of the columns in the two data frames.
+
+3.  **Extract differences**: two functions which allow you to access the rows that differ in values between the two data frames.
+
+-   `extract_diff_values()`: Returns the differences in a list format, one table per variable.
+-   `extract_diff_table()`: Returns the differences in a table format, all variables.

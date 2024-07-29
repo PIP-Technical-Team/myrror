@@ -5,7 +5,7 @@ The main function is `myrror()`.
 
 Auxiliary functions:
 
--   `compare_types()`: compares the type of shared columns.
+-   `compare_type()`: compares the type of shared columns.
 
 -   `compare_values()`: compares the values of shared columns.
 
