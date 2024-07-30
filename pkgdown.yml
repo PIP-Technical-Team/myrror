@@ -3,7 +3,7 @@ pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
   myrror: myrror.html
-last_built: 2024-07-30T13:07Z
+last_built: 2024-07-30T15:40Z
 urls:
   reference: https://giorgiacek.github.io/myrror/reference
   article: https://giorgiacek.github.io/myrror/articles
