@@ -1,4 +1,8 @@
 # myrror
+<!-- badges: start -->
+  [![R-CMD-check](https://github.com/giorgiacek/myrror/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/giorgiacek/myrror/actions/workflows/R-CMD-check.yaml)
+  <!-- badges: end -->
+
 
 A R package to compare data frames in R.
 
