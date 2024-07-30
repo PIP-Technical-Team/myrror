@@ -10,3 +10,4 @@ playground\.R
 ^pkgdown$
 ^\.github$
 ^vignettes/articles$
+^README\.Rmd$
