@@ -25,7 +25,8 @@ devtools::install_github("giocek/myrror")
 
 ## Usage
 
-The main function is `myrror()`.
+The main function is `myrror()`, which goes through each single step of
+the comparison:
 
 ``` r
 library(myrror)
@@ -92,7 +93,10 @@ myrror(iris, iris_var1)
 #> ✔ End of Myrror Report.
 ```
 
-Auxiliary functions:
+## Auxiliary functions
+
+The auxiliary functions go through a specific step of the comparison,
+and can be used independently:
 
 - `compare_type()`: compares the type of shared columns.
 
