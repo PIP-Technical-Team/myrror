@@ -2,8 +2,8 @@ pandoc: 3.1.11
 pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
-  articles/get-started: get-started.html
-last_built: 2024-07-29T17:51Z
+  myrror: myrror.html
+last_built: 2024-07-30T12:37Z
 urls:
   reference: https://giorgiacek.github.io/myrror/reference
   article: https://giorgiacek.github.io/myrror/articles
