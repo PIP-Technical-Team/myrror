@@ -44,7 +44,7 @@ It has three types of functions:
 
 For all of this functions, the results will be displayed interactively in the console. ALternatively, the user has the option to return the results as an object to use in further analysis.
 
-## Workflow Example
+## Workflow Example 1
 
 One use case of the package is to check whether two versions of the same dataset have any discrepancies. If so, the objective of `myrror` is to help the user to quickly identify which variables, values or observations are different.
 
@@ -81,3 +81,24 @@ extract_diff_values(survey_data, survey_data_2,
                     by=c("country", "year"))
 ```
 
+## Workflow Example 2
+
+Again, we want to compare two datasets: `survey_data` and `survey_data_4`:
+
+```{r}
+all.equal(survey_data, survey_data_4)
+```
+
+These two datasets have a different number of rows. `myrror()` can help by identifying the different number of rows, while also providing a complete report of the differences between the two datasets:
+
+```{r}
+myrror(survey_data, survey_data_4, 
+       by=c("country", "year")) 
+```
+
+The user can then extract the rows missing from one of the two datasets:
+```{r}
+extract_diff_rows(survey_data, survey_data_4, 
+                  by=c("country", "year"))
+
+```
