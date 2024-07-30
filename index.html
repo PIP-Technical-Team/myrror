@@ -50,7 +50,7 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>A R package to compare data frames in R. The assumption is that the user wants the two data frames to be the same. <code><a href="reference/myrror.html">myrror()</a></code> highlights the differences between values. When there is no difference, the comparison is “successful” and the function ack</p>
+<p>A R package to compare data frames in R. The assumption is that the user wants the two data frames to be the same. <code><a href="reference/myrror.html">myrror()</a></code> highlights the differences between values. When there is no difference, the comparison is “successful”.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -65,7 +65,67 @@
 <p>The main function is <code><a href="reference/myrror.html">myrror()</a></code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://giorgiacek.github.io/myrror/">myrror</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/myrror.html">myrror</a></span><span class="op">(</span><span class="va">iris</span>, <span class="va">iris_var1</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/myrror.html">myrror</a></span><span class="op">(</span><span class="va">iris</span>, <span class="va">iris_var1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── Myrror Report ───────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── General Information: ──</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; dfx: iris with 150 rows and 5 columns.</span></span>
+<span><span class="co">#&gt; dfy: iris_var1 with 155 rows and 6 columns.</span></span>
+<span><span class="co">#&gt; keys: rn.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── Note: comparison is done for shared columns and rows. ──</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ✔ Total shared columns (no keys): 5</span></span>
+<span><span class="co">#&gt; ! Non-shared columns in iris: 0 ()</span></span>
+<span><span class="co">#&gt; ! Non-shared columns in iris_var1: 1 (Petal.Area)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ✔ Total shared rows: 150</span></span>
+<span><span class="co">#&gt; ! Non-shared rows in iris: 0.</span></span>
+<span><span class="co">#&gt; ! Non-shared rows in iris_var1: 5.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ℹ Note: run `extract_diff_rows()` to extract the missing/new rows.</span></span>
+<span><span class="co">#&gt; Press ENTER to continue or type 'q' to stop:</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── 1. Shared Columns Class Comparison ──────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ✔ All shared columns have the same class.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Press ENTER to continue or type 'q' to stop:</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── 2. Shared Columns Values Comparison ─────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ! 1 shared column(s) have different value(s):</span></span>
+<span><span class="co">#&gt; ℹ Note: character-numeric comparison is allowed.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── Overview: ──</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; # A tibble: 1 × 4</span></span>
+<span><span class="co">#&gt;   variable     value_to_na na_to_value change_in_value</span></span>
+<span><span class="co">#&gt;   &lt;fct&gt;              &lt;int&gt;       &lt;int&gt;           &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 Sepal.Length           5           0               0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Press ENTER to continue or type 'q' to stop:</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── Value comparison: ──</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ! 1 shared column(s) have different value(s):</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── Sepal.Length</span></span>
+<span><span class="co">#&gt; # A tibble: 5 × 4</span></span>
+<span><span class="co">#&gt;   diff        indexes Sepal.Length.x Sepal.Length.y</span></span>
+<span><span class="co">#&gt; * &lt;chr&gt;       &lt;chr&gt;            &lt;dbl&gt;          &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 value_to_na 104                6.3             NA</span></span>
+<span><span class="co">#&gt; 2 value_to_na 125                6.7             NA</span></span>
+<span><span class="co">#&gt; 3 value_to_na 67                 5.6             NA</span></span>
+<span><span class="co">#&gt; 4 value_to_na 80                 5.7             NA</span></span>
+<span><span class="co">#&gt; 5 value_to_na 96                 5.7             NA</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Press ENTER to continue to next variable or type 'q' to stop:</span></span>
+<span><span class="co">#&gt; ℹ Note: run `extract_diff_values()` or `extract_diff_table()` to access the results in list or table format.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ✔ End of Myrror Report.</span></span></code></pre></div>
 <p>Auxiliary functions:</p>
 <ul>
 <li><p><code><a href="reference/compare_type.html">compare_type()</a></code>: compares the type of shared columns.</p></li>
@@ -73,6 +133,7 @@
 <li><p><code><a href="reference/extract_diff_values.html">extract_diff_values()</a></code>: extract the values that are different between two data frames, returns a list of data frames with the differences, one for each variable.</p></li>
 <li><p><code><a href="reference/extract_diff_table.html">extract_diff_table()</a></code>: extract the values that are different between two data frames, returns a data.table with all differences.</p></li>
 </ul>
+<p>See more in the <a href="https://giocek.github.io/myrror/articles/myrror.html" class="external-link">Get started</a> vignette.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">
