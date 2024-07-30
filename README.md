@@ -4,11 +4,27 @@
   <!-- badges: end -->
 
 
+
 A R package to compare data frames in R.
 
 The main function is `myrror()`.
 
-Auxiliary functions:
+``` r
+library(myrror)
+myrror(iris, iris_var1)
+
+```
+
+## Installation
+
+You can install the development version from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("giocek/myrror")
+```
+
+## Auxiliary functions:
 
 -   `compare_type()`: compares the type of shared columns.
 
