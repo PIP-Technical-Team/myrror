@@ -269,48 +269,10 @@ differ in values between the two data frames:</p>
 <p>These two datasets have a different number of rows.
 <code><a href="../reference/myrror.html">myrror()</a></code> can help by identifying the different number of
 rows, while also providing a complete report of the differences between
-the two datasets:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/myrror.html">myrror</a></span><span class="op">(</span><span class="va">survey_data</span>, <span class="va">survey_data_4</span>, </span>
-<span>       by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"country"</span>, <span class="st">"year"</span><span class="op">)</span><span class="op">)</span> </span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Myrror Report</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────────────────</span></span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ── <span style="font-weight: bold;">General Information:</span> ──</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;">dfx</span>: <span style="color: #00BB00;">survey_data</span> with 16 rows and 6 columns.</span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;">dfy</span>: <span style="color: #00BB00;">survey_data_4</span> with 12 rows and 6 columns.</span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;">keys</span>: .</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ── <span style="font-weight: bold;">Note: comparison is done for shared columns and rows.</span> ──</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Total shared columns (no keys): 4</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Non-shared columns in survey_data: 2 (country and year)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Non-shared columns in survey_data_4: 2 (country and year)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Total shared rows: 12</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Non-shared rows in survey_data: 4.</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Non-shared rows in survey_data_4: 0.</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Note: run `extract_diff_rows()` to extract the missing/new rows.</span></span>
-<span><span class="co">#&gt; Press ENTER to continue or type 'q' to stop:</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">1. Shared Columns Class Comparison</span> <span style="color: #00BBBB;">──────────────────────────────────────────</span></span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> All shared columns have the same class.</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Press ENTER to continue or type 'q' to stop:</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">2. Shared Columns Values Comparison</span> <span style="color: #00BBBB;">─────────────────────────────────────────</span></span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> All shared columns have the same values.</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Press ENTER to continue or type 'q' to stop:</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> All shared columns have the same values.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> End of Myrror Report.</span></span></code></pre></div>
+the two datasets.</p>
 <p>The user can then extract the rows missing from one of the two
 datasets:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/extract_diff_rows.html">extract_diff_rows</a></span><span class="op">(</span><span class="va">survey_data</span>, <span class="va">survey_data_4</span>, </span>
 <span>                  by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"country"</span>, <span class="st">"year"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    country  year variable1.x variable2.x variable3.x variable4.x variable1.y</span></span>
