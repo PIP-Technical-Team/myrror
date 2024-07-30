@@ -89,12 +89,7 @@ Again, we want to compare two datasets: `survey_data` and `survey_data_4`:
 all.equal(survey_data, survey_data_4)
 ```
 
-These two datasets have a different number of rows. `myrror()` can help by identifying the different number of rows, while also providing a complete report of the differences between the two datasets:
-
-```{r}
-myrror(survey_data, survey_data_4, 
-       by=c("country", "year")) 
-```
+These two datasets have a different number of rows. `myrror()` can help by identifying the different number of rows, while also providing a complete report of the differences between the two datasets.
 
 The user can then extract the rows missing from one of the two datasets:
 ```{r}
