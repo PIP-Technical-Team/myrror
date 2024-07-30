@@ -11,3 +11,5 @@ playground\.R
 ^\.github$
 ^vignettes/articles$
 ^README\.Rmd$
+^doc$
+^Meta$

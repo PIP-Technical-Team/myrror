@@ -9,7 +9,6 @@ editor_options:
   chunk_output_type: console
 ---
 
-
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -25,7 +24,7 @@ library(myrror)
 
 ## Overview
 
-`myrror` is a package that helps you compare two data frames.
+`{myrror}` is a package that helps you compare two data frames.
 
 It has three types of functions:
 
@@ -33,12 +32,52 @@ It has three types of functions:
 
 2.  **Partial comparison**:
 
--   `compare_type()`: Compares the types of the columns in the two data frames.
+    -   `compare_type()`: Compares the types of the columns in the two data frames.
 
--   `compare_values()`: Compares the values of the columns in the two data frames.
+    -   `compare_values()`: Compares the values of the columns in the two data frames.
 
 3.  **Extract differences**: two functions which allow you to access the rows that differ in values between the two data frames.
 
--   `extract_diff_values()`: Returns the differences in a list format, one table per variable.
--   `extract_diff_table()`: Returns the differences in a table format, all variables.
+    -   `extract_diff_values()`: Returns the differences in a list format, one table per variable.
+
+    -   `extract_diff_table()`: Returns the differences in a table format, all variables.
+
+For all of this functions, the results will be displayed interactively in the console. ALternatively, the user has the option to return the results as an object to use in further analysis.
+
+## Workflow Example
+
+One use case of the package is to check whether two versions of the same dataset have any discrepancies. If so, the objective of `myrror` is to help the user to quickly identify which variables, values or observations are different.
+
+In this example, we will compare one simulated dataset `survey_data` with a second version,
+`survey_data_2`. Each row is uniquely identified by two variables, `country` and `year`:
+
+```{r}
+survey_data
+```
+
+The second dataset is just a variation of the first one:
+```{r}
+survey_data_2
+```
+
+And it clearly has different values in `variable2`:
+```{r}
+all.equal(survey_data, survey_data_2)
+```
+
+`myrror()` helps the user diagnosing this difference. To get a complete report of the differences between `survey_data` and `survey_data_2` the user can run:
+
+```{r}
+myrror(survey_data, survey_data_2, 
+       by=c("country", "year")) 
+```
+
+By setting the `by` argument, the user can specify the unique keys that identify each row. This is useful when the user wants to compare two datasets that have the same structure but different order or number of rows.
+
+Once the user identifies the differences, they can use the `extract_diff_values()` function to extract the rows that differ in values between the two data frames:
+
+```{r}
+extract_diff_values(survey_data, survey_data_2, 
+                    by=c("country", "year"))
+```
 
