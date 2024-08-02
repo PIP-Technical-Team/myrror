@@ -5,7 +5,9 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/giorgiacek/myrror/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/giorgiacek/myrror/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/giorgiacek/myrror/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/giorgiacek/myrror/actions/workflows/R-CMD-check.yaml) 
+[![Codecov test coverage](https://codecov.io/gh/giorgiacek/myrror/branch/main/graph/badge.svg)](https://codecov.io/gh/giorgiacek/myrror)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
 
 A R package to compare data frames in R. The assumption is that the user

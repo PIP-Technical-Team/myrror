@@ -17,7 +17,12 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/giorgiacek/myrror/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/giorgiacek/myrror/actions/workflows/R-CMD-check.yaml) <!-- badges: end -->
+[![R-CMD-check](https://github.com/giorgiacek/myrror/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/giorgiacek/myrror/actions/workflows/R-CMD-check.yaml) 
+
+`r badger::badge_cran_checks("myrror")`
+`r lifecycle::badge('experimental')`
+
+<!-- badges: end -->
 
 A R package to compare data frames in R. 
 The assumption is that the user wants the two data frames to be the same. 
