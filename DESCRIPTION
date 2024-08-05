@@ -9,7 +9,6 @@ License: MIT + file LICENSE
 Depends: 
     R (>= 2.10)
 Imports:
-    badger,
     cli (>= 3.6.2),
     data.table (>= 1.15.4),
     collapse,
