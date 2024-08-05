@@ -63,6 +63,7 @@ compare_values <- function(dfx = NULL,
   ### else if not empty, then create a tibble with the results.
   compare_values_df <- purrr::map(compare_values_list, ~.x|>fselect(diff, count)) |>
     rowbind(idcol = "variable") |>
+    fmutate(diff = as.factor(diff))|>
     pivot(ids = 1, how = "wider", names = "diff")|>
     tidyr::as_tibble()
 

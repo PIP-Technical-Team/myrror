@@ -67,12 +67,16 @@ check_set_by <- function(by = NULL,
   }
 
 
-  # Check and set by.x and by.y based on the presence of by
-  if (!is.null(by)) {
-
+  # Handle named vector for 'by'
+  if (!is.null(by) && !is.null(names(by)) && any(nchar(names(by)) > 0)) {
+    # Split the named 'by' into 'by.x' and 'by.y'
+    by.x <- names(by)
+    by.y <- as.character(by)
+  } else if (!is.null(by)) {
     by.x <- by.y <- by
+  }
 
-  } else if (is.null(by.x) || is.null(by.y)) {
+ if (is.null(by.x) || is.null(by.y)) {
     if (is.null(by.x) && !is.null(by.y)) {
       stop("Argument by.x is NULL. If using by.y, by.x also needs to be specified.")
     }

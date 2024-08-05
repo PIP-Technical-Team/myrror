@@ -92,9 +92,17 @@ create_myrror_object <- function(dfx,
   # - use collapse to merge and keep matching and non-matching observations.
 
   ## Merge using Joyn
+
+  ### Create dynamic 'by' argument for joyn
+  by_joyn_arg <- setNames(set_by$by.x, set_by$by.y)
+  by_joyn_arg <- sapply(names(by_joyn_arg), function(n) paste(by_joyn_arg[n], n,
+                                                              sep = " = "))
+  by_joyn_arg <- paste(unname(by_joyn_arg))
+
+  ### Merge
   merged_data <- joyn::joyn(prepared_dfx,
                       prepared_dfy,
-                      by = stats::setNames(set_by$by.x, set_by$by.y),
+                      by = c(by_joyn_arg),
                       match_type = c("1:1"),
                       keep = "full",
                       keep_common_vars = TRUE,
