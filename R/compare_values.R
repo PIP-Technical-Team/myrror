@@ -22,7 +22,8 @@ compare_values <- function(dfx = NULL,
                            by.x = NULL,
                            by.y = NULL,
                            myrror_object = NULL,
-                           output = c("full", "simple", "silent")) {
+                           output = c("full", "simple", "silent"),
+                           interactive = TRUE) {
 
   # 1. Arguments check ----
   output <- match.arg(output)
@@ -71,7 +72,10 @@ compare_values <- function(dfx = NULL,
 
   }
 
-  # 4. Output ----
+  # 4. Save whether interactive or not ----
+  myrror_object$interactive <- interactive
+
+  # 5. Output ----
   ## Handle the output type
   switch(output,
          full = {

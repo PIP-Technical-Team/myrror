@@ -48,11 +48,13 @@ print.myrror <- function(x, ...) {
   }
 
 
-  # Prompt the User to go ahead:
-  response <- readline(prompt = "Press ENTER to continue or type 'q' to stop: ")
-  if (tolower(response) == "q") {
-    cli::cli_alert_success("End of Myrror Report")
-    return(invisible(x))
+  # Prompt the User to go ahead if x$interactive == TRUE:
+  if (x$interactive) {
+    response <- readline(prompt = "Press ENTER to continue or type 'q' to stop: ")
+    if (tolower(response) == "q") {
+      cli::cli_alert_success("End of Myrror Report")
+      return(invisible(x))
+    }
   }
 
 
@@ -79,11 +81,13 @@ print.myrror <- function(x, ...) {
 
   }
 
-  ## Prompt the User to go ahead:
-  response <- readline(prompt = "Press ENTER to continue or type 'q' to stop: ")
-  if (tolower(response) == "q") {
-    cli::cli_alert_success("End of Myrror Report")
-    return(invisible(x))
+  # Prompt the User to go ahead if x$interactive == TRUE:
+  if (x$interactive) {
+    response <- readline(prompt = "Press ENTER to continue or type 'q' to stop: ")
+    if (tolower(response) == "q") {
+      cli::cli_alert_success("End of Myrror Report")
+      return(invisible(x))
+    }
   }
 
   # 3. Compare Values ----
@@ -108,11 +112,13 @@ print.myrror <- function(x, ...) {
 
   }
 
-  ## Prompt the User to go ahead:
-  response <- readline(prompt = "Press ENTER to continue or type 'q' to stop: ")
-  if (tolower(response) == "q") {
-    cli::cli_alert_success("End of Myrror Report")
-    return(invisible(x))
+  # Prompt the User to go ahead if x$interactive == TRUE:
+  if (x$interactive) {
+    response <- readline(prompt = "Press ENTER to continue or type 'q' to stop: ")
+    if (tolower(response) == "q") {
+      cli::cli_alert_success("End of Myrror Report")
+      return(invisible(x))
+    }
   }
 
   # 4. Extract different values (only diff_list) ----
@@ -133,13 +139,14 @@ print.myrror <- function(x, ...) {
         print(x$extract_diff_values$diff_list[[variable]])
         cli::cli_text("\n")
 
-        # Prompt the user to continue or quit
-        response <- readline(prompt = "Press ENTER to continue to next variable or type 'q' to stop: ")
-        if (tolower(response) == "q") {
-          cli::cli_alert_success("End of Myrror Report")
-          return(invisible())  # Exit the function and return invisibly
+        # Prompt the User to go ahead if x$interactive == TRUE:
+        if (x$interactive) {
+          response <- readline(prompt = "Press ENTER to continue or type 'q' to stop: ")
+          if (tolower(response) == "q") {
+            cli::cli_alert_success("End of Myrror Report")
+            return(invisible(x))
+          }
         }
-      }
 
 
       cli::cli_alert_info("Note: run {.fn extract_diff_values} or {.fn extract_diff_table} to access the results in list or table format.")
@@ -153,4 +160,5 @@ print.myrror <- function(x, ...) {
   # 5. Exit ----
   cli::cli_alert_success("End of Myrror Report.")
   return(invisible(x))
+  }
 }

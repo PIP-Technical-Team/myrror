@@ -25,9 +25,10 @@ myrror <- function(dfx,
                    compare_type = TRUE,
                    compare_values = TRUE,
                    extract_diff_values = TRUE,
-                   factor_to_char = TRUE) {
+                   factor_to_char = TRUE,
+                   interactive = TRUE) {
 
- # 1. Create myrror object
+ # 1. Create myrror object ----
   myrror_object <- create_myrror_object(dfx = dfx,
                                         dfy = dfy,
                                         by = by,
@@ -56,7 +57,10 @@ myrror <- function(dfx,
                                          output = "silent")
   }
 
-  # 5. Return myrror_object ----
+  # 5. Save whether interactive or not ----
+  myrror_object$interactive <- interactive
+
+  # 6. Return myrror_object ----
   return(myrror_object)
 
 }
