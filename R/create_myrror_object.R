@@ -68,6 +68,7 @@ create_myrror_object <- function(dfx,
   # - make into data.table.
   # - make into valid column names.
   # - check that by variable are in the colnames of the given dataset.
+  # - check whether the by variables uniquely identify the dataset.
   # - factor to character (keep track of this), default = TRUE.
 
   prepared_dfx <- prepare_df(dfx,
@@ -89,7 +90,8 @@ create_myrror_object <- function(dfx,
   }
 
   # 5. Merge ----
-  # - use collapse to merge and keep matching and non-matching observations.
+  # - identify
+  # - use joyn to merge and keep matching and non-matching observations.
 
   ## Merge using Joyn
 
@@ -109,6 +111,8 @@ create_myrror_object <- function(dfx,
                       update_values = FALSE,
                       update_NAs = FALSE,
                       verbose = FALSE)
+
+
 
 
   ## Adjust rn and row_index:

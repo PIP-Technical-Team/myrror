@@ -130,3 +130,5 @@ test_that("Error handling in input conditions", {
   expect_error(create_myrror_object(data.frame(), data.frame()), "cannot be empty")
 })
 
+
+
