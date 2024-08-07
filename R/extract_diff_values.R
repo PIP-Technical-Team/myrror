@@ -48,19 +48,25 @@ extract_diff_values <- function(dfx = NULL,
 
   # 2. Create object if not supplied ----
   if (is.null(myrror_object)) {
-    if (is.null(dfx) || is.null(dfy)) {
-      stop("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied.")
+    # Attempt to retrieve the myrror object from the package-specific environment
+    myrror_object <- get("last_myrror_object", envir = .myrror_env, inherits = FALSE)
+
+    if (is.null(myrror_object)) {
+      if (is.null(dfx) || is.null(dfy)) {
+        stop("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied.")
+      }
+
+      myrror_object <- create_myrror_object(dfx = dfx,
+                                            dfy = dfy,
+                                            by = by,
+                                            by.x = by.x,
+                                            by.y = by.y)
+
+      ## Re-assign names from within this call:
+      myrror_object$name_dfx <- deparse(substitute(dfx))
+      myrror_object$name_dfy <- deparse(substitute(dfy))
+
     }
-
-    myrror_object <- create_myrror_object(dfx = dfx,
-                                          dfy = dfy,
-                                          by = by,
-                                          by.x = by.x,
-                                          by.y = by.y)
-
-    ## Re-assign names from within this call:
-    myrror_object$name_dfx <- deparse(substitute(dfx))
-    myrror_object$name_dfy <- deparse(substitute(dfy))
 
   }
 
@@ -133,21 +139,30 @@ extract_diff_table <- function(dfx = NULL,
 
   # 2. Create object if not supplied ----
   if (is.null(myrror_object)) {
-    if (is.null(dfx) || is.null(dfy)) {
-      stop("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied.")
+    # Attempt to retrieve the myrror object from the package-specific environment
+    myrror_object <- get("last_myrror_object", envir = .myrror_env, inherits = FALSE)
+
+    if (is.null(myrror_object)) {
+      if (is.null(dfx) || is.null(dfy)) {
+        stop("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied.")
+      }
+
+      myrror_object <- create_myrror_object(dfx = dfx,
+                                            dfy = dfy,
+                                            by = by,
+                                            by.x = by.x,
+                                            by.y = by.y)
+
+      ## Re-assign names from within this call:
+      myrror_object$name_dfx <- deparse(substitute(dfx))
+      myrror_object$name_dfy <- deparse(substitute(dfy))
+
     }
 
-    myrror_object <- create_myrror_object(dfx = dfx,
-                                          dfy = dfy,
-                                          by = by,
-                                          by.x = by.x,
-                                          by.y = by.y)
-
-    ## Re-assign names from within this call:
-    myrror_object$name_dfx <- deparse(substitute(dfx))
-    myrror_object$name_dfy <- deparse(substitute(dfy))
-
   }
+
+
+
 
   # 3. Run extract_values_int() ----
   myrror_object$extract_diff_values <- extract_diff_int(myrror_object)

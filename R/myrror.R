@@ -60,6 +60,9 @@ myrror <- function(dfx,
   # 5. Save whether interactive or not ----
   myrror_object$interactive <- interactive
 
+  # 6. Save to package environment ----
+  assign("last_myrror_object", myrror_object, envir = .myrror_env)
+
   # 6. Return myrror_object ----
   return(myrror_object)
 
