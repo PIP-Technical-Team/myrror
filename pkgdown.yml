@@ -2,8 +2,9 @@ pandoc: 3.1.11
 pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
+  articles/large_survey: large_survey.html
   myrror: myrror.html
-last_built: 2024-08-07T18:18Z
+last_built: 2024-08-08T17:15Z
 urls:
   reference: https://giorgiacek.github.io/myrror/reference
   article: https://giorgiacek.github.io/myrror/articles
