@@ -350,4 +350,25 @@ pair_columns <- function(merged_data_report,
 
 }
 
+# 5. Compare with tolerance ----
+#' Are these two values equal with tolerance applied?
+#'
+#' @param x numeric
+#' @param y numeric
+#' @param tolerance numeric
+#' @return logical
+#'
+equal_with_tolerance <- function(x, y, tolerance = 1e-7) {
+
+  # check if x and y are numeric:
+  if (is.numeric(x) & is.numeric(y)) {
+    abs_diff <- abs(x - y)
+    return(abs_diff <= tolerance)
+  }
+
+  # Else compare two non-numeric without tolerance:
+  return(x == y)
+
+}
+
 
