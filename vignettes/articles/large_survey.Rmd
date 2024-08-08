@@ -2,6 +2,8 @@
 title: "Workflow for Large Surveys"
 ---
 
+I need to find a large survey to use as example!
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -10,8 +12,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(myrror)
-library(tictoc)
+
 ```
 
 ```{r data}
