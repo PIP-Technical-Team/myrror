@@ -168,7 +168,8 @@ create_myrror_object <- function(dfx,
       compare_type = FALSE,
       compare_values = FALSE,
       extract_diff_values = FALSE
-    )
+    ),
+    interactive = TRUE
   )
 
   # 8. Return myrror object (invisible) ----

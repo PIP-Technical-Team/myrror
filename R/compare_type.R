@@ -8,6 +8,7 @@
 #' @param by.y character, key to be used for dfy
 #' @param myrror_object myrror object
 #' @param output character, one of "full", "simple", "silent"
+#' @param interactive TRUE or FALSE, default to TRUE
 #'
 #' @return list object
 #' @export

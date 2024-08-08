@@ -58,9 +58,11 @@ test_that("compare_values() returns an invisible myrror_object if silent", {
 
 
   mod <- compare_values(survey_data_2_mod, survey_data, by=c("COUNTRY" = "country",
-                                                             "YEAR" = "year"), output = "silent")
+                                                             "YEAR" = "year"),
+                        output = "simple")
 
-  non_mod <- compare_values(survey_data_2, survey_data, by=c("country", "year"), output = "silent")
+  non_mod <- compare_values(survey_data_2, survey_data, by=c("country", "year"),
+                            output = "simple")
 
   expect_equal(mod, non_mod)
 

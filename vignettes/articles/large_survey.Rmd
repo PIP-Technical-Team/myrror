@@ -1,0 +1,30 @@
+---
+title: "Workflow for Large Surveys"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(myrror)
+library(pipfaker)
+library(tictoc)
+```
+
+```{r data}
+large_survey_data <- pipfaker::fk_micro
+large_survey_data_mod <- large_survey_data |>
+  fmutate(welfare = welfare + 0.1)
+```
+
+```{r time}
+
+myrror(large_survey_data, large_survey_data_mod, 
+       by=c("country", "year"))
+
+
+```

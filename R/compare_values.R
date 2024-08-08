@@ -8,6 +8,8 @@
 #' @param by.y character, column name to join on in dfy.
 #' @param myrror_object myrror object.
 #' @param output character, one of "full", "simple", "silent".
+#' @param interactive logical, default to TRUE.
+#' @param tolerance numeric, default to 1e-7.
 #'
 #' @return list object
 #' @export

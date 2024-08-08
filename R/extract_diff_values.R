@@ -26,6 +26,7 @@
 #' @param by.y character, key to be used for dfy.
 #' @param myrror_object myrror object.
 #' @param output character, one of "simple", "full", "silent".
+#' @param tolerance numeric, default to 1e-7.
 #'
 #' @return list object with two items: diff_list and diff_table
 #' @export
@@ -41,21 +42,16 @@ extract_diff_values <- function(dfx = NULL,
                                 by.x = NULL,
                                 by.y = NULL,
                                 myrror_object = NULL,
-                                output = c("simple", "full", "silent")) {
+                                output = c("simple", "full", "silent"),
+                                tolerance = 1e-7) {
 
   # 1. Arguments check ----
   output <- match.arg(output)
 
   # 2. Create object if not supplied ----
   if (is.null(myrror_object)) {
-    # Attempt to retrieve the myrror object from the package-specific environment
-    myrror_object <- get("last_myrror_object", envir = .myrror_env, inherits = FALSE)
-
-    if (is.null(myrror_object)) {
-      if (is.null(dfx) || is.null(dfy)) {
-        stop("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied.")
-      }
-
+    # First check if dfx and dfy are provided:
+    if (!is.null(dfx) && !is.null(dfy)) {
       myrror_object <- create_myrror_object(dfx = dfx,
                                             dfy = dfy,
                                             by = by,
@@ -66,12 +62,21 @@ extract_diff_values <- function(dfx = NULL,
       myrror_object$name_dfx <- deparse(substitute(dfx))
       myrror_object$name_dfy <- deparse(substitute(dfy))
 
-    }
+    } else {
 
+      # If dfx and dfy are not provided, try retrieving a myrror_object from the environment:
+      myrror_object <- get("last_myrror_object", envir = .myrror_env, inherits = FALSE)
+
+      # If still NULL after trying to retrieve, throw an error
+      if (is.null(myrror_object)) {
+        stop("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied and no existing myrror object is available.")
+      }
+    }
   }
 
   # 3. Run extract_values_int() ----
-  myrror_object$extract_diff_values <- extract_diff_int(myrror_object)
+  myrror_object$extract_diff_values <- extract_diff_int(myrror_object,
+                                                        tolerance = tolerance)
 
   # Check if results are empty and adjust accordingly
   if(length(myrror_object$extract_diff_values) == 0) {
@@ -117,6 +122,7 @@ extract_diff_values <- function(dfx = NULL,
 #' @param by.y character, key to be used for dfy.
 #' @param myrror_object myrror object.
 #' @param output character, one of "simple", "full", "silent".
+#' @param tolerance numeric, default to 1e-7.
 #'
 #' @return data.table object with all observations for which at least 1 value is different.
 #' @export
@@ -132,21 +138,16 @@ extract_diff_table <- function(dfx = NULL,
                                by.x = NULL,
                                by.y = NULL,
                                myrror_object = NULL,
-                               output = c("simple", "full", "silent")) {
+                               output = c("simple", "full", "silent"),
+                               tolerance = 1e-7) {
 
   # 1. Arguments check ----
   output <- match.arg(output)
 
   # 2. Create object if not supplied ----
   if (is.null(myrror_object)) {
-    # Attempt to retrieve the myrror object from the package-specific environment
-    myrror_object <- get("last_myrror_object", envir = .myrror_env, inherits = FALSE)
-
-    if (is.null(myrror_object)) {
-      if (is.null(dfx) || is.null(dfy)) {
-        stop("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied.")
-      }
-
+    # First check if dfx and dfy are provided:
+    if (!is.null(dfx) && !is.null(dfy)) {
       myrror_object <- create_myrror_object(dfx = dfx,
                                             dfy = dfy,
                                             by = by,
@@ -157,15 +158,25 @@ extract_diff_table <- function(dfx = NULL,
       myrror_object$name_dfx <- deparse(substitute(dfx))
       myrror_object$name_dfy <- deparse(substitute(dfy))
 
-    }
+    } else {
 
+      # If dfx and dfy are not provided, try retrieving a myrror_object from the environment:
+      myrror_object <- get("last_myrror_object", envir = .myrror_env, inherits = FALSE)
+
+      # If still NULL after trying to retrieve, throw an error
+      if (is.null(myrror_object)) {
+        stop("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied and no existing myrror object is available.")
+      }
+    }
   }
 
 
 
 
+
   # 3. Run extract_values_int() ----
-  myrror_object$extract_diff_values <- extract_diff_int(myrror_object)
+  myrror_object$extract_diff_values <- extract_diff_int(myrror_object,
+                                                        tolerance = tolerance)
 
   # Check if results are empty and adjust accordingly
   if(length(myrror_object$extract_diff_values) == 0) {
@@ -201,6 +212,7 @@ extract_diff_table <- function(dfx = NULL,
 #' Extract Different Values - Internal
 #'
 #' @param myrror_object myrror object
+#' @param tolerance numeric, default to 1e-7
 #'
 #' @return list with two elements:
 #' 1. diff_list
@@ -208,10 +220,13 @@ extract_diff_table <- function(dfx = NULL,
 #'
 #'
 #'
-extract_diff_int <- function(myrror_object = NULL) {
+extract_diff_int <- function(myrror_object = NULL,
+                             tolerance = NULL) {
 
   # 1. Get indexes and data ----
-  compare_values_object <- compare_values_int(myrror_object = myrror_object)
+  compare_values_object <- compare_values_int(myrror_object = myrror_object,
+                                              tolerance = tolerance)
+
   matched_data <- myrror_object$merged_data_report$matched_data
 
   # Check if results are empty and adjust accordingly
