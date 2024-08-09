@@ -7,6 +7,7 @@
 #' @param by.x character, key to be used for dfx
 #' @param by.y character, key to be used for dfy
 #' @param factor_to_char TRUE or FALSE, default to TRUE.
+#' @param verbose logical: If `TRUE` additional information will be displayed
 #'
 #' @return object of class myrror_object
 #'
@@ -17,7 +18,8 @@ create_myrror_object <- function(dfx,
                    by = NULL,
                    by.x = NULL,
                    by.y = NULL,
-                   factor_to_char = TRUE) {
+                   factor_to_char = TRUE,
+                   verbose = getOption("myrror.verbose")) {
 
 
    # 0. Store original datasets and orginal dataset characteristics ----

@@ -12,7 +12,8 @@ compare_type(
   by.x = NULL,
   by.y = NULL,
   output = c("full", "simple", "silent"),
-  interactive = TRUE
+  interactive = TRUE,
+  verbose = getOption("myrror.verbose")
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ compare_type(
 \item{output}{character, one of "full", "simple", "silent"}
 
 \item{interactive}{TRUE or FALSE, default to TRUE}
+
+\item{verbose}{logical: If \code{TRUE} additional information will be displayed}
 }
 \value{
 list object

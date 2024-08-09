@@ -9,6 +9,7 @@
 #' @param myrror_object myrror object
 #' @param output character, one of "full", "simple", "silent"
 #' @param interactive TRUE or FALSE, default to TRUE
+#' @param verbose logical: If `TRUE` additional information will be displayed
 #'
 #' @return list object
 #' @export
@@ -23,26 +24,14 @@ compare_type <- function(dfx = NULL,
                          by.x = NULL,
                          by.y = NULL,
                          output = c("full", "simple", "silent"),
-                         interactive = TRUE) {
+                         interactive = TRUE,
+                         verbose = getOption("myrror.verbose")
+                         ){
   # 1. Arguments check ----
   output <- match.arg(output)
 
   # 2. Create object if not supplied ----
-  if (is.null(myrror_object)) {
-    if (is.null(dfx) || is.null(dfy)) {
-      cli::cli_abort("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied.")
-    }
-
-    myrror_object <- create_myrror_object(dfx = dfx,
-                                          dfy = dfy,
-                                          by = by,
-                                          by.x = by.x,
-                                          by.y = by.y)
-    ## Re-assign names from within this call:
-    myrror_object$name_dfx <- deparse(substitute(dfx))
-    myrror_object$name_dfy <- deparse(substitute(dfy))
-
-  }
+  myrror_object <- get_correct_myrror_object(myrror_object, dfx, dfy, verbose)
 
   # 3. Run compare_type_int() and update myrror_object ----
   myrror_object$compare_type <- compare_type_int(myrror_object)

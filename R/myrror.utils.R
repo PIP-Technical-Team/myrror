@@ -371,3 +371,51 @@ equal_with_tolerance <- function(x, y, tolerance = 1e-7) {
 }
 
 
+
+
+
+
+#' Get correct myrror object
+#'
+#' @description It checks all the arguments parsed to parent function. If
+#' `myrror_object` if found, then it will be used. If not, it checks if both
+#' databases are NULL. If they are it looks for the the last myrror object. If
+#' nothing available, then error. Finally, it checks for the availability of
+#' both datasets. If they are available, then create `myrror_object`
+#'
+#' @inheritParams create_myrror_object
+#'
+#' @return myrror object
+#' @keywords internal
+get_correct_myrror_object <- function(myrror_object, dfx, dfy, verbose) {
+
+  abort_msg <- "You need to provide a {.arg myrror_object}, or two datasets
+                         ({.arg {c('dfx', 'dfy')}}). Alternatively, you need to execute
+                         {.pkg myrror} properly at least once to make use of the last
+                         {.field myrror} object saved in the myrror environment"
+
+  if (is.null(myrror_object)) {
+    if (is.null(dfx) && is.null(dfy)) {
+      if (rlang::env_has(.myrror_env, "last_myrror_object")) {
+        myrror_object <- rlang::env_get(.myrror_env, "last_myrror_object")
+        if (verbose) {
+          cli::cli_inform('Last myrror object used for comparison')
+        }
+      } else {
+        cli::cli_abort(abort_msg)
+      }
+    } else if (!is.null(dfx) && !is.null(dfy)) {
+      myrror_object <- create_myrror_object(dfx = dfx,
+                                            dfy = dfy,
+                                            by = by,
+                                            by.x = by.x,
+                                            by.y = by.y)
+      ## Re-assign names from within this call:
+      myrror_object$name_dfx <- deparse(substitute(dfx))
+      myrror_object$name_dfy <- deparse(substitute(dfy))
+    } else {
+      cli::cli_abort(abort_msg)
+    }
+  }
+  myrror_object
+}
