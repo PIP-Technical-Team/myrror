@@ -24,8 +24,11 @@ create_myrror_object <- function(dfx,
   original_call <- match.call()
   dfx_name <- deparse(substitute(dfx))
   dfy_name <- deparse(substitute(dfy))
-  original_dfx <- dfx
-  original_dfy <- dfy
+
+  # If these are data.tables, it is necesary to create a hard copy.Otherwise,
+  # the same object will be bound to two different names.
+  original_dfx <- copy(dfx)
+  original_dfy <- copy(dfy)
 
   # 1. Check dfx and dfy arguments ----
   # - df1 and df2 needs to be data.frames structures and not empty.
