@@ -5,9 +5,9 @@
 \title{Compare type of variables}
 \usage{
 compare_type(
-  myrror_object = NULL,
   dfx = NULL,
   dfy = NULL,
+  myrror_object = NULL,
   by = NULL,
   by.x = NULL,
   by.y = NULL,
@@ -16,11 +16,11 @@ compare_type(
 )
 }
 \arguments{
-\item{myrror_object}{myrror object}
-
 \item{dfx}{data.frame object}
 
 \item{dfy}{data.frame object}
+
+\item{myrror_object}{myrror object}
 
 \item{by}{character, key to be used for dfx and dfy}
 
