@@ -99,8 +99,8 @@ create_myrror_object <- function(dfx,
   ## Merge using Joyn
 
   ### Create dynamic 'by' argument for joyn
-  by_join_arg <- set_by$by.x
-  names(by_join_arg) <- set_by$by.y
+  by_joyn_arg <- set_by$by.x
+  names(by_joyn_arg) <- set_by$by.y
 
   by_joyn_arg <- sapply(names(by_joyn_arg), function(n) paste(by_joyn_arg[n], n,
                                                               sep = " = "))

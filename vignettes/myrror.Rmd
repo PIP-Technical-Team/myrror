@@ -69,7 +69,7 @@ all.equal(survey_data, survey_data_2)
 
 ```{r}
 myrror(survey_data, survey_data_2, 
-       by=c("country", "year")) 
+       by = c("country", "year")) 
 ```
 
 By setting the `by` argument, the user can specify the unique keys that identify each row. This is useful when the user wants to compare two datasets that have the same structure but different order or number of rows.
