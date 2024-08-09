@@ -6,8 +6,8 @@
   toset <- !(names(op.myrror) %in% names(op))
 
   #store them in .myrrorenv
-  # rlang::env_bind(.myrror_env, op.myrror = op.myrror)
-  assign("op.myrror", op.myrror, envir = .myrror_env)
+  rlang::env_bind(.myrror_env, op.myrror = op.myrror)
+  # assign("op.myrror", op.myrror, envir = .myrror_env)
 
   if(any(toset)) {
     options(op.myrror[toset])
