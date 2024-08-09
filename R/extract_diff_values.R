@@ -221,13 +221,15 @@ extract_diff_table <- function(dfx = NULL,
 #'
 #'
 extract_diff_int <- function(myrror_object = NULL,
-                             tolerance = NULL) {
+                             tolerance = 1e-07) {
 
   # 1. Get indexes and data ----
   compare_values_object <- compare_values_int(myrror_object = myrror_object,
                                               tolerance = tolerance)
 
   matched_data <- myrror_object$merged_data_report$matched_data
+
+  keys <- key(matched_data)
 
   # Check if results are empty and adjust accordingly
   if(length(compare_values_object) == 0) {
@@ -251,10 +253,12 @@ extract_diff_int <- function(myrror_object = NULL,
       tidyr::unnest(cols = c("indexes")) |>
       fmutate(indexes = as.character(indexes)) |>
       collapse::join(matched_data |>
-                       collapse::fselect(c("rn", column_x, column_y)),
+                       collapse::fselect(c("rn", keys, column_x, column_y)),
                      on = c("indexes" = "rn"),
                      how = "left",
-                     verbose = 0)
+                     verbose = 0) |>
+      collapse::fselect(c("diff", "indexes", keys, column_x, column_y)) |>
+      collapse::roworderv(c(keys))
 
   })
 

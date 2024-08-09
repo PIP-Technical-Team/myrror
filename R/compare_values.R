@@ -79,7 +79,10 @@ compare_values <- function(dfx = NULL,
   # 4. Save whether interactive or not ----
   myrror_object$interactive <- interactive
 
-  # 5. Output ----
+  # 5. Save to package environment ----
+  assign("last_myrror_object", myrror_object, envir = .myrror_env)
+
+  # 6. Output ----
   ## Handle the output type
   switch(output,
          full = {
@@ -151,6 +154,7 @@ get_value_to_na <- function(matched_data,
     col_x <- pair[[1]]
     col_y <- pair[[2]]
 
+
     matched_data |>
       fselect(c(col_x, col_y, "row_index")) |>
       fsubset(!is.na(get(col_x)) & is.na(get(col_y))) |>
@@ -174,6 +178,7 @@ get_na_to_value <- function(matched_data,
 
     col_x <- pair[[1]]
     col_y <- pair[[2]]
+
 
     matched_data |>
       fselect(c(col_x, col_y, "row_index")) |>

@@ -50,9 +50,11 @@ compare_type <- function(dfx = NULL,
   # 4. Save whether interactive or not ----
   myrror_object$interactive <- interactive
 
+  # 5. Save to package environment ----
+  assign("last_myrror_object", myrror_object, envir = .myrror_env)
 
 
-  # 5. Output ----
+  # 6. Output ----
 
   ## Handle the output type
   switch(output,
