@@ -63,16 +63,16 @@ extract_diff_values <- function(dfx = NULL,
       myrror_object$name_dfy <- deparse(substitute(dfy))
 
     } else {
-
-      # If dfx and dfy are not provided, try retrieving a myrror_object from the environment:
-      myrror_object <- get("last_myrror_object", envir = .myrror_env, inherits = FALSE)
-
-      # If still NULL after trying to retrieve, throw an error
-      if (is.null(myrror_object)) {
+      # If dfx and dfy are not provided, check if a myrror_object exists in the environment:
+      if (exists("last_myrror_object", envir = .myrror_env, inherits = FALSE)) {
+        myrror_object <- get("last_myrror_object", envir = .myrror_env, inherits = FALSE)
+      } else {
+        # If no myrror_object is available in the environment, throw an error
         stop("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied and no existing myrror object is available.")
       }
     }
   }
+
 
   # 3. Run extract_values_int() ----
   myrror_object$extract_diff_values <- extract_diff_int(myrror_object,
@@ -82,9 +82,9 @@ extract_diff_values <- function(dfx = NULL,
   if(length(myrror_object$extract_diff_values) == 0) {
     if(output == "simple") {
       return(NULL)  # Return NULL for "simple" if no differences are found
-    } else {
-      myrror_object$extract_diff_values <- list(message = "No differences found between the variables.")
-    }
+    } #else {
+    #myrror_object$extract_diff_values <- list(message = "No differences found between the variables.")
+    #} # need to think about whether I want to keep this option instead of printing out the mo.
   }
 
   # 4. Output ----
@@ -159,16 +159,16 @@ extract_diff_table <- function(dfx = NULL,
       myrror_object$name_dfy <- deparse(substitute(dfy))
 
     } else {
-
-      # If dfx and dfy are not provided, try retrieving a myrror_object from the environment:
-      myrror_object <- get("last_myrror_object", envir = .myrror_env, inherits = FALSE)
-
-      # If still NULL after trying to retrieve, throw an error
-      if (is.null(myrror_object)) {
+      # If dfx and dfy are not provided, check if a myrror_object exists in the environment:
+      if (exists("last_myrror_object", envir = .myrror_env, inherits = FALSE)) {
+        myrror_object <- get("last_myrror_object", envir = .myrror_env, inherits = FALSE)
+      } else {
+        # If no myrror_object is available in the environment, throw an error
         stop("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied and no existing myrror object is available.")
       }
     }
   }
+
 
 
 
@@ -182,9 +182,9 @@ extract_diff_table <- function(dfx = NULL,
   if(length(myrror_object$extract_diff_values) == 0) {
     if(output == "simple") {
       return(NULL)  # Return NULL for "simple" if no differences are found
-    } else {
-      myrror_object$extract_diff_values <- list(message = "No differences found between the variables.")
-    }
+    } #else {
+      #myrror_object$extract_diff_values <- list(message = "No differences found between the variables.")
+    #} # need to think about whether I want to keep this option instead of printing out the mo.
   }
 
   # 4. Output ----
