@@ -248,18 +248,18 @@ extract_diff_int <- function(myrror_object = NULL,
     column_y <- paste0(variable, ".y")
 
     df |>
-      collapse::fsubset(count > 0) |>
-      collapse::fselect(-count) |>
+      fsubset(count > 0) |>
+      fselect(-count) |>
       # please check
       _[, c(.SD, list(indexes = unlist(indexes))), .SDcols = "diff"] |>
       fmutate(indexes = as.character(indexes)) |>
       collapse::join(matched_data |>
-                       collapse::fselect(c("rn", keys, column_x, column_y)),
+                       fselect(c("rn", keys, column_x, column_y)),
                      on = c("indexes" = "rn"),
                      how = "left",
                      verbose = 0) |>
-      collapse::fselect(c("diff", "indexes", keys, column_x, column_y)) |>
-      collapse::roworderv(c(keys))
+      fselect(c("diff", "indexes", keys, column_x, column_y)) |>
+      roworderv(c(keys))
 
   })
 

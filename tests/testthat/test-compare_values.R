@@ -52,9 +52,9 @@ test_that("compare_values() returns a simple compare_values item if differences"
 test_that("compare_values() returns an invisible myrror_object if silent", {
 
   survey_data_2_mod <- survey_data_2 |>
-    collapse::fmutate(COUNTRY = country,
+    fmutate(COUNTRY = country,
                       YEAR = year)|>
-    collapse::fselect(-country, -year)
+    fselect(-country, -year)
 
 
   mod <- compare_values(survey_data_2_mod, survey_data, by=c("COUNTRY" = "country",

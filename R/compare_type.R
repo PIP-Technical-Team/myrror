@@ -104,8 +104,8 @@ compare_type_int <- function(myrror_object = NULL){
   compare_type <- rbindlist(compare_type)
 
   compare_type <- compare_type |>
-    collapse::fmutate(variable = gsub(".x", "", column_x))|>
-    collapse::fselect(variable, class_x, class_y, same_class)
+    fmutate(variable = gsub(".x", "", column_x))|>
+    fselect(variable, class_x, class_y, same_class)
 
   # 3. Resturn results ----
   return(compare_type)

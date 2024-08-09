@@ -156,7 +156,7 @@ prepare_df <- function(df,
 
     dt <- data.table::copy(df)
     dt <- df |>
-          collapse::fmutate(rn = row.names(df),
+          fmutate(rn = row.names(df),
                   row_index = 1:nrow(df))
   }
 
@@ -164,7 +164,7 @@ prepare_df <- function(df,
     dt <- copy(df)
     data.table::setDT(dt, keep.rownames = TRUE)
     dt <- dt |>
-      collapse::fmutate(row_index = 1:nrow(dt))
+      fmutate(row_index = 1:nrow(dt))
     }
 
   ## N. Validate colnames (make.names) and replace if needed.
@@ -172,7 +172,7 @@ prepare_df <- function(df,
   # valid_col_names <- make.names(names(dt), unique = TRUE)
   #
   # if (!identical(names(dt), valid_col_names)) {
-  #   collapse::setColnames(dt, valid_col_names)
+  #   setColnames(dt, valid_col_names)
   # }
 
   ## 4. Ensure the by keys are available in the column names
@@ -190,9 +190,9 @@ prepare_df <- function(df,
   ## 6. Convert factors to characters
   if (isTRUE(factor_to_char)){
 
-    # I wanted to implement it like so, but check() would not recognize across() as a collapse:: function
+    # I wanted to implement it like so, but check() would not recognize across() as a  function
     #dt <- dt |>
-      #collapse::fmutate(across(is.factor, as.character))
+      #fmutate(across(is.factor, as.character))
 
     # Get names of factor columns
     factor_cols <- names(dt)[sapply(dt, is.factor)]

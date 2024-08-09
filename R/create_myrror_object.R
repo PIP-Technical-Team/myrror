@@ -121,15 +121,15 @@ create_myrror_object <- function(dfx,
   ## Adjust rn and row_index:
   if ("rn.x" %in% colnames(merged_data)) {
     merged_data <- merged_data |>
-      collapse::fmutate(rn = rn.x) |>
-      collapse::fselect(-rn.x, -rn.y)
+      fmutate(rn = rn.x) |>
+      fselect(-rn.x, -rn.y)
   }
 
 
   if ("row_index.x" %in% colnames(merged_data)) {
     merged_data <- merged_data |>
-      collapse::fmutate(row_index = row_index.x) |>
-      collapse::fselect(-row_index.x, -row_index.y)
+      fmutate(row_index = row_index.x) |>
+      fselect(-row_index.x, -row_index.y)
   }
 
 
