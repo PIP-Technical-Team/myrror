@@ -65,6 +65,24 @@
     
     
 <p>I need to find a large survey to use as example!</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#library(myrror)</span></span>
+<span><span class="co">#library(tidyverse) # we could replace this with collapse, but did it for usability.</span></span>
+<span><span class="co">#library(joyn)</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#pip_data &lt;- read.csv("https://raw.githubusercontent.com/owid/poverty-data/main/datasets/pip_dataset.csv")</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#pip_data |&gt;</span></span>
+<span> <span class="co"># head()</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#pip_data |&gt;</span></span>
+<span> <span class="co"># colnames()</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#pip_data_mistakes &lt;- pip_data |&gt;</span></span>
+<span><span class="co">#  mutate(mean = ifelse(country == "India" &amp; year &gt;= 2010, NA, mean)) |&gt;</span></span>
+<span><span class="co">#  mutate(median = ifelse(country == "China", median + runif(n(), 0.001, 0.002), median)) |&gt;</span></span>
+<span><span class="co">#  mutate(mean = ifelse(country == "China", mean + runif(n(), 0.000001, 0.0000002), mean)) |&gt;</span></span>
+<span><span class="co"># filter(country != "Albania")</span></span></code></pre></div>
   </main>
 </div>
 
