@@ -12,7 +12,6 @@ Imports:
     cli (>= 3.6.2),
     data.table (>= 1.15.4),
     collapse,
-    stats,
     joyn,
     purrr,
     tidyr,

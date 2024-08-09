@@ -5,17 +5,19 @@
 \title{Compare type of variables}
 \usage{
 compare_type(
+  myrror_object = NULL,
   dfx = NULL,
   dfy = NULL,
   by = NULL,
   by.x = NULL,
   by.y = NULL,
-  myrror_object = NULL,
   output = c("full", "simple", "silent"),
   interactive = TRUE
 )
 }
 \arguments{
+\item{myrror_object}{myrror object}
+
 \item{dfx}{data.frame object}
 
 \item{dfy}{data.frame object}
@@ -25,8 +27,6 @@ compare_type(
 \item{by.x}{character, key to be used for dfx}
 
 \item{by.y}{character, key to be used for dfy}
-
-\item{myrror_object}{myrror object}
 
 \item{output}{character, one of "full", "simple", "silent"}
 

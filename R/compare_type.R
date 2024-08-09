@@ -16,12 +16,12 @@
 #' @examples
 #' comparison <- compare_type(iris, iris_var1)
 #'
-compare_type <- function(dfx = NULL,
+compare_type <- function(myrror_object = NULL,
+                         dfx = NULL,
                          dfy = NULL,
                          by = NULL,
                          by.x = NULL,
                          by.y = NULL,
-                         myrror_object = NULL,
                          output = c("full", "simple", "silent"),
                          interactive = TRUE) {
   # 1. Arguments check ----
