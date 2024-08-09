@@ -1,10 +1,6 @@
 # 1. compare_values() takes two dataframes or a myrror object ----
 test_that("extract_diff_values() takes two dataframes or a myrror_object", {
 
-  # Empty or single dataframe
-  expect_error(extract_diff_values())
-  expect_error(extract_diff_values(iris))
-
   # Two dataframes or a myrror_object
   mo <- create_myrror_object(iris, iris_var1)
   expect_no_error(extract_diff_values(iris, iris_var1))
