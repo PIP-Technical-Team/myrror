@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   articles/large_survey: large_survey.html
   myrror: myrror.html
-last_built: 2024-08-09T16:04Z
+last_built: 2024-08-09T16:09Z
 urls:
   reference: https://giorgiacek.github.io/myrror/reference
   article: https://giorgiacek.github.io/myrror/articles
