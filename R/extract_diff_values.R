@@ -250,7 +250,8 @@ extract_diff_int <- function(myrror_object = NULL,
     df |>
       collapse::fsubset(count > 0) |>
       collapse::fselect(-count) |>
-      tidyr::unnest(cols = c("indexes")) |>
+      # please check
+      _[, c(.SD, list(indexes = unlist(indexes))), .SDcols = "diff"] |>
       fmutate(indexes = as.character(indexes)) |>
       collapse::join(matched_data |>
                        collapse::fselect(c("rn", keys, column_x, column_y)),
@@ -267,8 +268,9 @@ extract_diff_int <- function(myrror_object = NULL,
   # 3. Table option ----
   diff_table <- rowbind(compare_values_object, idcol = "variable") |>
     fsubset(count > 0) |>
-    fselect(-count)|>
-    tidyr::unnest(cols = c(indexes)) |> # is there a better version of unnest?
+    fselect(-count) |>
+    # please check
+    _[, c(.SD, list(indexes = unlist(indexes))), .SDcols = "diff"] |>
     fmutate(indexes = as.character(indexes)) |>
     collapse::join(matched_data,
                    on = c("indexes" = "rn"),

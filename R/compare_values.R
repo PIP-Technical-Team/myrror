@@ -70,7 +70,7 @@ compare_values <- function(dfx = NULL,
     rowbind(idcol = "variable") |>
     fmutate(diff = as.factor(diff))|>
     pivot(ids = 1, how = "wider", names = "diff")|>
-    tidyr::as_tibble()
+    qTBL()
 
   myrror_object$compare_values <- compare_values_df
 
