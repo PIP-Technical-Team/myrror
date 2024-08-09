@@ -199,6 +199,13 @@ test_that("pair_columns returns correct pairs", {
 
 })
 
+# equal_with_tolerance() ----
+test_that("Tolerance works correctly", {
+  expect_true(equal_with_tolerance(0.1 + 0.2, 0.3, tolerance = 1e-8))
+  expect_true(equal_with_tolerance("a", "a", tolerance = 1e-8))
+  expect_false(equal_with_tolerance(0.1, 0.10000002, tolerance = 1e-8))
+  expect_false(equal_with_tolerance("a", "b", tolerance = 1e-8))
+})
 
 
 

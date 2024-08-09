@@ -14,6 +14,7 @@ print.myrror <- function(x, ...) {
   keys_n <- length(setdiff(x$merged_data_report$keys, "rn"))
   nonshared_dfx_cols_n <- x$datasets_report$dfx_char$ncol - shared_cols_n - keys_n
   nonshared_dfy_cols_n <- x$datasets_report$dfy_char$ncol - shared_cols_n - keys_n
+  nonshared_dfy_cols <- setdiff(x$pairs$nonshared_cols_dfy, x$set_by.y)
   name_dfx <- x$name_dfx
   name_dfy <- x$name_dfy
 
@@ -22,14 +23,20 @@ print.myrror <- function(x, ...) {
   cli::cli_h2("General Information:")
   cli::cli_text("{.strong dfx}: {.field {name_dfx}} with {x$datasets_report$dfx_char$nrow} rows and {x$datasets_report$dfx_char$ncol} columns.")
   cli::cli_text("{.strong dfy}: {.field {name_dfy}} with {x$datasets_report$dfy_char$nrow} rows and {x$datasets_report$dfy_char$ncol} columns.")
-  cli::cli_text("{.strong keys}: {x$merged_data_report$keys}.")
+  # Check if by.x is equal to by.y
+  if (all(x$set_by.x == x$set_by.y)) {
+    cli::cli_text("{.strong Keys}: {x$set_by.x}.")
+  } else {
+    cli::cli_text("{.strong Keys dfx}: {x$set_by.x}.")
+    cli::cli_text("{.strong Keys dfy}: {x$set_by.y}.")
+  }
 
 
 
   cli::cli_h2("Note: comparison is done for shared columns and rows.")
   cli::cli_alert_success("Total shared columns (no keys): {shared_cols_n}")
   cli::cli_alert_warning("Non-shared columns in {name_dfx}: {nonshared_dfx_cols_n} ({x$pairs$nonshared_cols_dfx})")
-  cli::cli_alert_warning("Non-shared columns in {name_dfy}: {nonshared_dfy_cols_n} ({x$pairs$nonshared_cols_dfy})")
+  cli::cli_alert_warning("Non-shared columns in {name_dfy}: {nonshared_dfy_cols_n} ({nonshared_dfy_cols})")
   cli::cli_text("\n")
   cli::cli_alert_success("Total shared rows: {shared_rows_n}")
   cli::cli_alert_warning("Non-shared rows in {name_dfx}: {x$datasets_report$dfx_char$nrow - shared_rows_n}.")
@@ -41,11 +48,13 @@ print.myrror <- function(x, ...) {
   }
 
 
-  # Prompt the User to go ahead:
-  response <- readline(prompt = "Press ENTER to continue or type 'q' to stop: ")
-  if (tolower(response) == "q") {
-    cli::cli_alert_success("End of Myrror Report")
-    return(invisible(x))
+  # Prompt the User to go ahead if x$interactive == TRUE:
+  if (x$interactive) {
+    response <- readline(prompt = "Press ENTER to continue or type 'q' to stop: ")
+    if (tolower(response) == "q") {
+      cli::cli_alert_success("End of Myrror Report")
+      return(invisible(x))
+    }
   }
 
 
@@ -72,11 +81,13 @@ print.myrror <- function(x, ...) {
 
   }
 
-  ## Prompt the User to go ahead:
-  response <- readline(prompt = "Press ENTER to continue or type 'q' to stop: ")
-  if (tolower(response) == "q") {
-    cli::cli_alert_success("End of Myrror Report")
-    return(invisible(x))
+  # Prompt the User to go ahead if x$interactive == TRUE:
+  if (x$interactive) {
+    response <- readline(prompt = "Press ENTER to continue or type 'q' to stop: ")
+    if (tolower(response) == "q") {
+      cli::cli_alert_success("End of Myrror Report")
+      return(invisible(x))
+    }
   }
 
   # 3. Compare Values ----
@@ -101,11 +112,13 @@ print.myrror <- function(x, ...) {
 
   }
 
-  ## Prompt the User to go ahead:
-  response <- readline(prompt = "Press ENTER to continue or type 'q' to stop: ")
-  if (tolower(response) == "q") {
-    cli::cli_alert_success("End of Myrror Report")
-    return(invisible(x))
+  # Prompt the User to go ahead if x$interactive == TRUE:
+  if (x$interactive) {
+    response <- readline(prompt = "Press ENTER to continue or type 'q' to stop: ")
+    if (tolower(response) == "q") {
+      cli::cli_alert_success("End of Myrror Report")
+      return(invisible(x))
+    }
   }
 
   # 4. Extract different values (only diff_list) ----
@@ -126,13 +139,14 @@ print.myrror <- function(x, ...) {
         print(x$extract_diff_values$diff_list[[variable]])
         cli::cli_text("\n")
 
-        # Prompt the user to continue or quit
-        response <- readline(prompt = "Press ENTER to continue to next variable or type 'q' to stop: ")
-        if (tolower(response) == "q") {
-          cli::cli_alert_success("End of Myrror Report")
-          return(invisible())  # Exit the function and return invisibly
+        # Prompt the User to go ahead if x$interactive == TRUE:
+        if (x$interactive) {
+          response <- readline(prompt = "Press ENTER to continue or type 'q' to stop: ")
+          if (tolower(response) == "q") {
+            cli::cli_alert_success("End of Myrror Report")
+            return(invisible(x))
+          }
         }
-      }
 
 
       cli::cli_alert_info("Note: run {.fn extract_diff_values} or {.fn extract_diff_table} to access the results in list or table format.")
@@ -146,4 +160,5 @@ print.myrror <- function(x, ...) {
   # 5. Exit ----
   cli::cli_alert_success("End of Myrror Report.")
   return(invisible(x))
+  }
 }

@@ -13,7 +13,9 @@ myrror(
   compare_type = TRUE,
   compare_values = TRUE,
   extract_diff_values = TRUE,
-  factor_to_char = TRUE
+  factor_to_char = TRUE,
+  interactive = TRUE,
+  tolerance = 1e-07
 )
 }
 \arguments{
@@ -34,6 +36,10 @@ myrror(
 \item{extract_diff_values}{TRUE or FALSE, default to TRUE.}
 
 \item{factor_to_char}{TRUE or FALSE, default to TRUE.}
+
+\item{interactive}{TRUE or FALSE, default to TRUE.}
+
+\item{tolerance}{numeric, default to 1e-7.}
 }
 \value{
 draft: selection of by variables

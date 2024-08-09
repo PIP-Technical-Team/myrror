@@ -4,10 +4,12 @@
 \alias{extract_diff_int}
 \title{Extract Different Values - Internal}
 \usage{
-extract_diff_int(myrror_object = NULL)
+extract_diff_int(myrror_object = NULL, tolerance = NULL)
 }
 \arguments{
 \item{myrror_object}{myrror object}
+
+\item{tolerance}{numeric, default to 1e-7}
 }
 \value{
 list with two elements:

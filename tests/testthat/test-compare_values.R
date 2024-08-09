@@ -51,10 +51,23 @@ test_that("compare_values() returns a simple compare_values item if differences"
 
 test_that("compare_values() returns an invisible myrror_object if silent", {
 
-  mo <- create_myrror_object(iris, iris_var1)
+  survey_data_2_mod <- survey_data_2 |>
+    collapse::fmutate(COUNTRY = country,
+                      YEAR = year)|>
+    collapse::fselect(-country, -year)
 
-  expect_invisible(compare_values(myrror_object = mo, output = "silent"))
+
+  mod <- compare_values(survey_data_2_mod, survey_data, by=c("COUNTRY" = "country",
+                                                             "YEAR" = "year"),
+                        output = "simple")
+
+  non_mod <- compare_values(survey_data_2, survey_data, by=c("country", "year"),
+                            output = "simple")
+
+  expect_equal(mod, non_mod)
 
 })
+
+
 
 

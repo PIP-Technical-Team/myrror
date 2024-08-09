@@ -10,6 +10,9 @@
 #' @param compare_values TRUE or FALSE, default to TRUE.
 #' @param extract_diff_values TRUE or FALSE, default to TRUE.
 #' @param factor_to_char TRUE or FALSE, default to TRUE.
+#' @param interactive TRUE or FALSE, default to TRUE.
+#' @param tolerance numeric, default to 1e-7.
+#'
 #'
 #' @return draft: selection of by variables
 #' @export
@@ -25,9 +28,11 @@ myrror <- function(dfx,
                    compare_type = TRUE,
                    compare_values = TRUE,
                    extract_diff_values = TRUE,
-                   factor_to_char = TRUE) {
+                   factor_to_char = TRUE,
+                   interactive = TRUE,
+                   tolerance = 1e-7) {
 
- # 1. Create myrror object
+ # 1. Create myrror object ----
   myrror_object <- create_myrror_object(dfx = dfx,
                                         dfy = dfy,
                                         by = by,
@@ -47,16 +52,24 @@ myrror <- function(dfx,
   # 3. Compare Values ----
   if (compare_values) {
     myrror_object <- compare_values(myrror_object = myrror_object,
-                                    output = "silent")
+                                    output = "silent",
+                                    tolerance = tolerance)
   }
 
   # 4. Extract different values ----
   if (extract_diff_values) {
     myrror_object <- extract_diff_values(myrror_object = myrror_object,
-                                         output = "silent")
+                                         output = "silent",
+                                         tolerance = tolerance)
   }
 
-  # 5. Return myrror_object ----
+  # 5. Save whether interactive or not ----
+  myrror_object$interactive <- interactive
+
+  # 6. Save to package environment ----
+  assign("last_myrror_object", myrror_object, envir = .myrror_env)
+
+  # 6. Return myrror_object ----
   return(myrror_object)
 
 }

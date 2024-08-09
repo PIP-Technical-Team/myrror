@@ -68,6 +68,7 @@ create_myrror_object <- function(dfx,
   # - make into data.table.
   # - make into valid column names.
   # - check that by variable are in the colnames of the given dataset.
+  # - check whether the by variables uniquely identify the dataset.
   # - factor to character (keep track of this), default = TRUE.
 
   prepared_dfx <- prepare_df(dfx,
@@ -89,12 +90,21 @@ create_myrror_object <- function(dfx,
   }
 
   # 5. Merge ----
-  # - use collapse to merge and keep matching and non-matching observations.
+  # - identify
+  # - use joyn to merge and keep matching and non-matching observations.
 
   ## Merge using Joyn
+
+  ### Create dynamic 'by' argument for joyn
+  by_joyn_arg <- stats::setNames(set_by$by.x, set_by$by.y)
+  by_joyn_arg <- sapply(names(by_joyn_arg), function(n) paste(by_joyn_arg[n], n,
+                                                              sep = " = "))
+  by_joyn_arg <- paste(unname(by_joyn_arg))
+
+  ### Merge
   merged_data <- joyn::joyn(prepared_dfx,
                       prepared_dfy,
-                      by = stats::setNames(set_by$by.x, set_by$by.y),
+                      by = c(by_joyn_arg),
                       match_type = c("1:1"),
                       keep = "full",
                       keep_common_vars = TRUE,
@@ -126,6 +136,7 @@ create_myrror_object <- function(dfx,
   matched_data <- merged_data |> fsubset(.joyn == 'x & y')
   unmatched_data <- merged_data |> fsubset(.joyn != 'x & y')
 
+
   ## Store
   merged_data_report$keys <- key(merged_data)
   merged_data_report$matched_data <- matched_data
@@ -156,7 +167,8 @@ create_myrror_object <- function(dfx,
       compare_type = FALSE,
       compare_values = FALSE,
       extract_diff_values = FALSE
-    )
+    ),
+    interactive = TRUE
   )
 
   # 8. Return myrror object (invisible) ----

@@ -8,6 +8,8 @@
 #' @param by.y character, column name to join on in dfy.
 #' @param myrror_object myrror object.
 #' @param output character, one of "full", "simple", "silent".
+#' @param interactive logical, default to TRUE.
+#' @param tolerance numeric, default to 1e-7.
 #'
 #' @return list object
 #' @export
@@ -22,7 +24,9 @@ compare_values <- function(dfx = NULL,
                            by.x = NULL,
                            by.y = NULL,
                            myrror_object = NULL,
-                           output = c("full", "simple", "silent")) {
+                           output = c("full", "simple", "silent"),
+                           interactive = TRUE,
+                           tolerance = 1e-7) {
 
   # 1. Arguments check ----
   output <- match.arg(output)
@@ -47,7 +51,8 @@ compare_values <- function(dfx = NULL,
 
   # 3. Run compare_values_int() ----
 
-  compare_values_list <- compare_values_int(myrror_object)
+  compare_values_list <- compare_values_int(myrror_object,
+                                            tolerance = tolerance)
 
   ## Check if results are empty and adjust:
   ### If empty then NULL or myrror_object NULL.
@@ -63,6 +68,7 @@ compare_values <- function(dfx = NULL,
   ### else if not empty, then create a tibble with the results.
   compare_values_df <- purrr::map(compare_values_list, ~.x|>fselect(diff, count)) |>
     rowbind(idcol = "variable") |>
+    fmutate(diff = as.factor(diff))|>
     pivot(ids = 1, how = "wider", names = "diff")|>
     tidyr::as_tibble()
 
@@ -70,7 +76,13 @@ compare_values <- function(dfx = NULL,
 
   }
 
-  # 4. Output ----
+  # 4. Save whether interactive or not ----
+  myrror_object$interactive <- interactive
+
+  # 5. Save to package environment ----
+  assign("last_myrror_object", myrror_object, envir = .myrror_env)
+
+  # 6. Output ----
   ## Handle the output type
   switch(output,
          full = {
@@ -90,7 +102,8 @@ compare_values <- function(dfx = NULL,
 }
 
 # compare_values internal -----------------------------------------------------
-compare_values_int <- function(myrror_object = NULL) {
+compare_values_int <- function(myrror_object = NULL,
+                               tolerance = NULL) {
 
   # 1. Pair columns ----
   merged_data_report <- myrror_object$merged_data_report
@@ -109,7 +122,9 @@ compare_values_int <- function(myrror_object = NULL) {
   na_to_value <- get_na_to_value(myrror_object$merged_data_report$matched_data, pairs_list)
   names(na_to_value) <- gsub(".x", "", pairs$pairs$col_x)
 
-  change_in_value <- get_change_in_value(myrror_object$merged_data_report$matched_data, pairs_list)
+  change_in_value <- get_change_in_value(myrror_object$merged_data_report$matched_data,
+                                         pairs_list,
+                                         tolerance = tolerance)
   names(na_to_value) <- gsub(".x", "", pairs$pairs$col_x)
 
   # 5. Combine all changes ----
@@ -139,6 +154,7 @@ get_value_to_na <- function(matched_data,
     col_x <- pair[[1]]
     col_y <- pair[[2]]
 
+
     matched_data |>
       fselect(c(col_x, col_y, "row_index")) |>
       fsubset(!is.na(get(col_x)) & is.na(get(col_y))) |>
@@ -163,6 +179,7 @@ get_na_to_value <- function(matched_data,
     col_x <- pair[[1]]
     col_y <- pair[[2]]
 
+
     matched_data |>
       fselect(c(col_x, col_y, "row_index")) |>
       fsubset(is.na(get(col_x)) & !is.na(get(col_y))) |>
@@ -176,7 +193,8 @@ get_na_to_value <- function(matched_data,
 
 ## 3. Get change in value
 get_change_in_value <- function(matched_data,
-                                  pairs_list) {
+                                  pairs_list,
+                                  tolerance) {
 
   result <- purrr::map(pairs_list, function(pair) {
 
@@ -184,12 +202,14 @@ get_change_in_value <- function(matched_data,
     col_y <- pair[[2]]
 
     matched_data |>
-      fselect(c(col_x, col_y, "row_index")) |>
-      fsubset(get(col_x) != get(col_y)) |>
+      fmutate(equal = equal_with_tolerance(get(col_x), get(col_y), tolerance)) |>
+      fsubset(equal == FALSE) |>
+      fselect(c("row_index", col_x, col_y)) |>
       fsummarise(indexes = list(row_index),
                  count = fnobs(row_index)) |>
       fmutate(diff = "change_in_value")|>
       colorder(diff, count, indexes)
+
   })
 
   return(result)

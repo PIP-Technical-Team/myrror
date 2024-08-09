@@ -67,12 +67,16 @@ check_set_by <- function(by = NULL,
   }
 
 
-  # Check and set by.x and by.y based on the presence of by
-  if (!is.null(by)) {
-
+  # Handle named vector for 'by'
+  if (!is.null(by) && !is.null(names(by)) && any(nchar(names(by)) > 0)) {
+    # Split the named 'by' into 'by.x' and 'by.y'
+    by.x <- names(by)
+    by.y <- as.character(by)
+  } else if (!is.null(by)) {
     by.x <- by.y <- by
+  }
 
-  } else if (is.null(by.x) || is.null(by.y)) {
+ if (is.null(by.x) || is.null(by.y)) {
     if (is.null(by.x) && !is.null(by.y)) {
       stop("Argument by.x is NULL. If using by.y, by.x also needs to be specified.")
     }
@@ -343,6 +347,27 @@ pair_columns <- function(merged_data_report,
   list(pairs = pairs,
        nonshared_cols_dfx = nonshared_cols_dfx,
        nonshared_cols_dfy = nonshared_cols_dfy)
+
+}
+
+# 5. Compare with tolerance ----
+#' Are these two values equal with tolerance applied?
+#'
+#' @param x numeric
+#' @param y numeric
+#' @param tolerance numeric
+#' @return logical
+#'
+equal_with_tolerance <- function(x, y, tolerance = 1e-7) {
+
+  # check if x and y are numeric:
+  if (is.numeric(x) & is.numeric(y)) {
+    abs_diff <- abs(x - y)
+    return(abs_diff <= tolerance)
+  }
+
+  # Else compare two non-numeric without tolerance:
+  return(x == y)
 
 }
 

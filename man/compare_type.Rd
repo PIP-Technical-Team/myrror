@@ -11,7 +11,8 @@ compare_type(
   by.x = NULL,
   by.y = NULL,
   myrror_object = NULL,
-  output = c("full", "simple", "silent")
+  output = c("full", "simple", "silent"),
+  interactive = TRUE
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ compare_type(
 \item{myrror_object}{myrror object}
 
 \item{output}{character, one of "full", "simple", "silent"}
+
+\item{interactive}{TRUE or FALSE, default to TRUE}
 }
 \value{
 list object

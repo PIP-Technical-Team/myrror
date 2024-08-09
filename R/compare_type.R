@@ -8,6 +8,7 @@
 #' @param by.y character, key to be used for dfy
 #' @param myrror_object myrror object
 #' @param output character, one of "full", "simple", "silent"
+#' @param interactive TRUE or FALSE, default to TRUE
 #'
 #' @return list object
 #' @export
@@ -21,7 +22,8 @@ compare_type <- function(dfx = NULL,
                          by.x = NULL,
                          by.y = NULL,
                          myrror_object = NULL,
-                         output = c("full", "simple", "silent")) {
+                         output = c("full", "simple", "silent"),
+                         interactive = TRUE) {
   # 1. Arguments check ----
   output <- match.arg(output)
 
@@ -45,9 +47,14 @@ compare_type <- function(dfx = NULL,
   # 3. Run compare_type_int() and update myrror_object ----
   myrror_object$compare_type <- compare_type_int(myrror_object)
 
+  # 4. Save whether interactive or not ----
+  myrror_object$interactive <- interactive
+
+  # 5. Save to package environment ----
+  assign("last_myrror_object", myrror_object, envir = .myrror_env)
 
 
-  # 2. Output ----
+  # 6. Output ----
 
   ## Handle the output type
   switch(output,

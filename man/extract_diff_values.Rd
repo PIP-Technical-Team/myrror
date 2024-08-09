@@ -12,7 +12,8 @@ extract_diff_values(
   by.x = NULL,
   by.y = NULL,
   myrror_object = NULL,
-  output = c("simple", "full", "silent")
+  output = c("simple", "full", "silent"),
+  tolerance = 1e-07
 )
 }
 \arguments{
@@ -29,6 +30,8 @@ extract_diff_values(
 \item{myrror_object}{myrror object.}
 
 \item{output}{character, one of "simple", "full", "silent".}
+
+\item{tolerance}{numeric, default to 1e-7.}
 }
 \value{
 list object with two items: diff_list and diff_table
