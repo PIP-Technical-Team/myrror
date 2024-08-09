@@ -229,7 +229,7 @@ extract_diff_int <- function(myrror_object = NULL,
 
   matched_data <- myrror_object$merged_data_report$matched_data
 
-  keys <- key(matched_data)
+  keys <- myrror_object$merged_data_report$keys
 
   # Check if results are empty and adjust accordingly
   if(length(compare_values_object) == 0) {

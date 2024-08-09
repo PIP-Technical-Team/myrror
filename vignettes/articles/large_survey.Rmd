@@ -12,14 +12,36 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-
+#library(myrror)
+#library(tidyverse) # we could replace this with collapse, but did it for usability.
+#library(joyn)
 ```
 
 ```{r data}
+#pip_data <- read.csv("https://raw.githubusercontent.com/owid/poverty-data/main/datasets/pip_dataset.csv")
 
 ```
 
-```{r time}
+```{r pip_data_head}
+#pip_data |>
+ # head()
+```
+
+```{r pip_data_summary}
+#pip_data |>
+ # colnames()
+```
+
+
+```{r pip_data_mistakes}
+#pip_data_mistakes <- pip_data |>
+#  mutate(mean = ifelse(country == "India" & year >= 2010, NA, mean)) |>
+#  mutate(median = ifelse(country == "China", median + runif(n(), 0.001, 0.002), median)) |>
+#  mutate(mean = ifelse(country == "China", mean + runif(n(), 0.000001, 0.0000002), mean)) |>
+# filter(country != "Albania")
+```
+```{r}
+
 
 
 ```

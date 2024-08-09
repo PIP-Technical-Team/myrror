@@ -113,8 +113,6 @@ create_myrror_object <- function(dfx,
                       verbose = FALSE)
 
 
-
-
   ## Adjust rn and row_index:
   if ("rn.x" %in% colnames(merged_data)) {
     merged_data <- merged_data |>
@@ -137,6 +135,7 @@ create_myrror_object <- function(dfx,
   # 6. Get matched and non-matched ----
   matched_data <- merged_data |> fsubset(.joyn == 'x & y')
   unmatched_data <- merged_data |> fsubset(.joyn != 'x & y')
+
 
   ## Store
   merged_data_report$keys <- key(merged_data)
