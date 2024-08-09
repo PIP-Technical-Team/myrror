@@ -130,7 +130,6 @@ check_set_by <- function(by = NULL,
 #' @param by character vector
 #' @param factor_to_char logical
 #'
-#' @import collapse
 #' @export
 #' @examples
 #' dataset <- data.frame(a = 1:10, b = letters[1:10])

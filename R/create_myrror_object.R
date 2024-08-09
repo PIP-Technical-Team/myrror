@@ -10,7 +10,7 @@
 #'
 #' @return object of class myrror_object
 #'
-#' @import collapse
+
 #'
 create_myrror_object <- function(dfx,
                    dfy,

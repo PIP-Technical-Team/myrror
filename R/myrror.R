@@ -16,7 +16,6 @@
 #'
 #' @return draft: selection of by variables
 #' @export
-#' @import collapse
 #'
 #' @examples
 #' comparison <- myrror(iris, iris_var1)
