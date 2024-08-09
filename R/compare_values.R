@@ -34,7 +34,7 @@ compare_values <- function(dfx = NULL,
   # 2. Create object if not supplied ----
   if (is.null(myrror_object)) {
     if (is.null(dfx) || is.null(dfy)) {
-      stop("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied.")
+      cli::cli_abort("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied.")
     }
 
     myrror_object <- create_myrror_object(dfx = dfx,

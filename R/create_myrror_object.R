@@ -86,10 +86,10 @@ create_myrror_object <- function(dfx,
   # Note: this step needs to be done here because the column names might
   # change in the prepare_df() function.
   if (any(set_by$by.x %in% setdiff(names(prepared_dfy), set_by$by.y))) {
-    stop("by.x is part of the non-index columns of dfy.")
+    cli::cli_abort("by.x is part of the non-index columns of dfy.")
   }
   if (any(set_by$by.y %in% setdiff(names(prepared_dfx), set_by$by.x))) {
-    stop("by.y is part of the non-index columns of dfx.")
+    cli::cli_abort("by.y is part of the non-index columns of dfx.")
   }
 
   # 5. Merge ----

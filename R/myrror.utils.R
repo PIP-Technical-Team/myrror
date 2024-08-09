@@ -12,7 +12,7 @@
 check_df <- function(df) {
   # Check if dfx or dfy are NULL
   if (is.null(df)) {
-    stop("Input data frame(s) cannot be NULL.")
+    cli::cli_abort("Input data frame(s) cannot be NULL.")
   }
 
   # Check if dfx or dfy are data frames,
@@ -22,16 +22,16 @@ check_df <- function(df) {
       tryCatch({
         df <- as.data.frame(df)
       }, error = function(e) {
-        stop("df is a list but cannot be converted to a data frame.")
+        cli::cli_abort("df is a list but cannot be converted to a data frame.")
       })
     } else {
-      stop("df must be a data frame or a convertible list.")
+      cli::cli_abort("df must be a data frame or a convertible list.")
     }
   }
 
   # Check if dfx is empty
   if ((!is.null(df) && nrow(df) == 0)) {
-    stop("Input data frame(s) cannot be empty.")
+    cli::cli_abort("Input data frame(s) cannot be empty.")
   }
 
   return(df)
@@ -57,13 +57,13 @@ check_set_by <- function(by = NULL,
 
   # Validate inputs are non-empty character vectors if provided
   if (!is.null(by) && (!is.character(by) || length(by) == 0)) {
-    stop("The 'by' argument must be a non-empty character vector.")
+    cli::cli_abort("The 'by' argument must be a non-empty character vector.")
   }
   if (!is.null(by.x) && (!is.character(by.x) || length(by.x) == 0)) {
-    stop("The 'by.x' argument must be a non-empty character vector.")
+    cli::cli_abort("The 'by.x' argument must be a non-empty character vector.")
   }
   if (!is.null(by.y) && (!is.character(by.y) || length(by.y) == 0)) {
-    stop("The 'by.y' argument must be a non-empty character vector.")
+    cli::cli_abort("The 'by.y' argument must be a non-empty character vector.")
   }
 
 
@@ -78,10 +78,10 @@ check_set_by <- function(by = NULL,
 
  if (is.null(by.x) || is.null(by.y)) {
     if (is.null(by.x) && !is.null(by.y)) {
-      stop("Argument by.x is NULL. If using by.y, by.x also needs to be specified.")
+      cli::cli_abort("Argument by.x is NULL. If using by.y, by.x also needs to be specified.")
     }
     if (!is.null(by.x) && is.null(by.y)) {
-      stop("Argument by.y is NULL. If using by.x, by.y also needs to be specified.")
+      cli::cli_abort("Argument by.y is NULL. If using by.x, by.y also needs to be specified.")
     }
     # Set defaults if both are NULL
     by.x <- by.y <- "rn"
@@ -142,12 +142,12 @@ prepare_df <- function(df,
 
   ## 1. Check that "rn" is not in the colnames
   if ("rn" %in% colnames(df)) {
-    stop("'rn' present in colnames but it cannot be a column name.")
+    cli::cli_abort("'rn' present in colnames but it cannot be a column name.")
   }
 
   ## 2. Check for duplicate column names in both datasets
   if (length(unique(names(df))) != length(names(df))) {
-    stop("Duplicate column names found in dataframe.")
+    cli::cli_abort("Duplicate column names found in dataframe.")
     # Note: cli additions needed.
   }
 
@@ -178,7 +178,7 @@ prepare_df <- function(df,
 
   ## 4. Ensure the by keys are available in the column names
   if (!all(by %in% names(dt))) {
-    stop("Specified by keys are not all present in the column names.")
+    cli::cli_abort("Specified by keys are not all present in the column names.")
   }
 
   df_name <- deparse(substitute(df))
