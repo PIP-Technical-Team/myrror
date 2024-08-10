@@ -1,6 +1,6 @@
 Package: myrror
 Title: Compare two Data Frames and Summarize Differences
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R: 
     person("Giorgia", "Cecchinato", , "gcecchinato@worldbank.org", role = c("aut", "cre"))
 Description: Convenience functions to compare two dataframes, explore,
