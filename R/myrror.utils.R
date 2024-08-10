@@ -384,10 +384,19 @@ equal_with_tolerance <- function(x, y, tolerance = 1e-7) {
 #' both datasets. If they are available, then create `myrror_object`
 #'
 #' @inheritParams create_myrror_object
+#' @param ... other arguments parsed to parent function.
 #'
 #' @return myrror object
 #' @keywords internal
-get_correct_myrror_object <- function(myrror_object, dfx, dfy, verbose) {
+get_correct_myrror_object <- function(myrror_object,
+                                      dfx,
+                                      dfy,
+                                      by,
+                                      by.x,
+                                      by.y,
+                                      verbose,
+                                      ...) {
+
 
   abort_msg <- "You need to provide a {.arg myrror_object}, or two datasets
                          ({.arg {c('dfx', 'dfy')}}). Alternatively, you need to execute
@@ -411,8 +420,8 @@ get_correct_myrror_object <- function(myrror_object, dfx, dfy, verbose) {
                                             by.x = by.x,
                                             by.y = by.y)
       ## Re-assign names from within this call:
-      myrror_object$name_dfx <- deparse(substitute(dfx))
-      myrror_object$name_dfy <- deparse(substitute(dfy))
+      myrror_object$name_dfx <- deparse(substitute(dfx, env = parent.frame()))
+      myrror_object$name_dfy <- deparse(substitute(dfy, env = parent.frame()))
     } else {
       cli::cli_abort(abort_msg)
     }

@@ -29,9 +29,11 @@ compare_type <- function(dfx = NULL,
                          ){
   # 1. Arguments check ----
   output <- match.arg(output)
+  # Capture all arguments as a list
+  args <- as.list(environment())
 
   # 2. Create object if not supplied ----
-  myrror_object <- get_correct_myrror_object(myrror_object, dfx, dfy, verbose)
+  myrror_object <- do.call(get_correct_myrror_object, args)
 
   # 3. Run compare_type_int() and update myrror_object ----
   myrror_object$compare_type <- compare_type_int(myrror_object)
