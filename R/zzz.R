@@ -1,7 +1,9 @@
 .onLoad <- function(libname, pkgname) {
   op <- options()
   op.myrror <- list(
-    myrror.verbose         = TRUE
+    myrror.verbose         = TRUE,
+    myrror.interactive     = interactive(),
+    myrror.tolerance       = 1e-7
   )
   toset <- !(names(op.myrror) %in% names(op))
 

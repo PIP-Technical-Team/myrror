@@ -12,14 +12,14 @@ compare_type(
   by.x = NULL,
   by.y = NULL,
   output = c("full", "simple", "silent"),
-  interactive = TRUE,
+  interactive = getOption("myrror.interactive"),
   verbose = getOption("myrror.verbose")
 )
 }
 \arguments{
-\item{dfx}{data.frame object}
+\item{dfx}{a non-empty data.frame}
 
-\item{dfy}{data.frame object}
+\item{dfy}{a non-empty data.frame}
 
 \item{myrror_object}{myrror object}
 
@@ -29,9 +29,8 @@ compare_type(
 
 \item{by.y}{character, key to be used for dfy}
 
-\item{output}{character, one of "full", "simple", "silent"}
-
-\item{interactive}{TRUE or FALSE, default to TRUE}
+\item{interactive}{logical: If \code{TRUE}, print S3 method for myrror objects
+displays by chunks. If \code{FALSE}, everything will be printed at once}
 
 \item{verbose}{logical: If \code{TRUE} additional information will be displayed}
 }

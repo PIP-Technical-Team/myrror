@@ -4,14 +4,31 @@
 \alias{get_correct_myrror_object}
 \title{Get correct myrror object}
 \usage{
-get_correct_myrror_object(myrror_object, dfx, dfy, verbose)
+get_correct_myrror_object(
+  myrror_object,
+  dfx,
+  dfy,
+  by,
+  by.x,
+  by.y,
+  verbose,
+  ...
+)
 }
 \arguments{
 \item{dfx}{a non-empty data.frame}
 
 \item{dfy}{a non-empty data.frame}
 
+\item{by}{character, key to be used for dfx and dfy}
+
+\item{by.x}{character, key to be used for dfx}
+
+\item{by.y}{character, key to be used for dfy}
+
 \item{verbose}{logical: If \code{TRUE} additional information will be displayed}
+
+\item{...}{other arguments parsed to parent function.}
 }
 \value{
 myrror object

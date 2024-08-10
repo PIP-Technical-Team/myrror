@@ -1,18 +1,10 @@
 # Myrror Constructor
 #' myrror_object constructor
 #'
-#' @param dfx a non-empty data.frame
-#' @param dfy a non-empty data.frame
-#' @param by character, key to be used for dfx and dfy
-#' @param by.x character, key to be used for dfx
-#' @param by.y character, key to be used for dfy
-#' @param factor_to_char TRUE or FALSE, default to TRUE.
-#' @param verbose logical: If `TRUE` additional information will be displayed
+#'
+#' @inheritParams myrror
 #'
 #' @return object of class myrror_object
-#'
-
-#'
 create_myrror_object <- function(dfx,
                    dfy,
                    by = NULL,
@@ -175,7 +167,7 @@ create_myrror_object <- function(dfx,
       compare_values = FALSE,
       extract_diff_values = FALSE
     ),
-    interactive = TRUE
+    interactive = getOption("myrror.interactive")
   )
 
   # 8. Return myrror object (invisible) ----

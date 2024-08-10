@@ -25,7 +25,7 @@ compare_values <- function(dfx = NULL,
                            by.y = NULL,
                            myrror_object = NULL,
                            output = c("full", "simple", "silent"),
-                           interactive = TRUE,
+                           interactive = getOption("myrror.interactive"),
                            tolerance = 1e-7) {
 
   # 1. Arguments check ----

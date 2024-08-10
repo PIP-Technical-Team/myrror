@@ -1,4 +1,6 @@
 
+withr::local_options(list(myrror.interactive     = FALSE))
+
 mo5 <- create_myrror_object(iris, iris_var5)
 compare_type_object_5 <- compare_type(myrror_object = mo5)
 
