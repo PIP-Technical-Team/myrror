@@ -1,7 +1,8 @@
 
 #' Compare type of variables
 #'
-#' @param myrror_object myrror object
+#' @param myrror_object myrror object from [create_myrror_object]
+#' @param output character: one of "full", "simple", "silent"
 #' @inheritParams myrror
 #'
 #' @return list object

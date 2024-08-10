@@ -21,13 +21,15 @@ compare_type(
 
 \item{dfy}{a non-empty data.frame}
 
-\item{myrror_object}{myrror object}
+\item{myrror_object}{myrror object from \link{create_myrror_object}}
 
 \item{by}{character, key to be used for dfx and dfy}
 
 \item{by.x}{character, key to be used for dfx}
 
 \item{by.y}{character, key to be used for dfy}
+
+\item{output}{character: one of "full", "simple", "silent"}
 
 \item{interactive}{logical: If \code{TRUE}, print S3 method for myrror objects
 displays by chunks. If \code{FALSE}, everything will be printed at once}
