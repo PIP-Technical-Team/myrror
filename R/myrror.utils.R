@@ -324,16 +324,6 @@ pair_columns <- function(merged_data_report,
   )
 
   # Identify unmatched columns
-  # Get set_by/keys
-  get_keys_or_default <- function(keys, default = "rn") {
-    if (is.null(keys)) {
-      default
-    } else {
-      keys
-    }
-  }
-
-  # Usage
   keys <- get_keys_or_default(merged_data_report$keys)
 
   nonshared_cols_dfx <- setdiff(c(merged_data_report$colnames_dfx),
@@ -349,7 +339,21 @@ pair_columns <- function(merged_data_report,
 
 }
 
-# 5. Compare with tolerance ----
+# 5. Get keys or default ----
+#' Get keys or default
+#' @param keys character vector
+#' @param default character
+#' @return character
+#'
+get_keys_or_default <- function(keys, default = "rn") {
+  if (is.null(keys)) {
+    default
+  } else {
+    keys
+  }
+}
+
+# 6. Compare with tolerance ----
 #' Are these two values equal with tolerance applied?
 #'
 #' @param x numeric

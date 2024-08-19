@@ -89,6 +89,41 @@ test_that("Function stops with empty by.y argument", {
   expect_error(check_set_by(by = "id", by.y = character()), "non-empty character vector")
 })
 
+
+# Additional:
+
+test_that("input validations are correctly enforced", {
+  expect_error(check_set_by(by = 1), "non-empty character vector")
+  expect_error(check_set_by(by.x = TRUE), "non-empty character vector")
+  expect_error(check_set_by(by.y = list()), "non-empty character vector")
+})
+
+test_that("named vectors are handled correctly", {
+  expect_equal(check_set_by(by = c(country = "COUNTRY", year = "YEAR"))$by.x, c("country", "year"))
+  expect_equal(check_set_by(by = c(country = "COUNTRY", year = "YEAR"))$by.y, c("COUNTRY", "YEAR"))
+})
+
+test_that("handling only one side provided", {
+  expect_error(check_set_by(by.x = "COUNTRY"), "by.y also needs to be specified")
+  expect_error(check_set_by(by.y = "COUNTRY"), "by.x also needs to be specified")
+})
+
+test_that("defaults are set when both by.x and by.y are NULL", {
+  result <- check_set_by()
+  expect_equal(result$by.x, "rn")
+  expect_equal(result$by.y, "rn")
+})
+
+test_that("handles empty and zero-length inputs", {
+  expect_error(check_set_by(by = character(0)), "non-empty character vector")
+  expect_error(check_set_by(by.x = character(0)), "non-empty character vector")
+  expect_error(check_set_by(by.y = character(0)), "non-empty character vector")
+})
+
+
+
+
+
 # prepare_df() ----
 # Test 1: Conversion of DataFrame to Data Table
 test_that("DataFrame is converted to Data Table", {
@@ -199,6 +234,13 @@ test_that("pair_columns returns correct pairs", {
 
 })
 
+# get_keys_or_default -----
+test_that("get_keys_or_default returns rn (default) if NULL", {
+  result <- get_keys_or_default(NULL, "rn")
+
+  expect_equal(result, "rn")
+})
+
 # equal_with_tolerance() ----
 test_that("Tolerance works correctly", {
   expect_true(equal_with_tolerance(0.1 + 0.2, 0.3, tolerance = 1e-8))
@@ -206,6 +248,8 @@ test_that("Tolerance works correctly", {
   expect_false(equal_with_tolerance(0.1, 0.10000002, tolerance = 1e-8))
   expect_false(equal_with_tolerance("a", "b", tolerance = 1e-8))
 })
+
+
 
 
 
