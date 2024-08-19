@@ -10,13 +10,14 @@
 #' @param compare_values TRUE or FALSE, default to TRUE.
 #' @param extract_diff_values TRUE or FALSE, default to TRUE.
 #' @param factor_to_char TRUE or FALSE, default to TRUE.
-#' @param interactive TRUE or FALSE, default to TRUE.
+#' @param interactive logical: If `TRUE`, print S3 method for myrror objects
+#' displays by chunks. If `FALSE`, everything will be printed at once
 #' @param tolerance numeric, default to 1e-7.
+#' @param verbose logical: If `TRUE` additional information will be displayed
 #'
 #'
 #' @return draft: selection of by variables
 #' @export
-#' @import collapse
 #'
 #' @examples
 #' comparison <- myrror(iris, iris_var1)
@@ -29,8 +30,10 @@ myrror <- function(dfx,
                    compare_values = TRUE,
                    extract_diff_values = TRUE,
                    factor_to_char = TRUE,
-                   interactive = TRUE,
-                   tolerance = 1e-7) {
+                   interactive = getOption("myrror.interactive"),
+                   tolerance = getOption("myrror.tolerance"),
+                   verbose = getOption("myrror.verbose")
+                   ) {
 
  # 1. Create myrror object ----
   myrror_object <- create_myrror_object(dfx = dfx,

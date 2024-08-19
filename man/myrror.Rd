@@ -14,8 +14,9 @@ myrror(
   compare_values = TRUE,
   extract_diff_values = TRUE,
   factor_to_char = TRUE,
-  interactive = TRUE,
-  tolerance = 1e-07
+  interactive = getOption("myrror.interactive"),
+  tolerance = getOption("myrror.tolerance"),
+  verbose = getOption("myrror.verbose")
 )
 }
 \arguments{
@@ -37,9 +38,12 @@ myrror(
 
 \item{factor_to_char}{TRUE or FALSE, default to TRUE.}
 
-\item{interactive}{TRUE or FALSE, default to TRUE.}
+\item{interactive}{logical: If \code{TRUE}, print S3 method for myrror objects
+displays by chunks. If \code{FALSE}, everything will be printed at once}
 
 \item{tolerance}{numeric, default to 1e-7.}
+
+\item{verbose}{logical: If \code{TRUE} additional information will be displayed}
 }
 \value{
 draft: selection of by variables

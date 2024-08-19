@@ -10,7 +10,8 @@ create_myrror_object(
   by = NULL,
   by.x = NULL,
   by.y = NULL,
-  factor_to_char = TRUE
+  factor_to_char = TRUE,
+  verbose = getOption("myrror.verbose")
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ create_myrror_object(
 \item{by.y}{character, key to be used for dfy}
 
 \item{factor_to_char}{TRUE or FALSE, default to TRUE.}
+
+\item{verbose}{logical: If \code{TRUE} additional information will be displayed}
 }
 \value{
 object of class myrror_object

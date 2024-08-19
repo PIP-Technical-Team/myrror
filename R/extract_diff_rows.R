@@ -52,7 +52,7 @@ extract_diff_rows <- function(dfx = NULL,
 
       # If still NULL after trying to retrieve, throw an error
       if (is.null(myrror_object)) {
-        stop("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied and no existing myrror object is available.")
+        cli::cli_abort("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied and no existing myrror object is available.")
       }
     }
   }

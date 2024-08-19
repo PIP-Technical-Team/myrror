@@ -63,12 +63,14 @@ extract_diff_values <- function(dfx = NULL,
       myrror_object$name_dfy <- deparse(substitute(dfy))
 
     } else {
-      # If dfx and dfy are not provided, check if a myrror_object exists in the environment:
-      if (exists("last_myrror_object", envir = .myrror_env, inherits = FALSE)) {
-        myrror_object <- get("last_myrror_object", envir = .myrror_env, inherits = FALSE)
-      } else {
-        # If no myrror_object is available in the environment, throw an error
-        stop("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied and no existing myrror object is available.")
+
+      # If dfx and dfy are not provided, try retrieving a myrror_object from the environment:
+      myrror_object <- get("last_myrror_object", envir = .myrror_env, inherits = FALSE)
+
+      # If still NULL after trying to retrieve, throw an error
+      if (is.null(myrror_object)) {
+        cli::cli_abort("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied and no existing myrror object is available.")
+
       }
     }
   }
@@ -159,12 +161,14 @@ extract_diff_table <- function(dfx = NULL,
       myrror_object$name_dfy <- deparse(substitute(dfy))
 
     } else {
-      # If dfx and dfy are not provided, check if a myrror_object exists in the environment:
-      if (exists("last_myrror_object", envir = .myrror_env, inherits = FALSE)) {
-        myrror_object <- get("last_myrror_object", envir = .myrror_env, inherits = FALSE)
-      } else {
-        # If no myrror_object is available in the environment, throw an error
-        stop("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied and no existing myrror object is available.")
+
+      # If dfx and dfy are not provided, try retrieving a myrror_object from the environment:
+      myrror_object <- get("last_myrror_object", envir = .myrror_env, inherits = FALSE)
+
+      # If still NULL after trying to retrieve, throw an error
+      if (is.null(myrror_object)) {
+        cli::cli_abort("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied and no existing myrror object is available.")
+
       }
     }
   }
@@ -248,17 +252,18 @@ extract_diff_int <- function(myrror_object = NULL,
     column_y <- paste0(variable, ".y")
 
     df |>
-      collapse::fsubset(count > 0) |>
-      collapse::fselect(-count) |>
-      tidyr::unnest(cols = c("indexes")) |>
+      fsubset(count > 0) |>
+      fselect(-count) |>
+      # please check
+      _[, c(.SD, list(indexes = unlist(indexes))), .SDcols = "diff"] |>
       fmutate(indexes = as.character(indexes)) |>
       collapse::join(matched_data |>
-                       collapse::fselect(c("rn", keys, column_x, column_y)),
+                       fselect(c("rn", keys, column_x, column_y)),
                      on = c("indexes" = "rn"),
                      how = "left",
                      verbose = 0) |>
-      collapse::fselect(c("diff", "indexes", keys, column_x, column_y)) |>
-      collapse::roworderv(c(keys))
+      fselect(c("diff", "indexes", keys, column_x, column_y)) |>
+      roworderv(c(keys))
 
   })
 
@@ -267,8 +272,9 @@ extract_diff_int <- function(myrror_object = NULL,
   # 3. Table option ----
   diff_table <- rowbind(compare_values_object, idcol = "variable") |>
     fsubset(count > 0) |>
-    fselect(-count)|>
-    tidyr::unnest(cols = c(indexes)) |> # is there a better version of unnest?
+    fselect(-count) |>
+    # please check
+    _[, c(.SD, list(indexes = unlist(indexes))), .SDcols = "diff"] |>
     fmutate(indexes = as.character(indexes)) |>
     collapse::join(matched_data,
                    on = c("indexes" = "rn"),

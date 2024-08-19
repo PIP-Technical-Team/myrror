@@ -7,18 +7,21 @@
 compare_type(
   dfx = NULL,
   dfy = NULL,
+  myrror_object = NULL,
   by = NULL,
   by.x = NULL,
   by.y = NULL,
-  myrror_object = NULL,
   output = c("full", "simple", "silent"),
-  interactive = TRUE
+  interactive = getOption("myrror.interactive"),
+  verbose = getOption("myrror.verbose")
 )
 }
 \arguments{
-\item{dfx}{data.frame object}
+\item{dfx}{a non-empty data.frame}
 
-\item{dfy}{data.frame object}
+\item{dfy}{a non-empty data.frame}
+
+\item{myrror_object}{myrror object from \link{create_myrror_object}}
 
 \item{by}{character, key to be used for dfx and dfy}
 
@@ -26,11 +29,12 @@ compare_type(
 
 \item{by.y}{character, key to be used for dfy}
 
-\item{myrror_object}{myrror object}
+\item{output}{character: one of "full", "simple", "silent"}
 
-\item{output}{character, one of "full", "simple", "silent"}
+\item{interactive}{logical: If \code{TRUE}, print S3 method for myrror objects
+displays by chunks. If \code{FALSE}, everything will be printed at once}
 
-\item{interactive}{TRUE or FALSE, default to TRUE}
+\item{verbose}{logical: If \code{TRUE} additional information will be displayed}
 }
 \value{
 list object

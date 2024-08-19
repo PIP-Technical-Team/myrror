@@ -1,14 +1,9 @@
 
 #' Compare type of variables
 #'
-#' @param dfx data.frame object
-#' @param dfy data.frame object
-#' @param by character, key to be used for dfx and dfy
-#' @param by.x character, key to be used for dfx
-#' @param by.y character, key to be used for dfy
-#' @param myrror_object myrror object
-#' @param output character, one of "full", "simple", "silent"
-#' @param interactive TRUE or FALSE, default to TRUE
+#' @param myrror_object myrror object from [create_myrror_object]
+#' @param output character: one of "full", "simple", "silent"
+#' @inheritParams myrror
 #'
 #' @return list object
 #' @export
@@ -18,31 +13,21 @@
 #'
 compare_type <- function(dfx = NULL,
                          dfy = NULL,
+                         myrror_object = NULL,
                          by = NULL,
                          by.x = NULL,
                          by.y = NULL,
-                         myrror_object = NULL,
                          output = c("full", "simple", "silent"),
-                         interactive = TRUE) {
+                         interactive = getOption("myrror.interactive"),
+                         verbose = getOption("myrror.verbose")
+                         ){
   # 1. Arguments check ----
   output <- match.arg(output)
+  # Capture all arguments as a list
+  args <- as.list(environment())
 
   # 2. Create object if not supplied ----
-  if (is.null(myrror_object)) {
-    if (is.null(dfx) || is.null(dfy)) {
-      stop("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied.")
-    }
-
-    myrror_object <- create_myrror_object(dfx = dfx,
-                                          dfy = dfy,
-                                          by = by,
-                                          by.x = by.x,
-                                          by.y = by.y)
-    ## Re-assign names from within this call:
-    myrror_object$name_dfx <- deparse(substitute(dfx))
-    myrror_object$name_dfy <- deparse(substitute(dfy))
-
-  }
+  myrror_object <- do.call(get_correct_myrror_object, args)
 
   # 3. Run compare_type_int() and update myrror_object ----
   myrror_object$compare_type <- compare_type_int(myrror_object)
@@ -104,8 +89,8 @@ compare_type_int <- function(myrror_object = NULL){
   compare_type <- rbindlist(compare_type)
 
   compare_type <- compare_type |>
-    collapse::fmutate(variable = gsub(".x", "", column_x))|>
-    collapse::fselect(variable, class_x, class_y, same_class)
+    fmutate(variable = gsub(".x", "", column_x))|>
+    fselect(variable, class_x, class_y, same_class)
 
   # 3. Resturn results ----
   return(compare_type)

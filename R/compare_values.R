@@ -25,7 +25,7 @@ compare_values <- function(dfx = NULL,
                            by.y = NULL,
                            myrror_object = NULL,
                            output = c("full", "simple", "silent"),
-                           interactive = TRUE,
+                           interactive = getOption("myrror.interactive"),
                            tolerance = 1e-7) {
 
   # 1. Arguments check ----
@@ -34,7 +34,7 @@ compare_values <- function(dfx = NULL,
   # 2. Create object if not supplied ----
   if (is.null(myrror_object)) {
     if (is.null(dfx) || is.null(dfy)) {
-      stop("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied.")
+      cli::cli_abort("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied.")
     }
 
     myrror_object <- create_myrror_object(dfx = dfx,
@@ -66,11 +66,11 @@ compare_values <- function(dfx = NULL,
   } else {
 
   ### else if not empty, then create a tibble with the results.
-  compare_values_df <- purrr::map(compare_values_list, ~.x|>fselect(diff, count)) |>
+  compare_values_df <- lapply(compare_values_list, \(x) fselect(x, diff, count)) |>
     rowbind(idcol = "variable") |>
     fmutate(diff = as.factor(diff))|>
     pivot(ids = 1, how = "wider", names = "diff")|>
-    tidyr::as_tibble()
+    qTBL()
 
   myrror_object$compare_values <- compare_values_df
 
@@ -149,7 +149,7 @@ compare_values_int <- function(myrror_object = NULL,
 get_value_to_na <- function(matched_data,
                               pairs_list) {
 
-  result <- purrr::map(pairs_list, function(pair) {
+  result <- lapply(pairs_list, function(pair) {
 
     col_x <- pair[[1]]
     col_y <- pair[[2]]
@@ -174,7 +174,7 @@ get_value_to_na <- function(matched_data,
 get_na_to_value <- function(matched_data,
                               pairs_list) {
 
-  result <- purrr::map(pairs_list, function(pair) {
+  result <- lapply(pairs_list, function(pair) {
 
     col_x <- pair[[1]]
     col_y <- pair[[2]]
@@ -196,7 +196,7 @@ get_change_in_value <- function(matched_data,
                                   pairs_list,
                                   tolerance) {
 
-  result <- purrr::map(pairs_list, function(pair) {
+  result <- lapply(pairs_list, function(pair) {
 
     col_x <- pair[[1]]
     col_y <- pair[[2]]

@@ -12,7 +12,7 @@ compare_values(
   by.y = NULL,
   myrror_object = NULL,
   output = c("full", "simple", "silent"),
-  interactive = TRUE,
+  interactive = getOption("myrror.interactive"),
   tolerance = 1e-07
 )
 }
