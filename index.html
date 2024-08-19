@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">myrror</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,6 +56,10 @@
 </h1></div>
 <!-- badges: start -->
 
+<!-- [![R-CMD-check](https://github.com/giorgiacek/myrror/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/giorgiacek/myrror/actions/workflows/R-CMD-check.yaml)  -->
+<!-- [![Codecov test coverage](https://codecov.io/gh/giorgiacek/myrror/branch/main/graph/badge.svg)](https://codecov.io/gh/giorgiacek/myrror) -->
+<!-- [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental) -->
+<!-- badges: end -->
 <p>A R package to compare data frames in R. The assumption is that the user wants the two data frames to be the same. <code><a href="reference/myrror.html">myrror()</a></code> highlights the differences between values. When there is no difference, the comparison is “successful”.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -79,7 +83,7 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; dfx: iris with 150 rows and 5 columns.</span></span>
 <span><span class="co">#&gt; dfy: iris_var1 with 155 rows and 6 columns.</span></span>
-<span><span class="co">#&gt; keys: rn.</span></span>
+<span><span class="co">#&gt; Keys: rn.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── Note: comparison is done for shared columns and rows. ──</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -108,9 +112,9 @@
 <span><span class="co">#&gt; ── Overview: ──</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; # A tibble: 1 × 4</span></span>
-<span><span class="co">#&gt;   variable     value_to_na na_to_value change_in_value</span></span>
-<span><span class="co">#&gt;   &lt;fct&gt;              &lt;int&gt;       &lt;int&gt;           &lt;int&gt;</span></span>
-<span><span class="co">#&gt; 1 Sepal.Length           5           0               0</span></span>
+<span><span class="co">#&gt;   variable     change_in_value na_to_value value_to_na</span></span>
+<span><span class="co">#&gt;   &lt;fct&gt;                  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 Sepal.Length               0           0           5</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Press ENTER to continue or type 'q' to stop:</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -121,14 +125,14 @@
 <span><span class="co">#&gt; ── Sepal.Length</span></span>
 <span><span class="co">#&gt; # A tibble: 5 × 4</span></span>
 <span><span class="co">#&gt;   diff        indexes Sepal.Length.x Sepal.Length.y</span></span>
-<span><span class="co">#&gt; * &lt;chr&gt;       &lt;chr&gt;            &lt;dbl&gt;          &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;            &lt;dbl&gt;          &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; 1 value_to_na 104                6.3             NA</span></span>
 <span><span class="co">#&gt; 2 value_to_na 125                6.7             NA</span></span>
 <span><span class="co">#&gt; 3 value_to_na 67                 5.6             NA</span></span>
 <span><span class="co">#&gt; 4 value_to_na 80                 5.7             NA</span></span>
 <span><span class="co">#&gt; 5 value_to_na 96                 5.7             NA</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Press ENTER to continue to next variable or type 'q' to stop:</span></span>
+<span><span class="co">#&gt; Press ENTER to continue or type 'q' to stop:</span></span>
 <span><span class="co">#&gt; ℹ Note: run `extract_diff_values()` or `extract_diff_table()` to access the results in list or table format.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ✔ End of Myrror Report.</span></span></code></pre></div>
@@ -172,9 +176,11 @@
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/giorgiacek/myrror/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/giorgiacek/myrror/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://codecov.io/gh/giorgiacek/myrror" class="external-link"><img src="https://codecov.io/gh/giorgiacek/myrror/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
-<li><a href="https://www.tidyverse.org/lifecycle/#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
+<li><a href="https://cran.r-project.org/web/checks/check_results_myrror.html" class="external-link"><img src="https://badges.cranchecks.info/summary/myrror.svg" alt="CRAN checks"></a></li>
+<li><a href="https://cran.r-project.org/package=myrror" class="external-link"><img src="https://www.r-pkg.org/badges/version/myrror?color=orange"></a></li>
+<li><a href="https://github.com/giorgiacek/myrror" class="external-link"><img src="https://img.shields.io/badge/devel%20version-0.0.0.9000-blue.svg"></a></li>
+<li><a href="https://app.codecov.io/gh/giorgiacek/myrror" class="external-link"><img src="https://codecov.io/gh/giorgiacek/myrror/branch/main/graph/badge.svg"></a></li>
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg"></a></li>
 </ul>
 </div>
 

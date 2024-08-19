@@ -9,7 +9,7 @@ Function to extract rows with different values between two dataframes."></head><
 
     <a class="navbar-brand me-2" href="../index.html">myrror</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -102,40 +102,82 @@ Function to extract rows with different values between two dataframes.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">extract_diff_table</span><span class="op">(</span><span class="va">iris</span>, <span class="va">iris_var1</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 5 × 16</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   variable     diff        indexes Sepal.Length.x Sepal.Width.x Petal.Length.x</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">*</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Sepal.Length value_to_na 67                 5.6           3              4.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Sepal.Length value_to_na 80                 5.7           2.6            3.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Sepal.Length value_to_na 96                 5.7           3              4.2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> Sepal.Length value_to_na 104                6.3           2.9            5.6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> Sepal.Length value_to_na 125                6.7           3.3            5.7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 10 more variables: Petal.Width.x &lt;dbl&gt;, Species.x &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   Sepal.Length.y &lt;dbl&gt;, Sepal.Width.y &lt;dbl&gt;, Petal.Length.y &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   Petal.Width.y &lt;dbl&gt;, Species.y &lt;chr&gt;, Petal.Area &lt;dbl&gt;, .joyn &lt;fct&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   row_index &lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           diff indexes Sepal.Length.x Sepal.Width.x Petal.Length.x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;char&gt;  &lt;char&gt;          &lt;num&gt;         &lt;num&gt;          &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: value_to_na      67            5.6           3.0            4.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: value_to_na      80            5.7           2.6            3.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: value_to_na      96            5.7           3.0            4.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: value_to_na     104            6.3           2.9            5.6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: value_to_na     125            6.7           3.3            5.7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Petal.Width.x  Species.x Sepal.Length.y Sepal.Width.y Petal.Length.y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            &lt;num&gt;     &lt;char&gt;          &lt;num&gt;         &lt;num&gt;          &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:           1.5 versicolor             NA           3.0            4.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:           1.0 versicolor             NA           2.6            3.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:           1.2 versicolor             NA           3.0            4.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:           1.8  virginica             NA           2.9            5.6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:           2.1  virginica             NA           3.3            5.7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Petal.Width.y  Species.y Petal.Area  .joyn row_index</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            &lt;num&gt;     &lt;char&gt;      &lt;num&gt; &lt;fctr&gt;     &lt;int&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:           1.5 versicolor       6.75  x &amp; y        67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:           1.0 versicolor       3.50  x &amp; y        80</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:           1.2 versicolor       5.04  x &amp; y        96</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:           1.8  virginica      10.08  x &amp; y       104</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:           2.1  virginica      11.97  x &amp; y       125</span>
 <span class="r-in"><span><span class="fu">extract_diff_table</span><span class="op">(</span><span class="va">survey_data</span>, <span class="va">survey_data_2</span>, by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'country'</span>, <span class="st">'year'</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 16 × 15</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    variable  diff      indexes country  year variable1.x variable2.x variable3.x</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  <span style="color: #BCBCBC;">*</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> variable2 change_i… 1       A        <span style="text-decoration: underline;">2</span>010      0.544      -<span style="color: #BB0000;">0.367</span>        0.827</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> variable2 change_i… 2       A        <span style="text-decoration: underline;">2</span>011     -<span style="color: #BB0000;">0.187</span>       1.08        -<span style="color: #BB0000;">0.628</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> variable2 change_i… 3       A        <span style="text-decoration: underline;">2</span>012      0.950      -<span style="color: #BB0000;">0.886</span>        0.176</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> variable2 change_i… 4       A        <span style="text-decoration: underline;">2</span>013     -<span style="color: #BB0000;">1.11</span>       -<span style="color: #BB0000;">1.36</span>        -<span style="color: #BB0000;">0.444</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> variable2 change_i… 5       A        <span style="text-decoration: underline;">2</span>014      0.361       0.498       -<span style="color: #BB0000;">0.373</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> variable2 change_i… 6       A        <span style="text-decoration: underline;">2</span>015      2.03       -<span style="color: #BB0000;">0.449</span>        0.122</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> variable2 change_i… 7       A        <span style="text-decoration: underline;">2</span>016     -<span style="color: #BB0000;">0.289</span>      -<span style="color: #BB0000;">1.35</span>         0.995</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> variable2 change_i… 8       A        <span style="text-decoration: underline;">2</span>017      0.679       0.106       -<span style="color: #BB0000;">0.200</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> variable2 change_i… 9       B        <span style="text-decoration: underline;">2</span>010     -<span style="color: #BB0000;">0.043</span><span style="color: #BB0000; text-decoration: underline;">6</span>      2.44         0.411</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> variable2 change_i… 10      B        <span style="text-decoration: underline;">2</span>011      0.311      -<span style="color: #BB0000;">0.083</span><span style="color: #BB0000; text-decoration: underline;">3</span>      -<span style="color: #BB0000;">0.709</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> variable2 change_i… 11      B        <span style="text-decoration: underline;">2</span>012      0.378      -<span style="color: #BB0000;">0.834</span>       -<span style="color: #BB0000;">0.915</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> variable2 change_i… 12      B        <span style="text-decoration: underline;">2</span>013      0.551       0.142        0.129</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> variable2 change_i… 13      B        <span style="text-decoration: underline;">2</span>014      1.78       -<span style="color: #BB0000;">1.28</span>         1.26 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> variable2 change_i… 14      B        <span style="text-decoration: underline;">2</span>015      0.061<span style="text-decoration: underline;">5</span>     -<span style="color: #BB0000;">0.063</span><span style="color: #BB0000; text-decoration: underline;">2</span>      -<span style="color: #BB0000;">0.613</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> variable2 change_i… 15      B        <span style="text-decoration: underline;">2</span>016     -<span style="color: #BB0000;">0.068</span><span style="color: #BB0000; text-decoration: underline;">7</span>     -<span style="color: #BB0000;">1.28</span>        -<span style="color: #BB0000;">0.487</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> variable2 change_i… 16      B        <span style="text-decoration: underline;">2</span>017      0.238       0.736       -<span style="color: #BB0000;">0.539</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 7 more variables: variable4.x &lt;dbl&gt;, variable1.y &lt;dbl&gt;, variable2.y &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   variable3.y &lt;dbl&gt;, variable4.y &lt;dbl&gt;, .joyn &lt;fct&gt;, row_index &lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                diff indexes country  year variable1.x variable2.x variable3.x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              &lt;char&gt;  &lt;char&gt;  &lt;char&gt; &lt;int&gt;       &lt;num&gt;       &lt;num&gt;       &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: change_in_value       1       A  2010  0.54366717 -0.36741872   0.8270134</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: change_in_value       2       A  2011 -0.18746702  1.08281824  -0.6280390</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: change_in_value       3       A  2012  0.94976910 -0.88608285   0.1758058</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: change_in_value       4       A  2013 -1.10673964 -1.35789652  -0.4435902</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: change_in_value       5       A  2014  0.36097445  0.49807310  -0.3729658</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: change_in_value       6       A  2015  2.03254692 -0.44915960   0.1220124</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: change_in_value       7       A  2016 -0.28904570 -1.35026961   0.9950452</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: change_in_value       8       A  2017  0.67921600  0.10604084  -0.1998401</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: change_in_value       9       B  2010 -0.04356271  2.44402606   0.4113771</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: change_in_value      10       B  2011  0.31081511 -0.08331262  -0.7091216</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11: change_in_value      11       B  2012  0.37805838 -0.83435863  -0.9148476</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12: change_in_value      12       B  2013  0.55137031  0.14181480   0.1287092</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13: change_in_value      13       B  2014  1.77946101 -1.27564125   1.2594642</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14: change_in_value      14       B  2015  0.06146327 -0.06316779  -0.6132742</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15: change_in_value      15       B  2016 -0.06867818 -1.28396057  -0.4870781</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16: change_in_value      16       B  2017  0.23823288  0.73642976  -0.5390066</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      variable4.x variable1.y variable2.y variable3.y  variable4.y  .joyn</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            &lt;num&gt;       &lt;num&gt;       &lt;num&gt;       &lt;num&gt;        &lt;num&gt; &lt;fctr&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -0.092927361  0.54366717  0.48571921   0.8270134 -0.092927361  x &amp; y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:  0.672555322 -0.18746702 -0.26755620  -0.6280390  0.672555322  x &amp; y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:  0.104421976  0.94976910 -1.22263500   0.1758058  0.104421976  x &amp; y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -0.464067726 -1.10673964 -0.04244568  -0.4435902 -0.464067726  x &amp; y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:  0.000880445  0.36097445 -1.44511812  -0.3729658  0.000880445  x &amp; y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:  0.242133191  2.03254692 -0.87467620   0.1220124  0.242133191  x &amp; y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:  1.197393527 -0.28904570 -0.63024083   0.9950452  1.197393527  x &amp; y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:  0.273731489  0.67921600  1.05829679  -0.1998401  0.273731489  x &amp; y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -1.017990476 -0.04356271 -0.77469057   0.4113771 -1.017990476  x &amp; y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -1.959103614  0.31081511 -0.56094771  -0.7091216 -1.959103614  x &amp; y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11: -0.075142008  0.37805838 -0.62187200  -0.9148476 -0.075142008  x &amp; y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12: -0.411169777  0.55137031 -0.45073978   0.1287092 -0.411169777  x &amp; y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13: -0.061513547  1.77946101  0.02804128   1.2594642 -0.061513547  x &amp; y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14: -0.018961455  0.06146327  0.92758765  -0.6132742 -0.018961455  x &amp; y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15:  1.667808010 -0.06867818 -0.19687494  -0.4870781  1.667808010  x &amp; y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16: -0.784008485  0.23823288 -0.16630616  -0.5390066 -0.784008485  x &amp; y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     row_index</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;int&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:         2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:         3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:         4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:         5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:         6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:         7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:         8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:         9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:        10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:        11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:        12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13:        13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14:        14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15:        15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16:        16</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

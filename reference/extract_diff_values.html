@@ -9,7 +9,7 @@ Function to extract rows with different values between two dataframes."></head><
 
     <a class="navbar-brand me-2" href="../index.html">myrror</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -103,36 +103,34 @@ Function to extract rows with different values between two dataframes.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">extract_diff_values</span><span class="op">(</span><span class="va">iris</span>, <span class="va">iris_var1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $Sepal.Length</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 5 × 4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   diff        indexes Sepal.Length.x Sepal.Length.y</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> value_to_na 104                6.3             <span style="color: #BB0000;">NA</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> value_to_na 125                6.7             <span style="color: #BB0000;">NA</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> value_to_na 67                 5.6             <span style="color: #BB0000;">NA</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> value_to_na 80                 5.7             <span style="color: #BB0000;">NA</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> value_to_na 96                 5.7             <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           diff indexes Sepal.Length.x Sepal.Length.y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;char&gt;  &lt;char&gt;          &lt;num&gt;          &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: value_to_na     104            6.3             NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: value_to_na     125            6.7             NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: value_to_na      67            5.6             NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: value_to_na      80            5.7             NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: value_to_na      96            5.7             NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu">extract_diff_values</span><span class="op">(</span><span class="va">survey_data</span>, <span class="va">survey_data_2</span>, by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'country'</span>, <span class="st">'year'</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $variable2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 16 × 4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    diff            indexes variable2.x variable2.y</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> change_in_value 1           -<span style="color: #BB0000;">0.367</span>       0.486 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> change_in_value 10          -<span style="color: #BB0000;">0.083</span><span style="color: #BB0000; text-decoration: underline;">3</span>     -<span style="color: #BB0000;">0.561</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> change_in_value 11          -<span style="color: #BB0000;">0.834</span>      -<span style="color: #BB0000;">0.622</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> change_in_value 12           0.142      -<span style="color: #BB0000;">0.451</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> change_in_value 13          -<span style="color: #BB0000;">1.28</span>        0.028<span style="text-decoration: underline;">0</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> change_in_value 14          -<span style="color: #BB0000;">0.063</span><span style="color: #BB0000; text-decoration: underline;">2</span>      0.928 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> change_in_value 15          -<span style="color: #BB0000;">1.28</span>       -<span style="color: #BB0000;">0.197</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> change_in_value 16           0.736      -<span style="color: #BB0000;">0.166</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> change_in_value 2            1.08       -<span style="color: #BB0000;">0.268</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> change_in_value 3           -<span style="color: #BB0000;">0.886</span>      -<span style="color: #BB0000;">1.22</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> change_in_value 4           -<span style="color: #BB0000;">1.36</span>       -<span style="color: #BB0000;">0.042</span><span style="color: #BB0000; text-decoration: underline;">4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> change_in_value 5            0.498      -<span style="color: #BB0000;">1.45</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> change_in_value 6           -<span style="color: #BB0000;">0.449</span>      -<span style="color: #BB0000;">0.875</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> change_in_value 7           -<span style="color: #BB0000;">1.35</span>       -<span style="color: #BB0000;">0.630</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> change_in_value 8            0.106       1.06  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> change_in_value 9            2.44       -<span style="color: #BB0000;">0.775</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                diff indexes variable2.x variable2.y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              &lt;char&gt;  &lt;char&gt;       &lt;num&gt;       &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: change_in_value       1 -0.36741872  0.48571921</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: change_in_value      10 -0.08331262 -0.56094771</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: change_in_value      11 -0.83435863 -0.62187200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: change_in_value      12  0.14181480 -0.45073978</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: change_in_value      13 -1.27564125  0.02804128</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: change_in_value      14 -0.06316779  0.92758765</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: change_in_value      15 -1.28396057 -0.19687494</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: change_in_value      16  0.73642976 -0.16630616</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: change_in_value       2  1.08281824 -0.26755620</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: change_in_value       3 -0.88608285 -1.22263500</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11: change_in_value       4 -1.35789652 -0.04244568</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12: change_in_value       5  0.49807310 -1.44511812</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13: change_in_value       6 -0.44915960 -0.87467620</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14: change_in_value       7 -1.35026961 -0.63024083</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15: change_in_value       8  0.10604084  1.05829679</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16: change_in_value       9  2.44402606 -0.77469057</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
