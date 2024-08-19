@@ -70,7 +70,7 @@ myrror <- function(dfx,
   myrror_object$interactive <- interactive
 
   # 6. Save to package environment ----
-  assign("last_myrror_object", myrror_object, envir = .myrror_env)
+  rlang::env_bind(.myrror_env, last_myrror_object = myrror_object)
 
   # 6. Return myrror_object ----
   return(myrror_object)

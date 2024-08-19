@@ -48,7 +48,7 @@ extract_diff_rows <- function(dfx = NULL,
     } else {
 
       # If dfx and dfy are not provided, try retrieving a myrror_object from the environment:
-      myrror_object <- get("last_myrror_object", envir = .myrror_env, inherits = FALSE)
+      myrror_object <- rlang::env_get(.myrror_env, "last_myrror_object")
 
       # If still NULL after trying to retrieve, throw an error
       if (is.null(myrror_object)) {

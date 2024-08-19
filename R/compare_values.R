@@ -80,7 +80,7 @@ compare_values <- function(dfx = NULL,
   myrror_object$interactive <- interactive
 
   # 5. Save to package environment ----
-  assign("last_myrror_object", myrror_object, envir = .myrror_env)
+  rlang::env_bind(.myrror_env, last_myrror_object = myrror_object)
 
   # 6. Output ----
   ## Handle the output type
