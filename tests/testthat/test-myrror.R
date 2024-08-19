@@ -84,7 +84,7 @@ test_that("object is saved to environment", {
 # Output verification
 test_that("returned object has correct properties", {
   dfx <- dfy <- data.frame(a = 1:10)
-  result <- myrror(dfx, dfy)
+  result <- myrror(dfx, dfy, interactive = TRUE)
   expect_true(result$interactive)
   expect_type(result, "list")
 })

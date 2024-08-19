@@ -245,29 +245,36 @@ extract_diff_int <- function(myrror_object = NULL,
 
 
   # 2. List option -----
-  diff_list <- purrr::imap(compare_values_object, function(df, variable) {
+    ## With lapply(), need to extract variable_names to assign to the list:
 
+    variable_names <- names(compare_values_object)
 
-    column_x <- paste0(variable, ".x")
-    column_y <- paste0(variable, ".y")
+    diff_list <- lapply(variable_names, function(variable) {
 
-    df |>
-      fsubset(count > 0) |>
-      fselect(-count) |>
-      # please check
-      _[, c(.SD, list(indexes = unlist(indexes))), .SDcols = "diff"] |>
-      fmutate(indexes = as.character(indexes)) |>
-      collapse::join(matched_data |>
-                       fselect(c("rn", keys, column_x, column_y)),
-                     on = c("indexes" = "rn"),
-                     how = "left",
-                     verbose = 0) |>
-      fselect(c("diff", "indexes", keys, column_x, column_y)) |>
-      roworderv(c(keys))
+      df <- compare_values_object[[variable]]
 
-  })
+      column_x <- paste0(variable, ".x")
+      column_y <- paste0(variable, ".y")
 
-  non_empty_diff_list <- purrr::keep(diff_list, ~ nrow(.x) > 0)
+      result <- df |>
+        fsubset(count > 0) |>
+        fselect(-count) |>
+        _[, c(.SD, list(indexes = unlist(indexes))), .SDcols = "diff"] |>
+        fmutate(indexes = as.character(indexes)) |>
+        collapse::join(matched_data |>
+                         fselect(c("rn", keys, column_x, column_y)),
+                       on = c("indexes" = "rn"),
+                       how = "left",
+                       verbose = 0) |>
+        fselect(c("diff", "indexes", keys, column_x, column_y)) |>
+        roworderv(c(keys))
+
+    })
+
+    names(diff_list) <- variable_names
+
+    non_empty_diff_list <- diff_list[sapply(diff_list,
+                                  function(x) !is.null(x) && nrow(x) > 0)]
 
   # 3. Table option ----
   diff_table <- rowbind(compare_values_object, idcol = "variable") |>
