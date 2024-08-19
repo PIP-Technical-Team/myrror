@@ -378,7 +378,7 @@ equal_with_tolerance <- function(x, y, tolerance = 1e-7) {
 
 
 
-
+# 7. Get correct myrror object ----
 #' Get correct myrror object
 #'
 #' @description It checks all the arguments parsed to parent function. If

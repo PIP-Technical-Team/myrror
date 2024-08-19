@@ -13,7 +13,8 @@ extract_diff_values(
   by.y = NULL,
   myrror_object = NULL,
   output = c("simple", "full", "silent"),
-  tolerance = 1e-07
+  tolerance = 1e-07,
+  verbose = TRUE
 )
 }
 \arguments{

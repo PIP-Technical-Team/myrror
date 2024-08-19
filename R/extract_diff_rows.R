@@ -31,33 +31,13 @@ extract_diff_rows <- function(dfx = NULL,
   # 1. Arguments check ----
   output <- match.arg(output)
 
-  # 2. Create object if not supplied ----
-  if (is.null(myrror_object)) {
-    # First check if dfx and dfy are provided:
-    if (!is.null(dfx) && !is.null(dfy)) {
-      myrror_object <- create_myrror_object(dfx = dfx,
-                                            dfy = dfy,
-                                            by = by,
-                                            by.x = by.x,
-                                            by.y = by.y)
+  # 2. Capture all arguments as a list
+  args <- as.list(environment())
 
-      ## Re-assign names from within this call:
-      myrror_object$name_dfx <- deparse(substitute(dfx))
-      myrror_object$name_dfy <- deparse(substitute(dfy))
+  # 3. Create object if not supplied ----
+  myrror_object <- do.call(get_correct_myrror_object, args)
 
-    } else {
-
-      # If dfx and dfy are not provided, try retrieving a myrror_object from the environment:
-      myrror_object <- rlang::env_get(.myrror_env, "last_myrror_object")
-
-      # If still NULL after trying to retrieve, throw an error
-      if (is.null(myrror_object)) {
-        cli::cli_abort("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied and no existing myrror object is available.")
-      }
-    }
-  }
-
-  # 3. Run extract_values_int() ----
+  # 4. Run extract_values_int() ----
   myrror_object$extract_diff_rows <- myrror_object$merged_data_report$unmatched_data
 
   # Check if results are empty and adjust accordingly
@@ -69,7 +49,7 @@ extract_diff_rows <- function(dfx = NULL,
     }
   }
 
-  # 4. Output ----
+  # 5. Output ----
 
   ## Handle the output type
   switch(output,
