@@ -1,14 +1,9 @@
 # compare_values ---------------------------------------------------------------
 #' Compare values of matched datasets
 #'
-#' @param dfx data.frame object.
-#' @param dfy data.frame object.
-#' @param by character, column name to join on.
-#' @param by.x character, column name to join on in dfx.
-#' @param by.y character, column name to join on in dfy.
-#' @param myrror_object myrror object.
-#' @param output character, one of "full", "simple", "silent".
-#' @param interactive logical, default to TRUE.
+#' @inheritParams myrror
+#' @param myrror_object myrror object from [create_myrror_object]
+#' @param output character: one of "full", "simple", "silent"
 #' @param tolerance numeric, default to 1e-7.
 #'
 #' @return list object
@@ -20,12 +15,13 @@
 #'
 compare_values <- function(dfx = NULL,
                            dfy = NULL,
+                           myrror_object = NULL,
                            by = NULL,
                            by.x = NULL,
                            by.y = NULL,
-                           myrror_object = NULL,
                            output = c("full", "simple", "silent"),
                            interactive = getOption("myrror.interactive"),
+                           verbose = getOption("myrror.verbose"),
                            tolerance = 1e-7) {
 
   # 1. Arguments check ----

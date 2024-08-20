@@ -8,19 +8,21 @@ Function to extract rows with different values between two dataframes.}
 extract_diff_values(
   dfx = NULL,
   dfy = NULL,
+  myrror_object = NULL,
   by = NULL,
   by.x = NULL,
   by.y = NULL,
-  myrror_object = NULL,
   output = c("simple", "full", "silent"),
   tolerance = 1e-07,
   verbose = TRUE
 )
 }
 \arguments{
-\item{dfx}{data.frame object.}
+\item{dfx}{a non-empty data.frame.}
 
-\item{dfy}{data.frame object.}
+\item{dfy}{a non-empty data.frame.}
+
+\item{myrror_object}{myrror object from \link{create_myrror_object}}
 
 \item{by}{character, key to be used for dfx and dfy.}
 
@@ -28,11 +30,11 @@ extract_diff_values(
 
 \item{by.y}{character, key to be used for dfy.}
 
-\item{myrror_object}{myrror object.}
-
-\item{output}{character, one of "simple", "full", "silent".}
+\item{output}{character: one of "full", "simple", "silent"}
 
 \item{tolerance}{numeric, default to 1e-7.}
+
+\item{verbose}{logical: If \code{TRUE} additional information will be displayed}
 }
 \value{
 list object with two items: diff_list and diff_table

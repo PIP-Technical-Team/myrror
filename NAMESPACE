@@ -3,6 +3,7 @@
 S3method(print,myrror)
 export(check_df)
 export(check_set_by)
+export(clear_last_myrror_object)
 export(compare_type)
 export(compare_values)
 export(detect_sorting)

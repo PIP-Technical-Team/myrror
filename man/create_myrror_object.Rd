@@ -15,15 +15,15 @@ create_myrror_object(
 )
 }
 \arguments{
-\item{dfx}{a non-empty data.frame}
+\item{dfx}{a non-empty data.frame.}
 
-\item{dfy}{a non-empty data.frame}
+\item{dfy}{a non-empty data.frame.}
 
-\item{by}{character, key to be used for dfx and dfy}
+\item{by}{character, key to be used for dfx and dfy.}
 
-\item{by.x}{character, key to be used for dfx}
+\item{by.x}{character, key to be used for dfx.}
 
-\item{by.y}{character, key to be used for dfy}
+\item{by.y}{character, key to be used for dfy.}
 
 \item{factor_to_char}{TRUE or FALSE, default to TRUE.}
 

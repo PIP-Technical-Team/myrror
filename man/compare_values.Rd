@@ -7,31 +7,35 @@
 compare_values(
   dfx = NULL,
   dfy = NULL,
+  myrror_object = NULL,
   by = NULL,
   by.x = NULL,
   by.y = NULL,
-  myrror_object = NULL,
   output = c("full", "simple", "silent"),
   interactive = getOption("myrror.interactive"),
+  verbose = getOption("myrror.verbose"),
   tolerance = 1e-07
 )
 }
 \arguments{
-\item{dfx}{data.frame object.}
+\item{dfx}{a non-empty data.frame.}
 
-\item{dfy}{data.frame object.}
+\item{dfy}{a non-empty data.frame.}
 
-\item{by}{character, column name to join on.}
+\item{myrror_object}{myrror object from \link{create_myrror_object}}
 
-\item{by.x}{character, column name to join on in dfx.}
+\item{by}{character, key to be used for dfx and dfy.}
 
-\item{by.y}{character, column name to join on in dfy.}
+\item{by.x}{character, key to be used for dfx.}
 
-\item{myrror_object}{myrror object.}
+\item{by.y}{character, key to be used for dfy.}
 
-\item{output}{character, one of "full", "simple", "silent".}
+\item{output}{character: one of "full", "simple", "silent"}
 
-\item{interactive}{logical, default to TRUE.}
+\item{interactive}{logical: If \code{TRUE}, print S3 method for myrror objects
+displays by chunks. If \code{FALSE}, everything will be printed at once.}
+
+\item{verbose}{logical: If \code{TRUE} additional information will be displayed}
 
 \item{tolerance}{numeric, default to 1e-7.}
 }

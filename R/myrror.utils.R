@@ -432,3 +432,22 @@ get_correct_myrror_object <- function(myrror_object,
   }
   myrror_object
 }
+
+#' Clear last myrror object
+#'
+#' This function unbinds the last myrror object from the package-specific
+#' environment, effectively removing it.
+#'
+#' @return Invisible `NULL`, indicating the object was successfully cleared.
+#' @export
+#' @examples
+#' myrror(iris, iris_var1, interactive = FALSE) # Run myrror to create myrror object.
+#' clear_last_myrror_object()  # Clear the environment
+#' # rlang::env_has(.myrror_env, "last_myrror_object") # should return an error
+clear_last_myrror_object <- function() {
+  if (rlang::env_has(.myrror_env, "last_myrror_object")) {
+    rlang::env_unbind(.myrror_env, "last_myrror_object")
+  }
+  invisible(NULL)
+}
+

@@ -20,15 +20,15 @@ myrror(
 )
 }
 \arguments{
-\item{dfx}{a non-empty data.frame}
+\item{dfx}{a non-empty data.frame.}
 
-\item{dfy}{a non-empty data.frame}
+\item{dfy}{a non-empty data.frame.}
 
-\item{by}{character, key to be used for dfx and dfy}
+\item{by}{character, key to be used for dfx and dfy.}
 
-\item{by.x}{character, key to be used for dfx}
+\item{by.x}{character, key to be used for dfx.}
 
-\item{by.y}{character, key to be used for dfy}
+\item{by.y}{character, key to be used for dfy.}
 
 \item{compare_type}{TRUE or FALSE, default to TRUE.}
 
@@ -39,7 +39,7 @@ myrror(
 \item{factor_to_char}{TRUE or FALSE, default to TRUE.}
 
 \item{interactive}{logical: If \code{TRUE}, print S3 method for myrror objects
-displays by chunks. If \code{FALSE}, everything will be printed at once}
+displays by chunks. If \code{FALSE}, everything will be printed at once.}
 
 \item{tolerance}{numeric, default to 1e-7.}
 

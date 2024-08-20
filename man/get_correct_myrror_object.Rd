@@ -16,15 +16,15 @@ get_correct_myrror_object(
 )
 }
 \arguments{
-\item{dfx}{a non-empty data.frame}
+\item{dfx}{a non-empty data.frame.}
 
-\item{dfy}{a non-empty data.frame}
+\item{dfy}{a non-empty data.frame.}
 
-\item{by}{character, key to be used for dfx and dfy}
+\item{by}{character, key to be used for dfx and dfy.}
 
-\item{by.x}{character, key to be used for dfx}
+\item{by.x}{character, key to be used for dfx.}
 
-\item{by.y}{character, key to be used for dfy}
+\item{by.y}{character, key to be used for dfy.}
 
 \item{verbose}{logical: If \code{TRUE} additional information will be displayed}
 

@@ -1,6 +1,9 @@
 # 1. compare_values() takes two dataframes or a myrror object ----
 test_that("compare_values() takes two dataframes or a myrror_object", {
 
+  # Clear Environment
+  clear_last_myrror_object()
+
   # Empty or single dataframe
   expect_error(compare_values())
   expect_error(compare_values(iris))

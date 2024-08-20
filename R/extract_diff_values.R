@@ -19,13 +19,9 @@
 #' Function to extract rows with different values between two dataframes.
 #'
 #'
-#' @param dfx data.frame object.
-#' @param dfy data.frame object.
-#' @param by character, key to be used for dfx and dfy.
-#' @param by.x character, key to be used for dfx.
-#' @param by.y character, key to be used for dfy.
-#' @param myrror_object myrror object.
-#' @param output character, one of "simple", "full", "silent".
+#' @inheritParams myrror
+#' @param myrror_object myrror object from [create_myrror_object]
+#' @param output character: one of "full", "simple", "silent"
 #' @param tolerance numeric, default to 1e-7.
 #'
 #' @return list object with two items: diff_list and diff_table
@@ -38,10 +34,10 @@
 #'
 extract_diff_values <- function(dfx = NULL,
                                 dfy = NULL,
+                                myrror_object = NULL,
                                 by = NULL,
                                 by.x = NULL,
                                 by.y = NULL,
-                                myrror_object = NULL,
                                 output = c("simple", "full", "silent"),
                                 tolerance = 1e-7,
                                 verbose = TRUE) {
@@ -97,13 +93,9 @@ extract_diff_values <- function(dfx = NULL,
 #' Extract Different Values - User-facing - Table format
 #' Function to extract rows with different values between two dataframes.
 #'
-#' @param dfx data.frame object.
-#' @param dfy data.frame object.
-#' @param by character, key to be used for dfx and dfy.
-#' @param by.x character, key to be used for dfx.
-#' @param by.y character, key to be used for dfy.
-#' @param myrror_object myrror object.
-#' @param output character, one of "simple", "full", "silent".
+#' @inheritParams myrror
+#' @param myrror_object myrror object from [create_myrror_object]
+#' @param output character: one of "full", "simple", "silent"
 #' @param tolerance numeric, default to 1e-7.
 #'
 #' @return data.table object with all observations for which at least 1 value is different.
@@ -116,10 +108,10 @@ extract_diff_values <- function(dfx = NULL,
 #'
 extract_diff_table <- function(dfx = NULL,
                                dfy = NULL,
+                               myrror_object = NULL,
                                by = NULL,
                                by.x = NULL,
                                by.y = NULL,
-                               myrror_object = NULL,
                                output = c("simple", "full", "silent"),
                                tolerance = 1e-7,
                                verbose = TRUE) {
