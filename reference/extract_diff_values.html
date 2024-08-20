@@ -48,10 +48,10 @@ Function to extract rows with different values between two dataframes.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">extract_diff_values</span><span class="op">(</span></span>
 <span>  dfx <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  dfy <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  myrror_object <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  by <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  by.x <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  by.y <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  myrror_object <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  output <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"simple"</span>, <span class="st">"full"</span>, <span class="st">"silent"</span><span class="op">)</span>,</span>
 <span>  tolerance <span class="op">=</span> <span class="fl">1e-07</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
@@ -63,11 +63,15 @@ Function to extract rows with different values between two dataframes.</p>
 
 
 <dl><dt id="arg-dfx">dfx<a class="anchor" aria-label="anchor" href="#arg-dfx"></a></dt>
-<dd><p>data.frame object.</p></dd>
+<dd><p>a non-empty data.frame.</p></dd>
 
 
 <dt id="arg-dfy">dfy<a class="anchor" aria-label="anchor" href="#arg-dfy"></a></dt>
-<dd><p>data.frame object.</p></dd>
+<dd><p>a non-empty data.frame.</p></dd>
+
+
+<dt id="arg-myrror-object">myrror_object<a class="anchor" aria-label="anchor" href="#arg-myrror-object"></a></dt>
+<dd><p>myrror object from <a href="create_myrror_object.html">create_myrror_object</a></p></dd>
 
 
 <dt id="arg-by">by<a class="anchor" aria-label="anchor" href="#arg-by"></a></dt>
@@ -82,16 +86,16 @@ Function to extract rows with different values between two dataframes.</p>
 <dd><p>character, key to be used for dfy.</p></dd>
 
 
-<dt id="arg-myrror-object">myrror_object<a class="anchor" aria-label="anchor" href="#arg-myrror-object"></a></dt>
-<dd><p>myrror object.</p></dd>
-
-
 <dt id="arg-output">output<a class="anchor" aria-label="anchor" href="#arg-output"></a></dt>
-<dd><p>character, one of "simple", "full", "silent".</p></dd>
+<dd><p>character: one of "full", "simple", "silent"</p></dd>
 
 
 <dt id="arg-tolerance">tolerance<a class="anchor" aria-label="anchor" href="#arg-tolerance"></a></dt>
 <dd><p>numeric, default to 1e-7.</p></dd>
+
+
+<dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
+<dd><p>logical: If <code>TRUE</code> additional information will be displayed</p></dd>
 
 </dl></div>
     <div class="section level2">
