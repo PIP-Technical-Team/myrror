@@ -6,15 +6,11 @@
 <!-- badges: start -->
 
 [![CRAN
-checks](https://badges.cranchecks.info/summary/myrror.svg)](https://cran.r-project.org/web/checks/check_results_myrror.html)
-[![](https://www.r-pkg.org/badges/version/myrror?color=orange)](https://cran.r-project.org/package=myrror)
-[![](https://img.shields.io/badge/devel%20version-0.0.0.9000-blue.svg)](https://github.com/giorgiacek/myrror)
+checks](https://badges.cranchecks.info/summary/myrror.svg)](https://cran.r-project.org/web/checks/check_results_myrror.html)[![](https://www.r-pkg.org/badges/version/myrror?color=orange)](https://cran.r-project.org/package=myrror)
+[![](https://img.shields.io/badge/devel%20version-0.0.0.9001-blue.svg)](https://github.com/giorgiacek/myrror)
 [![](https://codecov.io/gh/giorgiacek/myrror/branch/main/graph/badge.svg)](https://app.codecov.io/gh/giorgiacek/myrror)
 [![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 
-<!-- [![R-CMD-check](https://github.com/giorgiacek/myrror/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/giorgiacek/myrror/actions/workflows/R-CMD-check.yaml)  -->
-<!-- [![Codecov test coverage](https://codecov.io/gh/giorgiacek/myrror/branch/main/graph/badge.svg)](https://codecov.io/gh/giorgiacek/myrror) -->
-<!-- [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental) -->
 <!-- badges: end -->
 
 A R package to compare data frames in R. The assumption is that the user
@@ -60,13 +56,10 @@ myrror(iris, iris_var1)
 #> ! Non-shared rows in iris_var1: 5.
 #> 
 #> ℹ Note: run `extract_diff_rows()` to extract the missing/new rows.
-#> Press ENTER to continue or type 'q' to stop:
 #> 
 #> ── 1. Shared Columns Class Comparison ──────────────────────────────────────────
 #> 
 #> ✔ All shared columns have the same class.
-#> 
-#> Press ENTER to continue or type 'q' to stop:
 #> 
 #> ── 2. Shared Columns Values Comparison ─────────────────────────────────────────
 #> 
@@ -80,23 +73,19 @@ myrror(iris, iris_var1)
 #>   <fct>                  <int>       <int>       <int>
 #> 1 Sepal.Length               0           0           5
 #> 
-#> Press ENTER to continue or type 'q' to stop:
-#> 
 #> ── Value comparison: ──
 #> 
 #> ! 1 shared column(s) have different value(s):
 #> 
 #> ── Sepal.Length
-#> # A tibble: 5 × 4
-#>   diff        indexes Sepal.Length.x Sepal.Length.y
-#>   <chr>       <chr>            <dbl>          <dbl>
-#> 1 value_to_na 104                6.3             NA
-#> 2 value_to_na 125                6.7             NA
-#> 3 value_to_na 67                 5.6             NA
-#> 4 value_to_na 80                 5.7             NA
-#> 5 value_to_na 96                 5.7             NA
+#>           diff indexes     rn Sepal.Length.x Sepal.Length.y
+#>         <char>  <char> <char>          <num>          <num>
+#> 1: value_to_na     104    104            6.3             NA
+#> 2: value_to_na     125    125            6.7             NA
+#> 3: value_to_na      67     67            5.6             NA
+#> 4: value_to_na      80     80            5.7             NA
+#> 5: value_to_na      96     96            5.7             NA
 #> 
-#> Press ENTER to continue or type 'q' to stop:
 #> ℹ Note: run `extract_diff_values()` or `extract_diff_table()` to access the results in list or table format.
 #> 
 #> ✔ End of Myrror Report.
