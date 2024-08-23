@@ -114,49 +114,49 @@ variables, values or observations are different.</p>
 variables, <code>country</code> and <code>year</code>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">survey_data</span></span>
-<span><span class="co">#&gt;     country  year   variable1   variable2  variable3    variable4</span></span>
-<span><span class="co">#&gt;      &lt;char&gt; &lt;int&gt;       &lt;num&gt;       &lt;num&gt;      &lt;num&gt;        &lt;num&gt;</span></span>
-<span><span class="co">#&gt;  1:       A  2010  0.54366717 -0.36741872  0.8270134 -0.092927361</span></span>
-<span><span class="co">#&gt;  2:       A  2011 -0.18746702  1.08281824 -0.6280390  0.672555322</span></span>
-<span><span class="co">#&gt;  3:       A  2012  0.94976910 -0.88608285  0.1758058  0.104421976</span></span>
-<span><span class="co">#&gt;  4:       A  2013 -1.10673964 -1.35789652 -0.4435902 -0.464067726</span></span>
-<span><span class="co">#&gt;  5:       A  2014  0.36097445  0.49807310 -0.3729658  0.000880445</span></span>
-<span><span class="co">#&gt;  6:       A  2015  2.03254692 -0.44915960  0.1220124  0.242133191</span></span>
-<span><span class="co">#&gt;  7:       A  2016 -0.28904570 -1.35026961  0.9950452  1.197393527</span></span>
-<span><span class="co">#&gt;  8:       A  2017  0.67921600  0.10604084 -0.1998401  0.273731489</span></span>
-<span><span class="co">#&gt;  9:       B  2010 -0.04356271  2.44402606  0.4113771 -1.017990476</span></span>
-<span><span class="co">#&gt; 10:       B  2011  0.31081511 -0.08331262 -0.7091216 -1.959103614</span></span>
-<span><span class="co">#&gt; 11:       B  2012  0.37805838 -0.83435863 -0.9148476 -0.075142008</span></span>
-<span><span class="co">#&gt; 12:       B  2013  0.55137031  0.14181480  0.1287092 -0.411169777</span></span>
-<span><span class="co">#&gt; 13:       B  2014  1.77946101 -1.27564125  1.2594642 -0.061513547</span></span>
-<span><span class="co">#&gt; 14:       B  2015  0.06146327 -0.06316779 -0.6132742 -0.018961455</span></span>
-<span><span class="co">#&gt; 15:       B  2016 -0.06867818 -1.28396057 -0.4870781  1.667808010</span></span>
-<span><span class="co">#&gt; 16:       B  2017  0.23823288  0.73642976 -0.5390066 -0.784008485</span></span></code></pre></div>
+<span><span class="co">#&gt;     country  year   variable1  variable2    variable3   variable4</span></span>
+<span><span class="co">#&gt;      &lt;char&gt; &lt;int&gt;       &lt;num&gt;      &lt;num&gt;        &lt;num&gt;       &lt;num&gt;</span></span>
+<span><span class="co">#&gt;  1:       A  2010  0.92567152 -1.0974903 -0.330966991 -1.18260779</span></span>
+<span><span class="co">#&gt;  2:       A  2011 -0.11439247 -0.4876537 -0.675403198  0.06448929</span></span>
+<span><span class="co">#&gt;  3:       A  2012 -0.02104358 -0.1286307 -1.500701944  0.08787883</span></span>
+<span><span class="co">#&gt;  4:       A  2013 -0.06520351 -0.5524387 -1.330601404 -0.28839409</span></span>
+<span><span class="co">#&gt;  5:       A  2014 -0.72294750 -1.1208384 -0.200692824 -1.21014163</span></span>
+<span><span class="co">#&gt;  6:       A  2015 -0.30728314 -0.8406131  0.002919924  0.62950207</span></span>
+<span><span class="co">#&gt;  7:       A  2016  1.69292174 -0.7293604  0.526351858  2.01149703</span></span>
+<span><span class="co">#&gt;  8:       A  2017 -0.88575936 -1.8557837 -0.436418266  0.38265713</span></span>
+<span><span class="co">#&gt;  9:       B  2010  0.14322693  0.8019353  0.357916400 -0.97376153</span></span>
+<span><span class="co">#&gt; 10:       B  2011 -0.31830385 -0.2509333  1.445748740  0.45145400</span></span>
+<span><span class="co">#&gt; 11:       B  2012 -1.07735583 -1.9006292 -0.129643815 -0.28450993</span></span>
+<span><span class="co">#&gt; 12:       B  2013  1.22851017 -0.7021324 -0.603758741  0.76454938</span></span>
+<span><span class="co">#&gt; 13:       B  2014 -0.88046550  0.6587007 -0.595608958 -0.92083472</span></span>
+<span><span class="co">#&gt; 14:       B  2015  0.85375405  3.1408877 -1.073222461  0.55352418</span></span>
+<span><span class="co">#&gt; 15:       B  2016  1.32535591  0.1652734  0.718469591  0.21744978</span></span>
+<span><span class="co">#&gt; 16:       B  2017  0.42100237 -0.9723386  0.447581638 -0.36628320</span></span></code></pre></div>
 <p>The second dataset is just a variation of the first one:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">survey_data_2</span></span>
-<span><span class="co">#&gt;     country  year   variable1   variable2  variable3    variable4</span></span>
-<span><span class="co">#&gt;      &lt;char&gt; &lt;int&gt;       &lt;num&gt;       &lt;num&gt;      &lt;num&gt;        &lt;num&gt;</span></span>
-<span><span class="co">#&gt;  1:       A  2010  0.54366717  0.48571921  0.8270134 -0.092927361</span></span>
-<span><span class="co">#&gt;  2:       A  2011 -0.18746702 -0.26755620 -0.6280390  0.672555322</span></span>
-<span><span class="co">#&gt;  3:       A  2012  0.94976910 -1.22263500  0.1758058  0.104421976</span></span>
-<span><span class="co">#&gt;  4:       A  2013 -1.10673964 -0.04244568 -0.4435902 -0.464067726</span></span>
-<span><span class="co">#&gt;  5:       A  2014  0.36097445 -1.44511812 -0.3729658  0.000880445</span></span>
-<span><span class="co">#&gt;  6:       A  2015  2.03254692 -0.87467620  0.1220124  0.242133191</span></span>
-<span><span class="co">#&gt;  7:       A  2016 -0.28904570 -0.63024083  0.9950452  1.197393527</span></span>
-<span><span class="co">#&gt;  8:       A  2017  0.67921600  1.05829679 -0.1998401  0.273731489</span></span>
-<span><span class="co">#&gt;  9:       B  2010 -0.04356271 -0.77469057  0.4113771 -1.017990476</span></span>
-<span><span class="co">#&gt; 10:       B  2011  0.31081511 -0.56094771 -0.7091216 -1.959103614</span></span>
-<span><span class="co">#&gt; 11:       B  2012  0.37805838 -0.62187200 -0.9148476 -0.075142008</span></span>
-<span><span class="co">#&gt; 12:       B  2013  0.55137031 -0.45073978  0.1287092 -0.411169777</span></span>
-<span><span class="co">#&gt; 13:       B  2014  1.77946101  0.02804128  1.2594642 -0.061513547</span></span>
-<span><span class="co">#&gt; 14:       B  2015  0.06146327  0.92758765 -0.6132742 -0.018961455</span></span>
-<span><span class="co">#&gt; 15:       B  2016 -0.06867818 -0.19687494 -0.4870781  1.667808010</span></span>
-<span><span class="co">#&gt; 16:       B  2017  0.23823288 -0.16630616 -0.5390066 -0.784008485</span></span></code></pre></div>
+<span><span class="co">#&gt;     country  year   variable1  variable2    variable3   variable4</span></span>
+<span><span class="co">#&gt;      &lt;char&gt; &lt;int&gt;       &lt;num&gt;      &lt;num&gt;        &lt;num&gt;       &lt;num&gt;</span></span>
+<span><span class="co">#&gt;  1:       A  2010  0.92567152  2.2530832 -0.330966991 -1.18260779</span></span>
+<span><span class="co">#&gt;  2:       A  2011 -0.11439247  1.8377825 -0.675403198  0.06448929</span></span>
+<span><span class="co">#&gt;  3:       A  2012 -0.02104358 -0.2922308 -1.500701944  0.08787883</span></span>
+<span><span class="co">#&gt;  4:       A  2013 -0.06520351 -0.5077830 -1.330601404 -0.28839409</span></span>
+<span><span class="co">#&gt;  5:       A  2014 -0.72294750  0.2812097 -0.200692824 -1.21014163</span></span>
+<span><span class="co">#&gt;  6:       A  2015 -0.30728314  0.5614637  0.002919924  0.62950207</span></span>
+<span><span class="co">#&gt;  7:       A  2016  1.69292174  0.9611788  0.526351858  2.01149703</span></span>
+<span><span class="co">#&gt;  8:       A  2017 -0.88575936 -0.6865351 -0.436418266  0.38265713</span></span>
+<span><span class="co">#&gt;  9:       B  2010  0.14322693 -0.5732589  0.357916400 -0.97376153</span></span>
+<span><span class="co">#&gt; 10:       B  2011 -0.31830385  0.7871750  1.445748740  0.45145400</span></span>
+<span><span class="co">#&gt; 11:       B  2012 -1.07735583  1.1134531 -0.129643815 -0.28450993</span></span>
+<span><span class="co">#&gt; 12:       B  2013  1.22851017  1.0855454 -0.603758741  0.76454938</span></span>
+<span><span class="co">#&gt; 13:       B  2014 -0.88046550 -0.4379345 -0.595608958 -0.92083472</span></span>
+<span><span class="co">#&gt; 14:       B  2015  0.85375405 -0.4860943 -1.073222461  0.55352418</span></span>
+<span><span class="co">#&gt; 15:       B  2016  1.32535591  0.7041218  0.718469591  0.21744978</span></span>
+<span><span class="co">#&gt; 16:       B  2017  0.42100237 -1.4740967  0.447581638 -0.36628320</span></span></code></pre></div>
 <p>And it clearly has different values in <code>variable2</code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">survey_data</span>, <span class="va">survey_data_2</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "Column 'variable2': Mean relative difference: 1.287157"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "Column 'variable2': Mean relative difference: 1.592109"</span></span></code></pre></div>
 <p><code><a href="../reference/myrror.html">myrror()</a></code> helps the user diagnosing this difference. To
 get a complete report of the differences between
 <code>survey_data</code> and <code>survey_data_2</code> the user can
@@ -204,22 +204,22 @@ run:</p>
 <span><span class="co">#&gt; ── variable2</span></span>
 <span><span class="co">#&gt;                diff indexes variable2.x variable2.y</span></span>
 <span><span class="co">#&gt;              &lt;char&gt;  &lt;char&gt;       &lt;num&gt;       &lt;num&gt;</span></span>
-<span><span class="co">#&gt;  1: change_in_value       1 -0.36741872  0.48571921</span></span>
-<span><span class="co">#&gt;  2: change_in_value      10 -0.08331262 -0.56094771</span></span>
-<span><span class="co">#&gt;  3: change_in_value      11 -0.83435863 -0.62187200</span></span>
-<span><span class="co">#&gt;  4: change_in_value      12  0.14181480 -0.45073978</span></span>
-<span><span class="co">#&gt;  5: change_in_value      13 -1.27564125  0.02804128</span></span>
-<span><span class="co">#&gt;  6: change_in_value      14 -0.06316779  0.92758765</span></span>
-<span><span class="co">#&gt;  7: change_in_value      15 -1.28396057 -0.19687494</span></span>
-<span><span class="co">#&gt;  8: change_in_value      16  0.73642976 -0.16630616</span></span>
-<span><span class="co">#&gt;  9: change_in_value       2  1.08281824 -0.26755620</span></span>
-<span><span class="co">#&gt; 10: change_in_value       3 -0.88608285 -1.22263500</span></span>
-<span><span class="co">#&gt; 11: change_in_value       4 -1.35789652 -0.04244568</span></span>
-<span><span class="co">#&gt; 12: change_in_value       5  0.49807310 -1.44511812</span></span>
-<span><span class="co">#&gt; 13: change_in_value       6 -0.44915960 -0.87467620</span></span>
-<span><span class="co">#&gt; 14: change_in_value       7 -1.35026961 -0.63024083</span></span>
-<span><span class="co">#&gt; 15: change_in_value       8  0.10604084  1.05829679</span></span>
-<span><span class="co">#&gt; 16: change_in_value       9  2.44402606 -0.77469057</span></span>
+<span><span class="co">#&gt;  1: change_in_value       1  -1.0974903   2.2530832</span></span>
+<span><span class="co">#&gt;  2: change_in_value      10  -0.2509333   0.7871750</span></span>
+<span><span class="co">#&gt;  3: change_in_value      11  -1.9006292   1.1134531</span></span>
+<span><span class="co">#&gt;  4: change_in_value      12  -0.7021324   1.0855454</span></span>
+<span><span class="co">#&gt;  5: change_in_value      13   0.6587007  -0.4379345</span></span>
+<span><span class="co">#&gt;  6: change_in_value      14   3.1408877  -0.4860943</span></span>
+<span><span class="co">#&gt;  7: change_in_value      15   0.1652734   0.7041218</span></span>
+<span><span class="co">#&gt;  8: change_in_value      16  -0.9723386  -1.4740967</span></span>
+<span><span class="co">#&gt;  9: change_in_value       2  -0.4876537   1.8377825</span></span>
+<span><span class="co">#&gt; 10: change_in_value       3  -0.1286307  -0.2922308</span></span>
+<span><span class="co">#&gt; 11: change_in_value       4  -0.5524387  -0.5077830</span></span>
+<span><span class="co">#&gt; 12: change_in_value       5  -1.1208384   0.2812097</span></span>
+<span><span class="co">#&gt; 13: change_in_value       6  -0.8406131   0.5614637</span></span>
+<span><span class="co">#&gt; 14: change_in_value       7  -0.7293604   0.9611788</span></span>
+<span><span class="co">#&gt; 15: change_in_value       8  -1.8557837  -0.6865351</span></span>
+<span><span class="co">#&gt; 16: change_in_value       9   0.8019353  -0.5732589</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Note: run `extract_diff_values()` or `extract_diff_table()` to access the results in list or table format.</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -232,34 +232,62 @@ or number of rows.</p>
 <code><a href="../reference/extract_diff_values.html">extract_diff_values()</a></code> function to extract the rows that
 differ in values between the two data frames:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/extract_diff_values.html">extract_diff_values</a></span><span class="op">(</span><span class="va">survey_data</span>, <span class="va">survey_data_2</span>, </span>
-<span>                    by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"country"</span>, <span class="st">"year"</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/extract_diff_values.html">extract_diff_values</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Last myrror object used for comparison.</span></span>
 <span><span class="co">#&gt; $variable2</span></span>
 <span><span class="co">#&gt;                diff indexes variable2.x variable2.y</span></span>
 <span><span class="co">#&gt;              &lt;char&gt;  &lt;char&gt;       &lt;num&gt;       &lt;num&gt;</span></span>
-<span><span class="co">#&gt;  1: change_in_value       1 -0.36741872  0.48571921</span></span>
-<span><span class="co">#&gt;  2: change_in_value      10 -0.08331262 -0.56094771</span></span>
-<span><span class="co">#&gt;  3: change_in_value      11 -0.83435863 -0.62187200</span></span>
-<span><span class="co">#&gt;  4: change_in_value      12  0.14181480 -0.45073978</span></span>
-<span><span class="co">#&gt;  5: change_in_value      13 -1.27564125  0.02804128</span></span>
-<span><span class="co">#&gt;  6: change_in_value      14 -0.06316779  0.92758765</span></span>
-<span><span class="co">#&gt;  7: change_in_value      15 -1.28396057 -0.19687494</span></span>
-<span><span class="co">#&gt;  8: change_in_value      16  0.73642976 -0.16630616</span></span>
-<span><span class="co">#&gt;  9: change_in_value       2  1.08281824 -0.26755620</span></span>
-<span><span class="co">#&gt; 10: change_in_value       3 -0.88608285 -1.22263500</span></span>
-<span><span class="co">#&gt; 11: change_in_value       4 -1.35789652 -0.04244568</span></span>
-<span><span class="co">#&gt; 12: change_in_value       5  0.49807310 -1.44511812</span></span>
-<span><span class="co">#&gt; 13: change_in_value       6 -0.44915960 -0.87467620</span></span>
-<span><span class="co">#&gt; 14: change_in_value       7 -1.35026961 -0.63024083</span></span>
-<span><span class="co">#&gt; 15: change_in_value       8  0.10604084  1.05829679</span></span>
-<span><span class="co">#&gt; 16: change_in_value       9  2.44402606 -0.77469057</span></span></code></pre></div>
+<span><span class="co">#&gt;  1: change_in_value       1  -1.0974903   2.2530832</span></span>
+<span><span class="co">#&gt;  2: change_in_value      10  -0.2509333   0.7871750</span></span>
+<span><span class="co">#&gt;  3: change_in_value      11  -1.9006292   1.1134531</span></span>
+<span><span class="co">#&gt;  4: change_in_value      12  -0.7021324   1.0855454</span></span>
+<span><span class="co">#&gt;  5: change_in_value      13   0.6587007  -0.4379345</span></span>
+<span><span class="co">#&gt;  6: change_in_value      14   3.1408877  -0.4860943</span></span>
+<span><span class="co">#&gt;  7: change_in_value      15   0.1652734   0.7041218</span></span>
+<span><span class="co">#&gt;  8: change_in_value      16  -0.9723386  -1.4740967</span></span>
+<span><span class="co">#&gt;  9: change_in_value       2  -0.4876537   1.8377825</span></span>
+<span><span class="co">#&gt; 10: change_in_value       3  -0.1286307  -0.2922308</span></span>
+<span><span class="co">#&gt; 11: change_in_value       4  -0.5524387  -0.5077830</span></span>
+<span><span class="co">#&gt; 12: change_in_value       5  -1.1208384   0.2812097</span></span>
+<span><span class="co">#&gt; 13: change_in_value       6  -0.8406131   0.5614637</span></span>
+<span><span class="co">#&gt; 14: change_in_value       7  -0.7293604   0.9611788</span></span>
+<span><span class="co">#&gt; 15: change_in_value       8  -1.8557837  -0.6865351</span></span>
+<span><span class="co">#&gt; 16: change_in_value       9   0.8019353  -0.5732589</span></span></code></pre></div>
+<p>The function <code><a href="../reference/extract_diff_values.html">extract_diff_values()</a></code> operates on the
+comparison object created by <code><a href="../reference/myrror.html">myrror()</a></code> and stored in the
+environment. If the user wants to extract the differences from a
+different comparison, one can simply re-run
+<code><a href="../reference/extract_diff_values.html">extract_diff_values()</a></code> with the appropriate arguments, for
+example:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/extract_diff_values.html">extract_diff_values</a></span><span class="op">(</span><span class="va">survey_data</span>, <span class="va">survey_data_2</span>, </span>
+<span>                    by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"country"</span>, <span class="st">"year"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $variable2</span></span>
+<span><span class="co">#&gt;                diff indexes variable2.x variable2.y</span></span>
+<span><span class="co">#&gt;              &lt;char&gt;  &lt;char&gt;       &lt;num&gt;       &lt;num&gt;</span></span>
+<span><span class="co">#&gt;  1: change_in_value       1  -1.0974903   2.2530832</span></span>
+<span><span class="co">#&gt;  2: change_in_value      10  -0.2509333   0.7871750</span></span>
+<span><span class="co">#&gt;  3: change_in_value      11  -1.9006292   1.1134531</span></span>
+<span><span class="co">#&gt;  4: change_in_value      12  -0.7021324   1.0855454</span></span>
+<span><span class="co">#&gt;  5: change_in_value      13   0.6587007  -0.4379345</span></span>
+<span><span class="co">#&gt;  6: change_in_value      14   3.1408877  -0.4860943</span></span>
+<span><span class="co">#&gt;  7: change_in_value      15   0.1652734   0.7041218</span></span>
+<span><span class="co">#&gt;  8: change_in_value      16  -0.9723386  -1.4740967</span></span>
+<span><span class="co">#&gt;  9: change_in_value       2  -0.4876537   1.8377825</span></span>
+<span><span class="co">#&gt; 10: change_in_value       3  -0.1286307  -0.2922308</span></span>
+<span><span class="co">#&gt; 11: change_in_value       4  -0.5524387  -0.5077830</span></span>
+<span><span class="co">#&gt; 12: change_in_value       5  -1.1208384   0.2812097</span></span>
+<span><span class="co">#&gt; 13: change_in_value       6  -0.8406131   0.5614637</span></span>
+<span><span class="co">#&gt; 14: change_in_value       7  -0.7293604   0.9611788</span></span>
+<span><span class="co">#&gt; 15: change_in_value       8  -1.8557837  -0.6865351</span></span>
+<span><span class="co">#&gt; 16: change_in_value       9   0.8019353  -0.5732589</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="workflow-example-2">Workflow Example 2<a class="anchor" aria-label="anchor" href="#workflow-example-2"></a>
 </h2>
 <p>Again, we want to compare two datasets: <code>survey_data</code> and
 <code>survey_data_4</code>:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">survey_data</span>, <span class="va">survey_data_4</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "Different number of rows"</span></span></code></pre></div>
 <p>These two datasets have a different number of rows.
@@ -268,15 +296,15 @@ rows, while also providing a complete report of the differences between
 the two datasets.</p>
 <p>The user can then extract the rows missing from one of the two
 datasets:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/extract_diff_rows.html">extract_diff_rows</a></span><span class="op">(</span><span class="va">survey_data</span>, <span class="va">survey_data_4</span>, </span>
 <span>                  by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"country"</span>, <span class="st">"year"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    country  year variable1.x variable2.x variable3.x variable4.x variable1.y</span></span>
 <span><span class="co">#&gt;     &lt;char&gt; &lt;int&gt;       &lt;num&gt;       &lt;num&gt;       &lt;num&gt;       &lt;num&gt;       &lt;num&gt;</span></span>
-<span><span class="co">#&gt; 1:       A  2010   0.5436672  -0.3674187   0.8270134 -0.09292736          NA</span></span>
-<span><span class="co">#&gt; 2:       A  2011  -0.1874670   1.0828182  -0.6280390  0.67255532          NA</span></span>
-<span><span class="co">#&gt; 3:       A  2012   0.9497691  -0.8860828   0.1758058  0.10442198          NA</span></span>
-<span><span class="co">#&gt; 4:       A  2013  -1.1067396  -1.3578965  -0.4435902 -0.46406773          NA</span></span>
+<span><span class="co">#&gt; 1:       A  2010  0.92567152  -1.0974903  -0.3309670 -1.18260779          NA</span></span>
+<span><span class="co">#&gt; 2:       A  2011 -0.11439247  -0.4876537  -0.6754032  0.06448929          NA</span></span>
+<span><span class="co">#&gt; 3:       A  2012 -0.02104358  -0.1286307  -1.5007019  0.08787883          NA</span></span>
+<span><span class="co">#&gt; 4:       A  2013 -0.06520351  -0.5524387  -1.3306014 -0.28839409          NA</span></span>
 <span><span class="co">#&gt;    variable2.y variable3.y variable4.y  .joyn     rn row_index</span></span>
 <span><span class="co">#&gt;          &lt;num&gt;       &lt;num&gt;       &lt;num&gt; &lt;fctr&gt; &lt;char&gt;     &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1:          NA          NA          NA      x      1         1</span></span>
