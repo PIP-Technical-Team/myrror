@@ -249,6 +249,66 @@ test_that("Tolerance works correctly", {
   expect_false(equal_with_tolerance("a", "b", tolerance = 1e-8))
 })
 
+# get_correct_myrror_object() ----
+
+# Test 1: Myrror Object Provided
+test_that("returns the provided myrror_object", {
+  test_object <- create_myrror_object(iris, iris_var1)
+  result <- get_correct_myrror_object(myrror_object = test_object,
+                                      dfx = NULL, dfy = NULL, by = NULL, by.x = NULL, by.y = NULL, verbose = FALSE)
+  expect_identical(result, test_object)
+})
+
+# Test 2: No Myrror Object, Environment Has Last Myrror Object
+test_that("retrieves last myrror_object from environment", {
+  myrror(iris, iris_var1)
+  result <- get_correct_myrror_object(NULL, NULL, NULL, NULL, NULL, NULL,
+                                      verbose = TRUE)
+  expect_identical(result, myrror(iris, iris_var1))
+  rlang::env_unbind(.myrror_env, "last_myrror_object")
+})
+
+
+# Test 3: No Myrror Object, No Datasets, No Environment Object
+test_that("aborts if no object and no data provided", {
+  rlang::env_unbind(.myrror_env, "last_myrror_object")
+  expect_error(
+    get_correct_myrror_object(NULL, NULL, NULL, NULL, NULL, NULL, verbose = FALSE),
+    "You need to provide a")
+})
+
+
+# Test 4: Provided Datasets, No Myrror Object
+test_that("creates new myrror_object from datasets", {
+  dfx <- data.frame(a = 1)
+  dfy <- data.frame(a = 1)
+  result <- get_correct_myrror_object(NULL, dfx, dfy, by = "a", by.x = "a", by.y = "a", verbose = FALSE)
+  expect_true("myrror" %in% class(result))
+})
+
+# clear_last_myrror_object() ----
+test_that("clear_last_myrror_object clears the environment", {
+  # Setup: Ensure an object exists in the environment
+  myrror_object <- create_myrror_object(iris, iris_var1)
+  rlang::env_bind(.myrror_env, last_myrror_object = myrror_object)
+
+  # Precondition check: Ensure the object is present
+  expect_true(rlang::env_has(.myrror_env, "last_myrror_object"))
+
+  # Action: Call the function to clear the object
+  clear_last_myrror_object()
+
+  # Postcondition check: Ensure the object is no longer present
+  expect_false(rlang::env_has(.myrror_env, "last_myrror_object"))
+})
+
+
+
+
+
+
+
+
 
 
 

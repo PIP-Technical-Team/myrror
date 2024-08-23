@@ -5,8 +5,7 @@
 
 <!-- badges: start -->
 
-[![CRAN
-checks](https://badges.cranchecks.info/summary/myrror.svg)](https://cran.r-project.org/web/checks/check_results_myrror.html)[![](https://www.r-pkg.org/badges/version/myrror?color=orange)](https://cran.r-project.org/package=myrror)
+[![](https://www.r-pkg.org/badges/version/myrror?color=orange)](https://cran.r-project.org/package=myrror)
 [![](https://img.shields.io/badge/devel%20version-0.0.0.9001-blue.svg)](https://github.com/giorgiacek/myrror)
 [![](https://codecov.io/gh/giorgiacek/myrror/branch/main/graph/badge.svg)](https://app.codecov.io/gh/giorgiacek/myrror)
 [![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
