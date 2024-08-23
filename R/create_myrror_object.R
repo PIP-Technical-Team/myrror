@@ -1,10 +1,10 @@
 # Myrror Constructor
-#' myrror_object constructor
-#'
+#' myrror_object constructor (internal)
 #'
 #' @inheritParams myrror
+#' @param verbose logical: If `TRUE` additional information will be displayed.
 #'
-#' @return object of class myrror_object
+#' @return object of class myrror_object.
 create_myrror_object <- function(dfx,
                    dfy,
                    by = NULL,

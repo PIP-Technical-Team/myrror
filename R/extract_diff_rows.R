@@ -7,7 +7,8 @@
 #'
 #' @inheritParams myrror
 #' @param myrror_object myrror object from [create_myrror_object]
-#' @param output character: one of "full", "simple", "silent"
+#' @param output character: one of "full", "simple", "silent".
+#' @param verbose logical: If `TRUE` additional information will be displayed.
 #' @param tolerance numeric, default to 1e-7.
 #'
 #' @return data.table object with the rows that are missing or new.
@@ -15,8 +16,16 @@
 #'
 #' @examples
 #'
-#' extract_diff_rows(iris, iris_var1)
+#' # 1. Standard report, after running myrror() or compare_values():
+#' myrror(survey_data, survey_data_2, by=c('country', 'year'))
+#' extract_diff_rows()
+#'
+#' # 2. Standard report, with new data:
 #' extract_diff_rows(survey_data, survey_data_2, by=c('country', 'year'))
+#'
+#' # 3. Toggle tolerance:
+#' extract_diff_rows(survey_data, survey_data_2, by=c('country', 'year'),
+#'                     tolerance = 1e-5)
 #'
 extract_diff_rows <- function(dfx = NULL,
                               dfy = NULL,

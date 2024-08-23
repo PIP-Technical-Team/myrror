@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_myrror_object.R
 \name{create_myrror_object}
 \alias{create_myrror_object}
-\title{myrror_object constructor}
+\title{myrror_object constructor (internal)}
 \usage{
 create_myrror_object(
   dfx,
@@ -27,11 +27,11 @@ create_myrror_object(
 
 \item{factor_to_char}{TRUE or FALSE, default to TRUE.}
 
-\item{verbose}{logical: If \code{TRUE} additional information will be displayed}
+\item{verbose}{logical: If \code{TRUE} additional information will be displayed.}
 }
 \value{
-object of class myrror_object
+object of class myrror_object.
 }
 \description{
-myrror_object constructor
+myrror_object constructor (internal)
 }

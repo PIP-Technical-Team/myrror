@@ -412,7 +412,7 @@ get_correct_myrror_object <- function(myrror_object,
       if (rlang::env_has(.myrror_env, "last_myrror_object")) {
         myrror_object <- rlang::env_get(.myrror_env, "last_myrror_object")
         if (verbose) {
-          cli::cli_inform('Last myrror object used for comparison')
+          cli::cli_inform('Last myrror object used for comparison.')
         }
       } else {
         cli::cli_abort(abort_msg)

@@ -29,20 +29,35 @@ compare_type(
 
 \item{by.y}{character, key to be used for dfy.}
 
-\item{output}{character: one of "full", "simple", "silent".}
+\item{output}{character: one of "full" (returns a myrror_object), "simple" (returns a dataframe), "silent" (invisible object returned).}
 
 \item{interactive}{logical: If \code{TRUE}, print S3 method for myrror objects
 displays by chunks. If \code{FALSE}, everything will be printed at once.}
 
-\item{verbose}{logical: If \code{TRUE} additional information will be displayed}
+\item{verbose}{logical: If \code{TRUE} additional information will be displayed.}
 }
 \value{
-list object
+myrror_object with compare_type slot updated. Or a data.table when \code{output = 'simple'} is selected.
 }
 \description{
 Compare type of variables
 }
 \examples{
-comparison <- compare_type(iris, iris_var1)
+
+# 1. Standard report, myrror_object output:
+compare_type(survey_data, survey_data_2, by=c('country', 'year'))
+
+# 2. Simple output, data.table output:
+compare_type(survey_data, survey_data_2, by=c('country', 'year'),
+             output = 'simple')
+
+# 3. Toggle interactvity:
+compare_type(survey_data, survey_data_2, by=c('country', 'year'),
+             interactive = FALSE)
+
+# 4. Different keys (see also ?myrror):
+compare_type(survey_data, survey_data_2_cap,
+             by.x = c('country', 'year'), by.y = c('COUNTRY', 'YEAR'))
+
 
 }

@@ -3,15 +3,33 @@
 #'
 #' @inheritParams myrror
 #' @param myrror_object myrror object from [create_myrror_object]
-#' @param output character: one of "full", "simple", "silent"
+#' @param output character: one of "full" (returns a myrror_object), "simple" (returns a dataframe), "silent" (invisible object returned).
+#' @param verbose logical: If `TRUE` additional information will be displayed.
 #' @param tolerance numeric, default to 1e-7.
 #'
-#' @return list object
+#' @return myrror_object with compare_values slot updated. Or a list of data.tables when `output = 'simple'` is selected.
 #' @export
 #'
 #' @examples
 #'
-#' comparison <- compare_values(iris, iris_var1)
+#' # 1. Standard report, myrror_object output:
+#' compare_values(survey_data, survey_data_2, by=c('country', 'year'))
+#'
+#' # 2. Simple output, list of data.tables output:
+#' compare_values(survey_data, survey_data_2, by=c('country', 'year'),
+#'                output = 'simple')
+#'
+#' # 3. Toggle tolerance:
+#' compare_values(survey_data, survey_data_2, by=c('country', 'year'),
+#'                tolerance = 1e-5)
+#'
+#' # 4. Toggle interactvity:
+#' compare_values(survey_data, survey_data_2, by=c('country', 'year'),
+#'                interactive = FALSE)
+#'
+#' # 5. Different keys (see also ?myrror):
+#' compare_values(survey_data, survey_data_2_cap,
+#'                by.x = c('country', 'year'), by.y = c('COUNTRY', 'YEAR'))
 #'
 compare_values <- function(dfx = NULL,
                            dfy = NULL,
@@ -22,7 +40,7 @@ compare_values <- function(dfx = NULL,
                            output = c("full", "simple", "silent"),
                            interactive = getOption("myrror.interactive"),
                            verbose = getOption("myrror.verbose"),
-                           tolerance = 1e-7) {
+                           tolerance = getOption("myrror.tolerance")) {
 
   # 1. Arguments check ----
   output <- match.arg(output)

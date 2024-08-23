@@ -3,13 +3,29 @@
 #'
 #' @inheritParams myrror
 #' @param myrror_object myrror object from [create_myrror_object]
-#' @param output character: one of "full", "simple", "silent".
+#' @param output character: one of "full" (returns a myrror_object), "simple" (returns a dataframe), "silent" (invisible object returned).
+#' @param verbose logical: If `TRUE` additional information will be displayed.
 #'
-#' @return list object
+#' @return myrror_object with compare_type slot updated. Or a data.table when `output = 'simple'` is selected.
 #' @export
 #'
 #' @examples
-#' comparison <- compare_type(iris, iris_var1)
+#'
+#' # 1. Standard report, myrror_object output:
+#' compare_type(survey_data, survey_data_2, by=c('country', 'year'))
+#'
+#' # 2. Simple output, data.table output:
+#' compare_type(survey_data, survey_data_2, by=c('country', 'year'),
+#'              output = 'simple')
+#'
+#' # 3. Toggle interactvity:
+#' compare_type(survey_data, survey_data_2, by=c('country', 'year'),
+#'              interactive = FALSE)
+#'
+#' # 4. Different keys (see also ?myrror):
+#' compare_type(survey_data, survey_data_2_cap,
+#'              by.x = c('country', 'year'), by.y = c('COUNTRY', 'YEAR'))
+#'
 #'
 compare_type <- function(dfx = NULL,
                          dfy = NULL,

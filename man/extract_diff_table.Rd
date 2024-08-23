@@ -30,11 +30,11 @@ extract_diff_table(
 
 \item{by.y}{character, key to be used for dfy.}
 
-\item{output}{character: one of "full", "simple", "silent"}
+\item{output}{character: one of "full", "simple", "silent".}
 
 \item{tolerance}{numeric, default to 1e-7.}
 
-\item{verbose}{logical: If \code{TRUE} additional information will be displayed}
+\item{verbose}{logical: If \code{TRUE} additional information will be displayed.}
 }
 \value{
 data.table object with all observations for which at least 1 value is different.
@@ -45,7 +45,15 @@ Function to extract rows with different values between two dataframes.
 }
 \examples{
 
-extract_diff_table(iris, iris_var1)
+# 1. Standard report, after running myrror() or compare_values():
+myrror(survey_data, survey_data_2, by=c('country', 'year'))
+extract_diff_table()
+
+# 2. Standard report, with new data:
 extract_diff_table(survey_data, survey_data_2, by=c('country', 'year'))
+
+# 3. Toggle tolerance:
+extract_diff_table(survey_data, survey_data_2, by=c('country', 'year'),
+                    tolerance = 1e-5)
 
 }

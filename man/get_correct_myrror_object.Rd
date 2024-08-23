@@ -26,7 +26,7 @@ get_correct_myrror_object(
 
 \item{by.y}{character, key to be used for dfy.}
 
-\item{verbose}{logical: If \code{TRUE} additional information will be displayed}
+\item{verbose}{logical: If \code{TRUE} additional information will be displayed.}
 
 \item{...}{other arguments parsed to parent function.}
 }

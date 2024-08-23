@@ -21,7 +21,8 @@
 #'
 #' @inheritParams myrror
 #' @param myrror_object myrror object from [create_myrror_object]
-#' @param output character: one of "full", "simple", "silent"
+#' @param output character: one of "full", "simple", "silent".
+#' @param verbose logical: If `TRUE` additional information will be displayed.
 #' @param tolerance numeric, default to 1e-7.
 #'
 #' @return list object with two items: diff_list and diff_table
@@ -29,8 +30,16 @@
 #'
 #' @examples
 #'
-#' extract_diff_values(iris, iris_var1)
+#' # 1. Standard report, after running myrror() or compare_values():
+#' myrror(survey_data, survey_data_2, by=c('country', 'year'))
+#' extract_diff_values()
+#'
+#' # 2. Standard report, with new data:
 #' extract_diff_values(survey_data, survey_data_2, by=c('country', 'year'))
+#'
+#' # 3. Toggle tolerance:
+#' extract_diff_values(survey_data, survey_data_2, by=c('country', 'year'),
+#'                     tolerance = 1e-5)
 #'
 extract_diff_values <- function(dfx = NULL,
                                 dfy = NULL,
@@ -95,7 +104,8 @@ extract_diff_values <- function(dfx = NULL,
 #'
 #' @inheritParams myrror
 #' @param myrror_object myrror object from [create_myrror_object]
-#' @param output character: one of "full", "simple", "silent"
+#' @param output character: one of "full", "simple", "silent".
+#' @param verbose logical: If `TRUE` additional information will be displayed.
 #' @param tolerance numeric, default to 1e-7.
 #'
 #' @return data.table object with all observations for which at least 1 value is different.
@@ -103,8 +113,16 @@ extract_diff_values <- function(dfx = NULL,
 #'
 #' @examples
 #'
-#' extract_diff_table(iris, iris_var1)
+#' # 1. Standard report, after running myrror() or compare_values():
+#' myrror(survey_data, survey_data_2, by=c('country', 'year'))
+#' extract_diff_table()
+#'
+#' # 2. Standard report, with new data:
 #' extract_diff_table(survey_data, survey_data_2, by=c('country', 'year'))
+#'
+#' # 3. Toggle tolerance:
+#' extract_diff_table(survey_data, survey_data_2, by=c('country', 'year'),
+#'                     tolerance = 1e-5)
 #'
 extract_diff_table <- function(dfx = NULL,
                                dfy = NULL,

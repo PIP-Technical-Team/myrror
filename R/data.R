@@ -136,6 +136,19 @@
 #' @source Simulated data.
 "survey_data_2"
 
+#' Survey Data Variation 2 with Cap Keys
+#' @format A `data.table` with 15 rows and 6 variables:
+#' \describe{
+#' \item{country}{Factor with levels: "A", "B".}
+#' \item{year}{Numeric, with values: 2010, 2011, 2012, 2013.}
+#' \item{variable1}{Numeric.}
+#' \item{variable2}{Numeric. Modified variable values.}
+#' \item{variable3}{Numeric.}
+#' \item{variable4}{Numeric.}
+#' }
+#' @source Simulated data.
+"survey_data_2_cap"
+
 #' Survey Data Variation 3
 #' @format A `data.table` with 15 rows and 6 variables:
 #' \describe{
