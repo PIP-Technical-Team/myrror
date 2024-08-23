@@ -5,59 +5,47 @@
 #' Function to extract missing or new rows from comparing two dataframes.
 #'
 #'
-#' @param dfx data.frame object.
-#' @param dfy data.frame object.
-#' @param by character, key to be used for dfx and dfy.
-#' @param by.x character, key to be used for dfx.
-#' @param by.y character, key to be used for dfy.
-#' @param myrror_object myrror object.
-#' @param output character, one of "simple", "full", "silent".
+#' @inheritParams myrror
+#' @param myrror_object myrror object from [create_myrror_object]
+#' @param output character: one of "full", "simple", "silent".
+#' @param verbose logical: If `TRUE` additional information will be displayed.
+#' @param tolerance numeric, default to 1e-7.
 #'
 #' @return data.table object with the rows that are missing or new.
 #' @export
 #'
 #' @examples
 #'
-#' extract_diff_rows(iris, iris_var1)
+#' # 1. Standard report, after running myrror() or compare_values():
+#' myrror(survey_data, survey_data_2, by=c('country', 'year'))
+#' extract_diff_rows()
+#'
+#' # 2. Standard report, with new data:
 #' extract_diff_rows(survey_data, survey_data_2, by=c('country', 'year'))
+#'
+#' # 3. Toggle tolerance:
+#' extract_diff_rows(survey_data, survey_data_2, by=c('country', 'year'),
+#'                     tolerance = 1e-5)
 #'
 extract_diff_rows <- function(dfx = NULL,
                               dfy = NULL,
+                              myrror_object = NULL,
                               by = NULL,
                               by.x = NULL,
                               by.y = NULL,
-                              myrror_object = NULL,
-                              output = c("simple", "full", "silent")){
+                              output = c("simple", "full", "silent"),
+                              tolerance = 1e-7,
+                              verbose = TRUE){
   # 1. Arguments check ----
   output <- match.arg(output)
 
-  # 2. Create object if not supplied ----
-  if (is.null(myrror_object)) {
-    # First check if dfx and dfy are provided:
-    if (!is.null(dfx) && !is.null(dfy)) {
-      myrror_object <- create_myrror_object(dfx = dfx,
-                                            dfy = dfy,
-                                            by = by,
-                                            by.x = by.x,
-                                            by.y = by.y)
+  # 2. Capture all arguments as a list
+  args <- as.list(environment())
 
-      ## Re-assign names from within this call:
-      myrror_object$name_dfx <- deparse(substitute(dfx))
-      myrror_object$name_dfy <- deparse(substitute(dfy))
+  # 3. Create object if not supplied ----
+  myrror_object <- do.call(get_correct_myrror_object, args)
 
-    } else {
-
-      # If dfx and dfy are not provided, try retrieving a myrror_object from the environment:
-      myrror_object <- get("last_myrror_object", envir = .myrror_env, inherits = FALSE)
-
-      # If still NULL after trying to retrieve, throw an error
-      if (is.null(myrror_object)) {
-        stop("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied and no existing myrror object is available.")
-      }
-    }
-  }
-
-  # 3. Run extract_values_int() ----
+  # 4. Run extract_values_int() ----
   myrror_object$extract_diff_rows <- myrror_object$merged_data_report$unmatched_data
 
   # Check if results are empty and adjust accordingly
@@ -69,7 +57,7 @@ extract_diff_rows <- function(dfx = NULL,
     }
   }
 
-  # 4. Output ----
+  # 5. Output ----
 
   ## Handle the output type
   switch(output,

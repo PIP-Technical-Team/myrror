@@ -19,13 +19,10 @@
 #' Function to extract rows with different values between two dataframes.
 #'
 #'
-#' @param dfx data.frame object.
-#' @param dfy data.frame object.
-#' @param by character, key to be used for dfx and dfy.
-#' @param by.x character, key to be used for dfx.
-#' @param by.y character, key to be used for dfy.
-#' @param myrror_object myrror object.
-#' @param output character, one of "simple", "full", "silent".
+#' @inheritParams myrror
+#' @param myrror_object myrror object from [create_myrror_object]
+#' @param output character: one of "full", "simple", "silent".
+#' @param verbose logical: If `TRUE` additional information will be displayed.
 #' @param tolerance numeric, default to 1e-7.
 #'
 #' @return list object with two items: diff_list and diff_table
@@ -33,48 +30,38 @@
 #'
 #' @examples
 #'
-#' extract_diff_values(iris, iris_var1)
+#' # 1. Standard report, after running myrror() or compare_values():
+#' myrror(survey_data, survey_data_2, by=c('country', 'year'))
+#' extract_diff_values()
+#'
+#' # 2. Standard report, with new data:
 #' extract_diff_values(survey_data, survey_data_2, by=c('country', 'year'))
+#'
+#' # 3. Toggle tolerance:
+#' extract_diff_values(survey_data, survey_data_2, by=c('country', 'year'),
+#'                     tolerance = 1e-5)
 #'
 extract_diff_values <- function(dfx = NULL,
                                 dfy = NULL,
+                                myrror_object = NULL,
                                 by = NULL,
                                 by.x = NULL,
                                 by.y = NULL,
-                                myrror_object = NULL,
                                 output = c("simple", "full", "silent"),
-                                tolerance = 1e-7) {
+                                tolerance = 1e-7,
+                                verbose = TRUE) {
 
   # 1. Arguments check ----
   output <- match.arg(output)
 
-  # 2. Create object if not supplied ----
-  if (is.null(myrror_object)) {
-    # First check if dfx and dfy are provided:
-    if (!is.null(dfx) && !is.null(dfy)) {
-      myrror_object <- create_myrror_object(dfx = dfx,
-                                            dfy = dfy,
-                                            by = by,
-                                            by.x = by.x,
-                                            by.y = by.y)
+  # 2. Capture all arguments as a list
+  args <- as.list(environment())
 
-      ## Re-assign names from within this call:
-      myrror_object$name_dfx <- deparse(substitute(dfx))
-      myrror_object$name_dfy <- deparse(substitute(dfy))
+  # 3. Create object if not supplied ----
+  myrror_object <- do.call(get_correct_myrror_object, args)
 
-    } else {
 
-      # If dfx and dfy are not provided, try retrieving a myrror_object from the environment:
-      myrror_object <- get("last_myrror_object", envir = .myrror_env, inherits = FALSE)
-
-      # If still NULL after trying to retrieve, throw an error
-      if (is.null(myrror_object)) {
-        stop("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied and no existing myrror object is available.")
-      }
-    }
-  }
-
-  # 3. Run extract_values_int() ----
+  # 4. Run extract_values_int() ----
   myrror_object$extract_diff_values <- extract_diff_int(myrror_object,
                                                         tolerance = tolerance)
 
@@ -82,12 +69,12 @@ extract_diff_values <- function(dfx = NULL,
   if(length(myrror_object$extract_diff_values) == 0) {
     if(output == "simple") {
       return(NULL)  # Return NULL for "simple" if no differences are found
-    } else {
-      myrror_object$extract_diff_values <- list(message = "No differences found between the variables.")
-    }
+    } #else {
+    #myrror_object$extract_diff_values <- list(message = "No differences found between the variables.")
+    #} # need to think about whether I want to keep this option instead of printing out the mo.
   }
 
-  # 4. Output ----
+  # 5. Output ----
 
   ## Handle the output type
   switch(output,
@@ -115,13 +102,10 @@ extract_diff_values <- function(dfx = NULL,
 #' Extract Different Values - User-facing - Table format
 #' Function to extract rows with different values between two dataframes.
 #'
-#' @param dfx data.frame object.
-#' @param dfy data.frame object.
-#' @param by character, key to be used for dfx and dfy.
-#' @param by.x character, key to be used for dfx.
-#' @param by.y character, key to be used for dfy.
-#' @param myrror_object myrror object.
-#' @param output character, one of "simple", "full", "silent".
+#' @inheritParams myrror
+#' @param myrror_object myrror object from [create_myrror_object]
+#' @param output character: one of "full", "simple", "silent".
+#' @param verbose logical: If `TRUE` additional information will be displayed.
 #' @param tolerance numeric, default to 1e-7.
 #'
 #' @return data.table object with all observations for which at least 1 value is different.
@@ -129,52 +113,38 @@ extract_diff_values <- function(dfx = NULL,
 #'
 #' @examples
 #'
-#' extract_diff_table(iris, iris_var1)
+#' # 1. Standard report, after running myrror() or compare_values():
+#' myrror(survey_data, survey_data_2, by=c('country', 'year'))
+#' extract_diff_table()
+#'
+#' # 2. Standard report, with new data:
 #' extract_diff_table(survey_data, survey_data_2, by=c('country', 'year'))
+#'
+#' # 3. Toggle tolerance:
+#' extract_diff_table(survey_data, survey_data_2, by=c('country', 'year'),
+#'                     tolerance = 1e-5)
 #'
 extract_diff_table <- function(dfx = NULL,
                                dfy = NULL,
+                               myrror_object = NULL,
                                by = NULL,
                                by.x = NULL,
                                by.y = NULL,
-                               myrror_object = NULL,
                                output = c("simple", "full", "silent"),
-                               tolerance = 1e-7) {
+                               tolerance = 1e-7,
+                               verbose = TRUE) {
 
   # 1. Arguments check ----
   output <- match.arg(output)
 
-  # 2. Create object if not supplied ----
-  if (is.null(myrror_object)) {
-    # First check if dfx and dfy are provided:
-    if (!is.null(dfx) && !is.null(dfy)) {
-      myrror_object <- create_myrror_object(dfx = dfx,
-                                            dfy = dfy,
-                                            by = by,
-                                            by.x = by.x,
-                                            by.y = by.y)
+  # 2. Capture all arguments as a list
+  args <- as.list(environment())
 
-      ## Re-assign names from within this call:
-      myrror_object$name_dfx <- deparse(substitute(dfx))
-      myrror_object$name_dfy <- deparse(substitute(dfy))
-
-    } else {
-
-      # If dfx and dfy are not provided, try retrieving a myrror_object from the environment:
-      myrror_object <- get("last_myrror_object", envir = .myrror_env, inherits = FALSE)
-
-      # If still NULL after trying to retrieve, throw an error
-      if (is.null(myrror_object)) {
-        stop("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied and no existing myrror object is available.")
-      }
-    }
-  }
+  # 3. Create object if not supplied ----
+  myrror_object <- do.call(get_correct_myrror_object, args)
 
 
-
-
-
-  # 3. Run extract_values_int() ----
+  # 4. Run extract_values_int() ----
   myrror_object$extract_diff_values <- extract_diff_int(myrror_object,
                                                         tolerance = tolerance)
 
@@ -182,12 +152,12 @@ extract_diff_table <- function(dfx = NULL,
   if(length(myrror_object$extract_diff_values) == 0) {
     if(output == "simple") {
       return(NULL)  # Return NULL for "simple" if no differences are found
-    } else {
-      myrror_object$extract_diff_values <- list(message = "No differences found between the variables.")
-    }
+    } #else {
+      #myrror_object$extract_diff_values <- list(message = "No differences found between the variables.")
+    #} # need to think about whether I want to keep this option instead of printing out the mo.
   }
 
-  # 4. Output ----
+  # 5. Output ----
 
   ## Handle the output type
   switch(output,
@@ -241,34 +211,43 @@ extract_diff_int <- function(myrror_object = NULL,
 
 
   # 2. List option -----
-  diff_list <- purrr::imap(compare_values_object, function(df, variable) {
+    ## With lapply(), need to extract variable_names to assign to the list:
 
+    variable_names <- names(compare_values_object)
 
-    column_x <- paste0(variable, ".x")
-    column_y <- paste0(variable, ".y")
+    diff_list <- lapply(variable_names, function(variable) {
 
-    df |>
-      collapse::fsubset(count > 0) |>
-      collapse::fselect(-count) |>
-      tidyr::unnest(cols = c("indexes")) |>
-      fmutate(indexes = as.character(indexes)) |>
-      collapse::join(matched_data |>
-                       collapse::fselect(c("rn", keys, column_x, column_y)),
-                     on = c("indexes" = "rn"),
-                     how = "left",
-                     verbose = 0) |>
-      collapse::fselect(c("diff", "indexes", keys, column_x, column_y)) |>
-      collapse::roworderv(c(keys))
+      df <- compare_values_object[[variable]]
 
-  })
+      column_x <- paste0(variable, ".x")
+      column_y <- paste0(variable, ".y")
 
-  non_empty_diff_list <- purrr::keep(diff_list, ~ nrow(.x) > 0)
+      result <- df |>
+        fsubset(count > 0) |>
+        fselect(-count) |>
+        _[, c(.SD, list(indexes = unlist(indexes))), .SDcols = "diff"] |>
+        fmutate(indexes = as.character(indexes)) |>
+        collapse::join(matched_data |>
+                         fselect(c("rn", keys, column_x, column_y)),
+                       on = c("indexes" = "rn"),
+                       how = "left",
+                       verbose = 0) |>
+        fselect(c("diff", "indexes", keys, column_x, column_y)) |>
+        roworderv(c(keys))
+
+    })
+
+    names(diff_list) <- variable_names
+
+    non_empty_diff_list <- diff_list[sapply(diff_list,
+                                  function(x) !is.null(x) && nrow(x) > 0)]
 
   # 3. Table option ----
   diff_table <- rowbind(compare_values_object, idcol = "variable") |>
     fsubset(count > 0) |>
-    fselect(-count)|>
-    tidyr::unnest(cols = c(indexes)) |> # is there a better version of unnest?
+    fselect(-count) |>
+    # please check
+    _[, c(.SD, list(indexes = unlist(indexes))), .SDcols = "diff"] |>
     fmutate(indexes = as.character(indexes)) |>
     collapse::join(matched_data,
                    on = c("indexes" = "rn"),

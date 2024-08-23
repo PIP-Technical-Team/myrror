@@ -1,55 +1,58 @@
 # compare_values ---------------------------------------------------------------
 #' Compare values of matched datasets
 #'
-#' @param dfx data.frame object.
-#' @param dfy data.frame object.
-#' @param by character, column name to join on.
-#' @param by.x character, column name to join on in dfx.
-#' @param by.y character, column name to join on in dfy.
-#' @param myrror_object myrror object.
-#' @param output character, one of "full", "simple", "silent".
-#' @param interactive logical, default to TRUE.
+#' @inheritParams myrror
+#' @param myrror_object myrror object from [create_myrror_object]
+#' @param output character: one of "full" (returns a myrror_object), "simple" (returns a dataframe), "silent" (invisible object returned).
+#' @param verbose logical: If `TRUE` additional information will be displayed.
 #' @param tolerance numeric, default to 1e-7.
 #'
-#' @return list object
+#' @return myrror_object with compare_values slot updated. Or a list of data.tables when `output = 'simple'` is selected.
 #' @export
 #'
 #' @examples
 #'
-#' comparison <- compare_values(iris, iris_var1)
+#' # 1. Standard report, myrror_object output:
+#' compare_values(survey_data, survey_data_2, by=c('country', 'year'))
+#'
+#' # 2. Simple output, list of data.tables output:
+#' compare_values(survey_data, survey_data_2, by=c('country', 'year'),
+#'                output = 'simple')
+#'
+#' # 3. Toggle tolerance:
+#' compare_values(survey_data, survey_data_2, by=c('country', 'year'),
+#'                tolerance = 1e-5)
+#'
+#' # 4. Toggle interactvity:
+#' compare_values(survey_data, survey_data_2, by=c('country', 'year'),
+#'                interactive = FALSE)
+#'
+#' # 5. Different keys (see also ?myrror):
+#' compare_values(survey_data, survey_data_2_cap,
+#'                by.x = c('country', 'year'), by.y = c('COUNTRY', 'YEAR'))
 #'
 compare_values <- function(dfx = NULL,
                            dfy = NULL,
+                           myrror_object = NULL,
                            by = NULL,
                            by.x = NULL,
                            by.y = NULL,
-                           myrror_object = NULL,
                            output = c("full", "simple", "silent"),
-                           interactive = TRUE,
-                           tolerance = 1e-7) {
+                           interactive = getOption("myrror.interactive"),
+                           verbose = getOption("myrror.verbose"),
+                           tolerance = getOption("myrror.tolerance")) {
 
   # 1. Arguments check ----
   output <- match.arg(output)
 
-  # 2. Create object if not supplied ----
-  if (is.null(myrror_object)) {
-    if (is.null(dfx) || is.null(dfy)) {
-      stop("Both 'dfx' and 'dfy' must be provided if 'myrror_object' is not supplied.")
-    }
+  # 2. Capture all arguments as a list
+  args <- as.list(environment())
 
-    myrror_object <- create_myrror_object(dfx = dfx,
-                                          dfy = dfy,
-                                          by = by,
-                                          by.x = by.x,
-                                          by.y = by.y)
-
-    myrror_object$name_dfx <- deparse(substitute(dfx)) # Re-assign names from the call.
-    myrror_object$name_dfy <- deparse(substitute(dfy))
-
-  }
+  # 3. Create object if not supplied ----
+  myrror_object <- do.call(get_correct_myrror_object, args)
 
 
-  # 3. Run compare_values_int() ----
+  # 4. Run compare_values_int() ----
 
   compare_values_list <- compare_values_int(myrror_object,
                                             tolerance = tolerance)
@@ -66,23 +69,23 @@ compare_values <- function(dfx = NULL,
   } else {
 
   ### else if not empty, then create a tibble with the results.
-  compare_values_df <- purrr::map(compare_values_list, ~.x|>fselect(diff, count)) |>
+  compare_values_df <- lapply(compare_values_list, \(x) fselect(x, diff, count)) |>
     rowbind(idcol = "variable") |>
     fmutate(diff = as.factor(diff))|>
     pivot(ids = 1, how = "wider", names = "diff")|>
-    tidyr::as_tibble()
+    qTBL()
 
   myrror_object$compare_values <- compare_values_df
 
   }
 
-  # 4. Save whether interactive or not ----
+  # 5. Save whether interactive or not ----
   myrror_object$interactive <- interactive
 
-  # 5. Save to package environment ----
-  assign("last_myrror_object", myrror_object, envir = .myrror_env)
+  # 6. Save to package environment ----
+  rlang::env_bind(.myrror_env, last_myrror_object = myrror_object)
 
-  # 6. Output ----
+  # 7. Output ----
   ## Handle the output type
   switch(output,
          full = {
@@ -149,7 +152,7 @@ compare_values_int <- function(myrror_object = NULL,
 get_value_to_na <- function(matched_data,
                               pairs_list) {
 
-  result <- purrr::map(pairs_list, function(pair) {
+  result <- lapply(pairs_list, function(pair) {
 
     col_x <- pair[[1]]
     col_y <- pair[[2]]
@@ -174,7 +177,7 @@ get_value_to_na <- function(matched_data,
 get_na_to_value <- function(matched_data,
                               pairs_list) {
 
-  result <- purrr::map(pairs_list, function(pair) {
+  result <- lapply(pairs_list, function(pair) {
 
     col_x <- pair[[1]]
     col_y <- pair[[2]]
@@ -196,7 +199,7 @@ get_change_in_value <- function(matched_data,
                                   pairs_list,
                                   tolerance) {
 
-  result <- purrr::map(pairs_list, function(pair) {
+  result <- lapply(pairs_list, function(pair) {
 
     col_x <- pair[[1]]
     col_y <- pair[[2]]

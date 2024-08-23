@@ -1,31 +1,28 @@
 # Myrror Constructor
-#' myrror_object constructor
+#' myrror_object constructor (internal)
 #'
-#' @param dfx a non-empty data.frame
-#' @param dfy a non-empty data.frame
-#' @param by character, key to be used for dfx and dfy
-#' @param by.x character, key to be used for dfx
-#' @param by.y character, key to be used for dfy
-#' @param factor_to_char TRUE or FALSE, default to TRUE.
+#' @inheritParams myrror
+#' @param verbose logical: If `TRUE` additional information will be displayed.
 #'
-#' @return object of class myrror_object
-#'
-#' @import collapse
-#'
+#' @return object of class myrror_object.
 create_myrror_object <- function(dfx,
                    dfy,
                    by = NULL,
                    by.x = NULL,
                    by.y = NULL,
-                   factor_to_char = TRUE) {
+                   factor_to_char = TRUE,
+                   verbose = getOption("myrror.verbose")) {
 
 
    # 0. Store original datasets and orginal dataset characteristics ----
   original_call <- match.call()
   dfx_name <- deparse(substitute(dfx))
   dfy_name <- deparse(substitute(dfy))
-  original_dfx <- dfx
-  original_dfy <- dfy
+
+  # If these are data.tables, it is necesary to create a hard copy.Otherwise,
+  # the same object will be bound to two different names.
+  original_dfx <- copy(dfx)
+  original_dfy <- copy(dfy)
 
   # 1. Check dfx and dfy arguments ----
   # - df1 and df2 needs to be data.frames structures and not empty.
@@ -83,10 +80,10 @@ create_myrror_object <- function(dfx,
   # Note: this step needs to be done here because the column names might
   # change in the prepare_df() function.
   if (any(set_by$by.x %in% setdiff(names(prepared_dfy), set_by$by.y))) {
-    stop("by.x is part of the non-index columns of dfy.")
+    cli::cli_abort("by.x is part of the non-index columns of dfy.")
   }
   if (any(set_by$by.y %in% setdiff(names(prepared_dfx), set_by$by.x))) {
-    stop("by.y is part of the non-index columns of dfx.")
+    cli::cli_abort("by.y is part of the non-index columns of dfx.")
   }
 
   # 5. Merge ----
@@ -96,7 +93,9 @@ create_myrror_object <- function(dfx,
   ## Merge using Joyn
 
   ### Create dynamic 'by' argument for joyn
-  by_joyn_arg <- stats::setNames(set_by$by.x, set_by$by.y)
+  by_joyn_arg <- set_by$by.x
+  names(by_joyn_arg) <- set_by$by.y
+
   by_joyn_arg <- sapply(names(by_joyn_arg), function(n) paste(by_joyn_arg[n], n,
                                                               sep = " = "))
   by_joyn_arg <- paste(unname(by_joyn_arg))
@@ -116,15 +115,15 @@ create_myrror_object <- function(dfx,
   ## Adjust rn and row_index:
   if ("rn.x" %in% colnames(merged_data)) {
     merged_data <- merged_data |>
-      collapse::fmutate(rn = rn.x) |>
-      collapse::fselect(-rn.x, -rn.y)
+      fmutate(rn = rn.x) |>
+      fselect(-rn.x, -rn.y)
   }
 
 
   if ("row_index.x" %in% colnames(merged_data)) {
     merged_data <- merged_data |>
-      collapse::fmutate(row_index = row_index.x) |>
-      collapse::fselect(-row_index.x, -row_index.y)
+      fmutate(row_index = row_index.x) |>
+      fselect(-row_index.x, -row_index.y)
   }
 
 
@@ -168,7 +167,7 @@ create_myrror_object <- function(dfx,
       compare_values = FALSE,
       extract_diff_values = FALSE
     ),
-    interactive = TRUE
+    interactive = getOption("myrror.interactive")
   )
 
   # 8. Return myrror object (invisible) ----

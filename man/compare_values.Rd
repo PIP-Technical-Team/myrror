@@ -7,42 +7,63 @@
 compare_values(
   dfx = NULL,
   dfy = NULL,
+  myrror_object = NULL,
   by = NULL,
   by.x = NULL,
   by.y = NULL,
-  myrror_object = NULL,
   output = c("full", "simple", "silent"),
-  interactive = TRUE,
-  tolerance = 1e-07
+  interactive = getOption("myrror.interactive"),
+  verbose = getOption("myrror.verbose"),
+  tolerance = getOption("myrror.tolerance")
 )
 }
 \arguments{
-\item{dfx}{data.frame object.}
+\item{dfx}{a non-empty data.frame.}
 
-\item{dfy}{data.frame object.}
+\item{dfy}{a non-empty data.frame.}
 
-\item{by}{character, column name to join on.}
+\item{myrror_object}{myrror object from \link{create_myrror_object}}
 
-\item{by.x}{character, column name to join on in dfx.}
+\item{by}{character, key to be used for dfx and dfy.}
 
-\item{by.y}{character, column name to join on in dfy.}
+\item{by.x}{character, key to be used for dfx.}
 
-\item{myrror_object}{myrror object.}
+\item{by.y}{character, key to be used for dfy.}
 
-\item{output}{character, one of "full", "simple", "silent".}
+\item{output}{character: one of "full" (returns a myrror_object), "simple" (returns a dataframe), "silent" (invisible object returned).}
 
-\item{interactive}{logical, default to TRUE.}
+\item{interactive}{logical: If \code{TRUE}, print S3 method for myrror objects
+displays by chunks. If \code{FALSE}, everything will be printed at once.}
+
+\item{verbose}{logical: If \code{TRUE} additional information will be displayed.}
 
 \item{tolerance}{numeric, default to 1e-7.}
 }
 \value{
-list object
+myrror_object with compare_values slot updated. Or a list of data.tables when \code{output = 'simple'} is selected.
 }
 \description{
 Compare values of matched datasets
 }
 \examples{
 
-comparison <- compare_values(iris, iris_var1)
+# 1. Standard report, myrror_object output:
+compare_values(survey_data, survey_data_2, by=c('country', 'year'))
+
+# 2. Simple output, list of data.tables output:
+compare_values(survey_data, survey_data_2, by=c('country', 'year'),
+               output = 'simple')
+
+# 3. Toggle tolerance:
+compare_values(survey_data, survey_data_2, by=c('country', 'year'),
+               tolerance = 1e-5)
+
+# 4. Toggle interactvity:
+compare_values(survey_data, survey_data_2, by=c('country', 'year'),
+               interactive = FALSE)
+
+# 5. Different keys (see also ?myrror):
+compare_values(survey_data, survey_data_2_cap,
+               by.x = c('country', 'year'), by.y = c('COUNTRY', 'YEAR'))
 
 }

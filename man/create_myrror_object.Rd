@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_myrror_object.R
 \name{create_myrror_object}
 \alias{create_myrror_object}
-\title{myrror_object constructor}
+\title{myrror_object constructor (internal)}
 \usage{
 create_myrror_object(
   dfx,
@@ -10,25 +10,28 @@ create_myrror_object(
   by = NULL,
   by.x = NULL,
   by.y = NULL,
-  factor_to_char = TRUE
+  factor_to_char = TRUE,
+  verbose = getOption("myrror.verbose")
 )
 }
 \arguments{
-\item{dfx}{a non-empty data.frame}
+\item{dfx}{a non-empty data.frame.}
 
-\item{dfy}{a non-empty data.frame}
+\item{dfy}{a non-empty data.frame.}
 
-\item{by}{character, key to be used for dfx and dfy}
+\item{by}{character, key to be used for dfx and dfy.}
 
-\item{by.x}{character, key to be used for dfx}
+\item{by.x}{character, key to be used for dfx.}
 
-\item{by.y}{character, key to be used for dfy}
+\item{by.y}{character, key to be used for dfy.}
 
 \item{factor_to_char}{TRUE or FALSE, default to TRUE.}
+
+\item{verbose}{logical: If \code{TRUE} additional information will be displayed.}
 }
 \value{
-object of class myrror_object
+object of class myrror_object.
 }
 \description{
-myrror_object constructor
+myrror_object constructor (internal)
 }

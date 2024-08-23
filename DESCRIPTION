@@ -1,6 +1,6 @@
 Package: myrror
 Title: Compare two Data Frames and Summarize Differences
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R: 
     person("Giorgia", "Cecchinato", , "gcecchinato@worldbank.org", role = c("aut", "cre"))
 Description: Convenience functions to compare two dataframes, explore,
@@ -12,19 +12,17 @@ Imports:
     cli (>= 3.6.2),
     data.table (>= 1.15.4),
     collapse,
-    stats,
     joyn,
-    purrr,
-    tidyr,
-    lifecycle
+    rlang
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Suggests: 
     knitr,
     rmarkdown,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    withr
 Config/testthat/edition: 3
 URL: https://giorgiacek.github.io/myrror/
 Config/Needs/website: rmarkdown

@@ -12,7 +12,7 @@
 check_df <- function(df) {
   # Check if dfx or dfy are NULL
   if (is.null(df)) {
-    stop("Input data frame(s) cannot be NULL.")
+    cli::cli_abort("Input data frame(s) cannot be NULL.")
   }
 
   # Check if dfx or dfy are data frames,
@@ -22,16 +22,16 @@ check_df <- function(df) {
       tryCatch({
         df <- as.data.frame(df)
       }, error = function(e) {
-        stop("df is a list but cannot be converted to a data frame.")
+        cli::cli_abort("df is a list but cannot be converted to a data frame.")
       })
     } else {
-      stop("df must be a data frame or a convertible list.")
+      cli::cli_abort("df must be a data frame or a convertible list.")
     }
   }
 
   # Check if dfx is empty
   if ((!is.null(df) && nrow(df) == 0)) {
-    stop("Input data frame(s) cannot be empty.")
+    cli::cli_abort("Input data frame(s) cannot be empty.")
   }
 
   return(df)
@@ -57,13 +57,13 @@ check_set_by <- function(by = NULL,
 
   # Validate inputs are non-empty character vectors if provided
   if (!is.null(by) && (!is.character(by) || length(by) == 0)) {
-    stop("The 'by' argument must be a non-empty character vector.")
+    cli::cli_abort("The 'by' argument must be a non-empty character vector.")
   }
   if (!is.null(by.x) && (!is.character(by.x) || length(by.x) == 0)) {
-    stop("The 'by.x' argument must be a non-empty character vector.")
+    cli::cli_abort("The 'by.x' argument must be a non-empty character vector.")
   }
   if (!is.null(by.y) && (!is.character(by.y) || length(by.y) == 0)) {
-    stop("The 'by.y' argument must be a non-empty character vector.")
+    cli::cli_abort("The 'by.y' argument must be a non-empty character vector.")
   }
 
 
@@ -78,10 +78,10 @@ check_set_by <- function(by = NULL,
 
  if (is.null(by.x) || is.null(by.y)) {
     if (is.null(by.x) && !is.null(by.y)) {
-      stop("Argument by.x is NULL. If using by.y, by.x also needs to be specified.")
+      cli::cli_abort("Argument by.x is NULL. If using by.y, by.x also needs to be specified.")
     }
     if (!is.null(by.x) && is.null(by.y)) {
-      stop("Argument by.y is NULL. If using by.x, by.y also needs to be specified.")
+      cli::cli_abort("Argument by.y is NULL. If using by.x, by.y also needs to be specified.")
     }
     # Set defaults if both are NULL
     by.x <- by.y <- "rn"
@@ -130,7 +130,6 @@ check_set_by <- function(by = NULL,
 #' @param by character vector
 #' @param factor_to_char logical
 #'
-#' @import collapse
 #' @export
 #' @examples
 #' dataset <- data.frame(a = 1:10, b = letters[1:10])
@@ -142,12 +141,12 @@ prepare_df <- function(df,
 
   ## 1. Check that "rn" is not in the colnames
   if ("rn" %in% colnames(df)) {
-    stop("'rn' present in colnames but it cannot be a column name.")
+    cli::cli_abort("'rn' present in colnames but it cannot be a column name.")
   }
 
   ## 2. Check for duplicate column names in both datasets
   if (length(unique(names(df))) != length(names(df))) {
-    stop("Duplicate column names found in dataframe.")
+    cli::cli_abort("Duplicate column names found in dataframe.")
     # Note: cli additions needed.
   }
 
@@ -157,7 +156,7 @@ prepare_df <- function(df,
 
     dt <- data.table::copy(df)
     dt <- df |>
-          collapse::fmutate(rn = row.names(df),
+          fmutate(rn = row.names(df),
                   row_index = 1:nrow(df))
   }
 
@@ -165,7 +164,7 @@ prepare_df <- function(df,
     dt <- copy(df)
     data.table::setDT(dt, keep.rownames = TRUE)
     dt <- dt |>
-      collapse::fmutate(row_index = 1:nrow(dt))
+      fmutate(row_index = 1:nrow(dt))
     }
 
   ## N. Validate colnames (make.names) and replace if needed.
@@ -173,12 +172,12 @@ prepare_df <- function(df,
   # valid_col_names <- make.names(names(dt), unique = TRUE)
   #
   # if (!identical(names(dt), valid_col_names)) {
-  #   collapse::setColnames(dt, valid_col_names)
+  #   setColnames(dt, valid_col_names)
   # }
 
   ## 4. Ensure the by keys are available in the column names
   if (!all(by %in% names(dt))) {
-    stop("Specified by keys are not all present in the column names.")
+    cli::cli_abort("Specified by keys are not all present in the column names.")
   }
 
   df_name <- deparse(substitute(df))
@@ -191,9 +190,9 @@ prepare_df <- function(df,
   ## 6. Convert factors to characters
   if (isTRUE(factor_to_char)){
 
-    # I wanted to implement it like so, but check() would not recognize across() as a collapse:: function
+    # I wanted to implement it like so, but check() would not recognize across() as a  function
     #dt <- dt |>
-      #collapse::fmutate(across(is.factor, as.character))
+      #fmutate(across(is.factor, as.character))
 
     # Get names of factor columns
     factor_cols <- names(dt)[sapply(dt, is.factor)]
@@ -325,16 +324,6 @@ pair_columns <- function(merged_data_report,
   )
 
   # Identify unmatched columns
-  # Get set_by/keys
-  get_keys_or_default <- function(keys, default = "rn") {
-    if (is.null(keys)) {
-      default
-    } else {
-      keys
-    }
-  }
-
-  # Usage
   keys <- get_keys_or_default(merged_data_report$keys)
 
   nonshared_cols_dfx <- setdiff(c(merged_data_report$colnames_dfx),
@@ -350,7 +339,21 @@ pair_columns <- function(merged_data_report,
 
 }
 
-# 5. Compare with tolerance ----
+# 5. Get keys or default ----
+#' Get keys or default
+#' @param keys character vector
+#' @param default character
+#' @return character
+#'
+get_keys_or_default <- function(keys, default = "rn") {
+  if (is.null(keys)) {
+    default
+  } else {
+    keys
+  }
+}
+
+# 6. Compare with tolerance ----
 #' Are these two values equal with tolerance applied?
 #'
 #' @param x numeric
@@ -371,4 +374,80 @@ equal_with_tolerance <- function(x, y, tolerance = 1e-7) {
 
 }
 
+
+
+
+
+# 7. Get correct myrror object ----
+#' Get correct myrror object
+#'
+#' @description It checks all the arguments parsed to parent function. If
+#' `myrror_object` if found, then it will be used. If not, it checks if both
+#' databases are NULL. If they are it looks for the the last myrror object. If
+#' nothing available, then error. Finally, it checks for the availability of
+#' both datasets. If they are available, then create `myrror_object`
+#'
+#' @inheritParams create_myrror_object
+#' @param ... other arguments parsed to parent function.
+#'
+#' @return myrror object
+#' @keywords internal
+get_correct_myrror_object <- function(myrror_object,
+                                      dfx,
+                                      dfy,
+                                      by,
+                                      by.x,
+                                      by.y,
+                                      verbose,
+                                      ...) {
+
+
+  abort_msg <- "You need to provide a {.arg myrror_object}, or two datasets
+                         ({.arg {c('dfx', 'dfy')}}). Alternatively, you need to execute
+                         {.pkg myrror} properly at least once to make use of the last
+                         {.field myrror} object saved in the myrror environment"
+
+  if (is.null(myrror_object)) {
+    if (is.null(dfx) && is.null(dfy)) {
+      if (rlang::env_has(.myrror_env, "last_myrror_object")) {
+        myrror_object <- rlang::env_get(.myrror_env, "last_myrror_object")
+        if (verbose) {
+          cli::cli_inform('Last myrror object used for comparison.')
+        }
+      } else {
+        cli::cli_abort(abort_msg)
+      }
+    } else if (!is.null(dfx) && !is.null(dfy)) {
+      myrror_object <- create_myrror_object(dfx = dfx,
+                                            dfy = dfy,
+                                            by = by,
+                                            by.x = by.x,
+                                            by.y = by.y)
+      ## Re-assign names from within this call:
+      myrror_object$name_dfx <- deparse(substitute(dfx, env = parent.frame()))
+      myrror_object$name_dfy <- deparse(substitute(dfy, env = parent.frame()))
+    } else {
+      cli::cli_abort(abort_msg)
+    }
+  }
+  myrror_object
+}
+
+#' Clear last myrror object
+#'
+#' This function unbinds the last myrror object from the package-specific
+#' environment, effectively removing it.
+#'
+#' @return Invisible `NULL`, indicating the object was successfully cleared.
+#' @export
+#' @examples
+#' myrror(iris, iris_var1, interactive = FALSE) # Run myrror to create myrror object.
+#' clear_last_myrror_object()  # Clear the environment
+#' # rlang::env_has(.myrror_env, "last_myrror_object") # should return an error
+clear_last_myrror_object <- function() {
+  if (rlang::env_has(.myrror_env, "last_myrror_object")) {
+    rlang::env_unbind(.myrror_env, "last_myrror_object")
+  }
+  invisible(NULL)
+}
 

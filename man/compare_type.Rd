@@ -7,38 +7,57 @@
 compare_type(
   dfx = NULL,
   dfy = NULL,
+  myrror_object = NULL,
   by = NULL,
   by.x = NULL,
   by.y = NULL,
-  myrror_object = NULL,
   output = c("full", "simple", "silent"),
-  interactive = TRUE
+  interactive = getOption("myrror.interactive"),
+  verbose = getOption("myrror.verbose")
 )
 }
 \arguments{
-\item{dfx}{data.frame object}
+\item{dfx}{a non-empty data.frame.}
 
-\item{dfy}{data.frame object}
+\item{dfy}{a non-empty data.frame.}
 
-\item{by}{character, key to be used for dfx and dfy}
+\item{myrror_object}{myrror object from \link{create_myrror_object}}
 
-\item{by.x}{character, key to be used for dfx}
+\item{by}{character, key to be used for dfx and dfy.}
 
-\item{by.y}{character, key to be used for dfy}
+\item{by.x}{character, key to be used for dfx.}
 
-\item{myrror_object}{myrror object}
+\item{by.y}{character, key to be used for dfy.}
 
-\item{output}{character, one of "full", "simple", "silent"}
+\item{output}{character: one of "full" (returns a myrror_object), "simple" (returns a dataframe), "silent" (invisible object returned).}
 
-\item{interactive}{TRUE or FALSE, default to TRUE}
+\item{interactive}{logical: If \code{TRUE}, print S3 method for myrror objects
+displays by chunks. If \code{FALSE}, everything will be printed at once.}
+
+\item{verbose}{logical: If \code{TRUE} additional information will be displayed.}
 }
 \value{
-list object
+myrror_object with compare_type slot updated. Or a data.table when \code{output = 'simple'} is selected.
 }
 \description{
 Compare type of variables
 }
 \examples{
-comparison <- compare_type(iris, iris_var1)
+
+# 1. Standard report, myrror_object output:
+compare_type(survey_data, survey_data_2, by=c('country', 'year'))
+
+# 2. Simple output, data.table output:
+compare_type(survey_data, survey_data_2, by=c('country', 'year'),
+             output = 'simple')
+
+# 3. Toggle interactvity:
+compare_type(survey_data, survey_data_2, by=c('country', 'year'),
+             interactive = FALSE)
+
+# 4. Different keys (see also ?myrror):
+compare_type(survey_data, survey_data_2_cap,
+             by.x = c('country', 'year'), by.y = c('COUNTRY', 'YEAR'))
+
 
 }

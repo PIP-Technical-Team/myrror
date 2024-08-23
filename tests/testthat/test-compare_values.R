@@ -1,6 +1,9 @@
 # 1. compare_values() takes two dataframes or a myrror object ----
 test_that("compare_values() takes two dataframes or a myrror_object", {
 
+  # Clear Environment
+  clear_last_myrror_object()
+
   # Empty or single dataframe
   expect_error(compare_values())
   expect_error(compare_values(iris))
@@ -47,14 +50,14 @@ test_that("compare_values() returns a simple compare_values item if differences"
 
 })
 
-# 5. compare_values() returns an invisible myrror_object if silent ----
+# 5. compare_values() returns correct object with multiple keys ----
 
-test_that("compare_values() returns an invisible myrror_object if silent", {
+test_that("compare_values() returns the correct myrror_object with multiple keys", {
 
   survey_data_2_mod <- survey_data_2 |>
-    collapse::fmutate(COUNTRY = country,
+    fmutate(COUNTRY = country,
                       YEAR = year)|>
-    collapse::fselect(-country, -year)
+    fselect(-country, -year)
 
 
   mod <- compare_values(survey_data_2_mod, survey_data, by=c("COUNTRY" = "country",
@@ -65,6 +68,16 @@ test_that("compare_values() returns an invisible myrror_object if silent", {
                             output = "simple")
 
   expect_equal(mod, non_mod)
+
+})
+
+# 6. compare_values() returns correct output with invisible() ----
+test_that("compare_values() returns correct output with silent", {
+
+  mo <- create_myrror_object(iris, iris_var1)
+
+  expect_equal(mo_silent <- compare_values(myrror_object = mo, output = "silent")$compare_values,
+               mo_normal <- compare_values(myrror_object = mo)$compare_values)
 
 })
 

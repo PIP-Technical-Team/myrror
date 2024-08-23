@@ -15,6 +15,9 @@ survey_data <- data.frame(
 survey_data_2 <- survey_data
 survey_data_2$variable2 <- rnorm(16)
 
+survey_data_2_cap <- survey_data_2 |>
+  frename(COUNTRY = country, YEAR = year)
+
 # Variation of survey_data that has different type of variable for variable1:
 survey_data_3 <- survey_data
 survey_data_3$variable1 <- as.character(survey_data_3$variable1)
@@ -32,12 +35,13 @@ survey_data_6 <- rbind(survey_data, survey_data)
 
 survey_data <- as.data.table(survey_data)
 survey_data_2 <- as.data.table(survey_data_2)
+survey_data_2_cap <- as.data.table(survey_data_2_cap)
 survey_data_3 <- as.data.table(survey_data_3)
 survey_data_4 <- as.data.table(survey_data_4)
 survey_data_5 <- as.data.table(survey_data_5)
 survey_data_6 <- as.data.table(survey_data_6)
 
 
-usethis::use_data(survey_data, survey_data_2, survey_data_3, survey_data_4,
-                  survey_data_5, survey_data_6, overwrite = TRUE)
+usethis::use_data(survey_data, survey_data_2, survey_data_2_cap, survey_data_3,
+                  survey_data_4, survey_data_5, survey_data_6, overwrite = TRUE)
 
