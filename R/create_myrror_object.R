@@ -19,7 +19,7 @@ create_myrror_object <- function(dfx,
   dfx_name <- deparse(substitute(dfx))
   dfy_name <- deparse(substitute(dfy))
 
-  # If these are data.tables, it is necesary to create a hard copy.Otherwise,
+  # If these are data.tables, it is necessary to create a hard copy.Otherwise,
   # the same object will be bound to two different names.
   original_dfx <- copy(dfx)
   original_dfy <- copy(dfy)
@@ -65,7 +65,11 @@ create_myrror_object <- function(dfx,
   # - make into data.table.
   # - make into valid column names.
   # - check that by variable are in the colnames of the given dataset.
-  # - check whether the by variables uniquely identify the dataset.
+  # - check whether the by variables uniquely identify the dataset:
+  # -- If identified -> proceed as default.
+  # -- If not identified -> inform the user + ask if wants to proceed.
+  # --- If not, abort.
+  # --- If yes, proceed as default.
   # - factor to character (keep track of this), default = TRUE.
 
   prepared_dfx <- prepare_df(dfx,
@@ -76,7 +80,10 @@ create_myrror_object <- function(dfx,
                              by = set_by$by.y,
                              factor_to_char = factor_to_char)
 
-  # - Check that set_by$by.x is not in the non-key columns of dfy and vice-versa.
+
+  # 5. Pre-merge checks ----
+
+  ## 5.1 Check that set_by$by.x is not in the non-key columns of dfy and vice-versa.
   # Note: this step needs to be done here because the column names might
   # change in the prepare_df() function.
   if (any(set_by$by.x %in% setdiff(names(prepared_dfy), set_by$by.y))) {
@@ -86,13 +93,7 @@ create_myrror_object <- function(dfx,
     cli::cli_abort("by.y is part of the non-index columns of dfx.")
   }
 
-  # 5. Merge ----
-  # - identify
-  # - use joyn to merge and keep matching and non-matching observations.
-
-  ## Merge using Joyn
-
-  ### Create dynamic 'by' argument for joyn
+  ## 5.2 Create dynamic 'by' argument for joyn (giving a name).
   by_joyn_arg <- set_by$by.x
   names(by_joyn_arg) <- set_by$by.y
 
@@ -100,11 +101,17 @@ create_myrror_object <- function(dfx,
                                                               sep = " = "))
   by_joyn_arg <- paste(unname(by_joyn_arg))
 
-  ### Merge
+  ## 5.3 Check join type ----
+  ## TO DO: Next version we will add options for 1:m and m:1 joins.
+
+
+  # 6. Merge ----
+  ## Use joyn to merge and keep matching and non-matching observations.
+
   merged_data <- joyn::joyn(prepared_dfx,
                       prepared_dfy,
                       by = c(by_joyn_arg),
-                      match_type = c("1:1"),
+                      #match_type = c("1:1"),
                       keep = "full",
                       keep_common_vars = TRUE,
                       update_values = FALSE,
@@ -131,7 +138,7 @@ create_myrror_object <- function(dfx,
   ## Store
   merged_data_report <- list()
 
-  # 6. Get matched and non-matched ----
+  # 7. Get matched and non-matched ----
   matched_data <- merged_data |> fsubset(.joyn == 'x & y')
   unmatched_data <- merged_data |> fsubset(.joyn != 'x & y')
 
@@ -143,7 +150,7 @@ create_myrror_object <- function(dfx,
   merged_data_report$colnames_dfx <- colnames(prepared_dfx)
   merged_data_report$colnames_dfy <- colnames(prepared_dfy)
 
-  # 7. Pair columns ----
+  # 8. Pair columns ----
   pairs <- pair_columns(merged_data_report)
 
 

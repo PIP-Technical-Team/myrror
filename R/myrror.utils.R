@@ -137,7 +137,8 @@ check_set_by <- function(by = NULL,
 #'
 prepare_df <- function(df,
                        by = NULL,
-                       factor_to_char = TRUE) {
+                       factor_to_char = TRUE,
+                       interactive = getOption("myrror.interactive")) {
 
   ## 1. Check that "rn" is not in the colnames
   if ("rn" %in% colnames(df)) {
@@ -156,7 +157,7 @@ prepare_df <- function(df,
 
     dt <- data.table::copy(df)
     dt <- df |>
-          fmutate(rn = row.names(df),
+          collapse::fmutate(rn = row.names(df),
                   row_index = 1:nrow(df))
   }
 
@@ -164,8 +165,9 @@ prepare_df <- function(df,
     dt <- copy(df)
     data.table::setDT(dt, keep.rownames = TRUE)
     dt <- dt |>
-      fmutate(row_index = 1:nrow(dt))
-    }
+      collapse::fmutate(row_index = 1:nrow(dt))
+  }
+
 
   ## N. Validate colnames (make.names) and replace if needed.
   # If we work in data.table we don't need to check names.
@@ -182,10 +184,22 @@ prepare_df <- function(df,
 
   df_name <- deparse(substitute(df))
 
+
   ## 5. Check that the keys provided identify the dataset correctly
   if (isFALSE(joyn::is_id(dt, by, verbose = FALSE))) {
-    cli::cli_abort("The by keys provided ({.val {by}}) do not uniquely identify the dataset ({.val {df_name}})")
+    cli::cli_alert_warning("The by keys provided ({.val {by}}) do not uniquely identify the dataset ({.val {df_name}}).")
+
+    if (interactive) {
+      proceed <- utils::menu(c("Yes", "No"), title = "Do you want to continue?")
+      if (proceed != 1) {
+        cli::cli_abort("Operation aborted by the user.")
+      }
+    } else {
+      cli::cli_alert_info("Proceeding with the operation despite non-unique identification.")
+    }
   }
+
+
 
   ## 6. Convert factors to characters
   if (isTRUE(factor_to_char)){
@@ -203,7 +217,8 @@ prepare_df <- function(df,
   }
 
   return(dt)
-}
+  }
+
 
 # 4. Sorting utils ----
 ## 4.1 Is it sorted? ----
@@ -451,3 +466,61 @@ clear_last_myrror_object <- function() {
   invisible(NULL)
 }
 
+
+
+
+
+# 8. Check join type ----
+#' Check join type
+#' @param df1 data.frame
+#' @param df2 data.frame
+#' @param by character vector, keys to match by.
+#' @param return_match logical, default is FALSE.
+#' @return character/list depending on return_match FALSE/TRUE.
+#'
+check_join_type <- function(df1, df2, by, return_match = FALSE) {
+
+  # Step 1: Count the number of occurrences of each key combination in both datasets
+  count_df1 <-
+    df1 |>
+    collapse::fgroup_by(by) |>
+    fcount()
+
+
+  count_df2 <-
+    df2 |>
+    collapse::fgroup_by(by) |>
+    fcount()
+
+
+  # Step 2: Perform a full join on the counts
+  join_counts <- collapse::join(count_df1, count_df2, on = by, how = 'full',
+                                suffix = c(".df1", ".df2"),
+                                verbose = FALSE)
+
+  identified <- join_counts |>
+    collapse::fsubset(N.df1 == 1 & N.df2 == 1)
+
+  non_identified <- join_counts |>
+    collapse::fsubset(N.df1 != 1 | N.df2 != 1)
+
+  # Step 3: Determine the type of relationship
+  match_type <- if (all(join_counts$N.df1 == 1 & join_counts$N.df2 == 1)) {
+    "1:1"
+  } else if (any(join_counts$N.df1 > 1 & join_counts$N.df2 > 1)) {
+    "m:m"
+  } else if (any(join_counts$N.df1 > 1 & join_counts$N.df2 == 1)) {
+    "m:1"
+  } else if (any(join_counts$N.df1 == 1 & join_counts$N.df2 > 1)) {
+    "1:m"
+  }
+
+  # Step 4: Return results based on return_match argument
+  if (return_match) {
+    return(list(match_type = match_type,
+                identified = identified,
+                non_identified = non_identified))
+  } else {
+    return(match_type)
+  }
+}  # Correctly closing the function here
