@@ -11,13 +11,15 @@ create_myrror_object <- function(dfx,
                    by.x = NULL,
                    by.y = NULL,
                    factor_to_char = TRUE,
-                   verbose = getOption("myrror.verbose")) {
+                   verbose = getOption("myrror.verbose"),
+                   interactive = getOption("myrror.interactive")) {
 
 
    # 0. Store original datasets and orginal dataset characteristics ----
   original_call <- match.call()
-  dfx_name <- deparse(substitute(dfx))
-  dfy_name <- deparse(substitute(dfy))
+
+  dfx_name <- attr(dfx, "df_name")
+  dfy_name <- attr(dfy, "df_name")
 
   # If these are data.tables, it is necessary to create a hard copy.Otherwise,
   # the same object will be bound to two different names.
@@ -74,11 +76,13 @@ create_myrror_object <- function(dfx,
 
   prepared_dfx <- prepare_df(dfx,
                              by = set_by$by.x,
-                             factor_to_char = factor_to_char)
+                             factor_to_char = factor_to_char,
+                             interactive = interactive)
 
   prepared_dfy <- prepare_df(dfy,
                              by = set_by$by.y,
-                             factor_to_char = factor_to_char)
+                             factor_to_char = factor_to_char,
+                             interactive = interactive)
 
 
   # 5. Pre-merge checks ----
@@ -97,12 +101,58 @@ create_myrror_object <- function(dfx,
   by_joyn_arg <- set_by$by.x
   names(by_joyn_arg) <- set_by$by.y
 
-  by_joyn_arg <- sapply(names(by_joyn_arg), function(n) paste(by_joyn_arg[n], n,
+  by_joyn_arg_un <- sapply(names(by_joyn_arg), function(n) paste(by_joyn_arg[n], n,
                                                               sep = " = "))
-  by_joyn_arg <- paste(unname(by_joyn_arg))
+  by_joyn_arg_un <- paste(unname(by_joyn_arg_un))
 
-  ## 5.3 Check join type ----
+
+  ## 5.3 Check join type
   ## TO DO: Next version we will add options for 1:m and m:1 joins.
+  match_type <- check_join_type(prepared_dfx,
+                                prepared_dfy,
+                                by = by_joyn_arg)
+
+  is_id_dfx <- joyn::is_id(prepared_dfx, by = by_joyn_arg, return_report = TRUE, verbose = FALSE)
+  is_id_dfy <- joyn::is_id(prepared_dfy, by = by_joyn_arg, return_report = TRUE, verbose = FALSE)
+
+  is_id_report <- collapse::join(is_id_dfx, is_id_dfy,
+                                 on = by_joyn_arg,
+                                 suffix = c(".dfx", ".dfy"),
+                                 verbose = FALSE)|>
+    roworderv(c(by_joyn_arg))
+
+
+  # Proceed without interruption if the match type is 1:1
+  if (match_type == "1:1") {
+
+  } else if (match_type %in% c("1:m", "m:1")) {
+    # Inform the user about the join type and ask if they want to proceed
+    message_type <- ifelse(match_type == "1:m", "1:m", "m:1")
+
+    cli::cli_alert_warning("When comparing the data, the join is {.strong {message_type}} between {.field {dfx_name}} and {.field {dfy_name}}.")
+    cli::cli_h2("Identification Report:")
+    cli::cli_text("Only first 5 keys shown:")
+    cli::cli_text("\n")
+    print(is_id_report |> head(n=5))
+    cli::cli_text("...")
+    cli::cli_text("\n")
+
+
+    if (interactive == TRUE) {
+      proceed <- utils::menu(
+        choices = c("Yes, continue.", "No, abort."),
+        title = "The join type is not 1:1. Do you want to proceed?"
+      )
+      if (proceed == 2) {
+        cli::cli_abort("Operation aborted by the user.")
+      }
+    }
+  } else {
+    # Abort if the join type is m:m
+    cli::cli_abort("When comparing the datasets, the join is {.strong m:m} between {.field {dfx_name}} and {.field {dfy_name}}. The comparison will stop here.")
+  }
+
+  #cli::cli_alert_info("You could use `check_join_type()` to check identified and non-identified observations.")
 
 
   # 6. Merge ----
@@ -110,8 +160,8 @@ create_myrror_object <- function(dfx,
 
   merged_data <- joyn::joyn(prepared_dfx,
                       prepared_dfy,
-                      by = c(by_joyn_arg),
-                      #match_type = c("1:1"),
+                      by = c(by_joyn_arg_un),
+                      match_type = match_type,
                       keep = "full",
                       keep_common_vars = TRUE,
                       update_values = FALSE,
@@ -167,6 +217,7 @@ create_myrror_object <- function(dfx,
     set_by.y = set_by$by.y,
     set_by.x = set_by$by.x,
     datasets_report = datasets_report,
+    match_type = match_type,
     merged_data_report = merged_data_report,
     pairs = pairs,
     print = list(

@@ -12,11 +12,12 @@ print.myrror <- function(x, ...) {
   shared_cols_n <- nrow(x$pairs$pairs)
   shared_rows_n <- nrow(x$merged_data_report$matched_data)
   keys_n <- length(setdiff(x$merged_data_report$keys, "rn"))
-  nonshared_dfx_cols_n <- x$datasets_report$dfx_char$ncol - shared_cols_n - keys_n
-  nonshared_dfy_cols_n <- x$datasets_report$dfy_char$ncol - shared_cols_n - keys_n
+  nonshared_dfx_cols_n <- max(x$datasets_report$dfx_char$ncol - shared_cols_n - keys_n, 0)
+  nonshared_dfy_cols_n <- max(x$datasets_report$dfy_char$ncol - shared_cols_n - keys_n, 0)
   nonshared_dfy_cols <- setdiff(x$pairs$nonshared_cols_dfy, x$set_by.y)
   name_dfx <- x$name_dfx
   name_dfy <- x$name_dfy
+
 
   cli::cli_h1("Myrror Report")
 
@@ -39,8 +40,8 @@ print.myrror <- function(x, ...) {
   cli::cli_alert_warning("Non-shared columns in {name_dfy}: {nonshared_dfy_cols_n} ({nonshared_dfy_cols})")
   cli::cli_text("\n")
   cli::cli_alert_success("Total shared rows: {shared_rows_n}")
-  cli::cli_alert_warning("Non-shared rows in {name_dfx}: {x$datasets_report$dfx_char$nrow - shared_rows_n}.")
-  cli::cli_alert_warning("Non-shared rows in {name_dfy}: {x$datasets_report$dfy_char$nrow - shared_rows_n}.")
+  cli::cli_alert_warning("Non-shared rows in {name_dfx}: {max(x$datasets_report$dfx_char$nrow - shared_rows_n, 0)}.")
+  cli::cli_alert_warning("Non-shared rows in {name_dfy}: {max(x$datasets_report$dfy_char$nrow - shared_rows_n, 0)}.")
 
   if (x$datasets_report$dfx_char$nrow - shared_rows_n > 0 || x$datasets_report$dfy_char$nrow - shared_rows_n > 0) {
     cli::cli_text("\n")
@@ -133,10 +134,12 @@ print.myrror <- function(x, ...) {
       cli::cli_text("\n")
       cli::cli_h2("Value comparison:")
       cli::cli_alert_warning("{n_diff_values_columns} shared column(s) have different value(s):")
+      cli::cli_alert_info("Note: Only first 5 rows shown for each variable.")
 
       for (variable in names(x$extract_diff_values$diff_list)) {
-        cli::cli_h3(variable)
-        print(x$extract_diff_values$diff_list[[variable]])
+        cli::cli_h3("{.val {variable}}")
+        print(head(x$extract_diff_values$diff_list[[variable]]), n = 5)
+        cli::cli_text("...")
         cli::cli_text("\n")
 
         # Prompt the User to go ahead if x$interactive == TRUE:

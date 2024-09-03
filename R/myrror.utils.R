@@ -182,20 +182,22 @@ prepare_df <- function(df,
     cli::cli_abort("Specified by keys are not all present in the column names.")
   }
 
-  df_name <- deparse(substitute(df))
-
 
   ## 5. Check that the keys provided identify the dataset correctly
+  # Get name
+  df_name <- attr(df, "df_name")
+
+  # Check
   if (isFALSE(joyn::is_id(dt, by, verbose = FALSE))) {
-    cli::cli_alert_warning("The by keys provided ({.val {by}}) do not uniquely identify the dataset ({.val {df_name}}).")
+    cli::cli_alert_warning("The by keys provided ({.val {by}}) do not uniquely identify the dataset ({.field {df_name}}).")
 
     if (interactive) {
       proceed <- utils::menu(c("Yes", "No"), title = "Do you want to continue?")
-      if (proceed != 1) {
+      if (proceed == 2) {
         cli::cli_abort("Operation aborted by the user.")
       }
     } else {
-      cli::cli_alert_info("Proceeding with the operation despite non-unique identification.")
+      cli::cli_alert_warning("Proceeding with the report despite non-unique identification.")
     }
   }
 
@@ -472,46 +474,49 @@ clear_last_myrror_object <- function() {
 
 # 8. Check join type ----
 #' Check join type
-#' @param df1 data.frame
-#' @param df2 data.frame
+#' @param dfx data.frame
+#' @param dfy data.frame
 #' @param by character vector, keys to match by.
 #' @param return_match logical, default is FALSE.
 #' @return character/list depending on return_match FALSE/TRUE.
+#' @export
 #'
-check_join_type <- function(df1, df2, by, return_match = FALSE) {
+check_join_type <- function(dfx,
+                            dfy,
+                            by, return_match = FALSE) {
 
   # Step 1: Count the number of occurrences of each key combination in both datasets
-  count_df1 <-
-    df1 |>
+  count_dfx <-
+    dfx |>
     collapse::fgroup_by(by) |>
     fcount()
 
 
-  count_df2 <-
-    df2 |>
+  count_dfy <-
+    dfy |>
     collapse::fgroup_by(by) |>
     fcount()
 
 
   # Step 2: Perform a full join on the counts
-  join_counts <- collapse::join(count_df1, count_df2, on = by, how = 'full',
-                                suffix = c(".df1", ".df2"),
+  join_counts <- collapse::join(count_dfx, count_dfy, on = by, how = 'full',
+                                suffix = c(".dfx", ".dfy"),
                                 verbose = FALSE)
 
   identified <- join_counts |>
-    collapse::fsubset(N.df1 == 1 & N.df2 == 1)
+    collapse::fsubset(N.dfx == 1 & N.dfy == 1)
 
   non_identified <- join_counts |>
-    collapse::fsubset(N.df1 != 1 | N.df2 != 1)
+    collapse::fsubset(N.dfx != 1 | N.dfy != 1)
 
   # Step 3: Determine the type of relationship
-  match_type <- if (all(join_counts$N.df1 == 1 & join_counts$N.df2 == 1)) {
+  match_type <- if (all(join_counts$N.dfx == 1 & join_counts$N.dfy == 1)) {
     "1:1"
-  } else if (any(join_counts$N.df1 > 1 & join_counts$N.df2 > 1)) {
+  } else if (any(join_counts$N.dfx > 1 & join_counts$N.dfy > 1)) {
     "m:m"
-  } else if (any(join_counts$N.df1 > 1 & join_counts$N.df2 == 1)) {
+  } else if (any(join_counts$N.dfx > 1 & join_counts$N.dfy == 1)) {
     "m:1"
-  } else if (any(join_counts$N.df1 == 1 & join_counts$N.df2 > 1)) {
+  } else if (any(join_counts$N.dfx == 1 & join_counts$N.dfy > 1)) {
     "1:m"
   }
 
@@ -523,4 +528,5 @@ check_join_type <- function(df1, df2, by, return_match = FALSE) {
   } else {
     return(match_type)
   }
-}  # Correctly closing the function here
+}
+

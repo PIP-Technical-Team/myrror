@@ -57,16 +57,28 @@ myrror <- function(dfx,
                    # verbose is only needed to inform the user that it takes the stored myrror_object.
                    ) {
 
- # 1. Create myrror object ----
+  # 0. Name storage ----
+
+  ## Store for print
+  name_dfx <- deparse(substitute(dfx))
+  name_dfy <- deparse(substitute(dfy))
+
+  ## Store for operations within myrror()
+  attr(dfx, "df_name") <- name_dfx
+  attr(dfy, "df_name") <- name_dfy
+
+
+  # 1. Create myrror object ----
   myrror_object <- create_myrror_object(dfx = dfx,
                                         dfy = dfy,
                                         by = by,
                                         by.x = by.x,
                                         by.y = by.y,
-                                        factor_to_char = factor_to_char)
-
-  myrror_object$name_dfx <- deparse(substitute(dfx))
-  myrror_object$name_dfy <- deparse(substitute(dfy))
+                                        factor_to_char = factor_to_char,
+                                        interactive = interactive)
+  ## Store within myrror_object
+  myrror_object$name_dfx <- name_dfx
+  myrror_object$name_dfy <- name_dfy
 
   # 2. Compare Type ----
   if (compare_type) {

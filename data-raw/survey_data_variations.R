@@ -89,6 +89,7 @@ survey_data_4 <- as.data.table(survey_data_4)
 survey_data_5 <- as.data.table(survey_data_5)
 survey_data_6 <- as.data.table(survey_data_6)
 survey_data_1m <- as.data.table(survey_data_1m)
+survey_data_1m_2 <- as.data.table(survey_data_1m_2)
 survey_data_m1 <- as.data.table(survey_data_m1)
 
 
