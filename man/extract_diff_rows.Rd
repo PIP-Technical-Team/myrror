@@ -52,6 +52,7 @@ extract_diff_rows()
 # 2. Standard report, with new data:
 extract_diff_rows(survey_data, survey_data_2, by=c('country', 'year'))
 
+
 # 3. Toggle tolerance:
 extract_diff_rows(survey_data, survey_data_2, by=c('country', 'year'),
                     tolerance = 1e-5)

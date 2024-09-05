@@ -2,7 +2,7 @@
 % Please edit documentation in R/myrror.utils.R
 \name{clear_last_myrror_object}
 \alias{clear_last_myrror_object}
-\title{Clear last myrror object}
+\title{Clear last myrror object. Internal Function.}
 \usage{
 clear_last_myrror_object()
 }
@@ -14,7 +14,9 @@ This function unbinds the last myrror object from the package-specific
 environment, effectively removing it.
 }
 \examples{
-myrror(iris, iris_var1, interactive = FALSE) # Run myrror to create myrror object.
-clear_last_myrror_object()  # Clear the environment
+# myrror(iris, iris_var1, interactive = FALSE) # Run myrror to create myrror object.
+# clear_last_myrror_object()  # Clear the environment
 # rlang::env_has(.myrror_env, "last_myrror_object") # should return an error
+
 }
+\keyword{internal}

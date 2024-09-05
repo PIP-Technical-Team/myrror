@@ -15,3 +15,4 @@ data.table object
 \description{
 Compare type of variables, internal function.
 }
+\keyword{internal}

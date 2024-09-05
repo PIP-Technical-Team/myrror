@@ -99,7 +99,7 @@ These two datasets have a different number of rows. `myrror()` can help by ident
 
 The user can then extract the rows missing from one of the two datasets:
 ```{r}
-extract_diff_rows(survey_data, survey_data_4, 
-                  by=c("country", "year"))
+#extract_diff_rows(survey_data, survey_data_4, 
+#                  by=c("country", "year"))
 
 ```

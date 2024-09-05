@@ -1,5 +1,5 @@
 
-withr::local_options(list(myrror.interactive     = FALSE))
+withr::local_options(list(myrror.interactive = FALSE))
 
 mo5 <- create_myrror_object(iris, iris_var5)
 compare_type_object_5 <- compare_type(myrror_object = mo5)
@@ -26,8 +26,8 @@ test_that("compare_type() creates myrror object if not supplied", {
   compare_type_object_1_2 <- compare_type(iris, iris_var1)
   expect_equal(compare_type_object_1_2$name_dfx, compare_type_object_1$name_dfx)
   expect_equal(compare_type_object_1_2$name_dfy, compare_type_object_1$name_dfy)
-  expect_equal(compare_type_object_1_2$merged_data_report$matched_data,
-               compare_type_object_1$merged_data_report$matched_data)
+  expect_equal(compare_type_object_1_2$compare_type,
+               compare_type_object_1$compare_type)
 
 })
 

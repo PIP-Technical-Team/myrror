@@ -3,12 +3,11 @@
 # 1. Arguments Checks Utils ----
 ## 1.1 dfx dfy ----
 #' Check if the df arguments are valid,
-#' makes them into a data.frame if they are a list.
-#' @param df data frame
-#' @export
-#' @examples
-#' check_df(iris)
+#' makes them into a data.frame if they are a list. Internal function.
 #'
+#' @param df data frame
+#'
+#' @keywords internal
 check_df <- function(df) {
   # Check if dfx or dfy are NULL
   if (is.null(df)) {
@@ -39,18 +38,20 @@ check_df <- function(df) {
 }
 
 ## 1.2 by.y by.x ----
-#' Check if the df arguments are valid,
-#' makes them into a data.frame if they are a list.
+#' Check if the by arguments are valid,
+#' makes them into a data.frame if they are a list. Internal function.
+#'
 #' @param by character vector
 #' @param by.x character vector
 #' @param by.y character vector
-#' @export
+#'
 #' @examples
 #'
-#' check_set_by(NULL, NULL, NULL) # rn set
-#' check_set_by("id", NULL, NULL) # by set
-#' check_set_by(NULL, "id", "id") # by.x and by.y set
+#' #check_set_by(NULL, NULL, NULL) # rn set
+#' #check_set_by("id", NULL, NULL) # by set
+#' #check_set_by(NULL, "id", "id") # by.x and by.y set
 #'
+#' @keywords internal
 check_set_by <- function(by = NULL,
                          by.x = NULL,
                          by.y = NULL){
@@ -124,20 +125,23 @@ check_set_by <- function(by = NULL,
 # }
 
 
-# 3.Prepare dataset for join  ----
-#' Prepares dataset for join, internal function.
+# 3.Prepare dataset for joyn  ----
+#' Prepares dataset for joyn::joyn(). Internal function.
+#'
 #' @param df data.frame or data.table
 #' @param by character vector
 #' @param factor_to_char logical
+#' @param interactive logical
 #'
-#' @export
 #' @examples
-#' dataset <- data.frame(a = 1:10, b = letters[1:10])
-#' prepare_df(dataset, by = "a")
+#' # dataset <- data.frame(a = 1:10, b = letters[1:10])
+#' # prepare_df(dataset, by = "a")
 #'
+#' @keywords internal
 prepare_df <- function(df,
                        by = NULL,
-                       factor_to_char = TRUE) {
+                       factor_to_char = TRUE,
+                       interactive = getOption("myrror.interactive")) {
 
   ## 1. Check that "rn" is not in the colnames
   if ("rn" %in% colnames(df)) {
@@ -150,13 +154,18 @@ prepare_df <- function(df,
     # Note: cli additions needed.
   }
 
-  ## 3. Convert DataFrame to Data Table if it's not already.
+  ## 3. Check that keys supplied are not the total number of columns
+  if (length(by) == ncol(df)) {
+    cli::cli_abort("The by keys cannot be the only columns to compare.")
+  }
+
+  ## 4. Convert DataFrame to Data Table if it's not already.
   # We keep rownames ("rn") regardless.
   if (data.table::is.data.table(df)) {
 
     dt <- data.table::copy(df)
     dt <- df |>
-          fmutate(rn = row.names(df),
+          collapse::fmutate(rn = row.names(df),
                   row_index = 1:nrow(df))
   }
 
@@ -164,28 +173,36 @@ prepare_df <- function(df,
     dt <- copy(df)
     data.table::setDT(dt, keep.rownames = TRUE)
     dt <- dt |>
-      fmutate(row_index = 1:nrow(dt))
-    }
+      collapse::fmutate(row_index = 1:nrow(dt))
+  }
 
-  ## N. Validate colnames (make.names) and replace if needed.
-  # If we work in data.table we don't need to check names.
-  # valid_col_names <- make.names(names(dt), unique = TRUE)
-  #
-  # if (!identical(names(dt), valid_col_names)) {
-  #   setColnames(dt, valid_col_names)
-  # }
+
 
   ## 4. Ensure the by keys are available in the column names
   if (!all(by %in% names(dt))) {
     cli::cli_abort("Specified by keys are not all present in the column names.")
   }
 
-  df_name <- deparse(substitute(df))
 
   ## 5. Check that the keys provided identify the dataset correctly
+  # Get name
+  df_name <- attr(df, "df_name")
+
+  # Check
   if (isFALSE(joyn::is_id(dt, by, verbose = FALSE))) {
-    cli::cli_abort("The by keys provided ({.val {by}}) do not uniquely identify the dataset ({.val {df_name}})")
+    cli::cli_alert_warning("The by keys provided ({.val {by}}) do not uniquely identify the dataset ({.field {df_name}}).")
+
+    if (interactive) {
+      proceed <- utils::menu(c("Yes", "No"), title = "Do you want to continue?")
+      if (proceed == 2) {
+        cli::cli_abort("Operation aborted by the user.")
+      }
+    } else {
+      cli::cli_alert_warning("Proceeding with the report despite non-unique identification.")
+    }
   }
+
+
 
   ## 6. Convert factors to characters
   if (isTRUE(factor_to_char)){
@@ -203,103 +220,102 @@ prepare_df <- function(df,
   }
 
   return(dt)
-}
-
-# 4. Sorting utils ----
-## 4.1 Is it sorted? ----
-#' Check if a vector is sorted
-#' @param x vector
-#' @param ... additional arguments of is.sorted()
-#' @return logical
-#' @export
-#' @examples
-#' is.sorted(iris$Sepal.Length)
-#'
-is.sorted <- function(x, ...) {
-  # Note: I used the ellipsis to pass the options of is.unsorted(.).
-  !is.unsorted(x, ...) | !is.unsorted(rev(x), ...)
-}
-
-## 4.2 Detect sorting ----
-#' Detect sorting in a data frame
-#' @param data data.frame
-#' @return list
-#' @export
-#' @examples
-#' detect_sorting(iris)
-#'
-detect_sorting <- function(data) {
-  sorted <- lapply(data, is.sorted)
-  sort_variable <- names(which(unlist(sorted) == TRUE))
-
-  if (length(sort_variable) == 0) {
-    return("not sorted")
-  } else {
-    return(sort_variable)
   }
-}
+
+
+# # 4. Sorting utils ----
+# ## 4.1 Is it sorted? ----
+# #' Check if a vector is sorted
+# #' @param x vector
+# #' @param ... additional arguments of is.sorted()
+# #' @return logical
+# #' @examples
+# #' is.sorted(iris$Sepal.Length)
+# #'
+# is.sorted <- function(x, ...) {
+#   # Note: I used the ellipsis to pass the options of is.unsorted(.).
+#   !is.unsorted(x, ...) | !is.unsorted(rev(x), ...)
+# }
+
+# ## 4.2 Detect sorting ----
+# #' Detect sorting in a data frame
+# #' @param data data.frame
+# #' @return list
+# #' @examples
+# #' detect_sorting(iris)
+# #'
+# detect_sorting <- function(data) {
+#   sorted <- lapply(data, is.sorted)
+#   sort_variable <- names(which(unlist(sorted) == TRUE))
+#
+#   if (length(sort_variable) == 0) {
+#     return("not sorted")
+#   } else {
+#     return(sort_variable)
+#   }
+# }
 
 ## 4.3 Detect sorting in a data frame ----
-#' Detect sorting in a data frame
-#' @param df data.frame
-#' @param by character vector
-#' @param decreasing logical
-#' @return list
-#' @export
-#' @examples
-#' is_dataframe_sorted_by(iris, by = "Sepal.Length")
-#'
-is_dataframe_sorted_by <- function(df,
-                                   by = NULL,
-                                   decreasing = FALSE) {
-
-  if (identical(by, "rn")) {
-
-    other_sort <- detect_sorting(df)
-    return(list("not sorted by key", other_sort))
-
-  } else {
-
-
-    # Generate the order indices using do.call to pass each by to order()
-    order_indices <- do.call(order, lapply(by, function(col) df[[col]]))
-
-    # Check if the order indices match the original row indices
-    is_sorted_by <- identical(order_indices, seq_len(nrow(df)))
-
-
-    if (all(by != "rn") & is_sorted_by) {
-
-      return(list("sorted by key", by))
-
-    } else {
-
-      other_sort <- detect_sorting(df)
-      return(list("not sorted by key", other_sort))
-    }
-
-  }
-
-
-}
+# #' Detect sorting in a data frame
+# #' @param df data.frame
+# #' @param by character vector
+# #' @param decreasing logical
+# #' @return list
+# #' @examples
+##' is_dataframe_sorted_by(iris, by = "Sepal.Length")
+##'
+# is_dataframe_sorted_by <- function(df,
+#                                    by = NULL,
+#                                    decreasing = FALSE) {
+#
+#   if (identical(by, "rn")) {
+#
+#     other_sort <- detect_sorting(df)
+#     return(list("not sorted by key", other_sort))
+#
+#   } else {
+#
+#
+#     # Generate the order indices using do.call to pass each by to order()
+#     order_indices <- do.call(order, lapply(by, function(col) df[[col]]))
+#
+#     # Check if the order indices match the original row indices
+#     is_sorted_by <- identical(order_indices, seq_len(nrow(df)))
+#
+#
+#     if (all(by != "rn") & is_sorted_by) {
+#
+#       return(list("sorted by key", by))
+#
+#     } else {
+#
+#       other_sort <- detect_sorting(df)
+#       return(list("not sorted by key", other_sort))
+#     }
+#
+#   }
+#
+#
+# }
 
 
 
 
 # 4. Variable comparison utils ----
 ## 4.2 Process col pairs ----
-#' Title
+#' Pairs columns and prepares them for comparison.
 #'
-#' @param merged_data_report joined prepared_dfx and prepared_dfy
+#' @param merged_data_report joined prepared_dfx and prepared_dfy.
 #' @param suffix_x suffix for dfx (default .x)
 #' @param suffix_y suffix for dfy (default .y)
 #'
 #' @return paired_columns
 #'
-#'
 #' @examples
 #' # mo <- create_myrror_object(iris, iris_var1)
 #' # pair_columns(mo$merged_data_report)
+#'
+#' @keywords internal
 pair_columns <- function(merged_data_report,
                          suffix_x = ".x",
                          suffix_y = ".y") {
@@ -340,11 +356,15 @@ pair_columns <- function(merged_data_report,
 }
 
 # 5. Get keys or default ----
-#' Get keys or default
+#' Get keys or default. A simple function wrapper which returns 'rn' (row names)
+#' if the data.table has no keys.
+#'
 #' @param keys character vector
 #' @param default character
+#'
 #' @return character
 #'
+#' @keywords internal
 get_keys_or_default <- function(keys, default = "rn") {
   if (is.null(keys)) {
     default
@@ -354,13 +374,16 @@ get_keys_or_default <- function(keys, default = "rn") {
 }
 
 # 6. Compare with tolerance ----
-#' Are these two values equal with tolerance applied?
+#' Are these two values equal with tolerance applied? This function is used to
+#' apply tolerance to the comparison of two numeric values.
 #'
 #' @param x numeric
 #' @param y numeric
 #' @param tolerance numeric
+#'
 #' @return logical
 #'
+#' @keywords internal
 equal_with_tolerance <- function(x, y, tolerance = 1e-7) {
 
   # check if x and y are numeric:
@@ -379,7 +402,7 @@ equal_with_tolerance <- function(x, y, tolerance = 1e-7) {
 
 
 # 7. Get correct myrror object ----
-#' Get correct myrror object
+#' Get correct myrror object. Internal function.
 #'
 #' @description It checks all the arguments parsed to parent function. If
 #' `myrror_object` if found, then it will be used. If not, it checks if both
@@ -391,6 +414,7 @@ equal_with_tolerance <- function(x, y, tolerance = 1e-7) {
 #' @param ... other arguments parsed to parent function.
 #'
 #' @return myrror object
+#'
 #' @keywords internal
 get_correct_myrror_object <- function(myrror_object,
                                       dfx,
@@ -423,9 +447,7 @@ get_correct_myrror_object <- function(myrror_object,
                                             by = by,
                                             by.x = by.x,
                                             by.y = by.y)
-      ## Re-assign names from within this call:
-      myrror_object$name_dfx <- deparse(substitute(dfx, env = parent.frame()))
-      myrror_object$name_dfy <- deparse(substitute(dfy, env = parent.frame()))
+
     } else {
       cli::cli_abort(abort_msg)
     }
@@ -433,21 +455,134 @@ get_correct_myrror_object <- function(myrror_object,
   myrror_object
 }
 
-#' Clear last myrror object
+# 8. Clear last myrror object ----
+#' Clear last myrror object. Internal Function.
 #'
-#' This function unbinds the last myrror object from the package-specific
+#' @description This function unbinds the last myrror object from the package-specific
 #' environment, effectively removing it.
 #'
 #' @return Invisible `NULL`, indicating the object was successfully cleared.
-#' @export
+#'
 #' @examples
-#' myrror(iris, iris_var1, interactive = FALSE) # Run myrror to create myrror object.
-#' clear_last_myrror_object()  # Clear the environment
+#' # myrror(iris, iris_var1, interactive = FALSE) # Run myrror to create myrror object.
+#' # clear_last_myrror_object()  # Clear the environment
 #' # rlang::env_has(.myrror_env, "last_myrror_object") # should return an error
+#'
+#' @keywords internal
 clear_last_myrror_object <- function() {
   if (rlang::env_has(.myrror_env, "last_myrror_object")) {
     rlang::env_unbind(.myrror_env, "last_myrror_object")
   }
   invisible(NULL)
+}
+
+
+
+
+
+# 9. Check join type ----
+#' Check join type. Internal function.
+#'
+#' @description This function checks the join type between two data frames. Internal function.
+#' It returns the type of match between the two data frames ("1:1", "1:m", "m:1", "m:m"),
+#' and the identified and non-identified rows.
+#'
+#' @param dfx data.frame
+#' @param dfy data.frame
+#' @param by.x character vector, keys for by.y.
+#' @param by.y character vector, keys for by.x.
+#' @param return_match logical, default is FALSE.
+#'
+#' @return character/list depending on return_match FALSE/TRUE.
+#'
+#' @keywords internal
+check_join_type <- function(dfx,
+                            dfy,
+                            by.x,
+                            by.y,
+                            return_match = FALSE) {
+
+  # Step 1: Count the number of occurrences of each key combination in both datasets
+  count_dfx <-
+    dfx |>
+    collapse::fgroup_by(by.x) |>
+    fcount()
+
+  count_dfy <-
+    dfy |>
+    collapse::fgroup_by(by.y) |>
+    fcount()
+
+  on_arg <- by.y
+
+  names(on_arg) <- by.x
+
+
+  # Step 2: Join counts
+  join_counts <- collapse::join(count_dfx, count_dfy, on = on_arg, how = 'full',
+                                suffix = c(".dfx", ".dfy"),
+                                verbose = FALSE)
+
+
+  identified <- join_counts |>
+    collapse::fsubset(N.dfx == 1 & N.dfy == 1)
+
+  non_identified <- join_counts |>
+    collapse::fsubset(N.dfx != 1 | N.dfy != 1)
+
+  # Step 3: Determine the type of relationship
+  match_type <- if (all(join_counts$N.dfx == 1 & join_counts$N.dfy == 1, na.rm = TRUE)) {
+    "1:1"
+  } else if (any(join_counts$N.dfx > 1 & join_counts$N.dfy > 1, na.rm = TRUE)) {
+    "m:m"
+  } else if (any(join_counts$N.dfx > 1 & join_counts$N.dfy == 1, na.rm = TRUE)) {
+    "m:1"
+  } else if (any(join_counts$N.dfx == 1 & join_counts$N.dfy > 1, na.rm = TRUE)) {
+    "1:m"
+  }
+
+  # Step 4: Return results based on return_match argument
+  if (return_match) {
+    return(list(match_type = match_type,
+                identified = identified,
+                non_identified = non_identified))
+  } else {
+    return(match_type)
+  }
+}
+
+# 9. Get df name -----
+#' Get the name of a data frame. Internal function.
+#'
+#' @description This function gets the name of a data frame. Internal function.
+#' If the data frame has a name attribute, it returns that. Otherwise, it returns
+#' the deparse of the original call.
+#'
+#' @param df data.frame
+#' @param original_call original call (df)
+#'
+#' @return character
+#'
+#' @keywords internal
+get_df_name <- function(df, original_call) {
+
+  name_attr <- attr(df, "df_name")
+
+  if (is.null(name_attr)) {
+    return(deparse(original_call))
+  } else {
+    return(name_attr)
+  }
+}
+
+# 10. Menu wrapper ----
+#' Menu wrapper. Internal function.
+#' @description This function is a wrapper around the base R menu function.
+#' It is used to provide a consistent interface for the menu function.
+#' @param ... arguments passed to the menu function.
+#' @return menu
+#' @keywords internal
+my_menu <- function(...) {
+  utils::menu(...)
 }
 

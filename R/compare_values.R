@@ -1,5 +1,5 @@
 # compare_values ---------------------------------------------------------------
-#' Compare values of matched datasets
+#' Compare values of matched datasets.
 #'
 #' @inheritParams myrror
 #' @param myrror_object myrror object from [create_myrror_object]
@@ -31,6 +31,10 @@
 #' compare_values(survey_data, survey_data_2_cap,
 #'                by.x = c('country', 'year'), by.y = c('COUNTRY', 'YEAR'))
 #'
+#' # 6. Using existing myrror object created by myrror():
+#' myrror(survey_data, survey_data_2, by=c('country', 'year'))
+#' compare_values()
+#'
 compare_values <- function(dfx = NULL,
                            dfy = NULL,
                            myrror_object = NULL,
@@ -41,6 +45,18 @@ compare_values <- function(dfx = NULL,
                            interactive = getOption("myrror.interactive"),
                            verbose = getOption("myrror.verbose"),
                            tolerance = getOption("myrror.tolerance")) {
+
+  # 0. Name storage ----
+
+  if (!is.null(dfx) && !is.null(dfy)) { # because it could be that it is run empty/with myrror_object only
+    ## Store for print
+    name_dfx <- deparse(substitute(dfx))
+    name_dfy <- deparse(substitute(dfy))
+
+    ## Store for operations within myrror()
+    attr(dfx, "df_name") <- name_dfx
+    attr(dfy, "df_name") <- name_dfy
+  }
 
   # 1. Arguments check ----
   output <- match.arg(output)

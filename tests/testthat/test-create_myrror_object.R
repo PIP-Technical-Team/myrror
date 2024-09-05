@@ -131,4 +131,107 @@ test_that("Error handling in input conditions", {
 })
 
 
+# 6. Join type checks ----
+test_that("1:1 join proceeds without user interaction", {
+  dfx <- create_sample_df()
+  dfy <- create_sample_df()
+
+  with_mocked_bindings(
+    check_join_type = function(...) "1:1",
+    {
+      expect_silent(create_myrror_object(dfx, dfy, interactive = FALSE))
+    }
+  )
+})
+
+test_that("1:m join type informs user with interactive = FALSE", {
+  dfx <- create_sample_df()
+  dfy <- create_sample_df()
+
+  with_mocked_bindings(
+    check_join_type = function(...) "1:m",
+    {
+      expect_message(create_myrror_object(dfx, dfy, interactive = FALSE, verbose = FALSE), "1:m")
+    }
+  )
+})
+
+test_that("1:m join type informs user with interactive = TRUE", {
+  dfx <- create_sample_df()
+  dfy <- create_sample_df()
+
+
+  with_mocked_bindings(
+    check_join_type = function(...) "1:m",
+    my_menu = function(...) 1,
+    {
+      expect_message(create_myrror_object(dfx, dfy, interactive = TRUE, verbose = FALSE), "1:m")
+    }
+  )
+})
+
+test_that("1:m join type informs user with interactive = TRUE", {
+  dfx <- create_sample_df()
+  dfy <- create_sample_df()
+
+
+  with_mocked_bindings(
+    check_join_type = function(...) "m:1",
+    my_menu = function(...) 1,
+    {
+      expect_message(create_myrror_object(dfx, dfy, interactive = TRUE, verbose = FALSE), "m:1")
+    }
+  )
+})
+
+
+
+test_that("1:m join type informs user with interactive = FALSE", {
+  dfx <- create_sample_df()
+  dfy <- create_sample_df()
+
+  with_mocked_bindings(
+    check_join_type = function(...) "m:1",
+    {
+      expect_message(create_myrror_object(dfx, dfy, interactive = FALSE, verbose = FALSE), "m:1")
+    }
+  )
+})
+
+
+
+test_that("m:m join type results in an abort without user interaction", {
+
+  dfx <- create_sample_df()
+  dfy <- create_sample_df()
+
+  with_mocked_bindings(
+    check_join_type = function(...) "m:m",
+    {
+      expect_error(create_myrror_object(dfx, dfy, interactive = FALSE), "m:m")
+    }
+  )
+})
+
+test_that("1:m join type results in an abort with user interaction == 2", {
+
+  dfx <- create_sample_df()
+  dfy <- create_sample_df()
+
+  with_mocked_bindings(
+    check_join_type = function(...) "1:m",
+    my_menu = function(...) 2,
+    {
+      expect_error(create_myrror_object(dfx, dfy, interactive = TRUE), "aborted")
+    }
+  )
+})
+
+
+
+
+
+
+
+
 

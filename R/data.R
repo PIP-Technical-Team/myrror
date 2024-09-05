@@ -201,6 +201,49 @@
 #' @source Simulated data.
 "survey_data_6"
 
+#' Survey Data 1:m Variation 1
+#' @format A `data.table` with 36 rows and 6 variables:
+#' \describe{
+#' \item{country}{Factor with levels: "A", "B".}
+#' \item{year}{Numeric, with values: 2010-2017.}
+#' \item{variable1}{Numeric.}
+#' \item{variable2}{Numeric.}
+#' \item{variable3}{Numeric.}
+#' \item{variable4}{Numeric.}
+#' }
+#' @source Variation of `survey_data` with non-unique ids and a 1:m relationship between ids and values.
+"survey_data_1m"
+
+
+#' Survey Data 1:m Variation 2
+#' @format A `data.table` with 36 rows and 6 variables:
+#' \describe{
+#' \item{country}{Factor with levels: "A", "B".}
+#' \item{year}{Numeric, with values: 2010-2017.}
+#' \item{variable1}{Numeric.}
+#' \item{variable2}{Numeric.}
+#' \item{variable3}{Numeric.}
+#' \item{variable4}{Numeric.}
+#' }
+#' @source Variation of `survey_data` with non-unique ids and a 1:m relationship between ids and values.
+"survey_data_1m_2"
+
+#' Survey Data m:1
+#' @format A `data.table` with 15 rows and 6 variables:
+#' \describe{
+#' \item{country}{Factor with levels: "A", "B".}
+#' \item{year}{Numeric, with values: 2010-2017.}
+#' \item{variable1}{Numeric.}
+#' \item{variable2}{Numeric.}
+#' \item{variable3}{Numeric.}
+#' \item{variable4}{Numeric.}
+#' }
+#' @source Variation of `survey_data` with non-unique ids and a m:1 relationship between ids and values.
+"survey_data_m1"
+
+
+
+
 
 
 

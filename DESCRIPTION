@@ -13,7 +13,8 @@ Imports:
     data.table (>= 1.15.4),
     collapse,
     joyn,
-    rlang
+    rlang,
+    utils
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
