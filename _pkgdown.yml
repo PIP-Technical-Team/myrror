@@ -1,4 +1,12 @@
 url: https://giorgiacek.github.io/myrror/
 template:
   bootstrap: 5
+  bootswatch: cosmo
+  bslib:
+    primary: "#20c997"
+
+
+navbar:
+  bg: primary
+
 
