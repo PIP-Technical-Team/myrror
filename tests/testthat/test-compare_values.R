@@ -15,7 +15,7 @@ test_that("compare_values() takes two dataframes or a myrror_object", {
 
   df_compare <- compare_values(iris, iris_var1)
   mo_compare <- compare_values(myrror_object = mo)
-  expect_equal(df_compare$merged_data_report, mo_compare$merged_data_report)
+  expect_equal(df_compare$compare_values, mo_compare$compare_values)
 })
 
 
@@ -54,13 +54,13 @@ test_that("compare_values() returns a simple compare_values item if differences"
 
 test_that("compare_values() returns the correct myrror_object with multiple keys", {
 
-  survey_data_2_mod <- survey_data_2 |>
-    fmutate(COUNTRY = country,
-                      YEAR = year)|>
-    fselect(-country, -year)
+  # survey_data_2_mod <- survey_data_2 |>
+  #   fmutate(COUNTRY = country,
+  #                     YEAR = year)|>
+  #   fselect(-country, -year)
 
 
-  mod <- compare_values(survey_data_2_mod, survey_data, by=c("COUNTRY" = "country",
+  mod <- compare_values(survey_data_2_cap, survey_data, by=c("COUNTRY" = "country",
                                                              "YEAR" = "year"),
                         output = "simple")
 

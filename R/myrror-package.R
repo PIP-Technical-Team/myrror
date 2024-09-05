@@ -27,7 +27,9 @@ if (getRversion() >= "2.15.1") {
       "row_index.y",
       "row_index",
       "indexes",
-      "equal"
+      "equal",
+      "N.dfx",
+      "N.dfy"
     ),
     package = utils::packageName()
   )

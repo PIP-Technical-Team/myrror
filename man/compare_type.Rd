@@ -40,7 +40,7 @@ displays by chunks. If \code{FALSE}, everything will be printed at once.}
 myrror_object with compare_type slot updated. Or a data.table when \code{output = 'simple'} is selected.
 }
 \description{
-Compare type of variables
+This function compares the types of the columns in the two data frames.
 }
 \examples{
 
@@ -59,5 +59,8 @@ compare_type(survey_data, survey_data_2, by=c('country', 'year'),
 compare_type(survey_data, survey_data_2_cap,
              by.x = c('country', 'year'), by.y = c('COUNTRY', 'YEAR'))
 
+# 5. Using existing myrror object created by myrror():
+myrror(survey_data, survey_data_2, by=c('country', 'year'))
+compare_type()
 
 }

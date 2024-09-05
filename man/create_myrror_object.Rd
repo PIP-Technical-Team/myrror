@@ -11,7 +11,8 @@ create_myrror_object(
   by.x = NULL,
   by.y = NULL,
   factor_to_char = TRUE,
-  verbose = getOption("myrror.verbose")
+  verbose = getOption("myrror.verbose"),
+  interactive = getOption("myrror.interactive")
 )
 }
 \arguments{
@@ -28,6 +29,9 @@ create_myrror_object(
 \item{factor_to_char}{TRUE or FALSE, default to TRUE.}
 
 \item{verbose}{logical: If \code{TRUE} additional information will be displayed.}
+
+\item{interactive}{logical: If \code{TRUE}, print S3 method for myrror objects
+displays by chunks. If \code{FALSE}, everything will be printed at once.}
 }
 \value{
 object of class myrror_object.
@@ -35,3 +39,4 @@ object of class myrror_object.
 \description{
 myrror_object constructor (internal)
 }
+\keyword{internal}

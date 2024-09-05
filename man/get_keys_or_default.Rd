@@ -2,7 +2,8 @@
 % Please edit documentation in R/myrror.utils.R
 \name{get_keys_or_default}
 \alias{get_keys_or_default}
-\title{Get keys or default}
+\title{Get keys or default. A simple function wrapper which returns 'rn' (row names)
+if the data.table has no keys.}
 \usage{
 get_keys_or_default(keys, default = "rn")
 }
@@ -15,5 +16,7 @@ get_keys_or_default(keys, default = "rn")
 character
 }
 \description{
-Get keys or default
+Get keys or default. A simple function wrapper which returns 'rn' (row names)
+if the data.table has no keys.
 }
+\keyword{internal}

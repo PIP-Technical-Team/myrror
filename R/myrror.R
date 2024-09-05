@@ -40,6 +40,9 @@
 #' myrror(survey_data, survey_data_2, by=c('country', 'year'), compare_type = FALSE)
 #' ## Same can be done for compare_values and extract_diff_values.
 #'
+#' # 6. Set tolerance:
+#' myrror(survey_data, survey_data_2, by=c('country', 'year'), tolerance = 1e-5)
+#'
 
 myrror <- function(dfx,
                    dfy,

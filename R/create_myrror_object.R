@@ -5,6 +5,8 @@
 #' @param verbose logical: If `TRUE` additional information will be displayed.
 #'
 #' @return object of class myrror_object.
+#'
+#' @keywords internal
 create_myrror_object <- function(dfx,
                    dfy,
                    by = NULL,
@@ -18,8 +20,10 @@ create_myrror_object <- function(dfx,
    # 0. Store original datasets and orginal dataset characteristics ----
   original_call <- match.call()
 
-  dfx_name <- attr(dfx, "df_name")
-  dfy_name <- attr(dfy, "df_name")
+
+  dfx_name <- get_df_name(df = dfx, original_call$dfx)
+  dfy_name <- get_df_name(df = dfy, original_call$dfy)
+
 
   # If these are data.tables, it is necessary to create a hard copy.Otherwise,
   # the same object will be bound to two different names.
@@ -98,28 +102,37 @@ create_myrror_object <- function(dfx,
   }
 
   ## 5.2 Create dynamic 'by' argument for joyn (giving a name).
+  on_join_arg <- set_by$by.y
+  names(on_join_arg) <- set_by$by.x
+
   by_joyn_arg <- set_by$by.x
   names(by_joyn_arg) <- set_by$by.y
 
-  by_joyn_arg_un <- sapply(names(by_joyn_arg), function(n) paste(by_joyn_arg[n], n,
+
+  by_joyn_arg <- sapply(names(by_joyn_arg), function(n) paste(by_joyn_arg[n], n,
                                                               sep = " = "))
-  by_joyn_arg_un <- paste(unname(by_joyn_arg_un))
+  by_joyn_arg <- paste(unname(by_joyn_arg))
 
 
   ## 5.3 Check join type
   ## TO DO: Next version we will add options for 1:m and m:1 joins.
   match_type <- check_join_type(prepared_dfx,
                                 prepared_dfy,
-                                by = by_joyn_arg)
+                                by.x = set_by$by.x,
+                                by.y = set_by$by.y)
 
-  is_id_dfx <- joyn::is_id(prepared_dfx, by = by_joyn_arg, return_report = TRUE, verbose = FALSE)
-  is_id_dfy <- joyn::is_id(prepared_dfy, by = by_joyn_arg, return_report = TRUE, verbose = FALSE)
+
+  is_id_dfx <- joyn::is_id(prepared_dfx, by = set_by$by.x, return_report = TRUE, verbose = FALSE)
+  is_id_dfy <- joyn::is_id(prepared_dfy, by = set_by$by.y, return_report = TRUE, verbose = FALSE)
+
+
 
   is_id_report <- collapse::join(is_id_dfx, is_id_dfy,
-                                 on = by_joyn_arg,
+                                 on = on_join_arg,
+                                 how = "full",
                                  suffix = c(".dfx", ".dfy"),
-                                 verbose = FALSE)|>
-    roworderv(c(by_joyn_arg))
+                                 verbose = FALSE)
+
 
 
   # Proceed without interruption if the match type is 1:1
@@ -133,13 +146,13 @@ create_myrror_object <- function(dfx,
     cli::cli_h2("Identification Report:")
     cli::cli_text("Only first 5 keys shown:")
     cli::cli_text("\n")
-    print(is_id_report |> head(n=5))
+    print(is_id_report[1:5])
     cli::cli_text("...")
     cli::cli_text("\n")
 
 
     if (interactive == TRUE) {
-      proceed <- utils::menu(
+      proceed <- my_menu(
         choices = c("Yes, continue.", "No, abort."),
         title = "The join type is not 1:1. Do you want to proceed?"
       )
@@ -160,7 +173,7 @@ create_myrror_object <- function(dfx,
 
   merged_data <- joyn::joyn(prepared_dfx,
                       prepared_dfy,
-                      by = c(by_joyn_arg_un),
+                      by = by_joyn_arg,
                       match_type = match_type,
                       keep = "full",
                       keep_common_vars = TRUE,

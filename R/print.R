@@ -138,7 +138,7 @@ print.myrror <- function(x, ...) {
 
       for (variable in names(x$extract_diff_values$diff_list)) {
         cli::cli_h3("{.val {variable}}")
-        print(head(x$extract_diff_values$diff_list[[variable]]), n = 5)
+        print(x$extract_diff_values$diff_list[[variable]][1:5])
         cli::cli_text("...")
         cli::cli_text("\n")
 

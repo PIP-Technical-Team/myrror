@@ -2,8 +2,8 @@
 % Please edit documentation in R/myrror.utils.R
 \name{check_set_by}
 \alias{check_set_by}
-\title{Check if the df arguments are valid,
-makes them into a data.frame if they are a list.}
+\title{Check if the by arguments are valid,
+makes them into a data.frame if they are a list. Internal function.}
 \usage{
 check_set_by(by = NULL, by.x = NULL, by.y = NULL)
 }
@@ -15,13 +15,14 @@ check_set_by(by = NULL, by.x = NULL, by.y = NULL)
 \item{by.y}{character vector}
 }
 \description{
-Check if the df arguments are valid,
-makes them into a data.frame if they are a list.
+Check if the by arguments are valid,
+makes them into a data.frame if they are a list. Internal function.
 }
 \examples{
 
-check_set_by(NULL, NULL, NULL) # rn set
-check_set_by("id", NULL, NULL) # by set
-check_set_by(NULL, "id", "id") # by.x and by.y set
+#check_set_by(NULL, NULL, NULL) # rn set
+#check_set_by("id", NULL, NULL) # by set
+#check_set_by(NULL, "id", "id") # by.x and by.y set
 
 }
+\keyword{internal}

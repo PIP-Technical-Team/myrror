@@ -2,12 +2,12 @@
 % Please edit documentation in R/myrror.utils.R
 \name{pair_columns}
 \alias{pair_columns}
-\title{Title}
+\title{is_dataframe_sorted_by(iris, by = "Sepal.Length")}
 \usage{
 pair_columns(merged_data_report, suffix_x = ".x", suffix_y = ".y")
 }
 \arguments{
-\item{merged_data_report}{joined prepared_dfx and prepared_dfy}
+\item{merged_data_report}{joined prepared_dfx and prepared_dfy.}
 
 \item{suffix_x}{suffix for dfx (default .x)}
 
@@ -17,9 +17,11 @@ pair_columns(merged_data_report, suffix_x = ".x", suffix_y = ".y")
 paired_columns
 }
 \description{
-Title
+Pairs columns and prepares them for comparison.
 }
 \examples{
 # mo <- create_myrror_object(iris, iris_var1)
 # pair_columns(mo$merged_data_report)
+
 }
+\keyword{internal}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/compare_values.R
 \name{compare_values}
 \alias{compare_values}
-\title{Compare values of matched datasets}
+\title{Compare values of matched datasets.}
 \usage{
 compare_values(
   dfx = NULL,
@@ -43,7 +43,7 @@ displays by chunks. If \code{FALSE}, everything will be printed at once.}
 myrror_object with compare_values slot updated. Or a list of data.tables when \code{output = 'simple'} is selected.
 }
 \description{
-Compare values of matched datasets
+Compare values of matched datasets.
 }
 \examples{
 
@@ -65,5 +65,9 @@ compare_values(survey_data, survey_data_2, by=c('country', 'year'),
 # 5. Different keys (see also ?myrror):
 compare_values(survey_data, survey_data_2_cap,
                by.x = c('country', 'year'), by.y = c('COUNTRY', 'YEAR'))
+
+# 6. Using existing myrror object created by myrror():
+myrror(survey_data, survey_data_2, by=c('country', 'year'))
+compare_values()
 
 }
