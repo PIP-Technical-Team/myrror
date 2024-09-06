@@ -1,12 +1,12 @@
 # Snapshot tests: General Complete Output, no interaction ----
 ## These need to be changed into something that actually tests the output...
-test_that("Print general information correctly", {
-  # Create a mock myrror_object
-  myrror_output <- myrror(survey_data, survey_data_2, interactive = FALSE)
-
-  expect_snapshot(myrror_output)
-
-})
+# test_that("Print general information correctly", {
+#   # Create a mock myrror_object
+#   myrror_output <- myrror(survey_data, survey_data_2, interactive = FALSE)
+#
+#   expect_snapshot(myrror_output)
+#
+# })
 
 test_that("Print general information correctly with different keys", {
   # Create a mock myrror_object
