@@ -1,0 +1,33 @@
+---
+title: "Extract Different Values"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, include = FALSE}
+library(myrror)
+library(DT)
+```
+
+This article looks at a series of workflows for the function `extract_diff_values()`. At its core, this function does the following:
+
+1.  Sets up the two data frames (`dfx` and `dfy`) for comparison:
+    -   Pairs rows based on the keys provided (given by the user using the `by` , `by.x`, `by.y` arguments, or by row number).
+    -   Pairs columns based on the column names.
+2.  Runs the comparison between shared rows and shared columns only.
+3.  Returns a list of `data.table`s, one per variable, with the values of a given variable in `dfx` and `dfy` side-by-side.
+
+This is a basic example of the function output when run in default mode, with `output = "simple"` :
+
+```{r basic-example}
+output <- extract_diff_values(iris, iris_var1, output = "simple")
+str(output, max.level = 1)
+
+```
+
+What the console prints out should
