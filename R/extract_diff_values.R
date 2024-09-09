@@ -198,7 +198,6 @@ extract_diff_int <- function(myrror_object = NULL,
                                               tolerance = tolerance)
 
   matched_data <- myrror_object$merged_data_report$matched_data
-  print(nrow(matched_data))
 
   keys <- myrror_object$merged_data_report$keys
 

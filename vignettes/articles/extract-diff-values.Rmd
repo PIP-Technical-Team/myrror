@@ -13,7 +13,10 @@ knitr::opts_chunk$set(
 library(myrror)
 ```
 
-This article looks at a series of workflows for the function `extract_diff_values()`. At its core, this function does the following:
+This article looks at a series of workflows for the function `extract_diff_values()`. 
+
+## Introduction
+At its core, this function does the following:
 
 1.  Sets up the two data frames (`dfx` and `dfy`) for comparison:
     -   Pairs rows based on the keys provided (given by the user using the `by` , `by.x`, `by.y` arguments, or by row number).
@@ -21,11 +24,49 @@ This article looks at a series of workflows for the function `extract_diff_value
 2.  Runs the comparison between shared rows and shared columns only.
 3.  Returns a list of `data.table`s, one per variable, with the values of a given variable in `dfx` and `dfy` side-by-side.
 
-This is a basic example of the function output when run in default mode, with `output = "simple"` :
+## Example 1: one variable with differences.
 
-```{r basic-example}
+If you run the function with arguments `output = "full"` the console will print a user-friendly summary of the comparison, similar to the output of `myrror()`, but displaying only the output of `extract_diff_values()`
+
+![](images/extract_diff_values_basic.gif)
+
+When run in default mode, with `output = "simple"` , `extract_diff_values()` returns a list of `data.table`s:
+
+```{r example-one}
 output <- extract_diff_values(iris, iris_var1, output = "simple")
 print(output)
 ```
 
-In this comparison, iris
+In this comparison, `iris` and `iris_var1` are two data frames that differ in the values of the `Sepal.Length` column. The output shows the values of the variable `Sepal.Length` in iris (`dfx`) as `Sepal.Length.x` and in iris_var1 (`dfy`) as `Sepal.Length.y`. The column `diff` identifies the type of differences between the two values. In this case, in `iris_var1`, the 5 non-matching values are `NA`. Therefore, the column `diff` shows `value_to_na`.
+
+This output can be manipulated by the user to explore the differences in more detail. 
+
+## Example 2: multiple variables with differences.
+
+Here is a case where the two data frames differ in multiple variables: 
+
+```{r example-two-str}
+output <- extract_diff_values(iris, iris_var2, output = "simple")
+str(output, max.level = 1)
+```
+This time, the object returned is a list of `data.table`s, one for each variable that differs between the two data frames. If we look into one single variable, we can see that there are also different types of differences, in this case `value_to_na` and `change_in_value`:
+
+```{r example-two-variable}
+output$Sepal.Width |>
+  fgroup_by(diff)|>
+  fcount()
+```
+Let's assume that I want to focus on missing values in the variable `Sepal.Width`:
+```{r example-two-variable-2}
+output$Sepal.Width |>
+  fsubset(diff == "value_to_na")
+```
+The user can use the indexes to extract the observations in `dfy`:
+
+```{r example-two-variable-3}
+indexes <- output$Sepal.Width |>
+  fsubset(diff == "value_to_na") |>
+  fselect(indexes)|>
+  as.vector()
+
+```
