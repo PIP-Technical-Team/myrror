@@ -198,6 +198,7 @@ extract_diff_int <- function(myrror_object = NULL,
                                               tolerance = tolerance)
 
   matched_data <- myrror_object$merged_data_report$matched_data
+  print(nrow(matched_data))
 
   keys <- myrror_object$merged_data_report$keys
 
@@ -225,8 +226,8 @@ extract_diff_int <- function(myrror_object = NULL,
       result <- df |>
         fsubset(count > 0) |>
         fselect(-count) |>
-        _[, c(.SD, list(indexes = unlist(indexes))), .SDcols = "diff"] |>
-        fmutate(indexes = as.character(indexes)) |>
+        _[, .(indexes = unlist(indexes)), by = .(diff)] |>
+        fmutate(indexes = as.character(indexes))|>
         collapse::join(matched_data |>
                          fselect(c("rn", keys, column_x, column_y)),
                        on = c("indexes" = "rn"),
@@ -246,8 +247,7 @@ extract_diff_int <- function(myrror_object = NULL,
   diff_table <- rowbind(compare_values_object, idcol = "variable") |>
     fsubset(count > 0) |>
     fselect(-count) |>
-    # please check
-    _[, c(.SD, list(indexes = unlist(indexes))), .SDcols = "diff"] |>
+      _[, .(indexes = unlist(indexes)), by = .(diff)] |>
     fmutate(indexes = as.character(indexes)) |>
     collapse::join(matched_data,
                    on = c("indexes" = "rn"),
