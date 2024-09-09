@@ -31,6 +31,12 @@
       <ul class="navbar-nav me-auto">
 <li class="active nav-item"><a class="nav-link" href="../articles/myrror.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="../articles/extract-diff-values.html">Extract Different Values</a></li>
+  </ul>
+</li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -158,6 +164,7 @@ run:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/myrror.html">myrror</a></span><span class="op">(</span><span class="va">survey_data</span>, <span class="va">survey_data_2</span>, </span>
 <span>       by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"country"</span>, <span class="st">"year"</span><span class="op">)</span><span class="op">)</span> </span>
+<span><span class="co">#&gt; [1] 16</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Myrror Report</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; </span></span>
@@ -219,6 +226,7 @@ differ in values between the two data frames:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/extract_diff_values.html">extract_diff_values</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Last myrror object used for comparison.</span></span>
+<span><span class="co">#&gt; [1] 16</span></span>
 <span><span class="co">#&gt; $variable2</span></span>
 <span><span class="co">#&gt;                diff indexes variable2.x variable2.y</span></span>
 <span><span class="co">#&gt;              &lt;char&gt;  &lt;char&gt;       &lt;num&gt;       &lt;num&gt;</span></span>
@@ -247,6 +255,7 @@ example:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/extract_diff_values.html">extract_diff_values</a></span><span class="op">(</span><span class="va">survey_data</span>, <span class="va">survey_data_2</span>, </span>
 <span>                    by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"country"</span>, <span class="st">"year"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 16</span></span>
 <span><span class="co">#&gt; $variable2</span></span>
 <span><span class="co">#&gt;                diff indexes variable2.x variable2.y</span></span>
 <span><span class="co">#&gt;              &lt;char&gt;  &lt;char&gt;       &lt;num&gt;       &lt;num&gt;</span></span>
