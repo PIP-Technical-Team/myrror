@@ -11,7 +11,6 @@ knitr::opts_chunk$set(
 
 ```{r setup, include = FALSE}
 library(myrror)
-library(DT)
 ```
 
 This article looks at a series of workflows for the function `extract_diff_values()`. At its core, this function does the following:
@@ -26,8 +25,7 @@ This is a basic example of the function output when run in default mode, with `o
 
 ```{r basic-example}
 output <- extract_diff_values(iris, iris_var1, output = "simple")
-str(output, max.level = 1)
-
+print(output)
 ```
 
-What the console prints out should
+In this comparison, iris
