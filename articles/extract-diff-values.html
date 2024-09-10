@@ -65,8 +65,11 @@
     
     
 <p>This article looks at a series of workflows for the function
-<code><a href="../reference/extract_diff_values.html">extract_diff_values()</a></code>. At its core, this function does the
-following:</p>
+<code><a href="../reference/extract_diff_values.html">extract_diff_values()</a></code>.</p>
+<div class="section level2">
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
+<p>At its core, this function does the following:</p>
 <ol style="list-style-type: decimal">
 <li>Sets up the two data frames (<code>dfx</code> and <code>dfy</code>)
 for comparison:
@@ -83,22 +86,100 @@ only.</li>
 the values of a given variable in <code>dfx</code> and <code>dfy</code>
 side-by-side.</li>
 </ol>
-<p>This is a basic example of the function output when run in default
-mode, with <code>output = "simple"</code> :</p>
+</div>
+<div class="section level2">
+<h2 id="example-1-one-variable-with-differences-">Example 1: one variable with differences.<a class="anchor" aria-label="anchor" href="#example-1-one-variable-with-differences-"></a>
+</h2>
+<p>If you run the function with arguments <code>output = "full"</code>
+the console will print a user-friendly summary of the comparison,
+similar to the output of <code><a href="../reference/myrror.html">myrror()</a></code>, but displaying only the
+output of <code><a href="../reference/extract_diff_values.html">extract_diff_values()</a></code></p>
+<p><img src="images/extract_diff_values_basic.gif"></p>
+<p>When run in default mode, with <code>output = "simple"</code> ,
+<code><a href="../reference/extract_diff_values.html">extract_diff_values()</a></code> returns a list of
+<code>data.table</code>s:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/extract_diff_values.html">extract_diff_values</a></span><span class="op">(</span><span class="va">iris</span>, <span class="va">iris_var1</span>, output <span class="op">=</span> <span class="st">"simple"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 150</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $Sepal.Length</span></span>
-<span><span class="co">#&gt;           diff indexes Sepal.Length.x Sepal.Length.y</span></span>
-<span><span class="co">#&gt;         &lt;char&gt;  &lt;char&gt;          &lt;num&gt;          &lt;num&gt;</span></span>
-<span><span class="co">#&gt; 1: value_to_na     104            6.3             NA</span></span>
-<span><span class="co">#&gt; 2: value_to_na     125            6.7             NA</span></span>
-<span><span class="co">#&gt; 3: value_to_na      67            5.6             NA</span></span>
-<span><span class="co">#&gt; 4: value_to_na      80            5.7             NA</span></span>
-<span><span class="co">#&gt; 5: value_to_na      96            5.7             NA</span></span></code></pre></div>
-<p>In this comparison, iris</p>
-  </main>
+<span><span class="co">#&gt;           diff indexes     rn Sepal.Length.x Sepal.Length.y</span></span>
+<span><span class="co">#&gt;         &lt;char&gt;  &lt;char&gt; &lt;char&gt;          &lt;num&gt;          &lt;num&gt;</span></span>
+<span><span class="co">#&gt; 1: value_to_na     104    104            6.3             NA</span></span>
+<span><span class="co">#&gt; 2: value_to_na     125    125            6.7             NA</span></span>
+<span><span class="co">#&gt; 3: value_to_na      67     67            5.6             NA</span></span>
+<span><span class="co">#&gt; 4: value_to_na      80     80            5.7             NA</span></span>
+<span><span class="co">#&gt; 5: value_to_na      96     96            5.7             NA</span></span></code></pre></div>
+<p>In this comparison, <code>iris</code> and <code>iris_var1</code> are
+two data frames that differ in the values of the
+<code>Sepal.Length</code> column. The output shows the values of the
+variable <code>Sepal.Length</code> in iris (<code>dfx</code>) as
+<code>Sepal.Length.x</code> and in iris_var1 (<code>dfy</code>) as
+<code>Sepal.Length.y</code>. The column <code>diff</code> identifies the
+type of differences between the two values. In this case, in
+<code>iris_var1</code>, the 5 non-matching values are <code>NA</code>.
+Therefore, the column <code>diff</code> shows
+<code>value_to_na</code>.</p>
+<p>This output can be manipulated by the user to explore the differences
+in more detail.</p>
+</div>
+<div class="section level2">
+<h2 id="example-2-multiple-variables-with-differences-">Example 2: multiple variables with differences.<a class="anchor" aria-label="anchor" href="#example-2-multiple-variables-with-differences-"></a>
+</h2>
+<p>Here is a case where the two data frames differ in multiple
+variables:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/extract_diff_values.html">extract_diff_values</a></span><span class="op">(</span><span class="va">iris</span>, <span class="va">iris_var2</span>, output <span class="op">=</span> <span class="st">"simple"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">output</span>, max.level <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; List of 5</span></span>
+<span><span class="co">#&gt;  $ Sepal.Length:Classes 'data.table' and 'data.frame':   150 obs. of  5 variables:</span></span>
+<span><span class="co">#&gt;   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span></span>
+<span><span class="co">#&gt;  $ Sepal.Width :Classes 'data.table' and 'data.frame':   137 obs. of  5 variables:</span></span>
+<span><span class="co">#&gt;   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span></span>
+<span><span class="co">#&gt;  $ Petal.Length:Classes 'data.table' and 'data.frame':   148 obs. of  5 variables:</span></span>
+<span><span class="co">#&gt;   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span></span>
+<span><span class="co">#&gt;  $ Petal.Width :Classes 'data.table' and 'data.frame':   136 obs. of  5 variables:</span></span>
+<span><span class="co">#&gt;   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span></span>
+<span><span class="co">#&gt;  $ Species     :Classes 'data.table' and 'data.frame':   94 obs. of  5 variables:</span></span>
+<span><span class="co">#&gt;   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt;</span></span></code></pre></div>
+<p>This time, the object returned is a list of <code>data.table</code>s,
+one for each variable that differs between the two data frames. If we
+look into one single variable, we can see that there are also different
+types of differences, in this case <code>value_to_na</code> and
+<code>change_in_value</code>:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># output$Sepal.Width |&gt;</span></span>
+<span><span class="co">#   group_by(diff)|&gt;</span></span>
+<span><span class="co">#   count()</span></span></code></pre></div>
+<p>Let’s assume that I want to focus on missing values in the variable
+<code>Sepal.Width</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># output$Sepal.Width |&gt;</span></span>
+<span><span class="co">#   filter(diff == "value_to_na")</span></span></code></pre></div>
+<p>The user can use the indexes to extract the observations in
+<code>dfy</code>:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># indexes &lt;- output$Sepal.Width |&gt;</span></span>
+<span><span class="co">#   filter(diff == "value_to_na") |&gt;</span></span>
+<span><span class="co">#   select(indexes)|&gt;</span></span>
+<span><span class="co">#   mutate(indexes = as.numeric(indexes))</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># iris_var2[c(indexes$indexes), ]</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="example-3-a-larger-dataset">Example 3: a larger dataset<a class="anchor" aria-label="anchor" href="#example-3-a-larger-dataset"></a>
+</h2>
+<p>In this example we will look at a more complex case, using the
+publicly available <code>gapminder</code> dataset. We will compare the
+<code>gapminder</code> dataset with a modified version of it,
+<code>gapminder_var1</code>:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># gapminder_var1 &lt;- gapminder |&gt;</span></span>
+<span><span class="co">#   mutate(lifeExp = ifelse(year == 2007, NA, lifeExp), # NAs in lifeExp for one year</span></span>
+<span><span class="co">#          pop = ifelse(country == 'Italy'&amp; year &gt;= 2010, pop + runif(1,1, 10), pop), # Errors in pop</span></span>
+<span><span class="co">#          gdpPercap = ifelse(country == 'Colombia', gdpPercap/10, gdpPercap)) # Errors in gdpPercap</span></span></code></pre></div>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
