@@ -136,15 +136,16 @@ compare_values_int <- function(myrror_object = NULL,
 
   # 4. Get changes ----
   value_to_na <- get_value_to_na(myrror_object$merged_data_report$matched_data, pairs_list)
-  names(value_to_na) <- gsub(".x", "", pairs$pairs$col_x)
+  names(value_to_na) <- gsub("\\.x$", "", pairs$pairs$col_x)
 
   na_to_value <- get_na_to_value(myrror_object$merged_data_report$matched_data, pairs_list)
-  names(na_to_value) <- gsub(".x", "", pairs$pairs$col_x)
+
+  names(na_to_value) <- gsub("\\.x$", "", pairs$pairs$col_x)
 
   change_in_value <- get_change_in_value(myrror_object$merged_data_report$matched_data,
                                          pairs_list,
                                          tolerance = tolerance)
-  names(na_to_value) <- gsub(".x", "", pairs$pairs$col_x)
+  names(na_to_value) <- gsub("\\.x$", "", pairs$pairs$col_x)
 
   # 5. Combine all changes ----
   all_changes <- mapply(function(x, y, z) {
