@@ -8,16 +8,15 @@
 #'
 #' @keywords internal
 create_myrror_object <- function(dfx,
-                   dfy,
-                   by = NULL,
-                   by.x = NULL,
-                   by.y = NULL,
-                   factor_to_char = TRUE,
-                   verbose = getOption("myrror.verbose"),
-                   interactive = getOption("myrror.interactive")) {
+                                 dfy,
+                                 by = NULL,
+                                 by.x = NULL,
+                                 by.y = NULL,
+                                 factor_to_char = TRUE,
+                                 verbose = getOption("myrror.verbose"),
+                                 interactive = getOption("myrror.interactive")) {
 
-
-   # 0. Store original datasets and orginal dataset characteristics ----
+  # 0. Store original datasets and orginal dataset characteristics ----
   original_call <- match.call()
 
 
@@ -77,18 +76,17 @@ create_myrror_object <- function(dfx,
   # --- If not, abort.
   # --- If yes, proceed as default.
   # - factor to character (keep track of this), default = TRUE.
-
   prepared_dfx <- prepare_df(dfx,
                              by = set_by$by.x,
                              factor_to_char = factor_to_char,
-                             interactive = interactive)
+                             interactive = interactive,
+                             verbose = verbose)
 
   prepared_dfy <- prepare_df(dfy,
                              by = set_by$by.y,
                              factor_to_char = factor_to_char,
-                             interactive = interactive)
-
-
+                             interactive = interactive,
+                             verbose = verbose)
   # 5. Pre-merge checks ----
 
   ## 5.1 Check that set_by$by.x is not in the non-key columns of dfy and vice-versa.
@@ -133,24 +131,24 @@ create_myrror_object <- function(dfx,
                                  suffix = c(".dfx", ".dfy"),
                                  verbose = FALSE)
 
-
-
   # Proceed without interruption if the match type is 1:1
   if (match_type == "1:1") {
+    # No special action needed for 1:1 joins
 
   } else if (match_type %in% c("1:m", "m:1")) {
-    # Inform the user about the join type and ask if they want to proceed
-    message_type <- ifelse(match_type == "1:m", "1:m", "m:1")
+    # Conditional warnings based on verbose setting
+    if (verbose == TRUE) {
+      message_type <- ifelse(match_type == "1:m", "1:m", "m:1")
+      cli::cli_alert_warning("When comparing the data, the join is {.strong {message_type}} between {.field {dfx_name}} and {.field {dfy_name}}.")
+      cli::cli_h2("Identification Report:")
+      cli::cli_text("Only first 5 keys shown:")
+      cli::cli_text("\n")
+      print(is_id_report[1:5])
+      cli::cli_text("...")
+      cli::cli_text("\n")
+    }
 
-    cli::cli_alert_warning("When comparing the data, the join is {.strong {message_type}} between {.field {dfx_name}} and {.field {dfy_name}}.")
-    cli::cli_h2("Identification Report:")
-    cli::cli_text("Only first 5 keys shown:")
-    cli::cli_text("\n")
-    print(is_id_report[1:5])
-    cli::cli_text("...")
-    cli::cli_text("\n")
-
-
+    # Interactive choice to continue only if interactive is TRUE
     if (interactive == TRUE) {
       proceed <- my_menu(
         choices = c("Yes, continue.", "No, abort."),
@@ -160,26 +158,31 @@ create_myrror_object <- function(dfx,
         cli::cli_abort("Operation aborted by the user.")
       }
     }
+
   } else {
-    # Abort if the join type is m:m
-    cli::cli_abort("When comparing the datasets, the join is {.strong m:m} between {.field {dfx_name}} and {.field {dfy_name}}. The comparison will stop here.")
+    # Abort if the join type is m:m, consider verbosity
+    if (verbose == TRUE) {
+      cli::cli_abort("When comparing the datasets, the join is {.strong m:m} between {.field {dfx_name}} and {.field {dfy_name}}. The comparison will stop here.")
+    } else {
+      stop("Join type m:m, operation aborted.")
+    }
   }
 
-  #cli::cli_alert_info("You could use `check_join_type()` to check identified and non-identified observations.")
 
+  #cli::cli_alert_info("You could use `check_join_type()` to check identified and non-identified observations.")
 
   # 6. Merge ----
   ## Use joyn to merge and keep matching and non-matching observations.
 
   merged_data <- joyn::joyn(prepared_dfx,
-                      prepared_dfy,
-                      by = by_joyn_arg,
-                      match_type = match_type,
-                      keep = "full",
-                      keep_common_vars = TRUE,
-                      update_values = FALSE,
-                      update_NAs = FALSE,
-                      verbose = FALSE)
+                            prepared_dfy,
+                            by = by_joyn_arg,
+                            match_type = match_type,
+                            keep = "full",
+                            keep_common_vars = TRUE,
+                            update_values = FALSE,
+                            update_NAs = FALSE,
+                            verbose = FALSE)
 
 
   ## Adjust rn and row_index:
@@ -243,6 +246,6 @@ create_myrror_object <- function(dfx,
 
   # 8. Return myrror object (invisible) ----
   return(invisible(structure(output,
-            class = "myrror")))
+                             class = "myrror")))
 
 }

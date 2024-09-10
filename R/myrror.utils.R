@@ -132,6 +132,7 @@ check_set_by <- function(by = NULL,
 #' @param by character vector
 #' @param factor_to_char logical
 #' @param interactive logical
+#' @param verbose logical
 #'
 #' @examples
 #' # dataset <- data.frame(a = 1:10, b = letters[1:10])
@@ -141,7 +142,8 @@ check_set_by <- function(by = NULL,
 prepare_df <- function(df,
                        by = NULL,
                        factor_to_char = TRUE,
-                       interactive = getOption("myrror.interactive")) {
+                       interactive = getOption("myrror.interactive"),
+                       verbose = getOption("myrror.verbose")) {
 
   ## 1. Check that "rn" is not in the colnames
   if ("rn" %in% colnames(df)) {
@@ -188,17 +190,22 @@ prepare_df <- function(df,
   # Get name
   df_name <- attr(df, "df_name")
 
-  # Check
+  # Check uniqueness
   if (isFALSE(joyn::is_id(dt, by, verbose = FALSE))) {
-    cli::cli_alert_warning("The by keys provided ({.val {by}}) do not uniquely identify the dataset ({.field {df_name}}).")
+    if (verbose) {
+      cli::cli_alert_warning("The by keys provided ({.val {by}}) do not uniquely identify the dataset ({.field {df_name}}).")
+    }
 
     if (interactive) {
-      proceed <- utils::menu(c("Yes", "No"), title = "Do you want to continue?")
+      proceed <- utils::menu(c("Yes, continue.", "No, abort."),
+                             title = "The by keys do not uniquely identify the dataset. Do you want to proceed?")
       if (proceed == 2) {
         cli::cli_abort("Operation aborted by the user.")
       }
     } else {
-      cli::cli_alert_warning("Proceeding with the report despite non-unique identification.")
+      if (verbose) {
+        cli::cli_alert_warning("Proceeding with the operation despite non-unique identification.")
+      }
     }
   }
 
@@ -423,6 +430,7 @@ get_correct_myrror_object <- function(myrror_object,
                                       by.x,
                                       by.y,
                                       verbose,
+                                      interactive,
                                       ...) {
 
 
@@ -446,7 +454,9 @@ get_correct_myrror_object <- function(myrror_object,
                                             dfy = dfy,
                                             by = by,
                                             by.x = by.x,
-                                            by.y = by.y)
+                                            by.y = by.y,
+                                            verbose = verbose,
+                                            interactive = interactive)
 
     } else {
       cli::cli_abort(abort_msg)

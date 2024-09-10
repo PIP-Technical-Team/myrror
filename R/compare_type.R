@@ -42,6 +42,7 @@ compare_type <- function(dfx = NULL,
                          interactive = getOption("myrror.interactive"),
                          verbose = getOption("myrror.verbose")
                          ){
+
   # 0. Name storage ----
 
   if (!is.null(dfx) && !is.null(dfy)) { # because it could be that it is run empty/with myrror_object only
