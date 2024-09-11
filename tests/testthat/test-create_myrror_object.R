@@ -144,19 +144,19 @@ test_that("1:1 join proceeds without user interaction", {
   )
 })
 
-test_that("1:m join type informs user with interactive = FALSE", {
+test_that("1:m join type does not inform user with interactive = FALSE and verbose = FALSE", {
   dfx <- create_sample_df()
   dfy <- create_sample_df()
 
   with_mocked_bindings(
     check_join_type = function(...) "1:m",
     {
-      expect_message(create_myrror_object(dfx, dfy, interactive = FALSE, verbose = FALSE), "1:m")
+      expect_no_message(create_myrror_object(dfx, dfy, interactive = FALSE, verbose = FALSE))
     }
   )
 })
 
-test_that("1:m join type informs user with interactive = TRUE", {
+test_that("1:m join type does not inform user with interactive = TRUE and verbose = FALSE", {
   dfx <- create_sample_df()
   dfy <- create_sample_df()
 
@@ -165,12 +165,12 @@ test_that("1:m join type informs user with interactive = TRUE", {
     check_join_type = function(...) "1:m",
     my_menu = function(...) 1,
     {
-      expect_message(create_myrror_object(dfx, dfy, interactive = TRUE, verbose = FALSE), "1:m")
+      expect_no_message(create_myrror_object(dfx, dfy, interactive = TRUE, verbose = FALSE))
     }
   )
 })
 
-test_that("1:m join type informs user with interactive = TRUE", {
+test_that("m:1 join type informs user with interactive = TRUE", {
   dfx <- create_sample_df()
   dfy <- create_sample_df()
 
@@ -179,21 +179,21 @@ test_that("1:m join type informs user with interactive = TRUE", {
     check_join_type = function(...) "m:1",
     my_menu = function(...) 1,
     {
-      expect_message(create_myrror_object(dfx, dfy, interactive = TRUE, verbose = FALSE), "m:1")
+      expect_no_message(create_myrror_object(dfx, dfy, interactive = TRUE, verbose = FALSE))
     }
   )
 })
 
 
 
-test_that("1:m join type informs user with interactive = FALSE", {
+test_that("m:1 join type informs user with interactive = FALSE", {
   dfx <- create_sample_df()
   dfy <- create_sample_df()
 
   with_mocked_bindings(
     check_join_type = function(...) "m:1",
     {
-      expect_message(create_myrror_object(dfx, dfy, interactive = FALSE, verbose = FALSE), "m:1")
+      expect_no_message(create_myrror_object(dfx, dfy, interactive = FALSE, verbose = FALSE))
     }
   )
 })
@@ -222,7 +222,7 @@ test_that("1:m join type results in an abort with user interaction == 2", {
     check_join_type = function(...) "1:m",
     my_menu = function(...) 2,
     {
-      expect_error(create_myrror_object(dfx, dfy, interactive = TRUE), "aborted")
+      expect_error(create_myrror_object(dfx, dfy, interactive = TRUE, verbose = FALSE), "aborted")
     }
   )
 })

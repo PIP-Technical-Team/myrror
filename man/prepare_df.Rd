@@ -8,7 +8,8 @@ prepare_df(
   df,
   by = NULL,
   factor_to_char = TRUE,
-  interactive = getOption("myrror.interactive")
+  interactive = getOption("myrror.interactive"),
+  verbose = getOption("myrror.verbose")
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ prepare_df(
 \item{factor_to_char}{logical}
 
 \item{interactive}{logical}
+
+\item{verbose}{logical}
 }
 \description{
 Prepares dataset for joyn::joyn(). Internal function.
