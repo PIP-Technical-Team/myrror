@@ -147,23 +147,43 @@ look into one single variable, we can see that there are also different
 types of differences, in this case <code>value_to_na</code> and
 <code>change_in_value</code>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># output$Sepal.Width |&gt;</span></span>
-<span><span class="co">#   group_by(diff)|&gt;</span></span>
-<span><span class="co">#   count()</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">output</span><span class="op">$</span><span class="va">Sepal.Width</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">diff</span><span class="op">)</span><span class="op">|&gt;</span></span>
+<span>  <span class="fu">count</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 2</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Groups:   diff [2]</span></span></span>
+<span><span class="co">#&gt;   diff                n</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> change_in_value   132</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> value_to_na         5</span></span></code></pre></div>
 <p>Let’s assume that I want to focus on missing values in the variable
 <code>Sepal.Width</code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># output$Sepal.Width |&gt;</span></span>
-<span><span class="co">#   filter(diff == "value_to_na")</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">output</span><span class="op">$</span><span class="va">Sepal.Width</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">diff</span> <span class="op">==</span> <span class="st">"value_to_na"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;           diff indexes     rn Sepal.Width.x Sepal.Width.y</span></span>
+<span><span class="co">#&gt;         &lt;char&gt;  &lt;char&gt; &lt;char&gt;         &lt;num&gt;         &lt;num&gt;</span></span>
+<span><span class="co">#&gt; 1: value_to_na     114    114           2.5           NaN</span></span>
+<span><span class="co">#&gt; 2: value_to_na      23     23           3.6           NaN</span></span>
+<span><span class="co">#&gt; 3: value_to_na      58     58           2.4           NaN</span></span>
+<span><span class="co">#&gt; 4: value_to_na      78     78           3.0           NaN</span></span>
+<span><span class="co">#&gt; 5: value_to_na      79     79           2.9           NaN</span></span></code></pre></div>
 <p>The user can use the indexes to extract the observations in
 <code>dfy</code>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># indexes &lt;- output$Sepal.Width |&gt;</span></span>
-<span><span class="co">#   filter(diff == "value_to_na") |&gt;</span></span>
-<span><span class="co">#   select(indexes)|&gt;</span></span>
-<span><span class="co">#   mutate(indexes = as.numeric(indexes))</span></span>
-<span><span class="co"># </span></span>
-<span><span class="co"># iris_var2[c(indexes$indexes), ]</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">indexes</span> <span class="op">&lt;-</span> <span class="va">output</span><span class="op">$</span><span class="va">Sepal.Width</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">diff</span> <span class="op">==</span> <span class="st">"value_to_na"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">select</span><span class="op">(</span><span class="va">indexes</span><span class="op">)</span><span class="op">|&gt;</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>indexes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">indexes</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">iris_var2</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">indexes</span><span class="op">$</span><span class="va">indexes</span><span class="op">)</span>, <span class="op">]</span></span>
+<span><span class="co">#&gt;    Sepal.Length Sepal.Width Petal.Length Petal.Width    Species</span></span>
+<span><span class="co">#&gt;           &lt;num&gt;       &lt;num&gt;        &lt;num&gt;       &lt;num&gt;     &lt;fctr&gt;</span></span>
+<span><span class="co">#&gt; 1:     6.845388         NaN          5.7         2.1  virginica</span></span>
+<span><span class="co">#&gt; 2:     6.050488         NaN          5.1         1.6 versicolor</span></span>
+<span><span class="co">#&gt; 3:     6.395608         NaN          4.2         1.2 versicolor</span></span>
+<span><span class="co">#&gt; 4:     5.291679         NaN          3.3         1.0 versicolor</span></span>
+<span><span class="co">#&gt; 5:     7.202346         NaN          4.7         1.6 versicolor</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="example-3-a-larger-dataset">Example 3: a larger dataset<a class="anchor" aria-label="anchor" href="#example-3-a-larger-dataset"></a>
@@ -173,10 +193,11 @@ publicly available <code>gapminder</code> dataset. We will compare the
 <code>gapminder</code> dataset with a modified version of it,
 <code>gapminder_var1</code>:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># gapminder_var1 &lt;- gapminder |&gt;</span></span>
-<span><span class="co">#   mutate(lifeExp = ifelse(year == 2007, NA, lifeExp), # NAs in lifeExp for one year</span></span>
-<span><span class="co">#          pop = ifelse(country == 'Italy'&amp; year &gt;= 2010, pop + runif(1,1, 10), pop), # Errors in pop</span></span>
-<span><span class="co">#          gdpPercap = ifelse(country == 'Colombia', gdpPercap/10, gdpPercap)) # Errors in gdpPercap</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">gapminder_var1</span> <span class="op">&lt;-</span> <span class="va">gapminder</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>lifeExp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">year</span> <span class="op">==</span> <span class="fl">2007</span>, <span class="cn">NA</span>, <span class="va">lifeExp</span><span class="op">)</span>, <span class="co"># NAs in lifeExp for one year</span></span>
+<span>         pop <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">country</span> <span class="op">==</span> <span class="st">'Italy'</span><span class="op">&amp;</span> <span class="va">year</span> <span class="op">&gt;=</span> <span class="fl">1992</span>, <span class="va">pop</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>, <span class="fl">10</span><span class="op">)</span>, <span class="va">pop</span><span class="op">)</span>, <span class="co"># Errors in pop</span></span>
+<span>         gdpPercap <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">country</span> <span class="op">==</span> <span class="st">'Colombia'</span>, <span class="va">gdpPercap</span><span class="op">/</span><span class="fl">10</span>, <span class="va">gdpPercap</span><span class="op">)</span><span class="op">)</span> <span class="co"># Errors in gdpPercap</span></span></code></pre></div>
+<p>If we</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
