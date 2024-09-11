@@ -24,8 +24,10 @@ Suggests:
     rmarkdown,
     testthat (>= 3.0.0),
     withr,
-    dplyr
 Config/testthat/edition: 3
 URL: https://giorgiacek.github.io/myrror/
-Config/Needs/website: rmarkdown
+Config/Needs/website: 
+  rmarkdown,
+  tidyverse,
+  gapminder
 VignetteBuilder: knitr
