@@ -11,8 +11,8 @@ knitr::opts_chunk$set(
 
 ```{r setup, include = FALSE}
 library(myrror)
-library(tidyverse)
-# library(gapminder)
+library(dplyr)
+library(gapminder)
 ```
 
 This article looks at a series of workflows for the function `extract_diff_values()`. 
@@ -54,33 +54,34 @@ str(output, max.level = 1)
 This time, the object returned is a list of `data.table`s, one for each variable that differs between the two data frames. If we look into one single variable, we can see that there are also different types of differences, in this case `value_to_na` and `change_in_value`:
 
 ```{r example-two-variable}
-# output$Sepal.Width |>
-#   group_by(diff)|>
-#   count()
+output$Sepal.Width |>
+  group_by(diff)|>
+  count()
 ```
 Let's assume that I want to focus on missing values in the variable `Sepal.Width`:
 ```{r example-two-variable-2}
-# output$Sepal.Width |>
-#   filter(diff == "value_to_na")
+output$Sepal.Width |>
+  filter(diff == "value_to_na")
 ```
 The user can use the indexes to extract the observations in `dfy`:
 
 ```{r example-two-variable-3}
-# indexes <- output$Sepal.Width |>
-#   filter(diff == "value_to_na") |>
-#   select(indexes)|>
-#   mutate(indexes = as.numeric(indexes))
-# 
-# iris_var2[c(indexes$indexes), ]
+indexes <- output$Sepal.Width |>
+  filter(diff == "value_to_na") |>
+  select(indexes)|>
+  mutate(indexes = as.numeric(indexes))
+
+iris_var2[c(indexes$indexes), ]
 ```
 ## Example 3: a larger dataset
 
 In this example we will look at a more complex case, using the publicly available `gapminder` dataset. We will compare the `gapminder` dataset with a modified version of it, `gapminder_var1`:
 
 ```{r example-three}
-# gapminder_var1 <- gapminder |>
-#   mutate(lifeExp = ifelse(year == 2007, NA, lifeExp), # NAs in lifeExp for one year
-#          pop = ifelse(country == 'Italy'& year >= 2010, pop + runif(1,1, 10), pop), # Errors in pop
-#          gdpPercap = ifelse(country == 'Colombia', gdpPercap/10, gdpPercap)) # Errors in gdpPercap
+gapminder_var1 <- gapminder |>
+  mutate(lifeExp = ifelse(year == 2007, NA, lifeExp), # NAs in lifeExp for one year
+         pop = ifelse(country == 'Italy'& year >= 1992, pop + runif(1,1, 10), pop), # Errors in pop
+         gdpPercap = ifelse(country == 'Colombia', gdpPercap/10, gdpPercap)) # Errors in gdpPercap
 ```
 
+If we 
