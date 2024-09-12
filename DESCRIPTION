@@ -29,5 +29,6 @@ URL: https://giorgiacek.github.io/myrror/
 Config/Needs/website: 
   rmarkdown,
   tidyverse,
-  gapminder
+  gapminder,
+  DT
 VignetteBuilder: knitr
