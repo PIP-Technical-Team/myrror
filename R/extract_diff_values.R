@@ -222,6 +222,7 @@ extract_diff_int <- function(myrror_object = NULL,
       column_x <- paste0(variable, ".x")
       column_y <- paste0(variable, ".y")
 
+
       result <- df |>
         fsubset(count > 0) |>
         fselect(-count) |>
@@ -254,8 +255,9 @@ extract_diff_int <- function(myrror_object = NULL,
                    verbose = 0) |>
       fselect(-row_index, -.joyn)
 
+
     ## order columns
-    priority_cols <- c("diff", "variable", "indexes", keys)
+    priority_cols <- setdiff(c("diff", "variable", "indexes", keys), "rn")
     remaining_cols <- setdiff(names(diff_table), priority_cols)
     sorted_remaining_cols <- sort(remaining_cols)
     new_order <- c(priority_cols, sorted_remaining_cols)
