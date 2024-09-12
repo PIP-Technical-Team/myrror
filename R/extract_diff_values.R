@@ -244,14 +244,22 @@ extract_diff_int <- function(myrror_object = NULL,
 
   # 3. Table option ----
   diff_table <- rowbind(compare_values_object, idcol = "variable") |>
-    fsubset(count > 0) |>
-    fselect(-count) |>
-      _[, .(indexes = unlist(indexes)), by = .(diff)] |>
+     fsubset(count > 0) |>
+     fselect(-count) |>
+       _[, .(indexes = unlist(indexes)), by = .(diff, variable)] |>
     fmutate(indexes = as.character(indexes)) |>
     collapse::join(matched_data,
                    on = c("indexes" = "rn"),
                    how = "left",
-                   verbose = 0)
+                   verbose = 0) |>
+      fselect(-row_index, -.joyn)
+
+    ## order columns
+    priority_cols <- c("diff", "variable", "indexes", keys)
+    remaining_cols <- setdiff(names(diff_table), priority_cols)
+    sorted_remaining_cols <- sort(remaining_cols)
+    new_order <- c(priority_cols, sorted_remaining_cols)
+    setcolorder(diff_table, new_order)
 
 
   # 4. Store and Return ----
