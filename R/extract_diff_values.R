@@ -148,7 +148,10 @@ extract_diff_table <- function(dfx = NULL,
   myrror_object$extract_diff_values <- extract_diff_int(myrror_object,
                                                         tolerance = tolerance)
 
-  # Check if results are empty and adjust accordingly
+  # 5. Save to package environment ----
+  rlang::env_bind(.myrror_env, last_myrror_object = myrror_object)
+
+  # 6. Check if results are empty and adjust accordingly
   if(length(myrror_object$extract_diff_values) == 0) {
     if(output == "simple") {
       return(NULL)  # Return NULL for "simple" if no differences are found
@@ -157,7 +160,7 @@ extract_diff_table <- function(dfx = NULL,
     #} # need to think about whether I want to keep this option instead of printing out the mo.
   }
 
-  # 5. Output ----
+  # 7. Output ----
 
   ## Handle the output type
   switch(output,

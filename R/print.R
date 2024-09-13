@@ -47,18 +47,10 @@ print.myrror <- function(x, ...) {
   if (x$datasets_report$dfx_char$nrow - shared_rows_n > 0 || x$datasets_report$dfy_char$nrow - shared_rows_n > 0) {
     cli::cli_text("\n")
     cli::cli_alert_info("Note: run {.fn extract_diff_rows} to extract the missing/new rows.")
+  } else {
+    cli::cli_text("\n")
+    cli::cli_alert_success("There are no missing or new rows.")
   }
-
-
-  # # Prompt the User to go ahead if x$interactive == TRUE:
-  # if (x$interactive) {
-  #   response <- readline(prompt = "Press ENTER to continue or type 'q' to stop: ")
-  #   if (tolower(response) == "q") {
-  #     cli::cli_alert_success("End of Myrror Report")
-  #     return(invisible(x))
-  #   }
-  # }
-
 
   # 1. Compare Type ----
   if (x$print$compare_type) {
@@ -92,14 +84,6 @@ print.myrror <- function(x, ...) {
 
   }
 
-  # Prompt the User to go ahead if x$interactive == TRUE:
-  # if (x$interactive) {
-  #   response <- readline(prompt = "Press ENTER to continue or type 'q' to stop: ")
-  #   if (tolower(response) == "q") {
-  #     cli::cli_alert_success("End of Myrror Report")
-  #     return(invisible(x))
-  #   }
-  # }
 
   # 3. Compare Values ----
   if (x$print$compare_values) {
@@ -131,15 +115,6 @@ print.myrror <- function(x, ...) {
 
 
   }
-
-  # # Prompt the User to go ahead if x$interactive == TRUE:
-  # if (x$interactive) {
-  #   response <- readline(prompt = "Press ENTER to continue or type 'q' to stop: ")
-  #   if (tolower(response) == "q") {
-  #     cli::cli_alert_success("End of Myrror Report")
-  #     return(invisible(x))
-  #   }
-  # }
 
   # 4. Extract different values (only diff_list) ----
   if (x$print$extract_diff_values) {
@@ -185,11 +160,10 @@ print.myrror <- function(x, ...) {
       cli::cli_text("\n")
     }
 
-  }
+    }
 
 
-
-  # 5. Exit ----
+  # 6. Exit ----
   cli::cli_alert_success("End of Myrror Report.")
   return(invisible(x))
   }

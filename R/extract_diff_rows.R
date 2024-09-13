@@ -58,16 +58,19 @@ extract_diff_rows <- function(dfx = NULL,
 
   myrror_object$extract_diff_rows <- diff_rows
 
+  # 5. Save to package environment ----
+  rlang::env_bind(.myrror_env, last_myrror_object = myrror_object)
+
   # Check if results are empty and adjust accordingly
-  if(length(myrror_object$extract_diff_rows) == 0) {
+  if(nrow(myrror_object$extract_diff_rows) == 0) {
     if(output == "simple") {
-      return(NULL)  # Return NULL for "simple" if no differences are found
-    } else {
-      myrror_object$extract_diff_rows <- list(message = "No differences in rows.")
-    }
+      return(NULL)}  # Return NULL for "simple" if no differences are found
+    # } else {
+    #   myrror_object$extract_diff_rows <- list(message = "No differences in rows.")
+    # }
   }
 
-  # 5. Output ----
+  # 6. Output ----
 
   ## Handle the output type
   switch(output,
