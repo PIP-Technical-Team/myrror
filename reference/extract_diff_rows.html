@@ -127,6 +127,8 @@ Function to extract missing or new rows from comparing two dataframes.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Non-shared rows in survey_data: 0.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Non-shared rows in survey_data_2: 0.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> There are no missing or new rows.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">1. Shared Columns Class Comparison</span> <span style="color: #00BBBB;">──────────────────────────────────────────</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> All shared columns have the same class.</span>
@@ -167,17 +169,17 @@ Function to extract missing or new rows from comparing two dataframes.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> End of Myrror Report.</span>
 <span class="r-in"><span><span class="fu">extract_diff_rows</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Last myrror object used for comparison.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Empty data.table (0 rows and 13 cols): country,year,variable1.x,variable2.x,variable3.x,variable4.x...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># 2. Standard report, with new data:</span></span></span>
 <span class="r-in"><span><span class="fu">extract_diff_rows</span><span class="op">(</span><span class="va">survey_data</span>, <span class="va">survey_data_2</span>, by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'country'</span>, <span class="st">'year'</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Empty data.table (0 rows and 13 cols): country,year,variable1.x,variable2.x,variable3.x,variable4.x...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># 3. Toggle tolerance:</span></span></span>
 <span class="r-in"><span><span class="fu">extract_diff_rows</span><span class="op">(</span><span class="va">survey_data</span>, <span class="va">survey_data_2</span>, by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'country'</span>, <span class="st">'year'</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                    tolerance <span class="op">=</span> <span class="fl">1e-5</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Empty data.table (0 rows and 13 cols): country,year,variable1.x,variable2.x,variable3.x,variable4.x...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
