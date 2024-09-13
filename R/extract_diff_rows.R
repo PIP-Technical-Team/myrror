@@ -46,8 +46,17 @@ extract_diff_rows <- function(dfx = NULL,
   # 3. Create object if not supplied ----
   myrror_object <- do.call(get_correct_myrror_object, args)
 
-  # 4. Run extract_values_int() ----
-  myrror_object$extract_diff_rows <- myrror_object$merged_data_report$unmatched_data
+  # 4. Extract different rows using unmatched_data ----
+  diff_rows <- myrror_object$merged_data_report$unmatched_data |>
+    fmutate(.joyn = case_when(
+      .joyn == "x" ~ "dfx",
+      .joyn == "y" ~ "dfy"
+    )) |>
+    frename(df = .joyn)|>
+    fselect(-row_index)|>
+    colorder(df)
+
+  myrror_object$extract_diff_rows <- diff_rows
 
   # Check if results are empty and adjust accordingly
   if(length(myrror_object$extract_diff_rows) == 0) {
