@@ -30,7 +30,8 @@ if (getRversion() >= "2.15.1") {
       "equal",
       "N.dfx",
       "N.dfy",
-      "." # not sure why feeling this might be an issue
+      ".",
+      "df" # not sure why feeling this might be an issue
     ),
     package = utils::packageName()
   )

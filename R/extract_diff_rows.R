@@ -48,10 +48,7 @@ extract_diff_rows <- function(dfx = NULL,
 
   # 4. Extract different rows using unmatched_data ----
   diff_rows <- myrror_object$merged_data_report$unmatched_data |>
-    fmutate(.joyn = case_when(
-      .joyn == "x" ~ "dfx",
-      .joyn == "y" ~ "dfy"
-    )) |>
+    fmutate(.joyn = ifelse(.joyn == "x", "dfx", "dfy")) |>
     frename(df = .joyn)|>
     fselect(-row_index)|>
     colorder(df)
