@@ -47,6 +47,8 @@ extract_diff_rows <- function(dfx = NULL,
   myrror_object <- do.call(get_correct_myrror_object, args)
 
   # 4. Extract different rows using unmatched_data ----
+
+
   diff_rows <- myrror_object$merged_data_report$unmatched_data |>
     fmutate(.joyn = ifelse(.joyn == "x", "dfx", "dfy")) |>
     frename(df = .joyn)|>

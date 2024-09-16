@@ -1,0 +1,90 @@
+---
+title: "Extract Different Rows"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, include = FALSE}
+library(myrror)
+library(tidyverse)
+library(gapminder)
+library(DT)
+```
+
+This article looks a series of workflow for the function `extract_diff_rows()`.
+
+## Introduction
+
+At its core, the function does the following:
+
+1.  Sets up the two data frames (`dfx` and `dfy`) for comparison:
+    -   Pairs rows based on the keys provided (given by the user using the `by` , `by.x`, `by.y` arguments, or by row number).
+    -   Pairs columns based on the column names.
+2.  Runs the comparison between shared rows and shared columns only.
+3.  Returns the rows/observations that are missing from either `dfx` or `dfy`, with 
+
+In this article, we will first cover how `extract_diff_rows()` work with a simple and then a more complex type of data set. 
+
+## Example 1: new rows in dfy.
+
+In `extract_diff_rows()`, the default options for `output` is `simple`. This returns a data.table with the rows that are missing or new. In this example, we will compare the `iris` dataset with a modified version, `iris_var4`:
+
+```{r example-1-simple}
+output <- extract_diff_rows(iris, iris_var4, output = "simple")
+print(output)
+```
+
+The column `df` tells the user whether the row is missing from `dfx` or `dfy`. In this case, the rows are missing from `dfx` (`iris`). `rn` is the row number in the original data frame. 
+
+If the user runs the function with `output = "full"`, the console will print a user-friendly summary of the comparison, similar to the output of `myrror()`. However, given that the output of `extract_diff_rows()` is not part of the `myrror` object, the user will need to run `extract_diff_rows()` separately to see the extracted rows.
+
+```{r example-1-full-1}
+# First run the function in full mode:
+extract_diff_rows(iris, iris_var4, output = "full")
+```
+
+Following the suggestion in the note, the user can extract the results. The advantage of extracting the results is that the user can further explore or manipulate the data using additional packages or functions. For example, here we extract the results and display them using `DT::datatable()`:
+```{r example-1-full-2}
+# Then extract the results and analyse them:
+extract_diff_rows() |> 
+    datatable(
+  filter = 'top',
+  rownames = FALSE,
+  style = 'auto',
+  options = list(
+    searching = FALSE,
+    paging = TRUE,
+    scrollX = TRUE,
+    autoWidth = TRUE,
+    pageLength = 5
+  )
+)
+```
+
+
+## Example 2: missing rows in dfy.
+
+Similarly, if `dfy` is missing some rows, they will be extracted like so:
+```{r example-2-missing}
+output <- extract_diff_rows(iris, iris_var6, iris, output = "simple")
+output |> 
+    datatable(
+  filter = 'top',
+  rownames = FALSE,
+  style = 'auto',
+  options = list(
+    searching = FALSE,
+    paging = TRUE,
+    scrollX = TRUE,
+    autoWidth = TRUE,
+    pageLength = 5
+  )
+)
+
+```
+

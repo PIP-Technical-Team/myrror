@@ -184,7 +184,6 @@ create_myrror_object <- function(dfx,
                             update_NAs = FALSE,
                             verbose = FALSE)
 
-
   ## Adjust rn and row_index:
   if ("rn.x" %in% colnames(merged_data)) {
     merged_data <- merged_data |>

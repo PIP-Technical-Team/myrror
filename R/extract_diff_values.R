@@ -109,7 +109,6 @@ extract_diff_values <- function(dfx = NULL,
 #' @param tolerance numeric, default to 1e-7.
 #'
 #' @return data.table object with all observations for which at least 1 value is different.
-#' @export
 #'
 #' @examples
 #'
