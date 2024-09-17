@@ -190,31 +190,31 @@ prepare_df <- function(df,
   ### 5.1 Get name
   df_name <- attr(df, "df_name")
 
-  ### 5.2 Check uniqueness of rows ( by = 'rn')
-  # if (by == 'rn'){
-  #   all_columns_no_rn <- setdiff(names(dt), c("rn", "row_index"))
-  #   copies <- joyn::is_id(dt, by = all_columns_no_rn, verbose = FALSE,
-  #                         return_report = TRUE) |>
-  #     fsubset(copies > 1)
-  #
-  #   if (nrow(copies) >= 1) {
-  #     if (verbose) {
-  #       cli::cli_alert_warning("There are duplicates in the dataset ({.field {df_name}}).")
-  #     }
-  #
-  #     if (interactive) {
-  #       proceed <- utils::menu(c("Yes, continue.", "No, abort."),
-  #                              title = "Do you want to proceed?")
-  #       if (proceed == 2) {
-  #         cli::cli_abort("Operation aborted by the user.")
-  #       }
-  #     } else {
-  #       if (verbose) {
-  #         cli::cli_alert_warning("Proceeding with the operation despite non-unique rows.")
-  #       }
-  #     }
-  #   }
-  # }
+  ## 5.2 Check uniqueness of rows when  by == 'rn'
+  if ('rn' %in% by){
+    all_columns_no_rn <- setdiff(names(dt), c("rn", "row_index"))
+    copies <- joyn::is_id(dt, by = all_columns_no_rn, verbose = FALSE,
+                          return_report = TRUE) |>
+      fsubset(copies > 1)
+
+    if (nrow(copies) >= 1) {
+      if (verbose) {
+        cli::cli_alert_warning("There are duplicates in the dataset ({.field {df_name}}).")
+      }
+
+      if (interactive) {
+        proceed <- utils::menu(c("Yes, continue.", "No, abort."),
+                               title = "Do you want to proceed?")
+        if (proceed == 2) {
+          cli::cli_abort("Operation aborted by the user.")
+        }
+      } else {
+        if (verbose) {
+          cli::cli_alert_warning("Proceeding with the operation despite non-unique rows.")
+        }
+      }
+    }
+  }
 
   ### 5.3 Check uniqueness of rows by key (by = key) (does not turn on when by = 'rn')
   if (isFALSE(joyn::is_id(dt, by, verbose = FALSE))) {

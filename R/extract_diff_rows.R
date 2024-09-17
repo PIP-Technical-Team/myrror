@@ -36,7 +36,8 @@ extract_diff_rows <- function(dfx = NULL,
                               by.y = NULL,
                               output = c("simple", "full", "silent"),
                               tolerance = 1e-7,
-                              verbose = TRUE){
+                              verbose = getOption("myrror.verbose"),
+                              interactive = getOption("myrror.interactive")){
   # 1. Arguments check ----
   output <- match.arg(output)
 

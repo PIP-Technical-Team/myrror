@@ -70,6 +70,7 @@ create_myrror_object <- function(dfx,
   # - make into data.table.
   # - make into valid column names.
   # - check that by variable are in the colnames of the given dataset.
+  # - check whether the user supplied keys: if not and if the two datasets have different row numbers ->
   # - check whether the by variables uniquely identify the dataset:
   # -- If identified -> proceed as default.
   # -- If not identified -> inform the user + ask if wants to proceed.

@@ -71,8 +71,8 @@ test_that("extract_diff_table() takes two dataframes or a myrror_object", {
 
   # Two dataframes or a myrror_object
   mo <- create_myrror_object(iris, iris_var1)
-  expect_no_error(extract_diff_table(iris, iris_var1))
-  expect_no_error(extract_diff_table(myrror_object = mo))
+  expect_no_error(extract_diff_table(iris, iris_var1, interactive = FALSE))
+  expect_no_error(extract_diff_table(myrror_object = mo, interactive = FALSE))
 
   df_compare <- extract_diff_table(iris, iris_var1)
   mo_compare <- extract_diff_table(myrror_object = mo)

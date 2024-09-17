@@ -108,6 +108,32 @@
 #' @source Modified `iris` dataset.
 "iris_var5"
 
+#' Iris Dataset Variation 6
+#' @format A `data.frame` with 146 rows and 5 variables:
+#' \describe{
+#' \item{Sepal.Length}{Numeric, Sepal length in cm.}
+#' \item{Sepal.Width}{Numeric, Sepal width in cm.}
+#' \item{Petal.Length}{Numeric, Petal length in cm.}
+#' \item{Petal.Width}{Numeric, Petal width in cm.}
+#' \item{Species}{Factor with levels: "setosa","versicolor","virginica".}
+#' }
+#'
+#' @source Modified `iris` dataset.
+"iris_var6"
+
+#' Iris Dataset Variation 7
+#' @format A `data.frame` with 146 rows and 5 variables:
+#' \describe{
+#' \item{Sepal.Length}{Numeric, Sepal length in cm.}
+#' \item{Sepal.Width}{Numeric, Sepal width in cm.}
+#' \item{Petal.Length}{Numeric, Petal length in cm.}
+#' \item{Petal.Width}{Numeric, Petal width in cm.}
+#' \item{Species}{Factor with levels: "setosa","versicolor","virginica".}
+#' }
+#'
+#' @source Modified `iris` dataset.
+"iris_var7"
+
 #' Survey Data
 #' A country-year level dataset with 15 rows and 6 variables. 2 countries,
 #' 4 years, and 4 additional variables.

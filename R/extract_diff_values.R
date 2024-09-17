@@ -49,7 +49,8 @@ extract_diff_values <- function(dfx = NULL,
                                 by.y = NULL,
                                 output = c("simple", "full", "silent"),
                                 tolerance = 1e-7,
-                                verbose = TRUE) {
+                                verbose = getOption("myrror.verbose"),
+                                interactive = getOption("myrror.interactive")) {
 
   # 1. Arguments check ----
   output <- match.arg(output)
@@ -109,6 +110,7 @@ extract_diff_values <- function(dfx = NULL,
 #' @param tolerance numeric, default to 1e-7.
 #'
 #' @return data.table object with all observations for which at least 1 value is different.
+#' @export
 #'
 #' @examples
 #'
@@ -131,7 +133,8 @@ extract_diff_table <- function(dfx = NULL,
                                by.y = NULL,
                                output = c("simple", "full", "silent"),
                                tolerance = 1e-7,
-                               verbose = TRUE) {
+                               verbose = getOption("myrror.verbose"),
+                               interactive = getOption("myrror.interactive")) {
 
   # 1. Arguments check ----
   output <- match.arg(output)
