@@ -32,6 +32,20 @@ At its core, both functions do the following:
 
 In this article, we will first cover how `extract_diff_values()` work with a simple and then a more complex type of data set. Then, we will look at how `extract_diff_table()` can add value to the comparison.
 
+::: {.callout-important}
+### ⚠️ No keys provided
+
+Right now, `{myrror}` does not align rows based on row content. This means that if the user does not provide keys, the function will compare the two datasets based on row number only. This can lead to incorrect results (`extract_diff_values()` will not return the correct rows) if:
+
+-   the datasets have different row orders.
+
+-   a detaset have duplicate rows.
+
+-   a dataset has new/missing rows.
+
+Therefore, we suggest the user to **always provide keys** when running this and the other functions.
+:::
+
 ## Example 1: one variable with differences.
 
 If you run the functions with arguments `output = "full"` the console will print a user-friendly summary of the comparison, similar to the output of `myrror()`, but displaying only the output of `extract_diff_values()`.

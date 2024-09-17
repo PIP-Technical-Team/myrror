@@ -26,29 +26,42 @@ At its core, the function does the following:
     -   Pairs rows based on the keys provided (given by the user using the `by` , `by.x`, `by.y` arguments, or by row number).
     -   Pairs columns based on the column names.
 2.  Runs the comparison between shared rows and shared columns only.
-3.  Returns the rows/observations that are missing from either `dfx` or `dfy`, with 
+3.  Returns the rows/observations that are missing from either `dfx` or `dfy`, with all variables from both datasets.
 
-In this article, we will first cover how `extract_diff_rows()` work with a simple and then a more complex type of data set. 
+::: {.callout-important}
+### ⚠️ No keys provided
 
-## Example 1: new rows in dfy.
+Right now, `{myrror}` does not align rows based on row content. This means that if the user does not provide keys, the function will compare the two datasets based on row number only. This can lead to incorrect results (`extract_diff_row()` will not return the correct rows) if:
 
-In `extract_diff_rows()`, the default options for `output` is `simple`. This returns a data.table with the rows that are missing or new. In this example, we will compare the `iris` dataset with a modified version, `iris_var4`:
+-   the datasets have different row orders.
+
+-   a detaset have duplicate rows.
+
+-   a dataset has new/missing rows.
+
+Therefore, we suggest the user to **always provide keys** when running the function.
+:::
+
+## Example 1: missing rows in dfy.
+
+In `extract_diff_rows()`, the default options for `output` is `simple`. This returns a data.table with the rows that are missing or new. In this example, we will compare the `survey_data` dataset with a modified version, `survey_data_4`:
 
 ```{r example-1-simple}
-output <- extract_diff_rows(iris, iris_var4, output = "simple")
+output <- extract_diff_rows(survey_data, survey_data_4, by = c('country', 'year'), output = "simple")
 print(output)
 ```
 
-The column `df` tells the user whether the row is missing from `dfx` or `dfy`. In this case, the rows are missing from `dfx` (`iris`). `rn` is the row number in the original data frame. 
+The column `df` tells the user whether the row is part of `dfx` or `dfy`. In this case, the rows are part of the `dfx` dataset, but are missing from `dfy` (`survey_data`). So the column `df` shows the value `dfx`.
 
 If the user runs the function with `output = "full"`, the console will print a user-friendly summary of the comparison, similar to the output of `myrror()`. However, given that the output of `extract_diff_rows()` is not part of the `myrror` object, the user will need to run `extract_diff_rows()` separately to see the extracted rows.
 
 ```{r example-1-full-1}
 # First run the function in full mode:
-extract_diff_rows(iris, iris_var4, output = "full")
+extract_diff_rows(survey_data, survey_data_4, by = c('country', 'year'), output = "full")
 ```
 
 Following the suggestion in the note, the user can extract the results. The advantage of extracting the results is that the user can further explore or manipulate the data using additional packages or functions. For example, here we extract the results and display them using `DT::datatable()`:
+
 ```{r example-1-full-2}
 # Then extract the results and analyse them:
 extract_diff_rows() |> 
@@ -66,12 +79,12 @@ extract_diff_rows() |>
 )
 ```
 
+## Example 2: missing rows in dfx.
 
-## Example 2: missing rows in dfy.
+Similarly, if `dfx` is missing some rows, they will be extracted like so:
 
-Similarly, if `dfy` is missing some rows, they will be extracted like so:
 ```{r example-2-missing}
-output <- extract_diff_rows(iris, iris_var6, iris, output = "simple")
+output <- extract_diff_rows(survey_data_4, survey_data, by = c('country', 'year'), interactive = FALSE, output = "simple")
 output |> 
     datatable(
   filter = 'top',
@@ -87,4 +100,3 @@ output |>
 )
 
 ```
-
