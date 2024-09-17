@@ -34,7 +34,8 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/extract-diff-values.html">Extract Different Values</a></li>
+<li><a class="dropdown-item" href="../articles/extract_diff_rows.html">Extract Different Rows</a></li>
+    <li><a class="dropdown-item" href="../articles/extract-diff-values.html">Extract Different Values</a></li>
   </ul>
 </li>
       </ul>
@@ -290,8 +291,20 @@ the two datasets.</p>
 <p>The user can then extract the rows missing from one of the two
 datasets:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#extract_diff_rows(survey_data, survey_data_4, </span></span>
-<span><span class="co">#                  by=c("country", "year"))</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/extract_diff_rows.html">extract_diff_rows</a></span><span class="op">(</span><span class="va">survey_data</span>, <span class="va">survey_data_4</span>, </span>
+<span>                  by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"country"</span>, <span class="st">"year"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;        df country  year variable1.x variable2.x variable3.x variable4.x</span></span>
+<span><span class="co">#&gt;    &lt;char&gt;  &lt;char&gt; &lt;int&gt;       &lt;num&gt;       &lt;num&gt;       &lt;num&gt;       &lt;num&gt;</span></span>
+<span><span class="co">#&gt; 1:    dfx       A  2010 -0.56047565   0.4978505   0.8951257  0.77996512</span></span>
+<span><span class="co">#&gt; 2:    dfx       A  2011 -0.23017749  -1.9666172   0.8781335 -0.08336907</span></span>
+<span><span class="co">#&gt; 3:    dfx       A  2012  1.55870831   0.7013559   0.8215811  0.25331851</span></span>
+<span><span class="co">#&gt; 4:    dfx       A  2013  0.07050839  -0.4727914   0.6886403 -0.02854676</span></span>
+<span><span class="co">#&gt;    variable1.y variable2.y variable3.y variable4.y     rn</span></span>
+<span><span class="co">#&gt;          &lt;num&gt;       &lt;num&gt;       &lt;num&gt;       &lt;num&gt; &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:          NA          NA          NA          NA      1</span></span>
+<span><span class="co">#&gt; 2:          NA          NA          NA          NA      2</span></span>
+<span><span class="co">#&gt; 3:          NA          NA          NA          NA      3</span></span>
+<span><span class="co">#&gt; 4:          NA          NA          NA          NA      4</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

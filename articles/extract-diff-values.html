@@ -34,7 +34,8 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/extract-diff-values.html">Extract Different Values</a></li>
+<li><a class="dropdown-item" href="../articles/extract_diff_rows.html">Extract Different Rows</a></li>
+    <li><a class="dropdown-item" href="../articles/extract-diff-values.html">Extract Different Values</a></li>
   </ul>
 </li>
       </ul>
@@ -105,6 +106,22 @@ with all differences in values between <code>dfx</code> and
 <code><a href="../reference/extract_diff_values.html">extract_diff_values()</a></code> work with a simple and then a more
 complex type of data set. Then, we will look at how
 <code><a href="../reference/extract_diff_table.html">extract_diff_table()</a></code> can add value to the comparison.</p>
+<div class="section level3 callout-important">
+<h3 id="no-keys-provided">⚠️ No keys provided<a class="anchor" aria-label="anchor" href="#no-keys-provided"></a>
+</h3>
+<p>Right now, <a href="https://giorgiacek.github.io/myrror/">myrror</a> does not align rows based on row
+content. This means that if the user does not provide keys, the function
+will compare the two datasets based on row number only. This can lead to
+incorrect results (<code><a href="../reference/extract_diff_values.html">extract_diff_values()</a></code> will not return
+the correct rows) if:</p>
+<ul>
+<li><p>the datasets have different row orders.</p></li>
+<li><p>a detaset have duplicate rows.</p></li>
+<li><p>a dataset has new/missing rows.</p></li>
+</ul>
+<p>Therefore, we suggest the user to <strong>always provide
+keys</strong> when running this and the other functions.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="example-1-one-variable-with-differences-">Example 1: one variable with differences.<a class="anchor" aria-label="anchor" href="#example-1-one-variable-with-differences-"></a>
@@ -119,15 +136,19 @@ output of <code><a href="../reference/extract_diff_values.html">extract_diff_val
 <code>data.table</code>s:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/extract_diff_values.html">extract_diff_values</a></span><span class="op">(</span><span class="va">iris</span>, <span class="va">iris_var1</span>, output <span class="op">=</span> <span class="st">"simple"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> There are duplicates in the dataset ().</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Proceeding with the operation despite non-unique rows.</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> There are duplicates in the dataset ().</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Proceeding with the operation despite non-unique rows.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $Sepal.Length</span></span>
 <span><span class="co">#&gt;           diff indexes     rn Sepal.Length.x Sepal.Length.y</span></span>
 <span><span class="co">#&gt;         &lt;char&gt;  &lt;char&gt; &lt;char&gt;          &lt;num&gt;          &lt;num&gt;</span></span>
-<span><span class="co">#&gt; 1: value_to_na     104    104            6.3             NA</span></span>
-<span><span class="co">#&gt; 2: value_to_na     125    125            6.7             NA</span></span>
-<span><span class="co">#&gt; 3: value_to_na      67     67            5.6             NA</span></span>
-<span><span class="co">#&gt; 4: value_to_na      80     80            5.7             NA</span></span>
-<span><span class="co">#&gt; 5: value_to_na      96     96            5.7             NA</span></span></code></pre></div>
+<span><span class="co">#&gt; 1: value_to_na     135    135            6.1             NA</span></span>
+<span><span class="co">#&gt; 2: value_to_na      56     56            5.7             NA</span></span>
+<span><span class="co">#&gt; 3: value_to_na      63     63            6.0             NA</span></span>
+<span><span class="co">#&gt; 4: value_to_na      74     74            6.1             NA</span></span>
+<span><span class="co">#&gt; 5: value_to_na      92     92            6.1             NA</span></span></code></pre></div>
 <p>In this comparison, <code>iris</code> and <code>iris_var1</code> are
 two data frames that differ in the values of the
 <code>Sepal.Length</code> column. The output shows the values of the
@@ -148,11 +169,13 @@ in more detail.</p>
 variables:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/extract_diff_values.html">extract_diff_values</a></span><span class="op">(</span><span class="va">iris</span>, <span class="va">iris_var2</span>, output <span class="op">=</span> <span class="st">"simple"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> There are duplicates in the dataset ().</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Proceeding with the operation despite non-unique rows.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">output</span>, max.level <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; List of 5</span></span>
 <span><span class="co">#&gt;  $ Sepal.Length:Classes 'data.table' and 'data.frame':   150 obs. of  5 variables:</span></span>
 <span><span class="co">#&gt;   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span></span>
-<span><span class="co">#&gt;  $ Sepal.Width :Classes 'data.table' and 'data.frame':   137 obs. of  5 variables:</span></span>
+<span><span class="co">#&gt;  $ Sepal.Width :Classes 'data.table' and 'data.frame':   138 obs. of  5 variables:</span></span>
 <span><span class="co">#&gt;   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span></span>
 <span><span class="co">#&gt;  $ Petal.Length:Classes 'data.table' and 'data.frame':   148 obs. of  5 variables:</span></span>
 <span><span class="co">#&gt;   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span></span>
@@ -173,7 +196,7 @@ types of differences, in this case <code>value_to_na</code> and
 <span><span class="co">#&gt; <span style="color: #949494;"># Groups:   diff [2]</span></span></span>
 <span><span class="co">#&gt;   diff                n</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> change_in_value   132</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> change_in_value   133</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> value_to_na         5</span></span></code></pre></div>
 <p>Let’s assume that I want to focus on missing values in the variable
 <code>Sepal.Width</code>:</p>
@@ -182,11 +205,11 @@ types of differences, in this case <code>value_to_na</code> and
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">diff</span> <span class="op">==</span> <span class="st">"value_to_na"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;           diff indexes     rn Sepal.Width.x Sepal.Width.y</span></span>
 <span><span class="co">#&gt;         &lt;char&gt;  &lt;char&gt; &lt;char&gt;         &lt;num&gt;         &lt;num&gt;</span></span>
-<span><span class="co">#&gt; 1: value_to_na     114    114           2.5           NaN</span></span>
-<span><span class="co">#&gt; 2: value_to_na      23     23           3.6           NaN</span></span>
-<span><span class="co">#&gt; 3: value_to_na      58     58           2.4           NaN</span></span>
-<span><span class="co">#&gt; 4: value_to_na      78     78           3.0           NaN</span></span>
-<span><span class="co">#&gt; 5: value_to_na      79     79           2.9           NaN</span></span></code></pre></div>
+<span><span class="co">#&gt; 1: value_to_na     145    145           3.3           NaN</span></span>
+<span><span class="co">#&gt; 2: value_to_na       2      2           3.0           NaN</span></span>
+<span><span class="co">#&gt; 3: value_to_na      24     24           3.3           NaN</span></span>
+<span><span class="co">#&gt; 4: value_to_na      55     55           2.8           NaN</span></span>
+<span><span class="co">#&gt; 5: value_to_na      85     85           3.0           NaN</span></span></code></pre></div>
 <p>The user can use the indexes to extract the observations in
 <code>dfy</code>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -198,11 +221,11 @@ types of differences, in this case <code>value_to_na</code> and
 <span><span class="va">iris_var2</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">indexes</span><span class="op">$</span><span class="va">indexes</span><span class="op">)</span>, <span class="op">]</span></span>
 <span><span class="co">#&gt;    Sepal.Length Sepal.Width Petal.Length Petal.Width    Species</span></span>
 <span><span class="co">#&gt;           &lt;num&gt;       &lt;num&gt;        &lt;num&gt;       &lt;num&gt;     &lt;fctr&gt;</span></span>
-<span><span class="co">#&gt; 1:     6.845388         NaN          5.7         2.1  virginica</span></span>
-<span><span class="co">#&gt; 2:     6.050488         NaN          5.1         1.6 versicolor</span></span>
-<span><span class="co">#&gt; 3:     6.395608         NaN          4.2         1.2 versicolor</span></span>
-<span><span class="co">#&gt; 4:     5.291679         NaN          3.3         1.0 versicolor</span></span>
-<span><span class="co">#&gt; 5:     7.202346         NaN          4.7         1.6 versicolor</span></span></code></pre></div>
+<span><span class="co">#&gt; 1:     6.511028         NaN          6.0         2.5  virginica</span></span>
+<span><span class="co">#&gt; 2:     6.540961         NaN          3.6         1.3 versicolor</span></span>
+<span><span class="co">#&gt; 3:     5.780072         NaN          1.4         0.2     setosa</span></span>
+<span><span class="co">#&gt; 4:     5.290587         NaN          1.4         0.2     setosa</span></span>
+<span><span class="co">#&gt; 5:     5.952240         NaN          1.5         0.4     setosa</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="example-3-a-larger-dataset">Example 3: a larger dataset<a class="anchor" aria-label="anchor" href="#example-3-a-larger-dataset"></a>
