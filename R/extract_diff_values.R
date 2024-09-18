@@ -194,7 +194,7 @@ extract_diff_table <- function(dfx = NULL,
 #' 2. diff_table
 #'
 #'
-#'
+#' @keywords internal
 extract_diff_int <- function(myrror_object = NULL,
                              tolerance = 1e-07) {
 
