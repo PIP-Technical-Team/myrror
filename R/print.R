@@ -15,9 +15,7 @@ print.myrror <- function(x, ...) {
   nonshared_dfx_cols_n <- max(x$datasets_report$dfx_char$ncol - shared_cols_n - keys_n, 0)
   nonshared_dfy_cols_n <- max(x$datasets_report$dfy_char$ncol - shared_cols_n - keys_n, 0)
   nonshared_dfy_cols <- setdiff(x$pairs$nonshared_cols_dfy, x$set_by.y)
-  print(x$pairs$nonshared_cols_dfx)
   nonshared_dfx_cols <- setdiff(x$pairs$nonshared_cols_dfx, x$set_by.x)
-  print(nonshared_dfx_cols)
   name_dfx <- x$name_dfx
   name_dfy <- x$name_dfy
 
