@@ -24,11 +24,13 @@ reference:
       - extract_diff_values
       - extract_diff_table
       - extract_diff_rows
+      - clear_last_myrror_object
 
-  - title: "Package Datasets"
+  - title: "Package Datasets: simulated survey data."
     contents:
       - survey_data
       - survey_data_2
+      - survey_data_2_cap
       - survey_data_3
       - survey_data_4
       - survey_data_5
@@ -36,6 +38,11 @@ reference:
       - survey_data_all
       - survey_data_1m
       - survey_data_1m_2
+      - survey_data_m1
+
+  - title: "Package Datasets: iris data variations."
+    contents:
+      - iris_var1
       - iris_var2
       - iris_var3
       - iris_var4

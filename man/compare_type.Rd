@@ -2,7 +2,7 @@
 % Please edit documentation in R/compare_type.R
 \name{compare_type}
 \alias{compare_type}
-\title{Compare type of variables}
+\title{Function to compare type of variables of matched data frames.}
 \usage{
 compare_type(
   dfx = NULL,

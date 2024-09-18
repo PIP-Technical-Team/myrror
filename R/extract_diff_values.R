@@ -15,8 +15,8 @@
 
 
 
-#' Extract Different Values - User-facing - List format
-#' Function to extract rows with different values between two dataframes.
+#' Extract Different Values
+#' Function to extract rows with different values between two data frames.
 #'
 #'
 #' @inheritParams myrror
@@ -100,8 +100,8 @@ extract_diff_values <- function(dfx = NULL,
 
 
 
-#' Extract Different Values - User-facing - Table format
-#' Function to extract rows with different values between two dataframes.
+#' Extract Different Values in Table Format
+#' Function to extract rows with different values between two data frames.
 #'
 #' @inheritParams myrror
 #' @param myrror_object myrror object from [create_myrror_object]

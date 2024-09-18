@@ -1,5 +1,5 @@
 # compare_values ---------------------------------------------------------------
-#' Compare values of matched datasets.
+#' Function to compare values of matched data frames.
 #'
 #' @inheritParams myrror
 #' @param myrror_object myrror object from [create_myrror_object]

@@ -2,8 +2,8 @@
 % Please edit documentation in R/extract_diff_rows.R
 \name{extract_diff_rows}
 \alias{extract_diff_rows}
-\title{Extract Different Rows - User-facing
-Function to extract missing or new rows from comparing two dataframes.}
+\title{Extract Different Rows
+Function to extract missing or new rows from comparing two data frames.}
 \usage{
 extract_diff_rows(
   dfx = NULL,
@@ -44,8 +44,8 @@ displays by chunks. If \code{FALSE}, everything will be printed at once.}
 data.table object with the rows that are missing or new.
 }
 \description{
-Extract Different Rows - User-facing
-Function to extract missing or new rows from comparing two dataframes.
+Extract Different Rows
+Function to extract missing or new rows from comparing two data frames.
 }
 \examples{
 

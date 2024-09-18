@@ -1,8 +1,8 @@
 # Objective: similar to extract_diff_values() but instead of returning the
 # differences in values, it returns the rows missing from dfy or new in dfy.
 
-#' Extract Different Rows - User-facing
-#' Function to extract missing or new rows from comparing two dataframes.
+#' Extract Different Rows
+#' Function to extract missing or new rows from comparing two data frames.
 #'
 #'
 #' @inheritParams myrror

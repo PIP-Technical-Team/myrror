@@ -2,7 +2,7 @@
 % Please edit documentation in R/compare_values.R
 \name{compare_values}
 \alias{compare_values}
-\title{Compare values of matched datasets.}
+\title{Function to compare values of matched data frames.}
 \usage{
 compare_values(
   dfx = NULL,
@@ -43,7 +43,7 @@ displays by chunks. If \code{FALSE}, everything will be printed at once.}
 myrror_object with compare_values slot updated. Or a list of data.tables when \code{output = 'simple'} is selected.
 }
 \description{
-Compare values of matched datasets.
+Function to compare values of matched data frames.
 }
 \examples{
 

@@ -2,8 +2,8 @@
 % Please edit documentation in R/extract_diff_values.R
 \name{extract_diff_values}
 \alias{extract_diff_values}
-\title{Extract Different Values - User-facing - List format
-Function to extract rows with different values between two dataframes.}
+\title{Extract Different Values
+Function to extract rows with different values between two data frames.}
 \usage{
 extract_diff_values(
   dfx = NULL,
@@ -44,8 +44,8 @@ displays by chunks. If \code{FALSE}, everything will be printed at once.}
 list object with two items: diff_list and diff_table
 }
 \description{
-Extract Different Values - User-facing - List format
-Function to extract rows with different values between two dataframes.
+Extract Different Values
+Function to extract rows with different values between two data frames.
 }
 \examples{
 
