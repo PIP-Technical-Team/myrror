@@ -19,7 +19,7 @@ articles:
 - title: Usage
   navbar: ~
   contents:
-  - myrror-overview
-  - extract-diff-values
+  - myrror_overview
+  - extract_diff_values
   - extract_diff_rows
 
