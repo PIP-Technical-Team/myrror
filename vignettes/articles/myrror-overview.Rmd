@@ -36,7 +36,7 @@ When running the function in interactive mode, the user will fo through this scr
 The first part of a `myrror()` report shows the general characteristics of the two dataframes, including the number of rows and columns, the keys used for the comparison (`by` argument) , whether there are missing rows or columns and if so their number and name:
 
 ![](images/myrror-survey_all-general.png)
-At the end of the general overview, a ℹ️ **Note** suggests to the user to run `extract_diff_rows()` to see the differences in the number of rows. More on this function in the article [Extract Different Rows](articles/extract-diff-rows.html).
+At the end of the general overview, a ℹ️ **Note** suggests to the user to run `extract_diff_rows()` to see the differences in the number of rows. More on this function in the article [Extract Different Rows](extract-diff-rows.html).
 
 ## Compare Type
 
@@ -53,7 +53,7 @@ Next, the report shows the differences in values between the two data frames. Th
 
 Finally, user can have a better look at the differences variable by variable:
 ![](images/myrror-survey_all-extract.png)
-As suggested by the ℹ️ Note, the user can run `extract_diff_values()`/`extract_diff_table` to see the differences in list or table format. More on these functions in the articles [Extract Different Values](./extract-diff-values.html).
+As suggested by the ℹ️ Note, the user can run `extract_diff_values()`/`extract_diff_table` to see the differences in list or table format. More on these functions in the articles [Extract Different Values](extract-diff-values.html).
 
 # Non-Identified
 
