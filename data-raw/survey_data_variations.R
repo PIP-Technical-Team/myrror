@@ -42,7 +42,7 @@ survey_data_6 <- rbind(survey_data, survey_data)
 survey_data_all <- survey_data_2_cap # different keys and change in values
 survey_data_all$variable1 <- as.character(survey_data_all$variable1) # different type
 survey_data_all <- survey_data_all[-c(1, 2, 3, 4), ] # missing rows
-survey_data_all <- survey_data_all[, -c(7)] # missing columns
+survey_data_all <- survey_data_all[, -c(5)] # missing columns
 
 
 # survey_data_1m ----
