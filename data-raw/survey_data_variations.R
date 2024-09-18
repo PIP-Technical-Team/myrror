@@ -37,6 +37,14 @@ survey_data_5 <- survey_data[, -c(3, 5)]
 # Variation of survey_data that has additional rows duplicates):
 survey_data_6 <- rbind(survey_data, survey_data)
 
+# survey_data_all ----
+# Variation of survey_data that has all the variations:
+survey_data_all <- survey_data_2_cap # different keys and change in values
+survey_data_all$variable1 <- as.character(survey_data_all$variable1) # different type
+survey_data_all <- survey_data_all[-c(1, 2, 3, 4), ] # missing rows
+survey_data_all <- survey_data_all[, -c(7)] # missing columns
+
+
 # survey_data_1m ----
 # Variation of survey_data with 1:m relationship
 rep_factor <- sample(1:3, nrow(survey_data), replace = TRUE)
@@ -68,14 +76,14 @@ survey_data_1m_2$variable1 <- survey_data_1m_2$variable1 + rnorm(nrow(survey_dat
 n_unique <- 8
 unique_indices <- sample(1:nrow(survey_data), n_unique)
 
-uniqUe_rows <- survey_data[unique_indices, ]
+unique_rows <- survey_data[unique_indices, ]
 survey_data_m1 <- survey_data
 
 mapping <- sample(1:n_unique, nrow(survey_data), replace = TRUE)
-survey_data_m1$variable1 <- uniqUe_rows$variable1[mapping]
-survey_data_m1$variable2 <- uniqUe_rows$variable2[mapping]
-survey_data_m1$variable3 <- uniqUe_rows$variable3[mapping]
-survey_data_m1$variable4 <- uniqUe_rows$variable4[mapping]
+survey_data_m1$variable1 <- unique_rows$variable1[mapping]
+survey_data_m1$variable2 <- unique_rows$variable2[mapping]
+survey_data_m1$variable3 <- unique_rows$variable3[mapping]
+survey_data_m1$variable4 <- unique_rows$variable4[mapping]
 
 
 
@@ -88,6 +96,7 @@ survey_data_3 <- as.data.table(survey_data_3)
 survey_data_4 <- as.data.table(survey_data_4)
 survey_data_5 <- as.data.table(survey_data_5)
 survey_data_6 <- as.data.table(survey_data_6)
+survey_data_all <- as.data.table(survey_data_all)
 survey_data_1m <- as.data.table(survey_data_1m)
 survey_data_1m_2 <- as.data.table(survey_data_1m_2)
 survey_data_m1 <- as.data.table(survey_data_m1)
@@ -95,6 +104,6 @@ survey_data_m1 <- as.data.table(survey_data_m1)
 
 # Usethis
 usethis::use_data(survey_data, survey_data_2, survey_data_2_cap, survey_data_3,
-                  survey_data_4, survey_data_5, survey_data_6, survey_data_1m,
-                  survey_data_1m_2, survey_data_m1, overwrite = TRUE)
+                  survey_data_4, survey_data_5, survey_data_6, survey_data_all,
+                  survey_data_1m, survey_data_1m_2, survey_data_m1, overwrite = TRUE)
 
