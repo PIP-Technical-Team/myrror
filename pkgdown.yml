@@ -3,10 +3,10 @@ pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   articles/extract_diff_rows: extract_diff_rows.html
-  articles/extract-diff-values: extract-diff-values.html
-  articles/myrror-overview: myrror-overview.html
+  articles/extract_diff_values: extract_diff_values.html
+  articles/myrror_overview: myrror_overview.html
   myrror: myrror.html
-last_built: 2024-09-18T17:14Z
+last_built: 2024-09-18T19:05Z
 urls:
   reference: https://giorgiacek.github.io/myrror/reference
   article: https://giorgiacek.github.io/myrror/articles
