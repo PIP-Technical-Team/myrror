@@ -227,6 +227,18 @@
 #' @source Simulated data.
 "survey_data_6"
 
+#' Survey Data Variation All
+#' @format A `data.table` with 12 rows and 6 variables:
+#' \describe{
+#' \item{country}{Factor with levels: "A", "B".}
+#' \item{year}{Numeric, with values: 2010-2017.}
+#' \item{variable1}{Numeric.}
+#' \item{variable2}{Numeric.}
+#' \item{variable3}{Numeric.}
+#' }
+#' @source Simulated data.
+"survey_data_all"
+
 #' Survey Data 1:m Variation 1
 #' @format A `data.table` with 36 rows and 6 variables:
 #' \describe{
