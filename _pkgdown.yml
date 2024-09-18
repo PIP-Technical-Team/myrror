@@ -6,5 +6,20 @@ template:
 
 navbar:
   bg: primary
+  structure:
+    right:
+    - github
+  components:
+    github:
+      icon: fab fa-github fa-lg
+      url: https://github.com/giorgiacek/myrror
 
+
+articles:
+- title: Usage
+  navbar: ~
+  contents:
+  - myrror-overview
+  - extract-diff-values
+  - extract_diff_rows
 
