@@ -1,4 +1,4 @@
-# Tests for create_myrror_object.R
+# Tests for create_myrror_object()
 
 
 # 0. Utils ----
@@ -19,7 +19,7 @@ test_that("create_myrror_object handles valid inputs", {
   dfx <- create_sample_df()
   dfy <- create_sample_df()
 
-  result <- create_myrror_object(dfx, dfy, by = "a", factor_to_char = TRUE)
+  result <- create_myrror_object(dfx, dfy, by = "a")
 
   expect_true("myrror" %in% class(result))
   expect_equal(result$name_dfx, "dfx")
@@ -30,10 +30,15 @@ test_that("create_myrror_object handles valid inputs", {
 
 ## 1.2 NULL or Invalid Input ----
 test_that("create_myrror_object handles NULL inputs", {
-  expect_error(create_myrror_object(NULL, create_sample_df()), "cannot be NULL")
-  expect_error(create_myrror_object(create_sample_df(), NULL), "cannot be NULL")
+  dfx <- create_sample_df()
+  dfy <- create_sample_df()
+
+  expect_error(create_myrror_object(NULL, dfy), "cannot be NULL")
+  expect_error(create_myrror_object(dfx, NULL), "cannot be NULL")
 })
 
+
+## 1.3 Lists (to data frames) ----
 test_that("create_myrror_object converts lists to data frames", {
   dfx_list <- list(a = 1:10, b = letters[1:10])
   dfy_list <- list(a = 1:10, b = letters[1:10])
@@ -42,6 +47,7 @@ test_that("create_myrror_object converts lists to data frames", {
   expect_true("myrror" %in% class(result))
 })
 
+## 1.4 Empty data frames ----
 test_that("create_myrror_object handles empty data frames", {
   empty_dfx <- data.frame()
   empty_dfy <- data.frame()
@@ -51,17 +57,18 @@ test_that("create_myrror_object handles empty data frames", {
 
 
 
-
-
 # 2. By Key handling ----
-## 2.1 By provided ----
+## 2.1 by, by.x and by.y provided ----
 test_that("Handling of 'by' arguments correctly", {
   dfx <- create_sample_df()
   dfy <- create_sample_df()
 
   result <- create_myrror_object(dfx, dfy, by.x = "a", by.y = "a")
+  result2 <- create_myrror_object(dfx, dfy, by = "a")
   expect_equal(result$set_by.x, "a")
   expect_equal(result$set_by.y, "a")
+  expect_equal(result2$set_by.x, "a")
+  expect_equal(result2$set_by.y, "a")
 })
 
 ## 2.2 By not provided ----
@@ -125,6 +132,7 @@ test_that("Correct output structure", {
   expect_true(!is.null(result$merged_data_report))
   expect_true(!is.null(result$pairs))
 })
+
 # 5. Error conditions ----
 test_that("Error handling in input conditions", {
   expect_error(create_myrror_object(data.frame(), data.frame()), "cannot be empty")
@@ -170,7 +178,7 @@ test_that("1:m join type does not inform user with interactive = TRUE and verbos
   )
 })
 
-test_that("m:1 join type informs user with interactive = TRUE", {
+test_that("m:1 join type informs user with interactive = TRUE and verbose = TRUE", {
   dfx <- create_sample_df()
   dfy <- create_sample_df()
 
@@ -179,7 +187,7 @@ test_that("m:1 join type informs user with interactive = TRUE", {
     check_join_type = function(...) "m:1",
     my_menu = function(...) 1,
     {
-      expect_no_message(create_myrror_object(dfx, dfy, interactive = TRUE, verbose = FALSE))
+      expect_message(create_myrror_object(dfx, dfy, interactive = TRUE, verbose = TRUE))
     }
   )
 })
@@ -193,7 +201,7 @@ test_that("m:1 join type informs user with interactive = FALSE", {
   with_mocked_bindings(
     check_join_type = function(...) "m:1",
     {
-      expect_no_message(create_myrror_object(dfx, dfy, interactive = FALSE, verbose = FALSE))
+      expect_message(create_myrror_object(dfx, dfy, interactive = FALSE, verbose = TRUE))
     }
   )
 })
@@ -208,7 +216,20 @@ test_that("m:m join type results in an abort without user interaction", {
   with_mocked_bindings(
     check_join_type = function(...) "m:m",
     {
-      expect_error(create_myrror_object(dfx, dfy, interactive = FALSE), "m:m")
+      expect_error(create_myrror_object(dfx, dfy, interactive = FALSE, verbose = FALSE), "m:m")
+    }
+  )
+})
+
+test_that("m:m join type results in an abort without user interaction but verbose", {
+
+  dfx <- create_sample_df()
+  dfy <- create_sample_df()
+
+  with_mocked_bindings(
+    check_join_type = function(...) "m:m",
+    {
+      expect_error(create_myrror_object(dfx, dfy, interactive = FALSE, verbose = TRUE), "m:m")
     }
   )
 })

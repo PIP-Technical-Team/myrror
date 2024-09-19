@@ -1,5 +1,7 @@
-
-withr::local_options(list(myrror.interactive = FALSE))
+# Compare Type Tests
+# Set-up ---------------------------------------------------------------
+withr::local_options(list(myrror.interactive = FALSE,
+                          myrror.verbose = FALSE))
 
 mo5 <- create_myrror_object(iris, iris_var5)
 compare_type_object_5 <- compare_type(myrror_object = mo5)
@@ -8,8 +10,8 @@ mo1 <- create_myrror_object(iris, iris_var1)
 compare_type_object_1 <- compare_type(myrror_object = mo1)
 
 
-
-# 1. compare_type and compare_type_int() works as expected: ----
+# Arguments ----------------------------------------------------------------
+## 1. compare_type and compare_type_int() work as expected: ----------------
 test_that("compare_type() correctly identifies type", {
 
   expect_equal(compare_type_object_1$compare_type$same_class,
@@ -20,7 +22,7 @@ test_that("compare_type() correctly identifies type", {
 
 
 
-# 2. compare_type() creates myrror object if not supplied ----
+## 2. compare_type() creates myrror object if not supplied -----------------
 test_that("compare_type() creates myrror object if not supplied", {
 
   compare_type_object_1_2 <- compare_type(iris, iris_var1)
@@ -31,7 +33,7 @@ test_that("compare_type() creates myrror object if not supplied", {
 
 })
 
-# 3. compare_type() both df must be provided ----
+## 3. compare_type() both df must be provided ------------------------------
 test_that("compare_type() both df must be provided", {
 
   expect_error(compare_type(iris, NULL))
@@ -39,8 +41,8 @@ test_that("compare_type() both df must be provided", {
 
 })
 
-
-# 4. Correct output when specified ----
+# Output ---------------------------------------------------------------
+## 4. Correct output when specified ----------------------------------------
 test_that("compare_type() correct output when specified", {
 
   compare_type_object_1_3 <- compare_type(iris, iris_var1, output = "simple")
@@ -49,6 +51,7 @@ test_that("compare_type() correct output when specified", {
   compare_type_object_1_4 <- compare_type(iris, iris_var1, output = "silent")
   compare_type_object_1_2 <- compare_type(iris, iris_var1)
   expect_equal(compare_type_object_1_4, compare_type_object_1_2)
+  expect
 
 })
 

@@ -203,7 +203,7 @@ prepare_df <- function(df,
       }
 
       if (interactive) {
-        proceed <- utils::menu(c("Yes, continue.", "No, abort."),
+        proceed <- my_menu(c("Yes, continue.", "No, abort."),
                                title = "Do you want to proceed?")
         if (proceed == 2) {
           cli::cli_abort("Operation aborted by the user.")
@@ -223,7 +223,7 @@ prepare_df <- function(df,
     }
 
     if (interactive) {
-      proceed <- utils::menu(c("Yes, continue.", "No, abort."),
+      proceed <- my_menu(c("Yes, continue.", "No, abort."),
                              title = "The by keys do not uniquely identify the dataset. Do you want to proceed?")
       if (proceed == 2) {
         cli::cli_abort("Operation aborted by the user.")
@@ -623,3 +623,13 @@ my_menu <- function(...) {
   utils::menu(...)
 }
 
+# 11. readline wrapper ----
+#' Readline wrapper. Internal function.
+#' @description This function is a wrapper around the base R readline function.
+#' It is used to provide a consistent interface for the readline function.
+#' @param ... arguments passed to the readline function.
+#' @return readline
+#' @keywords internal
+my_readline <- function(...) {
+  readline(...)
+}

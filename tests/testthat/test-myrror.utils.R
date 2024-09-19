@@ -125,7 +125,7 @@ test_that("handles empty and zero-length inputs", {
 
 
 # prepare_df() ----
-# Test 1: Conversion of DataFrame to Data Table
+## Test 1: Conversion of DataFrame to Data Table
 test_that("DataFrame is converted to Data Table", {
   df <- data.frame(a = 1:3, b = as.factor(c("one", "two", "three")))
   result <- prepare_df(df, by = "a")
@@ -133,25 +133,88 @@ test_that("DataFrame is converted to Data Table", {
   expect_true("rn" %in% colnames(result))
 })
 
-# Test 2: Error when 'rn' is an existing column name
+## Test 2: Error when 'rn' is an existing column name
 test_that("'rn' present in colnames triggers an error", {
   df <- data.frame(rn = 1:3, b = 2:4)
   expect_error(prepare_df(df, by = "rn"), "'rn' present in colnames")
 })
 
-# Test 3: Verify handling of 'by' keys
+## Test 3: Verify handling of 'by' keys
 test_that("Error if 'by' keys not present in column names", {
   df <- data.frame(a = 1:3, b = 4:6)
   expect_error(prepare_df(df, by = "c"), "Specified by keys are not all present")
 })
 
-# Test 4: Detection of duplicate column names
+test_that("Error if by keys are only columns to compare", {
+  df <- data.frame(a = 1:3, b = 4:6)
+  expect_error(prepare_df(df, by = c("a", "b")), "The by keys cannot be the only columns to compare.")
+})
+
+# On-unique identification without keys
+test_that("Warning when by == 'rn' and there are duplicates with interactive = FALSE", {
+
+  expect_message(prepare_df(iris, by = "rn", interactive = FALSE, verbose = TRUE), "There are duplicates")
+  expect_message(prepare_df(iris, by = "rn", interactive = FALSE, verbose = TRUE), "Proceeding")
+})
+
+test_that("Abort when by == 'rn' and there are duplicates with interactive = TRUE and proceed = 2", {
+
+  with_mocked_bindings(
+    my_menu = function(...) 2,
+    {
+      expect_error(prepare_df(iris, by = "rn", interactive = TRUE, verbose = FALSE), "abort")
+    }
+  )
+
+})
+
+## Test 4: Non-unique identification with keys
+
+test_that("Warning when keys supplied and there are duplicates with interactive = FALSE", {
+
+  expect_message(prepare_df(survey_data_1m, by = c("country", "year"),
+                            interactive = FALSE, verbose = TRUE),
+                 "not uniquely identify")
+  expect_message(prepare_df(survey_data_1m, by = c("country", "year"),
+                            interactive = FALSE, verbose = TRUE),
+                 "Proceeding")
+
+})
+
+test_that("Warning when keys supplied and there are duplicates with interactive = TRUE", {
+
+  # Proceeding
+  with_mocked_bindings(
+    my_menu = function(...) 1,
+    {
+      expect_message(prepare_df(survey_data_1m, by = c("country", "year"),
+                                interactive = TRUE, verbose = TRUE), "do not uniquely")
+    }
+  )
+
+  # Not proceeding
+  with_mocked_bindings(
+    my_menu = function(...) 2,
+    {
+      expect_error(prepare_df(survey_data_1m, by = c("country", "year"),
+                                interactive = TRUE, verbose = TRUE), "aborted")
+    }
+  )
+
+})
+
+
+
+
+
+
+## Test 5: Detection of duplicate column names
 test_that("Function detects duplicate column names", {
   df <- data.frame(a = 1:3, a = 4:6, check.names = FALSE)
   expect_error(prepare_df(df, by = "a"), "Duplicate column names found")
 })
 
-# Test 5: Conversion of factors to characters
+# Test 6: Conversion of factors to characters
 test_that("Factors are converted to characters", {
   df <- data.frame(a = 1:3, b = as.factor(c("one", "two", "three")))
   result <- prepare_df(df, by = "a", factor_to_char = TRUE)
@@ -231,9 +294,13 @@ test_that("pair_columns returns correct pairs", {
 # get_keys_or_default -----
 test_that("get_keys_or_default returns rn (default) if NULL", {
   result <- get_keys_or_default(NULL, "rn")
-
   expect_equal(result, "rn")
+
+  result2 <- get_keys_or_default("key1", "rn")
+  expect_equal(result2, "key1")
 })
+
+
 
 # equal_with_tolerance() ----
 test_that("Tolerance works correctly", {
@@ -282,6 +349,17 @@ test_that("creates new myrror_object from datasets", {
   expect_true("myrror" %in% class(result))
 })
 
+# Test 5: One dataset provided only
+test_that("aborts if only one dataset provided", {
+  expect_error(
+    get_correct_myrror_object(NULL, survey_data, NULL,
+                              by = c('country', 'year'),
+                              by.x = c('country', 'year'),
+                              by.y = c('country', 'year'),
+                              verbose = FALSE),
+    "You need to provide a")
+})
+
 # clear_last_myrror_object() ----
 test_that("clear_last_myrror_object clears the environment", {
   # Setup: Ensure an object exists in the environment
@@ -318,6 +396,37 @@ test_that("check_join_type() returns correct join type",{
                                by.x = c("country", "year"), by.y = c("country", "year")), "m:m")
 
 
+})
+
+test_that("check_join_type returns a list when return_match = TRUE", {
+
+
+  expect_type(check_join_type(survey_data, survey_data_1m,
+                               by.x = c("country", "year"),
+                              by.y = c("country", "year"),
+                              return_match = TRUE), "list")
+
+})
+
+
+# my_menu ----
+test_that("my_menu works", {
+  with_mocked_bindings(
+    my_menu = function(...) 2,
+    {
+      expect_equal(my_menu("Question", c("Option 1", "Option 2")), 2)
+    }
+  )
+})
+
+# my_readline ----
+test_that("my_readline works", {
+  with_mocked_bindings(
+    my_readline = function(...) "",
+    {
+      expect_equal(my_readline("Question"), "")
+    }
+  )
 })
 
 

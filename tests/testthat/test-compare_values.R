@@ -1,14 +1,18 @@
-# 1. compare_values() takes two dataframes or a myrror object ----
+# Set-up -----------------------------------------------------------------------
+withr::local_options(list(myrror.interactive = FALSE,
+                          myrror.verbose = FALSE))
+
+# 1. compare_values() takes two data frames or a myrror object ----
 test_that("compare_values() takes two dataframes or a myrror_object", {
 
   # Clear Environment
   clear_last_myrror_object()
 
-  # Empty or single dataframe
+  # Empty or single dataframe returns error
   expect_error(compare_values())
   expect_error(compare_values(iris))
 
-  # Two dataframes or a myrror_object
+  # Two dataframes or a myrror_object is accepted
   mo <- create_myrror_object(iris, iris_var1)
   expect_no_error(compare_values(iris, iris_var1))
   expect_no_error(compare_values(myrror_object = mo))
@@ -19,7 +23,7 @@ test_that("compare_values() takes two dataframes or a myrror_object", {
 })
 
 
-# 2. compare_values() returns NULL if simple and no differences ----
+# 2. compare_values() returns NULL if "simple" and no differences ----
 
 test_that("compare_values() returns NULL if simple and no differences", {
 
@@ -53,11 +57,6 @@ test_that("compare_values() returns a simple compare_values item if differences"
 # 5. compare_values() returns correct object with multiple keys ----
 
 test_that("compare_values() returns the correct myrror_object with multiple keys", {
-
-  # survey_data_2_mod <- survey_data_2 |>
-  #   fmutate(COUNTRY = country,
-  #                     YEAR = year)|>
-  #   fselect(-country, -year)
 
 
   mod <- compare_values(survey_data_2_cap, survey_data, by=c("COUNTRY" = "country",

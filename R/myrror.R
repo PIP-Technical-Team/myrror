@@ -54,10 +54,8 @@ myrror <- function(dfx,
                    extract_diff_values = TRUE,
                    factor_to_char = TRUE,
                    interactive = getOption("myrror.interactive"),
+                   verbose = getOption("myrror.verbose"),
                    tolerance = getOption("myrror.tolerance")
-                   #verbose = getOption("myrror.verbose")
-                   # not needed: no instance in which we call myrror() without args.
-                   # verbose is only needed to inform the user that it takes the stored myrror_object.
                    ) {
 
   # 0. Name storage ----
@@ -78,7 +76,8 @@ myrror <- function(dfx,
                                         by.x = by.x,
                                         by.y = by.y,
                                         factor_to_char = factor_to_char,
-                                        interactive = interactive)
+                                        interactive = interactive,
+                                        verbose = verbose)
   ## Store within myrror_object
   myrror_object$name_dfx <- name_dfx
   myrror_object$name_dfy <- name_dfy

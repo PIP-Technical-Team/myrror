@@ -57,7 +57,7 @@ print.myrror <- function(x, ...) {
 
     # Prompt the User to go ahead if x$interactive == TRUE:
     if (x$interactive) {
-      response <- readline(prompt = "Press ENTER to continue or type 'q' to stop: ")
+      response <- my_readline(prompt = "Press ENTER to continue or type 'q' to stop: ")
       if (tolower(response) == "q") {
         cli::cli_alert_success("End of Myrror Report")
         return(invisible(x))
@@ -90,7 +90,7 @@ print.myrror <- function(x, ...) {
 
     # Prompt the User to go ahead if x$interactive == TRUE:
     if (x$interactive) {
-      response <- readline(prompt = "Press ENTER to continue or type 'q' to stop: ")
+      response <- my_readline(prompt = "Press ENTER to continue or type 'q' to stop: ")
       if (tolower(response) == "q") {
         cli::cli_alert_success("End of Myrror Report")
         return(invisible(x))
@@ -121,7 +121,7 @@ print.myrror <- function(x, ...) {
 
     # Prompt the User to go ahead if x$interactive == TRUE:
     if (x$interactive) {
-      response <- readline(prompt = "Press ENTER to continue or type 'q' to stop: ")
+      response <- my_readline(prompt = "Press ENTER to continue or type 'q' to stop: ")
       if (tolower(response) == "q") {
         cli::cli_alert_success("End of Myrror Report")
         return(invisible(x))
@@ -148,7 +148,7 @@ print.myrror <- function(x, ...) {
 
         # Prompt the User to go ahead if x$interactive == TRUE:
         if (x$interactive) {
-          response <- readline(prompt = "Press ENTER to continue or type 'q' to stop: ")
+          response <- my_readline(prompt = "Press ENTER to continue or type 'q' to stop: ")
           if (tolower(response) == "q") {
             cli::cli_alert_success("End of Myrror Report")
             return(invisible(x))
