@@ -3,7 +3,7 @@
 \name{check_df}
 \alias{check_df}
 \title{Check if the df arguments are valid,
-makes them into a data.frame if they are a list.}
+makes them into a data.frame if they are a list. Internal function.}
 \usage{
 check_df(df)
 }
@@ -12,9 +12,6 @@ check_df(df)
 }
 \description{
 Check if the df arguments are valid,
-makes them into a data.frame if they are a list.
+makes them into a data.frame if they are a list. Internal function.
 }
-\examples{
-check_df(iris)
-
-}
+\keyword{internal}

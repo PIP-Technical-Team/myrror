@@ -15,8 +15,8 @@
 
 
 
-#' Extract Different Values - User-facing - List format
-#' Function to extract rows with different values between two dataframes.
+#' Extract Different Values
+#' Function to extract rows with different values between two data frames.
 #'
 #'
 #' @inheritParams myrror
@@ -49,7 +49,8 @@ extract_diff_values <- function(dfx = NULL,
                                 by.y = NULL,
                                 output = c("simple", "full", "silent"),
                                 tolerance = 1e-7,
-                                verbose = TRUE) {
+                                verbose = getOption("myrror.verbose"),
+                                interactive = getOption("myrror.interactive")) {
 
   # 1. Arguments check ----
   output <- match.arg(output)
@@ -99,8 +100,8 @@ extract_diff_values <- function(dfx = NULL,
 
 
 
-#' Extract Different Values - User-facing - Table format
-#' Function to extract rows with different values between two dataframes.
+#' Extract Different Values in Table Format
+#' Function to extract rows with different values between two data frames.
 #'
 #' @inheritParams myrror
 #' @param myrror_object myrror object from [create_myrror_object]
@@ -132,7 +133,8 @@ extract_diff_table <- function(dfx = NULL,
                                by.y = NULL,
                                output = c("simple", "full", "silent"),
                                tolerance = 1e-7,
-                               verbose = TRUE) {
+                               verbose = getOption("myrror.verbose"),
+                               interactive = getOption("myrror.interactive")) {
 
   # 1. Arguments check ----
   output <- match.arg(output)
@@ -148,7 +150,10 @@ extract_diff_table <- function(dfx = NULL,
   myrror_object$extract_diff_values <- extract_diff_int(myrror_object,
                                                         tolerance = tolerance)
 
-  # Check if results are empty and adjust accordingly
+  # 5. Save to package environment ----
+  rlang::env_bind(.myrror_env, last_myrror_object = myrror_object)
+
+  # 6. Check if results are empty and adjust accordingly
   if(length(myrror_object$extract_diff_values) == 0) {
     if(output == "simple") {
       return(NULL)  # Return NULL for "simple" if no differences are found
@@ -157,7 +162,7 @@ extract_diff_table <- function(dfx = NULL,
     #} # need to think about whether I want to keep this option instead of printing out the mo.
   }
 
-  # 5. Output ----
+  # 7. Output ----
 
   ## Handle the output type
   switch(output,
@@ -189,7 +194,7 @@ extract_diff_table <- function(dfx = NULL,
 #' 2. diff_table
 #'
 #'
-#'
+#' @keywords internal
 extract_diff_int <- function(myrror_object = NULL,
                              tolerance = 1e-07) {
 
@@ -199,7 +204,7 @@ extract_diff_int <- function(myrror_object = NULL,
 
   matched_data <- myrror_object$merged_data_report$matched_data
 
-  keys <- myrror_object$merged_data_report$keys
+  keys <- myrror_object$set_by.x
 
   # Check if results are empty and adjust accordingly
   if(length(compare_values_object) == 0) {
@@ -222,11 +227,12 @@ extract_diff_int <- function(myrror_object = NULL,
       column_x <- paste0(variable, ".x")
       column_y <- paste0(variable, ".y")
 
+
       result <- df |>
         fsubset(count > 0) |>
         fselect(-count) |>
-        _[, c(.SD, list(indexes = unlist(indexes))), .SDcols = "diff"] |>
-        fmutate(indexes = as.character(indexes)) |>
+        _[, .(indexes = unlist(indexes)), by = .(diff)] |>
+        fmutate(indexes = as.character(indexes))|>
         collapse::join(matched_data |>
                          fselect(c("rn", keys, column_x, column_y)),
                        on = c("indexes" = "rn"),
@@ -244,15 +250,23 @@ extract_diff_int <- function(myrror_object = NULL,
 
   # 3. Table option ----
   diff_table <- rowbind(compare_values_object, idcol = "variable") |>
-    fsubset(count > 0) |>
-    fselect(-count) |>
-    # please check
-    _[, c(.SD, list(indexes = unlist(indexes))), .SDcols = "diff"] |>
+     fsubset(count > 0) |>
+     fselect(-count) |>
+       _[, .(indexes = unlist(indexes)), by = .(diff, variable)] |>
     fmutate(indexes = as.character(indexes)) |>
     collapse::join(matched_data,
                    on = c("indexes" = "rn"),
                    how = "left",
-                   verbose = 0)
+                   verbose = 0) |>
+      fselect(-row_index, -.joyn)
+
+
+    ## order columns
+    priority_cols <- setdiff(c("diff", "variable", "indexes", keys), "rn")
+    remaining_cols <- setdiff(names(diff_table), priority_cols)
+    sorted_remaining_cols <- sort(remaining_cols)
+    new_order <- c(priority_cols, sorted_remaining_cols)
+    setcolorder(diff_table, new_order)
 
 
   # 4. Store and Return ----

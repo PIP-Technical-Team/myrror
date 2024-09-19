@@ -13,7 +13,8 @@ Imports:
     data.table (>= 1.15.4),
     collapse,
     joyn,
-    rlang
+    rlang,
+    utils
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
@@ -22,8 +23,12 @@ Suggests:
     knitr,
     rmarkdown,
     testthat (>= 3.0.0),
-    withr
+    withr,
 Config/testthat/edition: 3
 URL: https://giorgiacek.github.io/myrror/
-Config/Needs/website: rmarkdown
+Config/Needs/website: 
+  rmarkdown,
+  tidyverse,
+  gapminder,
+  DT
 VignetteBuilder: knitr

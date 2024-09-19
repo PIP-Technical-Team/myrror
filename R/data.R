@@ -108,6 +108,32 @@
 #' @source Modified `iris` dataset.
 "iris_var5"
 
+#' Iris Dataset Variation 6
+#' @format A `data.frame` with 146 rows and 5 variables:
+#' \describe{
+#' \item{Sepal.Length}{Numeric, Sepal length in cm.}
+#' \item{Sepal.Width}{Numeric, Sepal width in cm.}
+#' \item{Petal.Length}{Numeric, Petal length in cm.}
+#' \item{Petal.Width}{Numeric, Petal width in cm.}
+#' \item{Species}{Factor with levels: "setosa","versicolor","virginica".}
+#' }
+#'
+#' @source Modified `iris` dataset.
+"iris_var6"
+
+#' Iris Dataset Variation 7
+#' @format A `data.frame` with 146 rows and 5 variables:
+#' \describe{
+#' \item{Sepal.Length}{Numeric, Sepal length in cm.}
+#' \item{Sepal.Width}{Numeric, Sepal width in cm.}
+#' \item{Petal.Length}{Numeric, Petal length in cm.}
+#' \item{Petal.Width}{Numeric, Petal width in cm.}
+#' \item{Species}{Factor with levels: "setosa","versicolor","virginica".}
+#' }
+#'
+#' @source Modified `iris` dataset.
+"iris_var7"
+
 #' Survey Data
 #' A country-year level dataset with 15 rows and 6 variables. 2 countries,
 #' 4 years, and 4 additional variables.
@@ -200,6 +226,61 @@
 #' }
 #' @source Simulated data.
 "survey_data_6"
+
+#' Survey Data Variation All
+#' @format A `data.table` with 12 rows and 6 variables:
+#' \describe{
+#' \item{country}{Factor with levels: "A", "B".}
+#' \item{year}{Numeric, with values: 2010-2017.}
+#' \item{variable1}{Numeric.}
+#' \item{variable2}{Numeric.}
+#' \item{variable3}{Numeric.}
+#' }
+#' @source Simulated data.
+"survey_data_all"
+
+#' Survey Data 1:m Variation 1
+#' @format A `data.table` with 36 rows and 6 variables:
+#' \describe{
+#' \item{country}{Factor with levels: "A", "B".}
+#' \item{year}{Numeric, with values: 2010-2017.}
+#' \item{variable1}{Numeric.}
+#' \item{variable2}{Numeric.}
+#' \item{variable3}{Numeric.}
+#' \item{variable4}{Numeric.}
+#' }
+#' @source Variation of `survey_data` with non-unique ids and a 1:m relationship between ids and values.
+"survey_data_1m"
+
+
+#' Survey Data 1:m Variation 2
+#' @format A `data.table` with 36 rows and 6 variables:
+#' \describe{
+#' \item{country}{Factor with levels: "A", "B".}
+#' \item{year}{Numeric, with values: 2010-2017.}
+#' \item{variable1}{Numeric.}
+#' \item{variable2}{Numeric.}
+#' \item{variable3}{Numeric.}
+#' \item{variable4}{Numeric.}
+#' }
+#' @source Variation of `survey_data` with non-unique ids and a 1:m relationship between ids and values.
+"survey_data_1m_2"
+
+#' Survey Data m:1
+#' @format A `data.table` with 15 rows and 6 variables:
+#' \describe{
+#' \item{country}{Factor with levels: "A", "B".}
+#' \item{year}{Numeric, with values: 2010-2017.}
+#' \item{variable1}{Numeric.}
+#' \item{variable2}{Numeric.}
+#' \item{variable3}{Numeric.}
+#' \item{variable4}{Numeric.}
+#' }
+#' @source Variation of `survey_data` with non-unique ids and a m:1 relationship between ids and values.
+"survey_data_m1"
+
+
+
 
 
 

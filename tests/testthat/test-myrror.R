@@ -60,14 +60,14 @@ test_that("function errors correctly with NULL inputs", {
 
 # Test feature flags
 test_that("compare type is skipped when disabled", {
-  dfx <- dfy <- data.frame(a = 1:10)
+  dfx <- dfy <- data.frame(a = 1:10, b = 1:10)
   result <- myrror(dfx, dfy, compare_type = FALSE)
   expect_null(result$compare_type)
 })
 
 # Test tolerance
 test_that("tolerance is respected", {
-  dfx <- dfy <- data.frame(a = c(1, 1.0000001))
+  dfx <- dfy <- data.frame(a = c(1, 1.0000001), b = c(1,3))
   result <- myrror(dfx, dfy, tolerance = 0)
   expect_true(all(result$compare_values$a$diff != "change_in_value"))
   result <- myrror(dfx, dfy, tolerance = 1e-6)
@@ -76,14 +76,14 @@ test_that("tolerance is respected", {
 
 # Environment tests
 test_that("object is saved to environment", {
-  dfx <- dfy <- data.frame(a = 1:10)
+  dfx <- dfy <- data.frame(a = 1:10, b=1:10)
   myrror(dfx, dfy)
   expect_true(exists("last_myrror_object", envir = .myrror_env))
 })
 
 # Output verification
 test_that("returned object has correct properties", {
-  dfx <- dfy <- data.frame(a = 1:10)
+  dfx <- dfy <- data.frame(a = 1:10, b=1:10)
   result <- myrror(dfx, dfy, interactive = TRUE)
   expect_true(result$interactive)
   expect_type(result, "list")

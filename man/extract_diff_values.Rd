@@ -2,8 +2,8 @@
 % Please edit documentation in R/extract_diff_values.R
 \name{extract_diff_values}
 \alias{extract_diff_values}
-\title{Extract Different Values - User-facing - List format
-Function to extract rows with different values between two dataframes.}
+\title{Extract Different Values
+Function to extract rows with different values between two data frames.}
 \usage{
 extract_diff_values(
   dfx = NULL,
@@ -14,7 +14,8 @@ extract_diff_values(
   by.y = NULL,
   output = c("simple", "full", "silent"),
   tolerance = 1e-07,
-  verbose = TRUE
+  verbose = getOption("myrror.verbose"),
+  interactive = getOption("myrror.interactive")
 )
 }
 \arguments{
@@ -35,13 +36,16 @@ extract_diff_values(
 \item{tolerance}{numeric, default to 1e-7.}
 
 \item{verbose}{logical: If \code{TRUE} additional information will be displayed.}
+
+\item{interactive}{logical: If \code{TRUE}, print S3 method for myrror objects
+displays by chunks. If \code{FALSE}, everything will be printed at once.}
 }
 \value{
 list object with two items: diff_list and diff_table
 }
 \description{
-Extract Different Values - User-facing - List format
-Function to extract rows with different values between two dataframes.
+Extract Different Values
+Function to extract rows with different values between two data frames.
 }
 \examples{
 

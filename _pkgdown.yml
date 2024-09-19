@@ -1,4 +1,53 @@
 url: https://giorgiacek.github.io/myrror/
 template:
   bootstrap: 5
+  bootswatch: cosmo
+
+articles:
+- title: Usage
+  navbar: ~
+  contents:
+    - articles/myrror_overview
+    - articles/extract_diff_values
+    - articles/extract_diff_rows
+
+reference:
+  - title: "Main Functions"
+    contents:
+      - myrror
+      - print.myrror
+
+  - title: "Auxiliary Functions"
+    contents:
+      - compare_type
+      - compare_values
+      - extract_diff_values
+      - extract_diff_table
+      - extract_diff_rows
+      - clear_last_myrror_object
+
+  - title: "Package Datasets: simulated survey data."
+    contents:
+      - survey_data
+      - survey_data_2
+      - survey_data_2_cap
+      - survey_data_3
+      - survey_data_4
+      - survey_data_5
+      - survey_data_6
+      - survey_data_all
+      - survey_data_1m
+      - survey_data_1m_2
+      - survey_data_m1
+
+  - title: "Package Datasets: iris data variations."
+    contents:
+      - iris_var1
+      - iris_var2
+      - iris_var3
+      - iris_var4
+      - iris_var5
+      - iris_var6
+      - iris_var7
+
 

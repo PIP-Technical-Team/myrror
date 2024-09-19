@@ -7,6 +7,8 @@
 # 2. NaN introduced, Old Variable with Different Value, Row Order Shuffled.
 # 3. Same Variable with Different Name and One Value Missing, Mixed Type Column.
 # 4. Categorical Variable Levels Modified, Duplicate Rows, and Subset of Columns with Altered Scale.
+# 5. Columns with different type and column with different values.
+# 6. Missing rows.
 
 # Load the iris dataset
 data("iris")
@@ -40,6 +42,12 @@ iris_var5 <- iris
 iris_var5$Sepal.Length <- as.character(iris_var5$Sepal.Length)
 iris_var5$Sepal.Length[1] <- "1000"
 
+# Variation 6: Missing rows start
+iris_var6 <- iris[-c(1, 2, 3, 4), ]
+
+# Variation 7: Missing rows end
+iris_var7 <- iris[-c(147, 148, 149, 150), ]
+
 
 # Ensuring the variations are data.tables if needed
 iris_var1 <- as.data.table(iris_var1)
@@ -47,6 +55,8 @@ iris_var2 <- as.data.table(iris_var2)
 iris_var3 <- as.data.table(iris_var3)
 iris_var4 <- as.data.table(iris_var4)
 iris_var5 <- as.data.table(iris_var5)
+iris_var6 <- as.data.table(iris_var6)
+iris_var7 <- as.data.table(iris_var7)
 
 
 
@@ -55,5 +65,7 @@ usethis::use_data(iris_var2, overwrite = TRUE)
 usethis::use_data(iris_var3, overwrite = TRUE)
 usethis::use_data(iris_var4, overwrite = TRUE)
 usethis::use_data(iris_var5, overwrite = TRUE)
+usethis::use_data(iris_var6, overwrite = TRUE)
+usethis::use_data(iris_var7, overwrite = TRUE)
 
 

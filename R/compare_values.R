@@ -1,5 +1,5 @@
 # compare_values ---------------------------------------------------------------
-#' Compare values of matched datasets
+#' Function to compare values of matched data frames.
 #'
 #' @inheritParams myrror
 #' @param myrror_object myrror object from [create_myrror_object]
@@ -31,6 +31,10 @@
 #' compare_values(survey_data, survey_data_2_cap,
 #'                by.x = c('country', 'year'), by.y = c('COUNTRY', 'YEAR'))
 #'
+#' # 6. Using existing myrror object created by myrror():
+#' myrror(survey_data, survey_data_2, by=c('country', 'year'))
+#' compare_values()
+#'
 compare_values <- function(dfx = NULL,
                            dfy = NULL,
                            myrror_object = NULL,
@@ -41,6 +45,18 @@ compare_values <- function(dfx = NULL,
                            interactive = getOption("myrror.interactive"),
                            verbose = getOption("myrror.verbose"),
                            tolerance = getOption("myrror.tolerance")) {
+
+  # 0. Name storage ----
+
+  if (!is.null(dfx) && !is.null(dfy)) { # because it could be that it is run empty/with myrror_object only
+    ## Store for print
+    name_dfx <- deparse(substitute(dfx))
+    name_dfy <- deparse(substitute(dfy))
+
+    ## Store for operations within myrror()
+    attr(dfx, "df_name") <- name_dfx
+    attr(dfy, "df_name") <- name_dfy
+  }
 
   # 1. Arguments check ----
   output <- match.arg(output)
@@ -120,15 +136,17 @@ compare_values_int <- function(myrror_object = NULL,
 
   # 4. Get changes ----
   value_to_na <- get_value_to_na(myrror_object$merged_data_report$matched_data, pairs_list)
-  names(value_to_na) <- gsub(".x", "", pairs$pairs$col_x)
+
+  names(value_to_na) <- gsub("\\.x$", "", pairs$pairs$col_x)
 
   na_to_value <- get_na_to_value(myrror_object$merged_data_report$matched_data, pairs_list)
-  names(na_to_value) <- gsub(".x", "", pairs$pairs$col_x)
+
+  names(na_to_value) <- gsub("\\.x$", "", pairs$pairs$col_x)
 
   change_in_value <- get_change_in_value(myrror_object$merged_data_report$matched_data,
                                          pairs_list,
                                          tolerance = tolerance)
-  names(na_to_value) <- gsub(".x", "", pairs$pairs$col_x)
+  names(na_to_value) <- gsub("\\.x$", "", pairs$pairs$col_x)
 
   # 5. Combine all changes ----
   all_changes <- mapply(function(x, y, z) {

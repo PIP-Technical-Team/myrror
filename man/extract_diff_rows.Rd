@@ -2,8 +2,8 @@
 % Please edit documentation in R/extract_diff_rows.R
 \name{extract_diff_rows}
 \alias{extract_diff_rows}
-\title{Extract Different Rows - User-facing
-Function to extract missing or new rows from comparing two dataframes.}
+\title{Extract Different Rows
+Function to extract missing or new rows from comparing two data frames.}
 \usage{
 extract_diff_rows(
   dfx = NULL,
@@ -14,7 +14,8 @@ extract_diff_rows(
   by.y = NULL,
   output = c("simple", "full", "silent"),
   tolerance = 1e-07,
-  verbose = TRUE
+  verbose = getOption("myrror.verbose"),
+  interactive = getOption("myrror.interactive")
 )
 }
 \arguments{
@@ -35,13 +36,16 @@ extract_diff_rows(
 \item{tolerance}{numeric, default to 1e-7.}
 
 \item{verbose}{logical: If \code{TRUE} additional information will be displayed.}
+
+\item{interactive}{logical: If \code{TRUE}, print S3 method for myrror objects
+displays by chunks. If \code{FALSE}, everything will be printed at once.}
 }
 \value{
 data.table object with the rows that are missing or new.
 }
 \description{
-Extract Different Rows - User-facing
-Function to extract missing or new rows from comparing two dataframes.
+Extract Different Rows
+Function to extract missing or new rows from comparing two data frames.
 }
 \examples{
 
@@ -51,6 +55,7 @@ extract_diff_rows()
 
 # 2. Standard report, with new data:
 extract_diff_rows(survey_data, survey_data_2, by=c('country', 'year'))
+
 
 # 3. Toggle tolerance:
 extract_diff_rows(survey_data, survey_data_2, by=c('country', 'year'),

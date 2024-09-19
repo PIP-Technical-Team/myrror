@@ -1,5 +1,7 @@
 
-#' Compare type of variables
+#' Function to compare type of variables of matched data frames.
+#'
+#' This function compares the types of the columns in the two data frames.
 #'
 #' @inheritParams myrror
 #' @param myrror_object myrror object from [create_myrror_object]
@@ -26,6 +28,9 @@
 #' compare_type(survey_data, survey_data_2_cap,
 #'              by.x = c('country', 'year'), by.y = c('COUNTRY', 'YEAR'))
 #'
+#' # 5. Using existing myrror object created by myrror():
+#' myrror(survey_data, survey_data_2, by=c('country', 'year'))
+#' compare_type()
 #'
 compare_type <- function(dfx = NULL,
                          dfy = NULL,
@@ -37,6 +42,20 @@ compare_type <- function(dfx = NULL,
                          interactive = getOption("myrror.interactive"),
                          verbose = getOption("myrror.verbose")
                          ){
+
+  # 0. Name storage ----
+
+  if (!is.null(dfx) && !is.null(dfy)) { # because it could be that it is run empty/with myrror_object only
+    ## Store for print
+    name_dfx <- deparse(substitute(dfx))
+    name_dfy <- deparse(substitute(dfy))
+
+    ## Store for operations within myrror()
+    attr(dfx, "df_name") <- name_dfx
+    attr(dfy, "df_name") <- name_dfy
+  }
+
+
   # 1. Arguments check ----
   output <- match.arg(output)
 
@@ -82,6 +101,7 @@ compare_type <- function(dfx = NULL,
 #'
 #' @return data.table object
 #'
+#' @keywords internal
 compare_type_int <- function(myrror_object = NULL){
 
   # 1. Pair columns ----

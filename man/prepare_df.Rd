@@ -2,9 +2,15 @@
 % Please edit documentation in R/myrror.utils.R
 \name{prepare_df}
 \alias{prepare_df}
-\title{Prepares dataset for join, internal function.}
+\title{Prepares dataset for joyn::joyn(). Internal function.}
 \usage{
-prepare_df(df, by = NULL, factor_to_char = TRUE)
+prepare_df(
+  df,
+  by = NULL,
+  factor_to_char = TRUE,
+  interactive = getOption("myrror.interactive"),
+  verbose = getOption("myrror.verbose")
+)
 }
 \arguments{
 \item{df}{data.frame or data.table}
@@ -12,12 +18,17 @@ prepare_df(df, by = NULL, factor_to_char = TRUE)
 \item{by}{character vector}
 
 \item{factor_to_char}{logical}
+
+\item{interactive}{logical}
+
+\item{verbose}{logical}
 }
 \description{
-Prepares dataset for join, internal function.
+Prepares dataset for joyn::joyn(). Internal function.
 }
 \examples{
-dataset <- data.frame(a = 1:10, b = letters[1:10])
-prepare_df(dataset, by = "a")
+# dataset <- data.frame(a = 1:10, b = letters[1:10])
+# prepare_df(dataset, by = "a")
 
 }
+\keyword{internal}

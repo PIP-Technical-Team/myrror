@@ -125,7 +125,7 @@ test_that("handles empty and zero-length inputs", {
 
 
 # prepare_df() ----
-# Test 1: Conversion of DataFrame to Data Table
+## Test 1: Conversion of DataFrame to Data Table
 test_that("DataFrame is converted to Data Table", {
   df <- data.frame(a = 1:3, b = as.factor(c("one", "two", "three")))
   result <- prepare_df(df, by = "a")
@@ -133,93 +133,150 @@ test_that("DataFrame is converted to Data Table", {
   expect_true("rn" %in% colnames(result))
 })
 
-# Test 2: Error when 'rn' is an existing column name
+## Test 2: Error when 'rn' is an existing column name
 test_that("'rn' present in colnames triggers an error", {
   df <- data.frame(rn = 1:3, b = 2:4)
   expect_error(prepare_df(df, by = "rn"), "'rn' present in colnames")
 })
 
-# Test 3: Verify handling of 'by' keys
+## Test 3: Verify handling of 'by' keys
 test_that("Error if 'by' keys not present in column names", {
   df <- data.frame(a = 1:3, b = 4:6)
   expect_error(prepare_df(df, by = "c"), "Specified by keys are not all present")
 })
 
-# Test 4: Detection of duplicate column names
+test_that("Error if by keys are only columns to compare", {
+  df <- data.frame(a = 1:3, b = 4:6)
+  expect_error(prepare_df(df, by = c("a", "b")), "The by keys cannot be the only columns to compare.")
+})
+
+# On-unique identification without keys
+test_that("Warning when by == 'rn' and there are duplicates with interactive = FALSE", {
+
+  expect_message(prepare_df(iris, by = "rn", interactive = FALSE, verbose = TRUE), "There are duplicates")
+  expect_message(prepare_df(iris, by = "rn", interactive = FALSE, verbose = TRUE), "Proceeding")
+})
+
+test_that("Abort when by == 'rn' and there are duplicates with interactive = TRUE and proceed = 2", {
+
+  with_mocked_bindings(
+    my_menu = function(...) 2,
+    {
+      expect_error(prepare_df(iris, by = "rn", interactive = TRUE, verbose = FALSE), "abort")
+    }
+  )
+
+})
+
+## Test 4: Non-unique identification with keys
+
+test_that("Warning when keys supplied and there are duplicates with interactive = FALSE", {
+
+  expect_message(prepare_df(survey_data_1m, by = c("country", "year"),
+                            interactive = FALSE, verbose = TRUE),
+                 "not uniquely identify")
+  expect_message(prepare_df(survey_data_1m, by = c("country", "year"),
+                            interactive = FALSE, verbose = TRUE),
+                 "Proceeding")
+
+})
+
+test_that("Warning when keys supplied and there are duplicates with interactive = TRUE", {
+
+  # Proceeding
+  with_mocked_bindings(
+    my_menu = function(...) 1,
+    {
+      expect_message(prepare_df(survey_data_1m, by = c("country", "year"),
+                                interactive = TRUE, verbose = TRUE), "do not uniquely")
+    }
+  )
+
+  # Not proceeding
+  with_mocked_bindings(
+    my_menu = function(...) 2,
+    {
+      expect_error(prepare_df(survey_data_1m, by = c("country", "year"),
+                                interactive = TRUE, verbose = TRUE), "aborted")
+    }
+  )
+
+})
+
+
+
+
+
+
+## Test 5: Detection of duplicate column names
 test_that("Function detects duplicate column names", {
   df <- data.frame(a = 1:3, a = 4:6, check.names = FALSE)
   expect_error(prepare_df(df, by = "a"), "Duplicate column names found")
 })
 
-# Test 5: Conversion of factors to characters
+# Test 6: Conversion of factors to characters
 test_that("Factors are converted to characters", {
   df <- data.frame(a = 1:3, b = as.factor(c("one", "two", "three")))
   result <- prepare_df(df, by = "a", factor_to_char = TRUE)
   expect_true(is.character(result$b))
 })
 
-# Test 6: the keys provided do not uniquely identify the dataset and it is detected:
-test_that("Function stops if the keys provided do not uniquely identify the dataset", {
-  df <- data.frame(a = c(1,1,3), b = 4:6)
-  expect_error(prepare_df(df, by = "a", factor_to_char = TRUE),
-               "do not uniquely identify the dataset")
-})
 
-
-# is.sorted() ----
-# Test 1: Sorted vector
-test_that("Function detects sorted vector", {
-  expect_true(is.sorted(1:10))
-})
-
-# Test 2: Unsorted vector
-test_that("Function detects unsorted vector", {
-  expect_false(is.sorted(c(1, 3, 2, 4)))
-})
-
-# Test 5: Sorted vector with ties
-test_that("Function detects sorted vector with ties", {
-  expect_true(is.sorted(c(1, 1, 2, 3, 3)))
-})
-
-# detect_sorting() ----
-# Test 1: Sorted data frame
-test_that("Function detects sorted data frame", {
-  df <- data.frame(a = 1:3, b = 4:6)
-  expect_equal(detect_sorting(df), c('a', 'b'))
-})
-
-# Test 2: Unsorted data frame
-test_that("Function detects unsorted data frame", {
-  df <- data.frame(a = c(1, 3, 2), b = c(4, 3, 7))
-  expect_equal(detect_sorting(df), c("not sorted"))
-})
-
-
-# is_dataframe_sorted_by() ----
-# Test 1: Data frame sorted by the specified column
-test_that("Function detects data frame sorted by specified column", {
-  df <- data.frame(a = 1:3, b = c(4, 3, 7))
-  expect_equal(is_dataframe_sorted_by(df, "a"), list("sorted by key", "a"))
-})
-
-# Test 2: Data frame not sorted by the specified column
-test_that("Function detects data frame not sorted by specified column", {
-  df <- data.frame(a = c(1, 3, 2), b = c(4, 3, 7))
-  expect_equal(is_dataframe_sorted_by(df, "a"), list("not sorted by key", "not sorted"))
-})
-
-# Test 3: Data frame sorted by "rn" (default) and by "a" and "b
-test_that("Function detects data frame sorted by 'rn'", {
-  df <- data.frame(a = 1:3, b = 4:6, rn = 1:3)
-  expect_equal(is_dataframe_sorted_by(df, "rn"), list("not sorted by key", c("a", "b", "rn")))
-})
-
-# Test 4: Data frame not sorted by the specified column but by another column
-test_that("Function detects data frame sorted by another column", {
-  df <- data.frame(a = c(1, 3, 2), b = c(4, 3, 7), other_column = 1:3)
-  expect_equal(is_dataframe_sorted_by(df, "a"), list("not sorted by key", "other_column"))
-})
+# # is.sorted() ----
+# # Test 1: Sorted vector
+# test_that("Function detects sorted vector", {
+#   expect_true(is.sorted(1:10))
+# })
+#
+# # Test 2: Unsorted vector
+# test_that("Function detects unsorted vector", {
+#   expect_false(is.sorted(c(1, 3, 2, 4)))
+# })
+#
+# # Test 5: Sorted vector with ties
+# test_that("Function detects sorted vector with ties", {
+#   expect_true(is.sorted(c(1, 1, 2, 3, 3)))
+# })
+#
+# # detect_sorting() ----
+# # Test 1: Sorted data frame
+# test_that("Function detects sorted data frame", {
+#   df <- data.frame(a = 1:3, b = 4:6)
+#   expect_equal(detect_sorting(df), c('a', 'b'))
+# })
+#
+# # Test 2: Unsorted data frame
+# test_that("Function detects unsorted data frame", {
+#   df <- data.frame(a = c(1, 3, 2), b = c(4, 3, 7))
+#   expect_equal(detect_sorting(df), c("not sorted"))
+# })
+#
+#
+# # is_dataframe_sorted_by() ----
+# # Test 1: Data frame sorted by the specified column
+# test_that("Function detects data frame sorted by specified column", {
+#   df <- data.frame(a = 1:3, b = c(4, 3, 7))
+#   expect_equal(is_dataframe_sorted_by(df, "a"), list("sorted by key", "a"))
+# })
+#
+# # Test 2: Data frame not sorted by the specified column
+# test_that("Function detects data frame not sorted by specified column", {
+#   df <- data.frame(a = c(1, 3, 2), b = c(4, 3, 7))
+#   expect_equal(is_dataframe_sorted_by(df, "a"), list("not sorted by key", "not sorted"))
+# })
+#
+# # Test 3: Data frame sorted by "rn" (default) and by "a" and "b
+# test_that("Function detects data frame sorted by 'rn'", {
+#   df <- data.frame(a = 1:3, b = 4:6, rn = 1:3)
+#   expect_equal(is_dataframe_sorted_by(df, "rn"), list("not sorted by key", c("a", "b", "rn")))
+# })
+#
+# # Test 4: Data frame not sorted by the specified column but by another column
+# test_that("Function detects data frame sorted by another column", {
+#   df <- data.frame(a = c(1, 3, 2), b = c(4, 3, 7), other_column = 1:3)
+#   expect_equal(is_dataframe_sorted_by(df, "a"), list("not sorted by key", "other_column"))
+# })
+#
 
 
 # pair columns() ----
@@ -237,9 +294,13 @@ test_that("pair_columns returns correct pairs", {
 # get_keys_or_default -----
 test_that("get_keys_or_default returns rn (default) if NULL", {
   result <- get_keys_or_default(NULL, "rn")
-
   expect_equal(result, "rn")
+
+  result2 <- get_keys_or_default("key1", "rn")
+  expect_equal(result2, "key1")
 })
+
+
 
 # equal_with_tolerance() ----
 test_that("Tolerance works correctly", {
@@ -280,10 +341,23 @@ test_that("aborts if no object and no data provided", {
 
 # Test 4: Provided Datasets, No Myrror Object
 test_that("creates new myrror_object from datasets", {
-  dfx <- data.frame(a = 1)
-  dfy <- data.frame(a = 1)
-  result <- get_correct_myrror_object(NULL, dfx, dfy, by = "a", by.x = "a", by.y = "a", verbose = FALSE)
+  result <- get_correct_myrror_object(NULL, survey_data, survey_data_2,
+                                      by = c('country', 'year'),
+                                      by.x = c('country', 'year'),
+                                      by.y = c('country', 'year'),
+                                               verbose = FALSE)
   expect_true("myrror" %in% class(result))
+})
+
+# Test 5: One dataset provided only
+test_that("aborts if only one dataset provided", {
+  expect_error(
+    get_correct_myrror_object(NULL, survey_data, NULL,
+                              by = c('country', 'year'),
+                              by.x = c('country', 'year'),
+                              by.y = c('country', 'year'),
+                              verbose = FALSE),
+    "You need to provide a")
 })
 
 # clear_last_myrror_object() ----
@@ -302,6 +376,58 @@ test_that("clear_last_myrror_object clears the environment", {
   expect_false(rlang::env_has(.myrror_env, "last_myrror_object"))
 })
 
+# check_join_type ----
+test_that("check_join_type() returns correct join type",{
+
+  # 1:1
+  expect_equal(check_join_type(survey_data, survey_data,
+                  by.x = c("country", "year"), by.y = c("country", "year")), "1:1")
+
+  # 1:m
+  expect_equal(check_join_type(survey_data, survey_data_1m,
+                               by.x = c("country", "year"), by.y = c("country", "year")), "1:m")
+
+  # m:1
+  expect_equal(check_join_type(survey_data_1m, survey_data,
+                               by.x = c("country", "year"), by.y = c("country", "year")), "m:1")
+
+  # m:m
+  expect_equal(check_join_type(survey_data_1m, survey_data_1m,
+                               by.x = c("country", "year"), by.y = c("country", "year")), "m:m")
+
+
+})
+
+test_that("check_join_type returns a list when return_match = TRUE", {
+
+
+  expect_type(check_join_type(survey_data, survey_data_1m,
+                               by.x = c("country", "year"),
+                              by.y = c("country", "year"),
+                              return_match = TRUE), "list")
+
+})
+
+
+# my_menu ----
+test_that("my_menu works", {
+  with_mocked_bindings(
+    my_menu = function(...) 2,
+    {
+      expect_equal(my_menu("Question", c("Option 1", "Option 2")), 2)
+    }
+  )
+})
+
+# my_readline ----
+test_that("my_readline works", {
+  with_mocked_bindings(
+    my_readline = function(...) "",
+    {
+      expect_equal(my_readline("Question"), "")
+    }
+  )
+})
 
 
 

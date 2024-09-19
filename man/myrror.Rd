@@ -15,6 +15,7 @@ myrror(
   extract_diff_values = TRUE,
   factor_to_char = TRUE,
   interactive = getOption("myrror.interactive"),
+  verbose = getOption("myrror.verbose"),
   tolerance = getOption("myrror.tolerance")
 )
 }
@@ -39,6 +40,8 @@ myrror(
 
 \item{interactive}{logical: If \code{TRUE}, print S3 method for myrror objects
 displays by chunks. If \code{FALSE}, everything will be printed at once.}
+
+\item{verbose}{logical: If \code{TRUE}, print messages.}
 
 \item{tolerance}{numeric, default to 1e-7.}
 }
@@ -69,5 +72,8 @@ myrror(survey_data, survey_data_2, by=c('country', 'year'), factor_to_char = FAL
 # 5. Turn off compare_type:
 myrror(survey_data, survey_data_2, by=c('country', 'year'), compare_type = FALSE)
 ## Same can be done for compare_values and extract_diff_values.
+
+# 6. Set tolerance:
+myrror(survey_data, survey_data_2, by=c('country', 'year'), tolerance = 1e-5)
 
 }

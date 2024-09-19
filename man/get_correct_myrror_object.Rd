@@ -2,7 +2,7 @@
 % Please edit documentation in R/myrror.utils.R
 \name{get_correct_myrror_object}
 \alias{get_correct_myrror_object}
-\title{Get correct myrror object}
+\title{Get correct myrror object. Internal function.}
 \usage{
 get_correct_myrror_object(
   myrror_object,
@@ -12,6 +12,7 @@ get_correct_myrror_object(
   by.x,
   by.y,
   verbose,
+  interactive,
   ...
 )
 }
@@ -27,6 +28,9 @@ get_correct_myrror_object(
 \item{by.y}{character, key to be used for dfy.}
 
 \item{verbose}{logical: If \code{TRUE} additional information will be displayed.}
+
+\item{interactive}{logical: If \code{TRUE}, print S3 method for myrror objects
+displays by chunks. If \code{FALSE}, everything will be printed at once.}
 
 \item{...}{other arguments parsed to parent function.}
 }

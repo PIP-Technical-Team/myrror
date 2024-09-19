@@ -1,8 +1,8 @@
 # Objective: similar to extract_diff_values() but instead of returning the
 # differences in values, it returns the rows missing from dfy or new in dfy.
 
-#' Extract Different Rows - User-facing
-#' Function to extract missing or new rows from comparing two dataframes.
+#' Extract Different Rows
+#' Function to extract missing or new rows from comparing two data frames.
 #'
 #'
 #' @inheritParams myrror
@@ -23,6 +23,7 @@
 #' # 2. Standard report, with new data:
 #' extract_diff_rows(survey_data, survey_data_2, by=c('country', 'year'))
 #'
+#'
 #' # 3. Toggle tolerance:
 #' extract_diff_rows(survey_data, survey_data_2, by=c('country', 'year'),
 #'                     tolerance = 1e-5)
@@ -35,7 +36,8 @@ extract_diff_rows <- function(dfx = NULL,
                               by.y = NULL,
                               output = c("simple", "full", "silent"),
                               tolerance = 1e-7,
-                              verbose = TRUE){
+                              verbose = getOption("myrror.verbose"),
+                              interactive = getOption("myrror.interactive")){
   # 1. Arguments check ----
   output <- match.arg(output)
 
@@ -45,19 +47,30 @@ extract_diff_rows <- function(dfx = NULL,
   # 3. Create object if not supplied ----
   myrror_object <- do.call(get_correct_myrror_object, args)
 
-  # 4. Run extract_values_int() ----
-  myrror_object$extract_diff_rows <- myrror_object$merged_data_report$unmatched_data
+  # 4. Extract different rows using unmatched_data ----
+
+
+  diff_rows <- myrror_object$merged_data_report$unmatched_data |>
+    fmutate(.joyn = ifelse(.joyn == "x", "dfx", "dfy")) |>
+    frename(df = .joyn)|>
+    fselect(-row_index)|>
+    colorder(df)
+
+  myrror_object$extract_diff_rows <- diff_rows
+
+  # 5. Save to package environment ----
+  rlang::env_bind(.myrror_env, last_myrror_object = myrror_object)
 
   # Check if results are empty and adjust accordingly
-  if(length(myrror_object$extract_diff_rows) == 0) {
+  if(nrow(myrror_object$extract_diff_rows) == 0) {
     if(output == "simple") {
-      return(NULL)  # Return NULL for "simple" if no differences are found
-    } else {
-      myrror_object$extract_diff_rows <- list(message = "No differences in rows.")
-    }
+      return(NULL)}  # Return NULL for "simple" if no differences are found
+    # } else {
+    #   myrror_object$extract_diff_rows <- list(message = "No differences in rows.")
+    # }
   }
 
-  # 5. Output ----
+  # 6. Output ----
 
   ## Handle the output type
   switch(output,
