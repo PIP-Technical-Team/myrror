@@ -12,6 +12,7 @@
 #' @param factor_to_char TRUE or FALSE, default to TRUE.
 #' @param interactive logical: If `TRUE`, print S3 method for myrror objects
 #' displays by chunks. If `FALSE`, everything will be printed at once.
+#' @param verbose logical: If `TRUE`, print messages.
 #' @param tolerance numeric, default to 1e-7.
 #'
 #'
