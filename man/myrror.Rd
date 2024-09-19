@@ -15,6 +15,7 @@ myrror(
   extract_diff_values = TRUE,
   factor_to_char = TRUE,
   interactive = getOption("myrror.interactive"),
+  verbose = getOption("myrror.verbose"),
   tolerance = getOption("myrror.tolerance")
 )
 }
@@ -39,6 +40,8 @@ myrror(
 
 \item{interactive}{logical: If \code{TRUE}, print S3 method for myrror objects
 displays by chunks. If \code{FALSE}, everything will be printed at once.}
+
+\item{verbose}{logical: If \code{TRUE}, print messages.}
 
 \item{tolerance}{numeric, default to 1e-7.}
 }
