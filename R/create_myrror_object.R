@@ -66,7 +66,36 @@ create_myrror_object <- function(dfx,
   datasets_report$dfx_char <- dfx_char
   datasets_report$dfy_char <- dfy_char
 
-  # 5. Prepare Datasets for Join ----
+  # 5. No keys check ----
+  ## If no keys supplied
+  if ("rn" %in% set_by$set_by.x) {
+
+    # Find possible keys for both datasets
+    possible_ids_dfx <- temp_possible_ids(dfx)
+    possible_ids_dfy <- temp_possible_ids(dfy)
+
+    # Check if the row numbers match
+    if (dfx_char$nrow == dfy_char$nrow) {
+
+      # Check if possible keys are found in both datasets
+      if (length(possible_ids_dfx) > 0 & length(possible_ids_dfy) > 0) {
+        cli::cli_alert_info("No keys supplied, but possible keys found in both datasets.")
+        cli::cli_alert_info("Possible keys found in {.field {dfx_name}}: {.val {possible_ids_dfx}}")
+        cli::cli_alert_info("Possible keys found in {.field {dfy_name}}: {.val {possible_ids_dfy}}")
+        cli::cli_alert_info("Consider using these keys for the comparison. The comparison will go ahead using row numbers.")
+
+        # If no possible keys are found in either dataset
+      } else if (length(possible_ids_dfx) == 0 & length(possible_ids_dfy) == 0){
+        cli::cli_alert_info("No keys supplied, and no possible keys found. The comparison will go ahead using row numbers.")
+      }
+
+      # If the row numbers do not match, abort the process
+    } else {
+      cli::cli_abort("Different row numbers and no keys supplied. The comparison will be aborted.")
+    }
+  }
+
+  # 6. Prepare Datasets for Join ----
   # - make into data.table.
   # - make into valid column names.
   # - check that by variable are in the colnames of the given dataset.
@@ -88,9 +117,9 @@ create_myrror_object <- function(dfx,
                              factor_to_char = factor_to_char,
                              interactive = interactive,
                              verbose = verbose)
-  # 5. Pre-merge checks ----
+  # 7. Pre-merge checks ----
 
-  ## 5.1 Check that set_by$by.x is not in the non-key columns of dfy and vice-versa.
+  ## 7.1 Check that set_by$by.x is not in the non-key columns of dfy and vice-versa ----
   # Note: this step needs to be done here because the column names might
   # change in the prepare_df() function.
   if (any(set_by$by.x %in% setdiff(names(prepared_dfy), set_by$by.y))) {
@@ -100,7 +129,7 @@ create_myrror_object <- function(dfx,
     cli::cli_abort("by.y is part of the non-index columns of dfx.")
   }
 
-  ## 5.2 Create dynamic 'by' argument for joyn (giving a name).
+  ## 7.2 Create dynamic 'by' argument for joyn (giving a name) ----
   on_join_arg <- set_by$by.y
   names(on_join_arg) <- set_by$by.x
 
@@ -113,7 +142,7 @@ create_myrror_object <- function(dfx,
   by_joyn_arg <- paste(unname(by_joyn_arg))
 
 
-  ## 5.3 Check join type
+  ## 7.3 Check join type ----
   ## TO DO: Next version we will add options for 1:m and m:1 joins.
   match_type <- check_join_type(prepared_dfx,
                                 prepared_dfy,
@@ -204,7 +233,7 @@ create_myrror_object <- function(dfx,
   ## Store
   merged_data_report <- list()
 
-  # 7. Get matched and non-matched ----
+  # 8. Get matched and non-matched ----
   matched_data <- merged_data |> fsubset(.joyn == 'x & y')
   unmatched_data <- merged_data |> fsubset(.joyn != 'x & y')
 
@@ -216,11 +245,11 @@ create_myrror_object <- function(dfx,
   merged_data_report$colnames_dfx <- colnames(prepared_dfx)
   merged_data_report$colnames_dfy <- colnames(prepared_dfy)
 
-  # 8. Pair columns ----
+  # 9. Pair columns ----
   pairs <- pair_columns(merged_data_report)
 
 
-  # 8. Set-up output structure ----
+  # 10. Set-up output structure ----
   ## GC Note: this is a draft, we might reduce the number of items stored.
   output <- list(
     original_call = original_call,
@@ -244,7 +273,7 @@ create_myrror_object <- function(dfx,
     interactive = getOption("myrror.interactive")
   )
 
-  # 8. Return myrror object (invisible) ----
+  # 11. Return myrror object (invisible) ----
   return(invisible(structure(output,
                              class = "myrror")))
 
