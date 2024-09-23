@@ -5,7 +5,7 @@
 #' @param verbose logical
 #'
 #' @return vector of possible ids
-#'
+#' @keywords internal
 temp_possible_ids <- function(df,
                          max_combination_size = 5,
                          verbose = FALSE) {
