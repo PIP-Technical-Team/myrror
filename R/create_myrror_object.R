@@ -66,34 +66,33 @@ create_myrror_object <- function(dfx,
   datasets_report$dfx_char <- dfx_char
   datasets_report$dfy_char <- dfy_char
 
+
   # 5. No keys check ----
   ## If no keys supplied
-  if ("rn" %in% set_by$set_by.x) {
+  suggested_ids_dfx <- no_keys_ids_check(dfx, set_by)
+  suggested_ids_dfy <- no_keys_ids_check(dfy, set_by)
 
-    # Find possible keys for both datasets
-    possible_ids_dfx <- temp_possible_ids(dfx)
-    possible_ids_dfy <- temp_possible_ids(dfy)
 
-    # Check if the row numbers match
-    if (dfx_char$nrow == dfy_char$nrow) {
+  # 3. Check if the row numbers match
+  if (nrow(dfx) == nrow(dfy)) {
 
-      # Check if possible keys are found in both datasets
-      if (length(possible_ids_dfx) > 0 & length(possible_ids_dfy) > 0) {
-        cli::cli_alert_info("No keys supplied, but possible keys found in both datasets.")
-        cli::cli_alert_info("Possible keys found in {.field {dfx_name}}: {.val {possible_ids_dfx}}")
-        cli::cli_alert_info("Possible keys found in {.field {dfy_name}}: {.val {possible_ids_dfy}}")
-        cli::cli_alert_info("Consider using these keys for the comparison. The comparison will go ahead using row numbers.")
+    # 4. Check if possible keys are found in both datasets
+    if (length(suggested_ids_dfx) > 0 & length(suggested_ids_dfy) > 0) {
+      cli::cli_alert_info("No keys supplied, but possible keys found in both datasets.")
+      cli::cli_alert_info("Possible keys found in {.field {dfx_name}}: {.val {suggested_ids_dfx}}")
+      cli::cli_alert_info("Possible keys found in {.field {dfy_name}}: {.val {suggested_ids_dfy}}")
+      cli::cli_alert_info("Consider using these keys for the comparison. The comparison will go ahead using row numbers.")
 
-        # If no possible keys are found in either dataset
-      } else if (length(possible_ids_dfx) == 0 & length(possible_ids_dfy) == 0){
-        cli::cli_alert_info("No keys supplied, and no possible keys found. The comparison will go ahead using row numbers.")
-      }
-
-      # If the row numbers do not match, abort the process
-    } else {
-      cli::cli_abort("Different row numbers and no keys supplied. The comparison will be aborted.")
+      # If no possible keys are found in either dataset
+    } else if (length(suggested_ids_dfx) == 0 & length(suggested_ids_dfy) == 0){
+      cli::cli_alert_info("No keys supplied, and no possible keys found. The comparison will go ahead using row numbers.")
     }
+
+    # If the row numbers do not match, abort the process
+  } else {
+    cli::cli_abort("Different row numbers and no keys supplied. The comparison will be aborted.")
   }
+
 
   # 6. Prepare Datasets for Join ----
   # - make into data.table.
@@ -111,12 +110,14 @@ create_myrror_object <- function(dfx,
                              factor_to_char = factor_to_char,
                              interactive = interactive,
                              verbose = verbose)
+  print("made it here")
 
   prepared_dfy <- prepare_df(dfy,
                              by = set_by$by.y,
                              factor_to_char = factor_to_char,
                              interactive = interactive,
                              verbose = verbose)
+
   # 7. Pre-merge checks ----
 
   ## 7.1 Check that set_by$by.x is not in the non-key columns of dfy and vice-versa ----

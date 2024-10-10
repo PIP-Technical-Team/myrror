@@ -15,13 +15,13 @@ library(myrror)
 
 # Introduction
 
-In this article we give a complete overview of the function `myrror()`. We will go through the main steps of the comparison, and show how to use the auxiliary functions to extract differences between two data frames. In the first example, we will look at the case where both datasets are **identified**: this means that the user has supplied a set of keys to align the rows of the two data frames. In the second example, we will look at the case where the datasets are not identified: this means that the user-supplied keys do not uniquely identify the rows of the two data frames.
+In this article we give a complete overview of the function `myrror()`. We will go through the main steps of the comparison, and show how to use the auxiliary functions to extract differences between two data frames. In the first example, we will look at the case where both datasets are **identified**: this means that the user has supplied a set of keys to align the rows of the two data frames. In the second example, we will look at the case where the datasets are **not identified**: this means that the user-supplied keys do not uniquely identify the rows of the two data frames.
 
 # Identified Data
 
 For the first comparison, we will use the `survey_data` and `survey_data_all` datasets. `survey_data_all` is a variation of `survey_data` which contains all possible issues that can arise during the comparison: differences in values, a variable with a change in class, a different number of columns, and a different number of rows. Additionally, the two datasets have different keys names, which can be supplied to the function like so:
 
-```{r identified-myrror, eval=FALSE, include=FALSE}
+```{r identified-myrror, eval=FALSE}
 myrror(survey_data, survey_data_all, by = c('country' = "COUNTRY", "year" = "YEAR"),
        interactive = TRUE)
 
@@ -33,7 +33,7 @@ When running the function in interactive mode, the user will fo through this scr
 
 ## General Overview
 
-The first part of a `myrror()` report shows the general characteristics of the two dataframes, including the number of rows and columns, the keys used for the comparison (`by` argument) , whether there are missing rows or columns and if so their number and name:
+The first part of a `myrror()` report shows the general characteristics of the two dataframes, including the number of rows and columns, the keys used for the comparison (`by` argument) , whether there are missing rows or columns, and if so, their number and name:
 
 ![](images/myrror-survey_all-general.png)
 At the end of the general overview, a ℹ️ **Note** suggests to the user to run `extract_diff_rows()` to see the differences in the number of rows. More on this function in the article [Extract Different Rows](extract_diff_rows.html).
@@ -83,6 +83,7 @@ If the match between `dfx` and `dfy` is **not 1:1** (either 1:m or m:1), the use
 
 
 Note that if the match is **m:m**, comparison will be aborted by default. 
+After this series of warnings, the comparison proceeds as before. Again, we want to re-iterate that in the case of non-identified datasets, the comparison is done by row number (`rn`). This means that *row alignment is based on position within the dataset*, not on the content of the row, which might result in `myrror()` reporting more discrepancies than if the rows were aligned based on row content. This is also why we always suggest the user to provide keys, if possible. 
 
 
 

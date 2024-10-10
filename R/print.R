@@ -75,7 +75,7 @@ print.myrror <- function(x, ...) {
 
     } else {
       n_diff_type_columns <- length(x$compare_type$same_class) - sum(x$compare_type$same_class)
-      cli::cli_alert_warning("{n_diff_type_columns} shared column(s) have different classe(s):")
+      cli::cli_alert_warning("{n_diff_type_columns} shared column(s) have different class(es):")
       cli::cli_text("\n")
       print(x$compare_type |> fsubset(same_class == FALSE) |> fselect(variable, class_x, class_y))
       cli::cli_text("\n")

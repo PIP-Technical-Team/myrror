@@ -190,12 +190,16 @@ prepare_df <- function(df,
   ### 5.1 Get name
   df_name <- attr(df, "df_name")
 
+
   ## 5.2 Check uniqueness of rows when  by == 'rn'
   if ('rn' %in% by){
     all_columns_no_rn <- setdiff(names(dt), c("rn", "row_index"))
-    copies <- joyn::is_id(dt, by = all_columns_no_rn, verbose = FALSE,
+    copies <- joyn::is_id(dt,
+                          by = all_columns_no_rn,
+                          verbose = FALSE,
                           return_report = TRUE) |>
       fsubset(copies > 1)
+
 
     if (nrow(copies) >= 1) {
       if (verbose) {
@@ -633,3 +637,17 @@ my_menu <- function(...) {
 my_readline <- function(...) {
   readline(...)
 }
+
+
+# 12. Digest hatch and skip if same ----
+compare_digested <- function(dfx,dfy){
+  digest_dfx <- digest::digest(dfx)
+  digest_dfy <- digest::digest(dfy)
+
+  if (digest_dfx == digest_dfy) {
+    return(TRUE)
+  } else {
+    return(FALSE)
+  }
+}
+

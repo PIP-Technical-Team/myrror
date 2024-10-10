@@ -109,7 +109,7 @@ gapminder_var1 <- gapminder |>
          gdpPercap = ifelse(country == 'Colombia', gdpPercap/10, gdpPercap)) # Errors in gdpPercap
 ```
 
-If we run `extract_diff_values()` with the `output = "full"` and `interactive = TRYE` arguments, we will get a full report of the comparison. Note that this time, the two data sets are compared using the unique identifiers `country` and `year`, which will be displayed next to the `indexes` in the extracted rows:
+If we run `extract_diff_values()` with the `output = "full"` and `interactive = TRUE` arguments, we will get a full report of the comparison. Note that this time, the two data sets are compared using the unique identifiers `country` and `year`, which will be displayed next to the `indexes` in the extracted rows:
 
 ![](images/extract_diff_values_gapminder.gif) Alternatively, if we run the function with `output = "simple"` we will get a list of `data.table`s, one per variable that differs between the two data frames:
 

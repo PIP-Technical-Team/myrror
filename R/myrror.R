@@ -59,7 +59,15 @@ myrror <- function(dfx,
                    tolerance = getOption("myrror.tolerance")
                    ) {
 
-  # 0. Name storage ----
+
+  # 0. Digest and exit if identical ----
+  digested_identical <- compare_digested(dfx, dfy)
+  if (digested_identical) {
+    cli::cli_alert_success("The two datasets are identical.")
+    return(invisible(NULL))
+  }
+
+  # 1. Name storage ----
 
   ## Store for print
   name_dfx <- deparse(substitute(dfx))
@@ -70,7 +78,7 @@ myrror <- function(dfx,
   attr(dfy, "df_name") <- name_dfy
 
 
-  # 1. Create myrror object ----
+  # 2. Create myrror object ----
   myrror_object <- create_myrror_object(dfx = dfx,
                                         dfy = dfy,
                                         by = by,
@@ -83,33 +91,33 @@ myrror <- function(dfx,
   myrror_object$name_dfx <- name_dfx
   myrror_object$name_dfy <- name_dfy
 
-  # 2. Compare Type ----
+  # 3. Compare Type ----
   if (compare_type) {
     myrror_object <- compare_type(myrror_object = myrror_object,
                                   output = "silent")
   }
 
-  # 3. Compare Values ----
+  # 4. Compare Values ----
   if (compare_values) {
     myrror_object <- compare_values(myrror_object = myrror_object,
                                     output = "silent",
                                     tolerance = tolerance)
   }
 
-  # 4. Extract different values ----
+  # 5. Extract different values ----
   if (extract_diff_values) {
     myrror_object <- extract_diff_values(myrror_object = myrror_object,
                                          output = "silent",
                                          tolerance = tolerance)
   }
 
-  # 5. Save whether interactive or not ----
+  # 6. Save whether interactive or not ----
   myrror_object$interactive <- interactive
 
-  # 6. Save to package environment ----
+  # 7. Save to package environment ----
   rlang::env_bind(.myrror_env, last_myrror_object = myrror_object)
 
-  # 6. Return myrror_object ----
+  # 8. Return myrror_object ----
   return(myrror_object)
 
 }
