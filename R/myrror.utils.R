@@ -194,11 +194,13 @@ prepare_df <- function(df,
   ## 5.2 Check uniqueness of rows when  by == 'rn'
   if ('rn' %in% by){
     all_columns_no_rn <- setdiff(names(dt), c("rn", "row_index"))
-    copies <- joyn::is_id(dt,
+
+
+    copies <- temp_is_id(dt,
                           by = all_columns_no_rn,
                           verbose = FALSE,
-                          return_report = TRUE) |>
-      fsubset(copies > 1)
+                          return_report = TRUE)|>
+      fsubset(copies > 1 & percent != "100%")
 
 
     if (nrow(copies) >= 1) {
@@ -221,7 +223,7 @@ prepare_df <- function(df,
   }
 
   ### 5.3 Check uniqueness of rows by key (by = key) (does not turn on when by = 'rn')
-  if (isFALSE(joyn::is_id(dt, by, verbose = FALSE))) {
+  if (isFALSE(temp_is_id(dt, by, verbose = FALSE))) {
     if (verbose) {
       cli::cli_alert_warning("The by keys provided ({.val {by}}) do not uniquely identify the dataset ({.field {df_name}}).")
     }

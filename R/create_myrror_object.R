@@ -69,8 +69,10 @@ create_myrror_object <- function(dfx,
 
   # 5. No keys check ----
   ## If no keys supplied
-  suggested_ids_dfx <- no_keys_ids_check(dfx, set_by)
-  suggested_ids_dfy <- no_keys_ids_check(dfy, set_by)
+  if ("rn" %in% set_by$by.x) {
+
+    suggested_ids_dfx <- suggested_ids(dfx)
+    suggested_ids_dfy <- suggested_ids(dfy)
 
 
   # 3. Check if the row numbers match
@@ -92,6 +94,7 @@ create_myrror_object <- function(dfx,
   } else {
     cli::cli_abort("Different row numbers and no keys supplied. The comparison will be aborted.")
   }
+  }
 
 
   # 6. Prepare Datasets for Join ----
@@ -110,7 +113,7 @@ create_myrror_object <- function(dfx,
                              factor_to_char = factor_to_char,
                              interactive = interactive,
                              verbose = verbose)
-  print("made it here")
+
 
   prepared_dfy <- prepare_df(dfy,
                              by = set_by$by.y,
@@ -151,8 +154,8 @@ create_myrror_object <- function(dfx,
                                 by.y = set_by$by.y)
 
 
-  is_id_dfx <- joyn::is_id(prepared_dfx, by = set_by$by.x, return_report = TRUE, verbose = FALSE)
-  is_id_dfy <- joyn::is_id(prepared_dfy, by = set_by$by.y, return_report = TRUE, verbose = FALSE)
+  is_id_dfx <- temp_is_id(prepared_dfx, by = set_by$by.x, return_report = TRUE, verbose = FALSE)
+  is_id_dfy <- temp_is_id(prepared_dfy, by = set_by$by.y, return_report = TRUE, verbose = FALSE)
 
 
 

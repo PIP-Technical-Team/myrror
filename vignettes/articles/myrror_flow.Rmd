@@ -1,0 +1,29 @@
+---
+title: "Myrror Process Flow"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(myrror)
+```
+
+## With keys supplied
+
+If keys (`by` or `by.x` and `by.y`) are supplied by the user, `myrror()` will first check whether the keys uniquely identify the dataset:
+
+### identified
+
+If the keys are supplied and they uniquely identify the dataset, `myrror()` will proceed by joining the two datasets by the keys: 1. If the relationship between the two datasets is 1:1, `myrror()` will proceed by comparing the values of each matched row. 2. If the relationship between the two datasets is not 1:1 (i.e. there are multiple rows in one dataset that match a single row in the other dataset), `myrror()` will ask the user whether they want to proceed. If the user chooses to proceed, `myrror()` will join the two datasets by the keys and then compare the values of each matched row. 3. If the relationship between the two datasets is m:m, `myrror()` will abort the comparison by default.
+
+### non-identified
+
+If the keys are supplied but they do not uniquely identify the dataset, `myrror()` will inform the user and ask whether they want to proceed. If the user chooses to proceed, `myrror()` will join the two datasets by the keys and then compare the values of each matched row. As above, if the relationship between the two datasets is not 1:1, `myrror()` will ask the user whether they want to proceed. If the user chooses to proceed, `myrror()` will join the two datasets by the keys and then compare the values of each matched row. If the relationship between the two datasets is m:m, `myrror()` will abort the comparison.
+If the user chooses not to proceed, `myrror()` will abort the comparison. As above, `myrror()` will abort the comparison if the relationship between the two datasets is m:m.
+
+## Without keys supplied
