@@ -314,7 +314,7 @@ test_that("Tolerance works correctly", {
 
 # Test 1: Myrror Object Provided
 test_that("returns the provided myrror_object", {
-  test_object <- create_myrror_object(iris, iris_var1)
+  test_object <- create_myrror_object(iris, iris_var2)
   result <- get_correct_myrror_object(myrror_object = test_object,
                                       dfx = NULL, dfy = NULL, by = NULL, by.x = NULL, by.y = NULL, verbose = FALSE)
   expect_identical(result, test_object)
@@ -322,10 +322,10 @@ test_that("returns the provided myrror_object", {
 
 # Test 2: No Myrror Object, Environment Has Last Myrror Object
 test_that("retrieves last myrror_object from environment", {
-  myrror(iris, iris_var1)
+  myrror(iris, iris_var2)
   result <- get_correct_myrror_object(NULL, NULL, NULL, NULL, NULL, NULL,
                                       verbose = TRUE)
-  expect_identical(result, myrror(iris, iris_var1))
+  expect_identical(result, myrror(iris, iris_var2))
   rlang::env_unbind(.myrror_env, "last_myrror_object")
 })
 
@@ -363,7 +363,7 @@ test_that("aborts if only one dataset provided", {
 # clear_last_myrror_object() ----
 test_that("clear_last_myrror_object clears the environment", {
   # Setup: Ensure an object exists in the environment
-  myrror_object <- create_myrror_object(iris, iris_var1)
+  myrror_object <- create_myrror_object(iris, iris_var2)
   rlang::env_bind(.myrror_env, last_myrror_object = myrror_object)
 
   # Precondition check: Ensure the object is present

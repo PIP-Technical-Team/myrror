@@ -18,7 +18,7 @@ test_that("extract_diff_rows returns invisible myrror object for 'silent' output
   dfx <- data.frame(a = 1:5, b = 6:10)
   dfy <- data.frame(a = 1:5, b = c(6, 7, 8, 10, 10))
   result <- capture.output(
-    val <- extract_diff_rows(dfx, dfy, output = "silent")
+    val <- extract_diff_rows(dfx, dfy, by = 'a', output = "silent")
   )
   expect_type(val, "list")
   expect_equal(length(result), 0)
@@ -27,8 +27,8 @@ test_that("extract_diff_rows returns invisible myrror object for 'silent' output
 
 # Test verbose messages
 test_that("verbose mode informs about used myrror_object", {
-  mo <- myrror(iris, iris_var1)
-  expect_message(extract_diff_rows(),
+  mo <- myrror(survey_data, survey_data_4, by=c('country', 'year'))
+  expect_message(extract_diff_rows(verbose = TRUE),
                  "Last myrror object used for comparison.")
 })
 

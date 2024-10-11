@@ -33,7 +33,10 @@ if (getRversion() >= "2.15.1") {
       ".",
       "df",
       "..vars",
-      "..combo"# not sure why feeling this might be an issue
+      "..combo",
+      "percent",
+      "..byvar",
+      "n"# not sure why feeling this might be an issue
     ),
     package = utils::packageName()
   )

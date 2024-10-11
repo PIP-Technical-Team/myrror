@@ -21,27 +21,25 @@
 #'
 #' @examples
 #'
-#' # 1. Simple Use Case with interactive output:
-#' myrror(iris, iris_var1)
 #'
-#' # 2. Specifying by, by.x or by.y:
+#' # 1. Specifying by, by.x or by.y:
 #' myrror(survey_data, survey_data_2, by=c('country', 'year'))
 #'
 #' ## These are equivalent:
 #' myrror(survey_data, survey_data_2_cap, by.x=c('country', 'year'), by.y = c('COUNTRY', 'YEAR'))
 #' myrror(survey_data, survey_data_2_cap, by=c('country' = 'COUNTRY', 'year' = 'YEAR'))
 #'
-#' # 3. Turn off interactivity:
+#' # 2. Turn off interactivity:
 #' myrror(survey_data, survey_data_2, by=c('country', 'year'), interactive = FALSE)
 #'
-#' # 4. Turn off factor_to_char (it will treat factors as factors):
+#' # 3. Turn off factor_to_char (it will treat factors as factors):
 #' myrror(survey_data, survey_data_2, by=c('country', 'year'), factor_to_char = FALSE)
 #'
-#' # 5. Turn off compare_type:
+#' # 4. Turn off compare_type:
 #' myrror(survey_data, survey_data_2, by=c('country', 'year'), compare_type = FALSE)
 #' ## Same can be done for compare_values and extract_diff_values.
 #'
-#' # 6. Set tolerance:
+#' # 5. Set tolerance:
 #' myrror(survey_data, survey_data_2, by=c('country', 'year'), tolerance = 1e-5)
 #'
 
@@ -61,8 +59,9 @@ myrror <- function(dfx,
 
 
   # 0. Digest and exit if identical ----
+
   digested_identical <- compare_digested(dfx, dfy)
-  if (digested_identical) {
+  if (digested_identical & !is.null(dfx) & !is.null(dfy)) {
     cli::cli_alert_success("The two datasets are identical.")
     return(invisible(NULL))
   }

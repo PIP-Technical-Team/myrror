@@ -3,10 +3,10 @@
 withr::local_options(list(myrror.interactive = FALSE,
                           myrror.verbose = FALSE))
 
-mo5 <- create_myrror_object(iris, iris_var5)
+mo5 <- create_myrror_object(iris, iris_var5, interactive = FALSE, verbose = FALSE)
 compare_type_object_5 <- compare_type(myrror_object = mo5)
 
-mo1 <- create_myrror_object(iris, iris_var1)
+mo1 <- create_myrror_object(iris, iris_var2, interactive = FALSE, verbose = FALSE)
 compare_type_object_1 <- compare_type(myrror_object = mo1)
 
 
@@ -25,7 +25,7 @@ test_that("compare_type() correctly identifies type", {
 ## 2. compare_type() creates myrror object if not supplied -----------------
 test_that("compare_type() creates myrror object if not supplied", {
 
-  compare_type_object_1_2 <- compare_type(iris, iris_var1)
+  compare_type_object_1_2 <- compare_type(iris, iris_var2)
   expect_equal(compare_type_object_1_2$name_dfx, compare_type_object_1$name_dfx)
   expect_equal(compare_type_object_1_2$name_dfy, compare_type_object_1$name_dfy)
   expect_equal(compare_type_object_1_2$compare_type,
@@ -45,11 +45,11 @@ test_that("compare_type() both df must be provided", {
 ## 4. Correct output when specified ----------------------------------------
 test_that("compare_type() correct output when specified", {
 
-  compare_type_object_1_3 <- compare_type(iris, iris_var1, output = "simple")
+  compare_type_object_1_3 <- compare_type(iris, iris_var2, output = "simple")
   expect_equal(compare_type_object_1_3, compare_type_object_1$compare_type)
 
-  compare_type_object_1_4 <- compare_type(iris, iris_var1, output = "silent")
-  compare_type_object_1_2 <- compare_type(iris, iris_var1)
+  compare_type_object_1_4 <- compare_type(iris, iris_var2, output = "silent")
+  compare_type_object_1_2 <- compare_type(iris, iris_var2)
   expect_equal(compare_type_object_1_4, compare_type_object_1_2)
   expect
 

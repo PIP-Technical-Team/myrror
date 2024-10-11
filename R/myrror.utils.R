@@ -643,6 +643,9 @@ my_readline <- function(...) {
 
 # 12. Digest hatch and skip if same ----
 compare_digested <- function(dfx,dfy){
+
+
+
   digest_dfx <- digest::digest(dfx)
   digest_dfy <- digest::digest(dfy)
 

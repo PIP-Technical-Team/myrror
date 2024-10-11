@@ -14,6 +14,8 @@ temp_freq_table(x, byvar, digits = 1, na.rm = FALSE, freq_var_name = "n")
 \item{digits}{numeric: number of decimal places to display. Default is 1.}
 
 \item{na.rm}{logical: report NA values in frequencies. Default is FALSE.}
+
+\item{freq_var_name}{character: name of the frequency variable. Default is "n".}
 }
 \value{
 data.table with frequencies.
@@ -27,5 +29,5 @@ x4 = data.table(id1 = c(1, 1, 2, 3, 3),
                 id2 = c(1, 1, 2, 3, 4),
                 t   = c(1L, 2L, 1L, 2L, NA_integer_),
                 x   = c(16, 12, NA, NA, 15))
-freq_table(x4, "id1")
+temp_freq_table(x4, "id1")
 }

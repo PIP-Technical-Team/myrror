@@ -13,11 +13,11 @@ test_that("compare_values() takes two dataframes or a myrror_object", {
   expect_error(compare_values(iris))
 
   # Two dataframes or a myrror_object is accepted
-  mo <- create_myrror_object(iris, iris_var1)
-  expect_no_error(compare_values(iris, iris_var1))
+  mo <- create_myrror_object(iris, iris_var2)
+  expect_no_error(compare_values(iris, iris_var2))
   expect_no_error(compare_values(myrror_object = mo))
 
-  df_compare <- compare_values(iris, iris_var1)
+  df_compare <- compare_values(iris, iris_var2)
   mo_compare <- compare_values(myrror_object = mo)
   expect_equal(df_compare$compare_values, mo_compare$compare_values)
 })
@@ -47,7 +47,7 @@ test_that("compare_values() returns a NULL compare_values item if no differences
 
 test_that("compare_values() returns a simple compare_values item if differences", {
 
-  mo <- create_myrror_object(iris, iris_var1)
+  mo <- create_myrror_object(iris, iris_var2)
 
   expect_equal(compare_values(myrror_object = mo, output = "simple"),
                compare_values(myrror_object = mo)$compare_values)
@@ -73,7 +73,7 @@ test_that("compare_values() returns the correct myrror_object with multiple keys
 # 6. compare_values() returns correct output with invisible() ----
 test_that("compare_values() returns correct output with silent", {
 
-  mo <- create_myrror_object(iris, iris_var1)
+  mo <- create_myrror_object(iris, iris_var2)
 
   expect_equal(mo_silent <- compare_values(myrror_object = mo, output = "silent")$compare_values,
                mo_normal <- compare_values(myrror_object = mo)$compare_values)

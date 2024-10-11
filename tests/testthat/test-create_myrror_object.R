@@ -147,7 +147,7 @@ test_that("1:1 join proceeds without user interaction", {
   with_mocked_bindings(
     check_join_type = function(...) "1:1",
     {
-      expect_silent(create_myrror_object(dfx, dfy, interactive = FALSE))
+      expect_silent(create_myrror_object(dfx, dfy, by = 'a', interactive = FALSE))
     }
   )
 })
@@ -159,7 +159,7 @@ test_that("1:m join type does not inform user with interactive = FALSE and verbo
   with_mocked_bindings(
     check_join_type = function(...) "1:m",
     {
-      expect_no_message(create_myrror_object(dfx, dfy, interactive = FALSE, verbose = FALSE))
+      expect_no_message(create_myrror_object(dfx, dfy, by = 'a', interactive = FALSE, verbose = FALSE))
     }
   )
 })
@@ -173,7 +173,7 @@ test_that("1:m join type does not inform user with interactive = TRUE and verbos
     check_join_type = function(...) "1:m",
     my_menu = function(...) 1,
     {
-      expect_no_message(create_myrror_object(dfx, dfy, interactive = TRUE, verbose = FALSE))
+      expect_no_message(create_myrror_object(dfx, dfy, by = 'a', interactive = TRUE, verbose = FALSE))
     }
   )
 })

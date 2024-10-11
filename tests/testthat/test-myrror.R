@@ -76,16 +76,14 @@ test_that("tolerance is respected", {
 
 # Environment tests
 test_that("object is saved to environment", {
-  dfx <- dfy <- data.frame(a = 1:10, b=1:10)
-  myrror(dfx, dfy)
+  myrror(iris, iris_var2)
   expect_true(exists("last_myrror_object", envir = .myrror_env))
 })
 
 # Output verification
 test_that("returned object has correct properties", {
-  dfx <- dfy <- data.frame(a = 1:10, b=1:10)
-  result <- myrror(dfx, dfy, interactive = TRUE)
-  expect_true(result$interactive)
+  result <- myrror(iris, iris_var2, interactive = FALSE, verbose = FALSE)
+  expect_false(result$interactive)
   expect_type(result, "list")
 })
 

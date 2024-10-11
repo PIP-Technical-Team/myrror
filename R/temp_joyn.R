@@ -26,14 +26,14 @@ if (getRversion() >= '2.15.1')
 #'
 #' y <- data.table(id = c("c","b", "c", "a"),
 #'                  y  = c(11L, 15L, 18L, 20L))
-#' is_id(y, by = "id")
-#' is_id(y, by = "id", return_report = TRUE)
+#' temp_is_id(y, by = "id")
+#' temp_is_id(y, by = "id", return_report = TRUE)
 #'
 #' # example with data frame uniquely identified by `by` var
 #'
 #' y1 <- data.table(id = c("1","3", "2", "9"),
 #'                  y  = c(11L, 15L, 18L, 20L))
-#' is_id(y1, by = "id")
+#' temp_is_id(y1, by = "id")
 temp_is_id <- function(dt,
                   by,
                   verbose  = getOption("joyn.verbose", default = FALSE),
@@ -88,6 +88,7 @@ temp_is_id <- function(dt,
 #' @param x  data frame
 #' @param byvar character: name of variable to tabulate. Use Standard evaluation.
 #' @param digits numeric: number of decimal places to display. Default is 1.
+#' @param freq_var_name character: name of the frequency variable. Default is "n".
 #' @param na.rm logical: report NA values in frequencies. Default is FALSE.
 #'
 #' @return data.table with frequencies.
@@ -99,7 +100,7 @@ temp_is_id <- function(dt,
 #'                 id2 = c(1, 1, 2, 3, 4),
 #'                 t   = c(1L, 2L, 1L, 2L, NA_integer_),
 #'                 x   = c(16, 12, NA, NA, 15))
-#' freq_table(x4, "id1")
+#' temp_freq_table(x4, "id1")
 temp_freq_table <- function(x,
                        byvar,
                        digits = 1,
