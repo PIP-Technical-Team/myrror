@@ -8,6 +8,7 @@ articles:
   navbar: ~
   contents:
     - articles/myrror_overview
+    - articles/myrror_flow
     - articles/extract_diff_values
     - articles/extract_diff_rows
 
