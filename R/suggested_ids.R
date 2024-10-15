@@ -3,6 +3,7 @@
 #' @param df data.frame
 #'
 #' @return list with suggested keys/ids (first option and first combo)
+#' @keywords internal
 #'
 suggested_ids <- function(df) {
 

@@ -23,11 +23,4 @@ data.table with frequencies.
 \description{
 tabulate one variable frequencies
 }
-\examples{
-library(data.table)
-x4 = data.table(id1 = c(1, 1, 2, 3, 3),
-                id2 = c(1, 1, 2, 3, 4),
-                t   = c(1L, 2L, 1L, 2L, NA_integer_),
-                x   = c(16, 12, NA, NA, 15))
-temp_freq_table(x4, "id1")
-}
+\keyword{internal}

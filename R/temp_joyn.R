@@ -17,23 +17,7 @@ if (getRversion() >= '2.15.1')
 #' by `by`
 #'
 #' @return logical or data.frame, depending on the value of argument `return_report`
-#' @export
-#'
-#' @examples
-#' library(data.table)
-#'
-#' # example with data frame not uniquely identified by `by` var
-#'
-#' y <- data.table(id = c("c","b", "c", "a"),
-#'                  y  = c(11L, 15L, 18L, 20L))
-#' temp_is_id(y, by = "id")
-#' temp_is_id(y, by = "id", return_report = TRUE)
-#'
-#' # example with data frame uniquely identified by `by` var
-#'
-#' y1 <- data.table(id = c("1","3", "2", "9"),
-#'                  y  = c(11L, 15L, 18L, 20L))
-#' temp_is_id(y1, by = "id")
+#' @keywords internal
 temp_is_id <- function(dt,
                   by,
                   verbose  = getOption("joyn.verbose", default = FALSE),
@@ -92,15 +76,7 @@ temp_is_id <- function(dt,
 #' @param na.rm logical: report NA values in frequencies. Default is FALSE.
 #'
 #' @return data.table with frequencies.
-#' @export
-#'
-#' @examples
-#' library(data.table)
-#' x4 = data.table(id1 = c(1, 1, 2, 3, 3),
-#'                 id2 = c(1, 1, 2, 3, 4),
-#'                 t   = c(1L, 2L, 1L, 2L, NA_integer_),
-#'                 x   = c(16, 12, NA, NA, 15))
-#' temp_freq_table(x4, "id1")
+#' @keywords internal
 temp_freq_table <- function(x,
                        byvar,
                        digits = 1,

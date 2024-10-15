@@ -15,3 +15,4 @@ list with suggested keys/ids (first option and first combo)
 \description{
 Suggested keys/ids
 }
+\keyword{internal}

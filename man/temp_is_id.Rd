@@ -28,19 +28,4 @@ logical or data.frame, depending on the value of argument \code{return_report}
 \description{
 report if dt is uniquely identified by \code{by} var or, if report = TRUE, the duplicates in \code{by} variable
 }
-\examples{
-library(data.table)
-
-# example with data frame not uniquely identified by `by` var
-
-y <- data.table(id = c("c","b", "c", "a"),
-                 y  = c(11L, 15L, 18L, 20L))
-temp_is_id(y, by = "id")
-temp_is_id(y, by = "id", return_report = TRUE)
-
-# example with data frame uniquely identified by `by` var
-
-y1 <- data.table(id = c("1","3", "2", "9"),
-                 y  = c(11L, 15L, 18L, 20L))
-temp_is_id(y1, by = "id")
-}
+\keyword{internal}
