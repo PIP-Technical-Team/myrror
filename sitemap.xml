@@ -6,6 +6,7 @@
 <url><loc>https://giorgiacek.github.io/myrror/articles/extract_diff_values.html</loc></url>
 <url><loc>https://giorgiacek.github.io/myrror/articles/index.html</loc></url>
 <url><loc>https://giorgiacek.github.io/myrror/articles/myrror.html</loc></url>
+<url><loc>https://giorgiacek.github.io/myrror/articles/myrror_flow.html</loc></url>
 <url><loc>https://giorgiacek.github.io/myrror/articles/myrror_overview.html</loc></url>
 <url><loc>https://giorgiacek.github.io/myrror/authors.html</loc></url>
 <url><loc>https://giorgiacek.github.io/myrror/index.html</loc></url>
@@ -40,6 +41,7 @@
 <url><loc>https://giorgiacek.github.io/myrror/reference/pair_columns.html</loc></url>
 <url><loc>https://giorgiacek.github.io/myrror/reference/prepare_df.html</loc></url>
 <url><loc>https://giorgiacek.github.io/myrror/reference/print.myrror.html</loc></url>
+<url><loc>https://giorgiacek.github.io/myrror/reference/suggested_ids.html</loc></url>
 <url><loc>https://giorgiacek.github.io/myrror/reference/survey_data.html</loc></url>
 <url><loc>https://giorgiacek.github.io/myrror/reference/survey_data_1m.html</loc></url>
 <url><loc>https://giorgiacek.github.io/myrror/reference/survey_data_1m_2.html</loc></url>
@@ -51,6 +53,7 @@
 <url><loc>https://giorgiacek.github.io/myrror/reference/survey_data_6.html</loc></url>
 <url><loc>https://giorgiacek.github.io/myrror/reference/survey_data_all.html</loc></url>
 <url><loc>https://giorgiacek.github.io/myrror/reference/survey_data_m1.html</loc></url>
-<url><loc>https://giorgiacek.github.io/myrror/reference/temp_possible_ids.html</loc></url>
+<url><loc>https://giorgiacek.github.io/myrror/reference/temp_freq_table.html</loc></url>
+<url><loc>https://giorgiacek.github.io/myrror/reference/temp_is_id.html</loc></url>
 </urlset>
 
