@@ -25,7 +25,7 @@ check_df <- function(df) {
                        call = NULL)
       })
     } else {
-      cli::cli_abort(c(x = "{.field {df_name}} cannot be converted to a data frame.",
+      cli::cli_abort(c(x = "You supplied a NULL or non-allowed object.",
                        i = "Please supply a data frame or a convertible list."),
                      call = NULL)
     }
@@ -33,14 +33,15 @@ check_df <- function(df) {
 
   # Check if dfx is empty
   if ((!is.null(df) && nrow(df) == 0)) {
-    cli::cli_abort(c(x = "{.field {df_name}} is and empty data frame.",
+    cli::cli_abort(c(x = "You supplied an empty data frame.",
                      i = "Please supply a non-empty data frame or a convertible list"),
                    call = NULL)
   }
 
   return(df)
 
-}
+  }
+
 
 ## 1.2 by.y by.x ----
 #' Check if the by arguments are valid,

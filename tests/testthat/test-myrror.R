@@ -3,15 +3,15 @@
 # CREATE MYRROR OBJECT TESTS ---------------------------------------------------
 # 1. Test that the function stops for NULL inputs
 test_that("function stops for NULL inputs", {
-  expect_error(create_myrror_object(NULL, iris), "cannot be NULL")
-  expect_error(create_myrror_object(iris, NULL), "cannot be NULL")
+  expect_error(create_myrror_object(NULL, iris), "NULL")
+  expect_error(create_myrror_object(iris, NULL), "NULL")
 })
 
 # 2. Test that the function stops for empty data frames
 test_that("function stops for empty data frames", {
   empty_df <- data.frame()
-  expect_error(create_myrror_object(empty_df, iris), "cannot be empty")
-  expect_error(create_myrror_object(iris, empty_df), "cannot be empty")
+  expect_error(create_myrror_object(empty_df, iris), "empty")
+  expect_error(create_myrror_object(iris, empty_df), "empty")
 })
 
 # 3. Test handling of non-data.frame inputs that are lists

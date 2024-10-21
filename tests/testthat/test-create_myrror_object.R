@@ -33,8 +33,8 @@ test_that("create_myrror_object handles NULL inputs", {
   dfx <- create_sample_df()
   dfy <- create_sample_df()
 
-  expect_error(create_myrror_object(NULL, dfy), "cannot be NULL")
-  expect_error(create_myrror_object(dfx, NULL), "cannot be NULL")
+  expect_error(create_myrror_object(NULL, dfy), "NULL")
+  expect_error(create_myrror_object(dfx, NULL), "NULL")
 })
 
 
@@ -52,7 +52,7 @@ test_that("create_myrror_object handles empty data frames", {
   empty_dfx <- data.frame()
   empty_dfy <- data.frame()
 
-  expect_error(create_myrror_object(empty_dfx, empty_dfy), "cannot be empty")
+  expect_error(create_myrror_object(empty_dfx, empty_dfy), "empty data frame")
 })
 
 
@@ -135,7 +135,7 @@ test_that("Correct output structure", {
 
 # 5. Error conditions ----
 test_that("Error handling in input conditions", {
-  expect_error(create_myrror_object(data.frame(), data.frame()), "cannot be empty")
+  expect_error(create_myrror_object(data.frame(), data.frame()), "empty data frame")
 })
 
 

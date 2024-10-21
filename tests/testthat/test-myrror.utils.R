@@ -3,14 +3,14 @@
 # Test 1: Input is NULL
 test_that("check_df stops with NULL input", {
   expect_error(check_df(NULL),
-                 "Input data frame(s) cannot be NULL.",
+                 "You supplied a NULL or non-allowed object.",
                fixed = TRUE)
 })
 
 # Test 2: Input is not a data frame or a list
 test_that("check_df stops with non-data frame non-list input", {
-  expect_error(check_df(5), "df must be a data frame or a convertible list.")
-  expect_error(check_df("not a dataframe"), "df must be a data frame or a convertible list.")
+  expect_error(check_df(5), "You supplied a NULL or non-allowed object.")
+  expect_error(check_df("not a dataframe"), "You supplied a NULL or non-allowed object.")
 })
 
 # Test 3: Input is a list that can be converted to a data frame
@@ -28,13 +28,13 @@ test_that("check_df stops with non-convertible list", {
                     b = "two",
                     c = list(1:3))
   expect_error(check_df(test_list),
-               "df is a list but cannot be converted to a data frame.")
+               "but cannot be converted to a data frame.")
 })
 
 # Test 5: Input is an empty data frame
 test_that("check_df stops with empty data frame", {
   empty_df <- data.frame()
-  expect_error(check_df(empty_df), "Input data frame(s) cannot be empty.",
+  expect_error(check_df(empty_df), "You supplied an empty data frame.",
                fixed = TRUE)
 })
 
