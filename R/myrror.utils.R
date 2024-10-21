@@ -9,10 +9,9 @@
 #'
 #' @keywords internal
 check_df <- function(df) {
-  # Check if dfx or dfy are NULL
-  if (is.null(df)) {
-    cli::cli_abort("Input data frame(s) cannot be NULL.")
-  }
+
+  # retrieve names
+  df_name <- attr(df, "df_name")
 
   # Check if dfx or dfy are data frames,
   # if not, try to convert them if they are lists.
@@ -21,16 +20,22 @@ check_df <- function(df) {
       tryCatch({
         df <- as.data.frame(df)
       }, error = function(e) {
-        cli::cli_abort("df is a list but cannot be converted to a data frame.")
+        cli::cli_abort(c(x = "{.field {df_name}} is a list, but cannot be converted to a data frame.",
+                         i = "Please supply a data frame or a convertible list."),
+                       call = NULL)
       })
     } else {
-      cli::cli_abort("df must be a data frame or a convertible list.")
+      cli::cli_abort(c(x = "{.field {df_name}} cannot be converted to a data frame.",
+                       i = "Please supply a data frame or a convertible list."),
+                     call = NULL)
     }
   }
 
   # Check if dfx is empty
   if ((!is.null(df) && nrow(df) == 0)) {
-    cli::cli_abort("Input data frame(s) cannot be empty.")
+    cli::cli_abort(c(x = "{.field {df_name}} is and empty data frame.",
+                     i = "Please supply a non-empty data frame or a convertible list"),
+                   call = NULL)
   }
 
   return(df)
@@ -58,13 +63,19 @@ check_set_by <- function(by = NULL,
 
   # Validate inputs are non-empty character vectors if provided
   if (!is.null(by) && (!is.character(by) || length(by) == 0)) {
-    cli::cli_abort("The 'by' argument must be a non-empty character vector.")
+    cli::cli_abort(c(x = "The 'by' argument is empty",
+                     i = "The 'by' argument must be a non-empty character vector."),
+                   call = NULL)
   }
   if (!is.null(by.x) && (!is.character(by.x) || length(by.x) == 0)) {
-    cli::cli_abort("The 'by.x' argument must be a non-empty character vector.")
+    cli::cli_abort(c(x = "The 'by.x' argument is empty",
+                     i = "The 'by.x' argument must be a non-empty character vector."),
+                   call = NULL)
   }
   if (!is.null(by.y) && (!is.character(by.y) || length(by.y) == 0)) {
-    cli::cli_abort("The 'by.y' argument must be a non-empty character vector.")
+    cli::cli_abort(c(x = "The 'by.y' argument is empty",
+                     i = "The 'by.y' argument must be a non-empty character vector."),
+                   call = NULL)
   }
 
 
@@ -79,10 +90,14 @@ check_set_by <- function(by = NULL,
 
  if (is.null(by.x) || is.null(by.y)) {
     if (is.null(by.x) && !is.null(by.y)) {
-      cli::cli_abort("Argument by.x is NULL. If using by.y, by.x also needs to be specified.")
+      cli::cli_abort(c(x = "Argument by.x is NULL.",
+                       i = "If using by.y, by.x also needs to be specified."),
+                     call = NULL)
     }
     if (!is.null(by.x) && is.null(by.y)) {
-      cli::cli_abort("Argument by.y is NULL. If using by.x, by.y also needs to be specified.")
+      cli::cli_abort(c(x = "Argument by.y is NULL.",
+                       i = "If using by.x, by.y also needs to be specified."),
+                     call = NULL)
     }
     # Set defaults if both are NULL
     by.x <- by.y <- "rn"
@@ -147,18 +162,21 @@ prepare_df <- function(df,
 
   ## 1. Check that "rn" is not in the colnames
   if ("rn" %in% colnames(df)) {
-    cli::cli_abort("'rn' present in colnames but it cannot be a column name.")
+    cli::cli_abort(c(x ="'rn' present in colnames but it cannot be a column name."),
+                   call = NULL)
   }
 
   ## 2. Check for duplicate column names in both datasets
   if (length(unique(names(df))) != length(names(df))) {
-    cli::cli_abort("Duplicate column names found in dataframe.")
+    cli::cli_abort(c(x = "Duplicate column names found in dataframe."),
+                   call = NULL)
     # Note: cli additions needed.
   }
 
   ## 3. Check that keys supplied are not the total number of columns
   if (length(by) == ncol(df)) {
-    cli::cli_abort("The by keys cannot be the only columns to compare.")
+    cli::cli_abort(c(x = "The by keys cannot be the only columns to compare."),
+                   call = NULL)
   }
 
   ## 4. Convert DataFrame to Data Table if it's not already.
@@ -182,7 +200,8 @@ prepare_df <- function(df,
 
   ## 4. Ensure the by keys are available in the column names
   if (!all(by %in% names(dt))) {
-    cli::cli_abort("Specified by keys are not all present in the column names.")
+    cli::cli_abort(c(x ="Specified by keys are not all present in the column names."),
+                   call = NULL)
   }
 
 
@@ -212,7 +231,7 @@ prepare_df <- function(df,
         proceed <- my_menu(c("Yes, continue.", "No, abort."),
                                title = "Do you want to proceed?")
         if (proceed == 2) {
-          cli::cli_abort("Operation aborted by the user.")
+          cli::cli_abort("Operation aborted by the user.", call = NULL)
         }
       } else {
         if (verbose) {
@@ -232,7 +251,8 @@ prepare_df <- function(df,
       proceed <- my_menu(c("Yes, continue.", "No, abort."),
                              title = "The by keys do not uniquely identify the dataset. Do you want to proceed?")
       if (proceed == 2) {
-        cli::cli_abort("Operation aborted by the user.")
+        cli::cli_abort("Operation aborted by the user.",
+                       call = NULL)
       }
     } else {
       if (verbose) {
@@ -479,7 +499,8 @@ get_correct_myrror_object <- function(myrror_object,
           cli::cli_inform('Last myrror object used for comparison.')
         }
       } else {
-        cli::cli_abort(abort_msg)
+        cli::cli_abort(abort_msg,
+                       call = NULL)
       }
     } else if (!is.null(dfx) && !is.null(dfy)) {
       myrror_object <- create_myrror_object(dfx = dfx,
@@ -491,7 +512,8 @@ get_correct_myrror_object <- function(myrror_object,
                                             interactive = interactive)
 
     } else {
-      cli::cli_abort(abort_msg)
+      cli::cli_abort(abort_msg,
+                     call = NULL)
     }
   }
   myrror_object

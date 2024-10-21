@@ -66,18 +66,34 @@ myrror <- function(dfx,
     return(invisible(NULL))
   }
 
-  # 1. Name storage ----
-
-  ## Store for print
+  # 1. NULL check ----
+  ## Store name for print
   name_dfx <- deparse(substitute(dfx))
   name_dfy <- deparse(substitute(dfy))
+
+  ## Note: needs to be done at this stage or you cannot set the name.
+  # Check if dfx or dfy are NULL
+  if (is.null(dfx)) {
+    cli::cli_abort(c(x = "{.field {name_dfx}} is NULL.",
+                     i = "Input data frame(s) cannot be NULL."),
+                   call = NULL)
+  }
+
+  if (is.null(dfy)) {
+    cli::cli_abort(c(x = "{.field {name_dfy}} is NULL.",
+                   i = "Input data frame(s) cannot be NULL."),
+                   call = NULL)
+  }
+
+
+  # 2. Name storage ----
 
   ## Store for operations within myrror()
   attr(dfx, "df_name") <- name_dfx
   attr(dfy, "df_name") <- name_dfy
 
 
-  # 2. Create myrror object ----
+  # 3. Create myrror object ----
   myrror_object <- create_myrror_object(dfx = dfx,
                                         dfy = dfy,
                                         by = by,
@@ -90,33 +106,33 @@ myrror <- function(dfx,
   myrror_object$name_dfx <- name_dfx
   myrror_object$name_dfy <- name_dfy
 
-  # 3. Compare Type ----
+  # 4. Compare Type ----
   if (compare_type) {
     myrror_object <- compare_type(myrror_object = myrror_object,
                                   output = "silent")
   }
 
-  # 4. Compare Values ----
+  # 5. Compare Values ----
   if (compare_values) {
     myrror_object <- compare_values(myrror_object = myrror_object,
                                     output = "silent",
                                     tolerance = tolerance)
   }
 
-  # 5. Extract different values ----
+  # 6. Extract different values ----
   if (extract_diff_values) {
     myrror_object <- extract_diff_values(myrror_object = myrror_object,
                                          output = "silent",
                                          tolerance = tolerance)
   }
 
-  # 6. Save whether interactive or not ----
+  # 7. Save whether interactive or not ----
   myrror_object$interactive <- interactive
 
-  # 7. Save to package environment ----
+  # 8. Save to package environment ----
   rlang::env_bind(.myrror_env, last_myrror_object = myrror_object)
 
-  # 8. Return myrror_object ----
+  # 9. Return myrror_object ----
   return(myrror_object)
 
 }

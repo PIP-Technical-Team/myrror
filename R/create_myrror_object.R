@@ -92,7 +92,9 @@ create_myrror_object <- function(dfx,
 
     # If the row numbers do not match, abort the process
   } else {
-    cli::cli_abort("Different row numbers and no keys supplied. The comparison will be aborted.")
+    cli::cli_abort(c(x = "Different row numbers and no keys supplied.",
+                     i ="The comparison will be aborted."),
+                   call = NULL)
   }
   }
 
@@ -127,10 +129,12 @@ create_myrror_object <- function(dfx,
   # Note: this step needs to be done here because the column names might
   # change in the prepare_df() function.
   if (any(set_by$by.x %in% setdiff(names(prepared_dfy), set_by$by.y))) {
-    cli::cli_abort("by.x is part of the non-index columns of dfy.")
+    cli::cli_abort(c(x = "by.x is part of the non-index columns of dfy."),
+                   call = NULL)
   }
   if (any(set_by$by.y %in% setdiff(names(prepared_dfx), set_by$by.x))) {
-    cli::cli_abort("by.y is part of the non-index columns of dfx.")
+    cli::cli_abort(c(x ="by.y is part of the non-index columns of dfx."),
+    call = NULL)
   }
 
   ## 7.2 Create dynamic 'by' argument for joyn (giving a name) ----
@@ -189,14 +193,17 @@ create_myrror_object <- function(dfx,
         title = "The join type is not 1:1. Do you want to proceed?"
       )
       if (proceed == 2) {
-        cli::cli_abort("Operation aborted by the user.")
+        cli::cli_abort("Operation aborted by the user.",
+                       call = NULL)
       }
     }
 
   } else {
     # Abort if the join type is m:m, consider verbosity
     if (verbose == TRUE) {
-      cli::cli_abort("When comparing the datasets, the join is {.strong m:m} between {.field {dfx_name}} and {.field {dfy_name}}. The comparison will stop here.")
+      cli::cli_abort(c(x = "When comparing the datasets, the join is {.strong m:m} between {.field {dfx_name}} and {.field {dfy_name}}.",
+                       i ="The comparison will stop here."),
+                     call = NULL)
     } else {
       stop("Join type m:m, operation aborted.")
     }
