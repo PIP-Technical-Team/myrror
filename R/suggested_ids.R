@@ -14,7 +14,8 @@ suggested_ids <- function(df) {
     # 2. Select suggestions
     if (length(possible_ids_df) > 0) {
       combos <- Filter(function(x) length(x) > 1, possible_ids_df)
-        if (length(combos) > 1) {
+
+        if (length(combos) >= 1) {
           suggested_ids_df <- list(possible_ids_df[[1]][1], combos[[1]])
 
         } else {
