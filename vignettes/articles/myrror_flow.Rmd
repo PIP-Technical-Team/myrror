@@ -35,7 +35,7 @@ myrror(survey_data, survey_data_1m, by = c("country", "year"), interactive = FAL
 
 3.  **m:m** If the relationship between the two datasets is m:m, `myrror()` will abort the comparison by default.
 
-```{r}
+```{r, error = TRUE}
 myrror(survey_data_1m_2, survey_data_1m, by = c("country", "year"), interactive = FALSE)
 ```
 
@@ -56,7 +56,7 @@ Currently, `{myrror}` does not align rows based on row content (e.g. `{waldo}`).
 
 By default, if no keys are supplied, and there is a different number of rows, the comparison will be aborted:
 
-```{r}
+```{r, error=TRUE}
 myrror(survey_data, survey_data_4, interactive = FALSE)
 ```
 
