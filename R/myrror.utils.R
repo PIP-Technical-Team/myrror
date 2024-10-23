@@ -216,7 +216,7 @@ prepare_df <- function(df,
     all_columns_no_rn <- setdiff(names(dt), c("rn", "row_index"))
 
 
-    copies <- temp_is_id(dt,
+    copies <- joyn::is_id(dt,
                           by = all_columns_no_rn,
                           verbose = FALSE,
                           return_report = TRUE)|>
@@ -243,7 +243,7 @@ prepare_df <- function(df,
   }
 
   ### 5.3 Check uniqueness of rows by key (by = key) (does not turn on when by = 'rn')
-  if (isFALSE(temp_is_id(dt, by, verbose = FALSE))) {
+  if (isFALSE(joyn::is_id(dt, by, verbose = FALSE))) {
     if (verbose) {
       cli::cli_alert_warning("The by keys provided ({.val {by}}) do not uniquely identify the dataset ({.field {df_name}}).")
     }

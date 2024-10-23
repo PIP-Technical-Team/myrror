@@ -158,8 +158,8 @@ create_myrror_object <- function(dfx,
                                 by.y = set_by$by.y)
 
 
-  is_id_dfx <- temp_is_id(prepared_dfx, by = set_by$by.x, return_report = TRUE, verbose = FALSE)
-  is_id_dfy <- temp_is_id(prepared_dfy, by = set_by$by.y, return_report = TRUE, verbose = FALSE)
+  is_id_dfx <- joyn::is_id(prepared_dfx, by = set_by$by.x, return_report = TRUE, verbose = FALSE)
+  is_id_dfy <- joyn::is_id(prepared_dfy, by = set_by$by.y, return_report = TRUE, verbose = FALSE)
 
 
 
