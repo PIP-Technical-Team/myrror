@@ -76,41 +76,441 @@
 are supplied by the user, <code><a href="../reference/myrror.html">myrror()</a></code> will first check whether
 the keys uniquely identify the dataset:</p>
 <div class="section level3">
-<h3 id="identified">identified<a class="anchor" aria-label="anchor" href="#identified"></a>
+<h3 id="identified">Identified<a class="anchor" aria-label="anchor" href="#identified"></a>
 </h3>
 <p>If the keys are supplied and they uniquely identify the dataset,
 <code><a href="../reference/myrror.html">myrror()</a></code> will proceed by joining the two datasets by the
-keys: 1. If the relationship between the two datasets is 1:1,
-<code><a href="../reference/myrror.html">myrror()</a></code> will proceed by comparing the values of each
-matched row. 2. If the relationship between the two datasets is not 1:1
-(i.e. there are multiple rows in one dataset that match a single row in
-the other dataset), <code><a href="../reference/myrror.html">myrror()</a></code> will ask the user whether they
-want to proceed. If the user chooses to proceed, <code><a href="../reference/myrror.html">myrror()</a></code>
-will join the two datasets by the keys and then compare the values of
-each matched row. 3. If the relationship between the two datasets is
-m:m, <code><a href="../reference/myrror.html">myrror()</a></code> will abort the comparison by default.</p>
+keys:</p>
+<ol style="list-style-type: decimal">
+<li>
+<strong>1:1</strong> If the relationship between the two datasets is
+1:1, <code><a href="../reference/myrror.html">myrror()</a></code> will proceed by comparing the values of each
+matched row.</li>
+</ol>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/myrror.html">myrror</a></span><span class="op">(</span><span class="va">survey_data</span>, <span class="va">survey_data_3</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"country"</span>, <span class="st">"year"</span><span class="op">)</span>, interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Myrror Report</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── <span style="font-weight: bold;">General Information:</span> ──</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">dfx</span>: <span style="color: #00BB00;">survey_data</span> with 16 rows and 6 columns.</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">dfy</span>: <span style="color: #00BB00;">survey_data_3</span> with 16 rows and 6 columns.</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">keys</span>: country and year.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── <span style="font-weight: bold;">Note: comparison is done for shared columns and rows.</span> ──</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Total shared columns (no keys): 4</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Non-shared columns in survey_data: 0 ()</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Non-shared columns in survey_data_3: 0 ()</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Total shared rows: 16</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Non-shared rows in survey_data: 0.</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Non-shared rows in survey_data_3: 0.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> There are no missing or new rows.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">1. Shared Columns Class Comparison</span> <span style="color: #00BBBB;">──────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> 1 shared column(s) have different class(es):</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     variable class_x   class_y</span></span>
+<span><span class="co">#&gt;       &lt;char&gt;  &lt;char&gt;    &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1: variable1 numeric character</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">2. Shared Columns Values Comparison</span> <span style="color: #00BBBB;">─────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> All shared columns have the same values.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> All shared columns have the same values.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> End of Myrror Report.</span></span></code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>
+<strong>m:1, 1:m</strong> If the relationship between the two
+datasets is not 1:1 (i.e. there are multiple rows in one dataset that
+match a single row in the other dataset), <code><a href="../reference/myrror.html">myrror()</a></code> will ask
+the user whether they want to proceed. If the user chooses to proceed,
+<code><a href="../reference/myrror.html">myrror()</a></code> will join the two datasets by the keys and then
+compare the values of each matched row.</li>
+</ol>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/myrror.html">myrror</a></span><span class="op">(</span><span class="va">survey_data</span>, <span class="va">survey_data_1m</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"country"</span>, <span class="st">"year"</span><span class="op">)</span>, interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> The by keys provided (<span style="color: #0000BB;">"country"</span> and <span style="color: #0000BB;">"year"</span>) do not uniquely identify the dataset (<span style="color: #00BB00;">survey_data_1m</span>).</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Proceeding with the operation despite non-unique identification.</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> When comparing the data, the join is <span style="font-weight: bold;">1:m</span> between <span style="color: #00BB00;">survey_data</span> and <span style="color: #00BB00;">survey_data_1m</span>.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── <span style="font-weight: bold;">Identification Report:</span> ──</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Only first 5 keys shown:</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;    country   year copies.dfx percent.dfx copies.dfy percent.dfy</span></span>
+<span><span class="co">#&gt;     &lt;char&gt; &lt;char&gt;      &lt;int&gt;      &lt;char&gt;      &lt;int&gt;      &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:       A   2010          1        6.2%          3        8.3%</span></span>
+<span><span class="co">#&gt; 2:       B   2010          1        6.2%          1        2.8%</span></span>
+<span><span class="co">#&gt; 3:       A   2011          1        6.2%          2        5.6%</span></span>
+<span><span class="co">#&gt; 4:       B   2011          1        6.2%          2        5.6%</span></span>
+<span><span class="co">#&gt; 5:       A   2012          1        6.2%          2        5.6%</span></span>
+<span><span class="co">#&gt; ...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Myrror Report</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── <span style="font-weight: bold;">General Information:</span> ──</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">dfx</span>: <span style="color: #00BB00;">survey_data</span> with 16 rows and 6 columns.</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">dfy</span>: <span style="color: #00BB00;">survey_data_1m</span> with 36 rows and 6 columns.</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">keys</span>: country and year.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── <span style="font-weight: bold;">Note: comparison is done for shared columns and rows.</span> ──</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Total shared columns (no keys): 4</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Non-shared columns in survey_data: 0 ()</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Non-shared columns in survey_data_1m: 0 ()</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Total shared rows: 36</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Non-shared rows in survey_data: 0.</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Non-shared rows in survey_data_1m: 0.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> There are no missing or new rows.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">1. Shared Columns Class Comparison</span> <span style="color: #00BBBB;">──────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> All shared columns have the same class.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">2. Shared Columns Values Comparison</span> <span style="color: #00BBBB;">─────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> 3 shared column(s) have different value(s):</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Note: character-numeric comparison is allowed.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── <span style="font-weight: bold;">Overview:</span> ──</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;    variable change_in_value na_to_value value_to_na</span></span>
+<span><span class="co">#&gt; 1 variable1              36           0           0</span></span>
+<span><span class="co">#&gt; 2 variable2              36           0           0</span></span>
+<span><span class="co">#&gt; 3 variable3              36           0           0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── <span style="font-weight: bold;">Value comparison:</span> ──</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> 3 shared column(s) have different value(s):</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Note: Only first 5 rows shown for each variable.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── <span style="color: #0000BB;">"variable1"</span></span></span>
+<span><span class="co">#&gt;               diff indexes country  year variable1.x variable1.y</span></span>
+<span><span class="co">#&gt;             &lt;char&gt;  &lt;char&gt;  &lt;char&gt; &lt;int&gt;       &lt;num&gt;       &lt;num&gt;</span></span>
+<span><span class="co">#&gt; 1: change_in_value       1       A  2010  -0.5604756  -0.4750861</span></span>
+<span><span class="co">#&gt; 2: change_in_value       1       A  2010  -0.5604756  -0.4750861</span></span>
+<span><span class="co">#&gt; 3: change_in_value       1       A  2010  -0.5604756  -0.4750861</span></span>
+<span><span class="co">#&gt; 4: change_in_value       2       A  2011  -0.2301775  -0.1511585</span></span>
+<span><span class="co">#&gt; 5: change_in_value       2       A  2011  -0.2301775  -0.1511585</span></span>
+<span><span class="co">#&gt; ...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Note: run `extract_diff_values()` or `extract_diff_table()` to access the results in list or table format.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── <span style="color: #0000BB;">"variable2"</span></span></span>
+<span><span class="co">#&gt;               diff indexes country  year variable2.x variable2.y</span></span>
+<span><span class="co">#&gt;             &lt;char&gt;  &lt;char&gt;  &lt;char&gt; &lt;int&gt;       &lt;num&gt;       &lt;num&gt;</span></span>
+<span><span class="co">#&gt; 1: change_in_value       1       A  2010   0.4978505   0.4889819</span></span>
+<span><span class="co">#&gt; 2: change_in_value       1       A  2010   0.4978505   0.4889819</span></span>
+<span><span class="co">#&gt; 3: change_in_value       1       A  2010   0.4978505   0.4889819</span></span>
+<span><span class="co">#&gt; 4: change_in_value       2       A  2011  -1.9666172  -2.1479705</span></span>
+<span><span class="co">#&gt; 5: change_in_value       2       A  2011  -1.9666172  -2.1479705</span></span>
+<span><span class="co">#&gt; ...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Note: run `extract_diff_values()` or `extract_diff_table()` to access the results in list or table format.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── <span style="color: #0000BB;">"variable3"</span></span></span>
+<span><span class="co">#&gt;               diff indexes country  year variable3.x variable3.y</span></span>
+<span><span class="co">#&gt;             &lt;char&gt;  &lt;char&gt;  &lt;char&gt; &lt;int&gt;       &lt;num&gt;       &lt;num&gt;</span></span>
+<span><span class="co">#&gt; 1: change_in_value       1       A  2010   0.8951257   0.9687451</span></span>
+<span><span class="co">#&gt; 2: change_in_value       1       A  2010   0.8951257   0.9687451</span></span>
+<span><span class="co">#&gt; 3: change_in_value       1       A  2010   0.8951257   0.9687451</span></span>
+<span><span class="co">#&gt; 4: change_in_value       2       A  2011   0.8781335   1.1156799</span></span>
+<span><span class="co">#&gt; 5: change_in_value       2       A  2011   0.8781335   1.1156799</span></span>
+<span><span class="co">#&gt; ...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Note: run `extract_diff_values()` or `extract_diff_table()` to access the results in list or table format.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> End of Myrror Report.</span></span></code></pre></div>
+<ol start="3" style="list-style-type: decimal">
+<li>
+<strong>m:m</strong> If the relationship between the two datasets is
+m:m, <code><a href="../reference/myrror.html">myrror()</a></code> will abort the comparison by default.</li>
+</ol>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/myrror.html">myrror</a></span><span class="op">(</span><span class="va">survey_data_1m_2</span>, <span class="va">survey_data_1m</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"country"</span>, <span class="st">"year"</span><span class="op">)</span>, interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> The by keys provided (<span style="color: #0000BB;">"country"</span> and <span style="color: #0000BB;">"year"</span>) do not uniquely identify the dataset (<span style="color: #00BB00;">survey_data_1m_2</span>).</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Proceeding with the operation despite non-unique identification.</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> The by keys provided (<span style="color: #0000BB;">"country"</span> and <span style="color: #0000BB;">"year"</span>) do not uniquely identify the dataset (<span style="color: #00BB00;">survey_data_1m</span>).</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Proceeding with the operation despite non-unique identification.</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;">:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> When comparing the datasets, the join is <span style="font-weight: bold;">m:m</span> between <span style="color: #00BB00;">survey_data_1m_2</span></span></span>
+<span><span class="co">#&gt;   and <span style="color: #00BB00;">survey_data_1m</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The comparison will stop here.</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="non-identified">non-identified<a class="anchor" aria-label="anchor" href="#non-identified"></a>
+<h3 id="non-identified">Non-Identified<a class="anchor" aria-label="anchor" href="#non-identified"></a>
 </h3>
 <p>If the keys are supplied but they do not uniquely identify the
 dataset, <code><a href="../reference/myrror.html">myrror()</a></code> will inform the user and ask whether they
-want to proceed. If the user chooses to proceed, <code><a href="../reference/myrror.html">myrror()</a></code>
-will join the two datasets by the keys and then compare the values of
-each matched row. As above, if the relationship between the two datasets
-is not 1:1, <code><a href="../reference/myrror.html">myrror()</a></code> will ask the user whether they want to
-proceed. If the user chooses to proceed, <code><a href="../reference/myrror.html">myrror()</a></code> will join
-the two datasets by the keys and then compare the values of each matched
-row. If the relationship between the two datasets is m:m,
-<code><a href="../reference/myrror.html">myrror()</a></code> will abort the comparison. If the user chooses not
-to proceed, <code><a href="../reference/myrror.html">myrror()</a></code> will abort the comparison. As above,
-<code><a href="../reference/myrror.html">myrror()</a></code> will abort the comparison if the relationship
-between the two datasets is m:m.</p>
+want to proceed:</p>
+<ol style="list-style-type: decimal">
+<li>
+<strong>proceed</strong> If the user chooses to proceed,
+<code><a href="../reference/myrror.html">myrror()</a></code> will join the two datasets by the keys and then
+compare the values of each matched row.
+<ul>
+<li>
+<strong>m:1, 1:m</strong> As above, if the relationship between the
+two datasets is not 1:1, <code><a href="../reference/myrror.html">myrror()</a></code> will ask the user whether
+they want to proceed. If the user chooses to proceed,
+<code><a href="../reference/myrror.html">myrror()</a></code> will join the two datasets by the keys and then
+compare the values of each matched row.</li>
+<li>
+<strong>m:m</strong> If the relationship between the two datasets is
+m:m, <code><a href="../reference/myrror.html">myrror()</a></code> will abort the comparison.</li>
+</ul>
+</li>
+<li>
+<strong>not proceed</strong> If the user chooses not to proceed,
+<code><a href="../reference/myrror.html">myrror()</a></code> will abort the comparison.</li>
+</ol>
 </div>
 </div>
 <div class="section level2">
 <h2 id="without-keys-supplied">Without keys supplied<a class="anchor" aria-label="anchor" href="#without-keys-supplied"></a>
 </h2>
+<p>Currently, <a href="https://giorgiacek.github.io/myrror/">myrror</a> does not align rows based on row
+content (e.g. <a href="https://waldo.r-lib.org" class="external-link">waldo</a>). This means that if the user does
+not provide keys, the function will compare the two datasets based on
+row number only. As you might expect, this can lead to incorrect result,
+especially if there are discrepancies in the number of rows. This is why
+there are a series of warning which will make the user consider whether
+or not it is sensible to proceed.</p>
+<div class="section level3">
+<h3 id="different-number-of-rows">Different Number of Rows<a class="anchor" aria-label="anchor" href="#different-number-of-rows"></a>
+</h3>
+<p>By default, if no keys are supplied, and there is a different number
+of rows, the comparison will be aborted:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/myrror.html">myrror</a></span><span class="op">(</span><span class="va">survey_data</span>, <span class="va">survey_data_4</span>, interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;">:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> Different row numbers and no keys supplied.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The comparison will be aborted.</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="same-number-of-rows">Same Number of Rows<a class="anchor" aria-label="anchor" href="#same-number-of-rows"></a>
+</h3>
+<p>If no keys are supplied, there is the same number of rows, and the
+dataset is identified (there are no duplicates):</p>
+<div class="section level4">
+<h4 id="identified-1">Identified<a class="anchor" aria-label="anchor" href="#identified-1"></a>
+</h4>
+<ol style="list-style-type: decimal">
+<li>
+<strong>Possible Keys Found</strong> First, <code><a href="../reference/myrror.html">myrror()</a></code>
+will try to suggest two possible keys or combinations of keys. Then it
+will proceed combining the two dataset by row numbers.</li>
+<li>
+<strong>No Keys Found</strong> If no keys are found,
+<code><a href="../reference/myrror.html">myrror()</a></code> will proceed combining the two dataset by row
+numbers.</li>
+</ol>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/myrror.html">myrror</a></span><span class="op">(</span><span class="va">survey_data</span>, <span class="va">survey_data_2</span>, interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> No keys supplied, but possible keys found in both datasets.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Possible keys found in <span style="color: #00BB00;">survey_data</span>: <span style="color: #0000BB;">variable1</span> and <span style="color: #0000BB;">c("country", "year")</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Possible keys found in <span style="color: #00BB00;">survey_data_2</span>: <span style="color: #0000BB;">variable1</span> and <span style="color: #0000BB;">c("country", "year")</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Consider using these keys for the comparison. The comparison will go ahead using row numbers.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Myrror Report</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── <span style="font-weight: bold;">General Information:</span> ──</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">dfx</span>: <span style="color: #00BB00;">survey_data</span> with 16 rows and 6 columns.</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">dfy</span>: <span style="color: #00BB00;">survey_data_2</span> with 16 rows and 6 columns.</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">keys</span>: rn.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── <span style="font-weight: bold;">Note: comparison is done for shared columns and rows.</span> ──</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Total shared columns (no keys): 6</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Non-shared columns in survey_data: 0 ()</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Non-shared columns in survey_data_2: 0 ()</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Total shared rows: 16</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Non-shared rows in survey_data: 0.</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Non-shared rows in survey_data_2: 0.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> There are no missing or new rows.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">1. Shared Columns Class Comparison</span> <span style="color: #00BBBB;">──────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> All shared columns have the same class.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">2. Shared Columns Values Comparison</span> <span style="color: #00BBBB;">─────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> 1 shared column(s) have different value(s):</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Note: character-numeric comparison is allowed.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── <span style="font-weight: bold;">Overview:</span> ──</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A data frame: 1 × 4</span></span></span>
+<span><span class="co">#&gt;   variable  change_in_value na_to_value value_to_na</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> variable2              16           0           0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── <span style="font-weight: bold;">Value comparison:</span> ──</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> 1 shared column(s) have different value(s):</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Note: Only first 5 rows shown for each variable.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── <span style="color: #0000BB;">"variable2"</span></span></span>
+<span><span class="co">#&gt;               diff indexes     rn variable2.x variable2.y</span></span>
+<span><span class="co">#&gt;             &lt;char&gt;  &lt;char&gt; &lt;char&gt;       &lt;num&gt;       &lt;num&gt;</span></span>
+<span><span class="co">#&gt; 1: change_in_value       1      1   0.4978505  -1.0717912</span></span>
+<span><span class="co">#&gt; 2: change_in_value      10     10  -1.6866933  -0.7092008</span></span>
+<span><span class="co">#&gt; 3: change_in_value      11     11   0.8377870  -0.6880086</span></span>
+<span><span class="co">#&gt; 4: change_in_value      12     12   0.1533731   1.0255714</span></span>
+<span><span class="co">#&gt; 5: change_in_value      13     13  -1.1381369  -0.2847730</span></span>
+<span><span class="co">#&gt; ...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Note: run `extract_diff_values()` or `extract_diff_table()` to access the results in list or table format.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> End of Myrror Report.</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level3">
+<h3 id="non-identified-1">Non-Identified<a class="anchor" aria-label="anchor" href="#non-identified-1"></a>
+</h3>
+<p>If no keys are supplied, there is the same number of rows, and the
+dataset is not identified (there are duplicates), <code><a href="../reference/myrror.html">myrror()</a></code>
+will inform the user and ask whether they want to proceed, if the user
+chooses to proceed, <code><a href="../reference/myrror.html">myrror()</a></code> will join the two datasets by
+row number.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">row_to_duplicate</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">survey_data</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">survey_data_copy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">survey_data</span>, <span class="va">survey_data</span><span class="op">[</span><span class="va">row_to_duplicate</span>, <span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">row_to_remove</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">survey_data_copy</span><span class="op">)</span>, <span class="va">row_to_duplicate</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">survey_data_copy</span> <span class="op">&lt;-</span> <span class="va">survey_data_copy</span><span class="op">[</span><span class="op">-</span><span class="va">row_to_remove</span>, <span class="op">]</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/myrror.html">myrror</a></span><span class="op">(</span><span class="va">survey_data</span>, <span class="va">survey_data_copy</span>, interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> There are duplicates in the dataset (<span style="color: #00BB00;">survey_data_copy</span>).</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Proceeding with the operation despite non-unique rows.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Myrror Report</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── <span style="font-weight: bold;">General Information:</span> ──</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">dfx</span>: <span style="color: #00BB00;">survey_data</span> with 16 rows and 6 columns.</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">dfy</span>: <span style="color: #00BB00;">survey_data_copy</span> with 16 rows and 6 columns.</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">keys</span>: rn.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── <span style="font-weight: bold;">Note: comparison is done for shared columns and rows.</span> ──</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Total shared columns (no keys): 6</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Non-shared columns in survey_data: 0 ()</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Non-shared columns in survey_data_copy: 0 ()</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Total shared rows: 16</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Non-shared rows in survey_data: 0.</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Non-shared rows in survey_data_copy: 0.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> There are no missing or new rows.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">1. Shared Columns Class Comparison</span> <span style="color: #00BBBB;">──────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> All shared columns have the same class.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">2. Shared Columns Values Comparison</span> <span style="color: #00BBBB;">─────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> 6 shared column(s) have different value(s):</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Note: character-numeric comparison is allowed.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── <span style="font-weight: bold;">Overview:</span> ──</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A data frame: 6 × 4</span></span></span>
+<span><span class="co">#&gt;   variable  change_in_value na_to_value value_to_na</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> country                 1           0           0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> year                   10           0           0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> variable1              10           0           0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> variable2              10           0           0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> variable3              10           0           0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> variable4              10           0           0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── <span style="font-weight: bold;">Value comparison:</span> ──</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> 6 shared column(s) have different value(s):</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Note: Only first 5 rows shown for each variable.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── <span style="color: #0000BB;">"country"</span></span></span>
+<span><span class="co">#&gt;               diff indexes     rn country.x country.y</span></span>
+<span><span class="co">#&gt;             &lt;char&gt;  &lt;char&gt; &lt;char&gt;    &lt;char&gt;    &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1: change_in_value       8      8         A         B</span></span>
+<span><span class="co">#&gt; ...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Note: run `extract_diff_values()` or `extract_diff_table()` to access the results in list or table format.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── <span style="color: #0000BB;">"year"</span></span></span>
+<span><span class="co">#&gt;               diff indexes     rn year.x year.y</span></span>
+<span><span class="co">#&gt;             &lt;char&gt;  &lt;char&gt; &lt;char&gt;  &lt;int&gt;  &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1: change_in_value      10     10   2011   2012</span></span>
+<span><span class="co">#&gt; 2: change_in_value      11     11   2012   2013</span></span>
+<span><span class="co">#&gt; 3: change_in_value      12     12   2013   2014</span></span>
+<span><span class="co">#&gt; 4: change_in_value      13     13   2014   2015</span></span>
+<span><span class="co">#&gt; 5: change_in_value      14     14   2015   2016</span></span>
+<span><span class="co">#&gt; ...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Note: run `extract_diff_values()` or `extract_diff_table()` to access the results in list or table format.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── <span style="color: #0000BB;">"variable1"</span></span></span>
+<span><span class="co">#&gt;               diff indexes     rn variable1.x variable1.y</span></span>
+<span><span class="co">#&gt;             &lt;char&gt;  &lt;char&gt; &lt;char&gt;       &lt;num&gt;       &lt;num&gt;</span></span>
+<span><span class="co">#&gt; 1: change_in_value      10     10  -0.4456620   1.2240818</span></span>
+<span><span class="co">#&gt; 2: change_in_value      11     11   1.2240818   0.3598138</span></span>
+<span><span class="co">#&gt; 3: change_in_value      12     12   0.3598138   0.4007715</span></span>
+<span><span class="co">#&gt; 4: change_in_value      13     13   0.4007715   0.1106827</span></span>
+<span><span class="co">#&gt; 5: change_in_value      14     14   0.1106827  -0.5558411</span></span>
+<span><span class="co">#&gt; ...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Note: run `extract_diff_values()` or `extract_diff_table()` to access the results in list or table format.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── <span style="color: #0000BB;">"variable2"</span></span></span>
+<span><span class="co">#&gt;               diff indexes     rn variable2.x variable2.y</span></span>
+<span><span class="co">#&gt;             &lt;char&gt;  &lt;char&gt; &lt;char&gt;       &lt;num&gt;       &lt;num&gt;</span></span>
+<span><span class="co">#&gt; 1: change_in_value      10     10  -1.6866933   0.8377870</span></span>
+<span><span class="co">#&gt; 2: change_in_value      11     11   0.8377870   0.1533731</span></span>
+<span><span class="co">#&gt; 3: change_in_value      12     12   0.1533731  -1.1381369</span></span>
+<span><span class="co">#&gt; 4: change_in_value      13     13  -1.1381369   1.2538149</span></span>
+<span><span class="co">#&gt; 5: change_in_value      14     14   1.2538149   0.4264642</span></span>
+<span><span class="co">#&gt; ...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Note: run `extract_diff_values()` or `extract_diff_table()` to access the results in list or table format.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── <span style="color: #0000BB;">"variable3"</span></span></span>
+<span><span class="co">#&gt;               diff indexes     rn variable3.x variable3.y</span></span>
+<span><span class="co">#&gt;             &lt;char&gt;  &lt;char&gt; &lt;char&gt;       &lt;num&gt;       &lt;num&gt;</span></span>
+<span><span class="co">#&gt; 1: change_in_value      10     10  -0.2079173  -1.2653964</span></span>
+<span><span class="co">#&gt; 2: change_in_value      11     11  -1.2653964   2.1689560</span></span>
+<span><span class="co">#&gt; 3: change_in_value      12     12   2.1689560   1.2079620</span></span>
+<span><span class="co">#&gt; 4: change_in_value      13     13   1.2079620  -1.1231086</span></span>
+<span><span class="co">#&gt; 5: change_in_value      14     14  -1.1231086  -0.4028848</span></span>
+<span><span class="co">#&gt; ...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Note: run `extract_diff_values()` or `extract_diff_table()` to access the results in list or table format.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── <span style="color: #0000BB;">"variable4"</span></span></span>
+<span><span class="co">#&gt;               diff indexes     rn variable4.x variable4.y</span></span>
+<span><span class="co">#&gt;             &lt;char&gt;  &lt;char&gt; &lt;char&gt;       &lt;num&gt;       &lt;num&gt;</span></span>
+<span><span class="co">#&gt; 1: change_in_value      10     10   0.5846137   0.1238542</span></span>
+<span><span class="co">#&gt; 2: change_in_value      11     11   0.1238542   0.2159416</span></span>
+<span><span class="co">#&gt; 3: change_in_value      12     12   0.2159416   0.3796395</span></span>
+<span><span class="co">#&gt; 4: change_in_value      13     13   0.3796395  -0.5023235</span></span>
+<span><span class="co">#&gt; 5: change_in_value      14     14  -0.5023235  -0.3332074</span></span>
+<span><span class="co">#&gt; ...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Note: run `extract_diff_values()` or `extract_diff_table()` to access the results in list or table format.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> End of Myrror Report.</span></span></code></pre></div>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
