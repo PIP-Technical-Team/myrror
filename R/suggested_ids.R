@@ -7,27 +7,51 @@
 #'
 suggested_ids <- function(df) {
 
+  # GC Note: temporary solution which uses min_combination_size = 1
+  # + max_combination_size = 1 and min/max_combination_size = 2
+  # to get the first option and the first combo.
 
-    # 1. Find possible keys for both datasets
-    possible_ids_df <- joyn::possible_ids(df, get_all = TRUE, verbose = FALSE)
+    # Try to find possible keys with single-column combinations
+    possible_ids_df_one <- tryCatch(
+      joyn::possible_ids(df, verbose = FALSE, min_combination_size = 1, max_combination_size = 1),
+      error = function(e) NULL
+    )
 
-    # 2. Select suggestions
-    if (length(possible_ids_df) > 0) {
-      combos <- Filter(function(x) length(x) > 1, possible_ids_df)
+    # Try to find possible keys with two-column combinations
+    possible_ids_df_combo <- tryCatch(
+      joyn::possible_ids(df, verbose = FALSE, min_combination_size = 2, max_combination_size = 2),
+      error = function(e) NULL
+    )
 
-        if (length(combos) >= 1) {
-          suggested_ids_df <- list(possible_ids_df[[1]][1], combos[[1]])
+    # Ensure both results are not NULL but check if they are empty lists
+    if (is.null(possible_ids_df_one) || length(possible_ids_df_one) == 0) {
+      possible_ids_df_one <- NULL
+    }
 
-        } else {
-          suggested_ids_df <- list(possible_ids_df[[1]][1])
-        }
+    if (is.null(possible_ids_df_combo) || length(possible_ids_df_combo) == 0) {
+      possible_ids_df_combo <- NULL
+    }
 
-    } else {
-      suggested_ids_df <- NULL
+    # If both are NULL, return NULL
+    if (is.null(possible_ids_df_one) && is.null(possible_ids_df_combo)) {
+      return(NULL)
+    }
+
+    # Select suggestions
+    suggested_ids_df <- list()
+
+    if (!is.null(possible_ids_df_one)) {
+      suggested_ids_df <- append(suggested_ids_df, list(possible_ids_df_one[[1]][1]))
+    }
+
+    if (!is.null(possible_ids_df_combo)) {
+      suggested_ids_df <- append(suggested_ids_df, list(possible_ids_df_combo[[1]]))
+    }
+
+    # Ensure the function returns NULL if no valid keys were found
+    if (length(suggested_ids_df) == 0) {
+      return(NULL)
     }
 
     return(suggested_ids_df)
-
-}
-
-
+  }
