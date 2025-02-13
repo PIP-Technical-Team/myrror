@@ -249,6 +249,13 @@ test_that("1:m join type results in an abort with user interaction == 2", {
 })
 
 
+test_that("different row numbers and no keys -> abort", {
+  dfx <- create_sample_df(5)
+  dfy <- create_sample_df(10)
+
+  expect_error(create_myrror_object(dfx, dfy, interactive = FALSE, verbose = FALSE))
+})
+
 
 
 

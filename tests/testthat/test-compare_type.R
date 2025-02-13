@@ -55,3 +55,12 @@ test_that("compare_type() correct output when specified", {
 
 })
 
+# Other ---------------------------------------------------------------
+## 5. compare_type() returns NULL if no differences ------------------------
+test_that("compare_type() returns NULL if no differences", {
+
+  compare_type_object_1_5 <- compare_type(iris, iris, output = "simple")
+  expect_equal(compare_type_object_1_5, NULL)
+
+})
+

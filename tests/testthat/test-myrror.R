@@ -58,6 +58,11 @@ test_that("function errors correctly with NULL inputs", {
   expect_error(myrror(NULL, NULL))
 })
 
+test_that("function errors correctly with NULL input for dfy", {
+  dfx <- data.frame(a = 1:10, b = 1:10)
+  expect_error(myrror(dfx, NULL))
+})
+
 # Test feature flags
 test_that("compare type is skipped when disabled", {
   dfx <- dfy <- data.frame(a = 1:10, b = 1:10)
@@ -86,6 +91,7 @@ test_that("returned object has correct properties", {
   expect_false(result$interactive)
   expect_type(result, "list")
 })
+
 
 
 
