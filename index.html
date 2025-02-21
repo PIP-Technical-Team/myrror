@@ -67,39 +67,45 @@
 <p>You can install the development version from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"giorgiacek/myrror"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"PIP-Technical-Team/myrror"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
 <p>The main function is <code><a href="reference/myrror.html">myrror()</a></code>, which goes through each single step of the comparison:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://giorgiacek.github.io/myrror/">myrror</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/myrror.html">myrror</a></span><span class="op">(</span><span class="va">iris</span>, <span class="va">iris_var1</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://giorgiacek.github.io/myrror/" class="external-link">myrror</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/myrror.html">myrror</a></span><span class="op">(</span><span class="va">survey_data</span>, <span class="va">survey_data_all</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'country'</span> <span class="op">=</span> <span class="st">"COUNTRY"</span>, <span class="st">"year"</span> <span class="op">=</span> <span class="st">"YEAR"</span><span class="op">)</span>,</span>
+<span>       interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── Myrror Report ───────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── General Information: ──</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; dfx: iris with 150 rows and 5 columns.</span></span>
-<span><span class="co">#&gt; dfy: iris_var1 with 155 rows and 6 columns.</span></span>
-<span><span class="co">#&gt; Keys: rn.</span></span>
+<span><span class="co">#&gt; dfx: survey_data with 16 rows and 6 columns.</span></span>
+<span><span class="co">#&gt; dfy: survey_data_all with 12 rows and 5 columns.</span></span>
+<span><span class="co">#&gt; keys dfx: country and year.</span></span>
+<span><span class="co">#&gt; keys dfy: COUNTRY and YEAR.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── Note: comparison is done for shared columns and rows. ──</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ✔ Total shared columns (no keys): 5</span></span>
-<span><span class="co">#&gt; ! Non-shared columns in iris: 0 ()</span></span>
-<span><span class="co">#&gt; ! Non-shared columns in iris_var1: 1 (Petal.Area)</span></span>
+<span><span class="co">#&gt; ✔ Total shared columns (no keys): 3</span></span>
+<span><span class="co">#&gt; ! Non-shared columns in survey_data: 1 ("variable3")</span></span>
+<span><span class="co">#&gt; ! Non-shared columns in survey_data_all: 0 ()</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ✔ Total shared rows: 150</span></span>
-<span><span class="co">#&gt; ! Non-shared rows in iris: 0.</span></span>
-<span><span class="co">#&gt; ! Non-shared rows in iris_var1: 5.</span></span>
+<span><span class="co">#&gt; ✔ Total shared rows: 12</span></span>
+<span><span class="co">#&gt; ! Non-shared rows in survey_data: 4.</span></span>
+<span><span class="co">#&gt; ! Non-shared rows in survey_data_all: 0.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ℹ Note: run `extract_diff_rows()` to extract the missing/new rows.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── 1. Shared Columns Class Comparison ──────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ✔ All shared columns have the same class.</span></span>
+<span><span class="co">#&gt; ! 1 shared column(s) have different class(es):</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     variable class_x   class_y</span></span>
+<span><span class="co">#&gt;       &lt;char&gt;  &lt;char&gt;    &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1: variable1 numeric character</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── 2. Shared Columns Values Comparison ─────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -109,22 +115,24 @@
 <span><span class="co">#&gt; ── Overview: ──</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; # A tibble: 1 × 4</span></span>
-<span><span class="co">#&gt;   variable     change_in_value na_to_value value_to_na</span></span>
-<span><span class="co">#&gt;   &lt;fct&gt;                  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;</span></span>
-<span><span class="co">#&gt; 1 Sepal.Length               0           0           5</span></span>
+<span><span class="co">#&gt;   variable  change_in_value na_to_value value_to_na</span></span>
+<span><span class="co">#&gt;   &lt;fct&gt;               &lt;int&gt;       &lt;int&gt;       &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 variable2              12           0           0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── Value comparison: ──</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ! 1 shared column(s) have different value(s):</span></span>
+<span><span class="co">#&gt; ℹ Note: Only first 5 rows shown for each variable.</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ── Sepal.Length</span></span>
-<span><span class="co">#&gt;           diff indexes     rn Sepal.Length.x Sepal.Length.y</span></span>
-<span><span class="co">#&gt;         &lt;char&gt;  &lt;char&gt; &lt;char&gt;          &lt;num&gt;          &lt;num&gt;</span></span>
-<span><span class="co">#&gt; 1: value_to_na     104    104            6.3             NA</span></span>
-<span><span class="co">#&gt; 2: value_to_na     125    125            6.7             NA</span></span>
-<span><span class="co">#&gt; 3: value_to_na      67     67            5.6             NA</span></span>
-<span><span class="co">#&gt; 4: value_to_na      80     80            5.7             NA</span></span>
-<span><span class="co">#&gt; 5: value_to_na      96     96            5.7             NA</span></span>
+<span><span class="co">#&gt; ── "variable2"</span></span>
+<span><span class="co">#&gt;               diff indexes country  year variable2.x variable2.y</span></span>
+<span><span class="co">#&gt;             &lt;char&gt;  &lt;char&gt;  &lt;char&gt; &lt;int&gt;       &lt;num&gt;       &lt;num&gt;</span></span>
+<span><span class="co">#&gt; 1: change_in_value       5       A  2014  -1.0678237   0.9222675</span></span>
+<span><span class="co">#&gt; 2: change_in_value       6       A  2015  -0.2179749   2.0500847</span></span>
+<span><span class="co">#&gt; 3: change_in_value       7       A  2016  -1.0260044  -0.4910312</span></span>
+<span><span class="co">#&gt; 4: change_in_value       8       A  2017  -0.7288912  -2.3091689</span></span>
+<span><span class="co">#&gt; 5: change_in_value       9       B  2010  -0.6250393   1.0057385</span></span>
+<span><span class="co">#&gt; ...</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ℹ Note: run `extract_diff_values()` or `extract_diff_table()` to access the results in list or table format.</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -140,7 +148,7 @@
 <li><p><code><a href="reference/extract_diff_values.html">extract_diff_values()</a></code>: extract the values that are different between two data frames, returns a list of data frames with the differences, one for each variable.</p></li>
 <li><p><code><a href="reference/extract_diff_table.html">extract_diff_table()</a></code>: extract the values that are different between two data frames, returns a data.table with all differences.</p></li>
 </ul>
-<p>See more in the <a href="https://giocek.github.io/myrror/articles/myrror.html" class="external-link">Get started</a> vignette.</p>
+<p>See more in the <a href="https://PIP-Technical-team.github.io/myrror/articles/myrror.html" class="external-link">Get started</a> vignette.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">
