@@ -1,8 +1,19 @@
 Package: myrror
 Title: Compare two Data Frames and Summarize Differences
 Version: 0.0.0.9001
-Authors@R: 
-    person("Giorgia", "Cecchinato", , "gcecchinato@worldbank.org", role = c("aut", "cre"))
+Authors@R: c(
+    person(given = "Giorgia", 
+           family = "Cecchinato",
+           email = "gcecchinato@worldbank.org", 
+           role = c("aut", "cre")),
+    person(given = "R.Andres", 
+           family = "Castaneda", 
+           email = "acastanedaa@worldbank.org",
+           role = c("aut")),
+    person(given = "Global Poverty and Inequality Data Team",
+           family = "World Bank",
+           role = "cph",
+           comment = c(ORCID = "https://github.com/GPID-WB")))
 Description: Tools for systematic comparison of data frames, offering functionality to identify, 
     quantify, and extract differences. Provides functions with user-friendly and interactive 
     console output for immediate analysis, while also offering options to export differences as 
