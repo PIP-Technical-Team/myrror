@@ -3,6 +3,35 @@
 #' @param x an object of class 'myrror_object'
 #' @param ... additional arguments
 #'
+#' @examples
+#' # Create example datasets
+#' dfx <- data.frame(id = 1:5,
+#'                   name = c("A", "B", "C", "D", "E"),
+#'                   value = c(10, 20, 30, 40, 50))
+#' 
+#' dfy <- data.frame(id = 1:6,
+#'                   name = c("A", "B", "C", "D", "E", "F"),
+#'                   value = c(10, 20, 35, 40, 50, 60))
+#'                   
+#' # Create a myrror object
+#' library(myrror)
+#' m <- myrror(dfx, dfy, by.x = "id", by.y = "id")
+#' 
+#' # Print the myrror object (happens automatically)
+#' m
+#' 
+#' # Create object with different print settings
+#' \dontrun{
+#' # With interactive mode disabled
+#' m2 <- myrror(dfx, dfy, by.x = "id", by.y = "id", interactive = FALSE)
+#' print(m2)
+#' 
+#' # Print without value comparison
+#' m3 <- myrror(dfx, dfy, by.x = "id", by.y = "id", 
+#'              print = list(compare_values = FALSE))
+#' print(m3)
+#' }
+#'
 #' @export
 #'
 print.myrror <- function(x, ...) {

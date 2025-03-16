@@ -1,8 +1,19 @@
-#' Suggested keys/ids
+#' Identify Suggested Keys or IDs for Data Frame
 #'
-#' @param df data.frame
+#' This function attempts to find potential unique identifier columns or combinations
+#' for a given data frame. It first tries to identify single-column keys, then
+#' two-column key combinations that uniquely identify each row in the data frame.
 #'
-#' @return list with suggested keys/ids (first option and first combo)
+#' @param df A data frame for which to identify potential unique identifiers
+#'
+#' @return A list containing up to two elements:
+#'   \item{1}{The first single-column key identified (if any)}
+#'   \item{2}{The first two-column key combination identified (if any)}
+#'   Returns NULL if no valid keys were found.
+#'
+#' @details Uses the joyn::possible_ids function to identify columns or column 
+#'   combinations that can uniquely identify rows in the data frame.
+#'
 #' @keywords internal
 #'
 suggested_ids <- function(df) {
@@ -11,19 +22,19 @@ suggested_ids <- function(df) {
   # + max_combination_size = 1 and min/max_combination_size = 2
   # to get the first option and the first combo.
 
-    # Try to find possible keys with single-column combinations
+  # Try to find possible keys with single-column combinations
     possible_ids_df_one <- tryCatch(
       joyn::possible_ids(df, verbose = FALSE, min_combination_size = 1, max_combination_size = 1),
       error = function(e) NULL
     )
 
-    # Try to find possible keys with two-column combinations
+  # Try to find possible keys with two-column combinations
     possible_ids_df_combo <- tryCatch(
       joyn::possible_ids(df, verbose = FALSE, min_combination_size = 2, max_combination_size = 2),
       error = function(e) NULL
     )
 
-    # Ensure both results are not NULL but check if they are empty lists
+  # Ensure both results are not NULL but check if they are empty lists
     if (is.null(possible_ids_df_one) || length(possible_ids_df_one) == 0) {
       possible_ids_df_one <- NULL
     }

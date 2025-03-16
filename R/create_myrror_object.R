@@ -1,10 +1,17 @@
 # Myrror Constructor
-#' myrror_object constructor (internal)
+#' Creates a myrror object for comparing two data frames
+#'
+#' This function constructs a myrror object by comparing two data frames.
+#' It handles the preparation, validation, and joining of datasets, identifies
+#' matching and non-matching observations, and performs column pairing for comparison.
+#' The function supports various join types (1:1, 1:m, m:1) and provides detailed
+#' reports on the comparison results.
 #'
 #' @inheritParams myrror
 #' @param verbose logical: If `TRUE` additional information will be displayed.
 #'
-#' @return object of class myrror_object.
+#' @return An object of class "myrror" containing comparison results, dataset information,
+#'         and various reports on matching/non-matching observations.
 #'
 #' @keywords internal
 create_myrror_object <- function(dfx,

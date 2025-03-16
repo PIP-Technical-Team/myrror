@@ -112,35 +112,6 @@ check_set_by <- function(by = NULL,
 
 
 
-# 2. Normalize (column) names based on tolerance settings ----
-# apply_tolerance <- function(names,
-#                             tolerance) {
-#   # Ensure tolerance is treated as a list for uniform processing
-#   if (!is.null(tolerance)) {
-#     if (is.character(tolerance)) {
-#       tolerance <- as.list(tolerance)
-#     }
-#     cli::cli_alert_info('Applying tolerance parameters to dataset.')
-#   }
-#
-#   # Apply tolerance settings to column names
-#   for (tol in tolerance) {
-#     if (tol == "no_underscore") {
-#       names <- gsub("_", "", names, fixed = TRUE)
-#     }
-#     if (tol == "no_cap") {
-#       names <- tolower(names)
-#     }
-#     if (tol == "no_whitespace") {
-#       names <- gsub("\\s+", "", names, fixed = TRUE)
-#     }
-#   }
-#
-#   return(names)
-#
-# }
-
-
 # 3.Prepare dataset for joyn  ----
 #' Prepares dataset for joyn::joyn(). Internal function.
 #'
@@ -281,84 +252,6 @@ prepare_df <- function(df,
 
   return(dt)
   }
-
-
-# # 4. Sorting utils ----
-# ## 4.1 Is it sorted? ----
-# #' Check if a vector is sorted
-# #' @param x vector
-# #' @param ... additional arguments of is.sorted()
-# #' @return logical
-# #' @examples
-# #' is.sorted(iris$Sepal.Length)
-# #'
-# is.sorted <- function(x, ...) {
-#   # Note: I used the ellipsis to pass the options of is.unsorted(.).
-#   !is.unsorted(x, ...) | !is.unsorted(rev(x), ...)
-# }
-
-# ## 4.2 Detect sorting ----
-# #' Detect sorting in a data frame
-# #' @param data data.frame
-# #' @return list
-# #' @examples
-# #' detect_sorting(iris)
-# #'
-# detect_sorting <- function(data) {
-#   sorted <- lapply(data, is.sorted)
-#   sort_variable <- names(which(unlist(sorted) == TRUE))
-#
-#   if (length(sort_variable) == 0) {
-#     return("not sorted")
-#   } else {
-#     return(sort_variable)
-#   }
-# }
-
-## 4.3 Detect sorting in a data frame ----
-# #' Detect sorting in a data frame
-# #' @param df data.frame
-# #' @param by character vector
-# #' @param decreasing logical
-# #' @return list
-# #' @examples
-##' is_dataframe_sorted_by(iris, by = "Sepal.Length")
-##'
-# is_dataframe_sorted_by <- function(df,
-#                                    by = NULL,
-#                                    decreasing = FALSE) {
-#
-#   if (identical(by, "rn")) {
-#
-#     other_sort <- detect_sorting(df)
-#     return(list("not sorted by key", other_sort))
-#
-#   } else {
-#
-#
-#     # Generate the order indices using do.call to pass each by to order()
-#     order_indices <- do.call(order, lapply(by, function(col) df[[col]]))
-#
-#     # Check if the order indices match the original row indices
-#     is_sorted_by <- identical(order_indices, seq_len(nrow(df)))
-#
-#
-#     if (all(by != "rn") & is_sorted_by) {
-#
-#       return(list("sorted by key", by))
-#
-#     } else {
-#
-#       other_sort <- detect_sorting(df)
-#       return(list("not sorted by key", other_sort))
-#     }
-#
-#   }
-#
-#
-# }
-
-
 
 
 # 4. Variable comparison utils ----
@@ -678,4 +571,3 @@ compare_digested <- function(dfx,dfy){
     return(FALSE)
   }
 }
-
