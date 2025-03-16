@@ -2,7 +2,7 @@
 % Please edit documentation in R/myrror.utils.R
 \name{pair_columns}
 \alias{pair_columns}
-\title{is_dataframe_sorted_by(iris, by = "Sepal.Length")}
+\title{Pairs columns and prepares them for comparison.}
 \usage{
 pair_columns(merged_data_report, suffix_x = ".x", suffix_y = ".y")
 }

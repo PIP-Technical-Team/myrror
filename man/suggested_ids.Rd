@@ -2,17 +2,26 @@
 % Please edit documentation in R/suggested_ids.R
 \name{suggested_ids}
 \alias{suggested_ids}
-\title{Suggested keys/ids}
+\title{Identify Suggested Keys or IDs for Data Frame}
 \usage{
 suggested_ids(df)
 }
 \arguments{
-\item{df}{data.frame}
+\item{df}{A data frame for which to identify potential unique identifiers}
 }
 \value{
-list with suggested keys/ids (first option and first combo)
+A list containing up to two elements:
+\item{1}{The first single-column key identified (if any)}
+\item{2}{The first two-column key combination identified (if any)}
+Returns NULL if no valid keys were found.
 }
 \description{
-Suggested keys/ids
+This function attempts to find potential unique identifier columns or combinations
+for a given data frame. It first tries to identify single-column keys, then
+two-column key combinations that uniquely identify each row in the data frame.
+}
+\details{
+Uses the joyn::possible_ids function to identify columns or column
+combinations that can uniquely identify rows in the data frame.
 }
 \keyword{internal}

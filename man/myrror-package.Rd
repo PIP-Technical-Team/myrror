@@ -5,7 +5,7 @@
 \alias{myrror-package}
 \title{myrror: Compare two Data Frames and Summarize Differences}
 \description{
-Convenience functions to compare two dataframes, explore, visualize and summarize similarities and differences.
+Tools for systematic comparison of data frames, offering functionality to identify, quantify, and extract differences. Provides functions with user-friendly and interactive console output for immediate analysis, while also offering options to export differences as structured data frames that can be easily integrated into existing workflows.
 }
 \seealso{
 Useful links:
@@ -16,6 +16,16 @@ Useful links:
 }
 \author{
 \strong{Maintainer}: Giorgia Cecchinato \email{gcecchinato@worldbank.org}
+
+Authors:
+\itemize{
+  \item R.Andres Castaneda \email{acastanedaa@worldbank.org}
+}
+
+Other contributors:
+\itemize{
+  \item Global Poverty and Inequality Data Team World Bank (\href{https://github.com/GPID-WB}{ORCID}) [copyright holder]
+}
 
 }
 \keyword{internal}
