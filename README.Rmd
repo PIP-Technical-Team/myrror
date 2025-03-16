@@ -26,12 +26,19 @@ The assumption is that the user wants the two data frames to be the same.
 
 ## Installation
 
-You can install the development version from [GitHub](https://github.com/) with:
+You can install the released version of myrror from [CRAN](https://CRAN.R-project.org) with:
+
+``` r
+install.packages("myrror")
+```
+
+You can install the development version from [GitHub](https://github.com/PIP-Technical-Team/myrror) with:
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("PIP-Technical-Team/myrror")
 ```
+
 ## Usage
 
 The main function is `myrror()`, which goes through each single step of the comparison:

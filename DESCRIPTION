@@ -3,8 +3,10 @@ Title: Compare two Data Frames and Summarize Differences
 Version: 0.0.0.9001
 Authors@R: 
     person("Giorgia", "Cecchinato", , "gcecchinato@worldbank.org", role = c("aut", "cre"))
-Description: Convenience functions to compare two dataframes, explore,
-    visualize and summarize similarities and differences.
+Description: Tools for systematic comparison of data frames, offering functionality to identify, 
+    quantify, and extract differences. Provides functions with user-friendly and interactive 
+    console output for immediate analysis, while also offering options to export differences as 
+    structured data frames that can be easily integrated into existing workflows.
 License: MIT + file LICENSE
 Depends: 
     R (>= 2.10)

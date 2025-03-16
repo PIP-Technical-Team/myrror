@@ -19,8 +19,15 @@ is “successful”.
 
 ## Installation
 
+You can install the released version of myrror from
+[CRAN](https://CRAN.R-project.org) with:
+
+``` r
+install.packages("myrror")
+```
+
 You can install the development version from
-[GitHub](https://github.com/) with:
+[GitHub](https://github.com/PIP-Technical-Team/myrror) with:
 
 ``` r
 # install.packages("devtools")
