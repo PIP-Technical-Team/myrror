@@ -55,11 +55,11 @@ If you run the functions with arguments `output = "full"` the console will print
 When run in default mode, with `output = "simple"` , `extract_diff_values()` returns a list of `data.table`s:
 
 ```{r example-one}
-output <- extract_diff_values(iris, iris_var1, output = "simple")
+output <- extract_diff_values(survey_data, survey_data_2, by=c('country', 'year'), output = "simple")
 print(output)
 ```
 
-In this comparison, `iris` and `iris_var1` are two data frames that differ in the values of the `Sepal.Length` column. The output shows the values of the variable `Sepal.Length` in iris (`dfx`) as `Sepal.Length.x` and in iris_var1 (`dfy`) as `Sepal.Length.y`. The column `diff` identifies the type of differences between the two values. In this case, in `iris_var1`, the 5 non-matching values are `NA`. Therefore, the column `diff` shows `value_to_na`.
+In this comparison, `survey_data` and `survey_data_2` are two data frames that differ in the values of the `variable2` column. The output shows the values of the variable `variable2` in survey_data (`dfx`) as `variable2.x` and in survey_data_2 (`dfy`) as `variable2.y`. The column `diff` identifies the type of differences between the two values. In this case, in `survey_data`, the non-matching observations have different values. Therefore, the column `diff` shows `change_in_value`.
 
 This output can be manipulated by the user to explore the differences in more detail.
 
@@ -68,34 +68,36 @@ This output can be manipulated by the user to explore the differences in more de
 Here is a case where the two data frames differ in multiple variables:
 
 ```{r example-two-str}
-output <- extract_diff_values(iris, iris_var2, output = "simple")
+survey_data_2$variable2[c(1,2,3,4)] <- NA
+survey_data_2$variable3 <- NA
+output <- extract_diff_values(survey_data, survey_data_2, by=c('country', 'year'), output = "simple")
 str(output, max.level = 1)
 ```
 
 This time, the object returned is a list of `data.table`s, one for each variable that differs between the two data frames. If we look into one single variable, we can see that there are also different types of differences, in this case `value_to_na` and `change_in_value`:
 
 ```{r example-two-group}
-output$Sepal.Width |>
+output$variable2 |>
   group_by(diff)|>
   count()
 ```
 
-Let's assume that I want to focus on missing values in the variable `Sepal.Width`:
+Let's assume that I want to focus on missing values in the variable `variable2`:
 
 ```{r example-two-filter}
-output$Sepal.Width |>
+output$variable2 |>
   filter(diff == "value_to_na")
 ```
 
 The user can use the indexes to extract the observations in `dfy`:
 
 ```{r example-two-index}
-indexes <- output$Sepal.Width |>
+indexes <- output$variable2 |>
   filter(diff == "value_to_na") |>
   select(indexes)|>
   mutate(indexes = as.numeric(indexes))
 
-iris_var2[c(indexes$indexes), ]
+survey_data_2[c(indexes$indexes), ]
 ```
 
 ## Example 3: a larger dataset
@@ -109,7 +111,7 @@ gapminder_var1 <- gapminder |>
          gdpPercap = ifelse(country == 'Colombia', gdpPercap/10, gdpPercap)) # Errors in gdpPercap
 ```
 
-If we run `extract_diff_values()` with the `output = "full"` and `interactive = TRYE` arguments, we will get a full report of the comparison. Note that this time, the two data sets are compared using the unique identifiers `country` and `year`, which will be displayed next to the `indexes` in the extracted rows:
+If we run `extract_diff_values()` with the `output = "full"` and `interactive = TRUE` arguments, we will get a full report of the comparison. Note that this time, the two data sets are compared using the unique identifiers `country` and `year`, which will be displayed next to the `indexes` in the extracted rows:
 
 ![](images/extract_diff_values_gapminder.gif) Alternatively, if we run the function with `output = "simple"` we will get a list of `data.table`s, one per variable that differs between the two data frames:
 

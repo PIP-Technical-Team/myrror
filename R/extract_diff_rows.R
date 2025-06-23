@@ -38,6 +38,16 @@ extract_diff_rows <- function(dfx = NULL,
                               tolerance = 1e-7,
                               verbose = getOption("myrror.verbose"),
                               interactive = getOption("myrror.interactive")){
+
+  # 0. Digest and exit if identical ----
+  if (!is.null(dfx) && !is.null(dfy)) {
+    digested_identical <- compare_digested(dfx, dfy)
+    if (digested_identical) {
+      cli::cli_alert_success("The two datasets are identical.")
+      return(invisible(NULL))
+    }
+  }
+
   # 1. Arguments check ----
   output <- match.arg(output)
 

@@ -33,8 +33,8 @@ test_that("create_myrror_object handles NULL inputs", {
   dfx <- create_sample_df()
   dfy <- create_sample_df()
 
-  expect_error(create_myrror_object(NULL, dfy), "cannot be NULL")
-  expect_error(create_myrror_object(dfx, NULL), "cannot be NULL")
+  expect_error(create_myrror_object(NULL, dfy), "NULL")
+  expect_error(create_myrror_object(dfx, NULL), "NULL")
 })
 
 
@@ -52,7 +52,7 @@ test_that("create_myrror_object handles empty data frames", {
   empty_dfx <- data.frame()
   empty_dfy <- data.frame()
 
-  expect_error(create_myrror_object(empty_dfx, empty_dfy), "cannot be empty")
+  expect_error(create_myrror_object(empty_dfx, empty_dfy), "empty data frame")
 })
 
 
@@ -135,7 +135,7 @@ test_that("Correct output structure", {
 
 # 5. Error conditions ----
 test_that("Error handling in input conditions", {
-  expect_error(create_myrror_object(data.frame(), data.frame()), "cannot be empty")
+  expect_error(create_myrror_object(data.frame(), data.frame()), "empty data frame")
 })
 
 
@@ -147,7 +147,7 @@ test_that("1:1 join proceeds without user interaction", {
   with_mocked_bindings(
     check_join_type = function(...) "1:1",
     {
-      expect_silent(create_myrror_object(dfx, dfy, interactive = FALSE))
+      expect_silent(create_myrror_object(dfx, dfy, by = 'a', interactive = FALSE))
     }
   )
 })
@@ -159,7 +159,7 @@ test_that("1:m join type does not inform user with interactive = FALSE and verbo
   with_mocked_bindings(
     check_join_type = function(...) "1:m",
     {
-      expect_no_message(create_myrror_object(dfx, dfy, interactive = FALSE, verbose = FALSE))
+      expect_no_message(create_myrror_object(dfx, dfy, by = 'a', interactive = FALSE, verbose = FALSE))
     }
   )
 })
@@ -173,7 +173,7 @@ test_that("1:m join type does not inform user with interactive = TRUE and verbos
     check_join_type = function(...) "1:m",
     my_menu = function(...) 1,
     {
-      expect_no_message(create_myrror_object(dfx, dfy, interactive = TRUE, verbose = FALSE))
+      expect_no_message(create_myrror_object(dfx, dfy, by = 'a', interactive = TRUE, verbose = FALSE))
     }
   )
 })
@@ -248,6 +248,13 @@ test_that("1:m join type results in an abort with user interaction == 2", {
   )
 })
 
+
+test_that("different row numbers and no keys -> abort", {
+  dfx <- create_sample_df(5)
+  dfy <- create_sample_df(10)
+
+  expect_error(create_myrror_object(dfx, dfy, interactive = FALSE, verbose = FALSE))
+})
 
 
 

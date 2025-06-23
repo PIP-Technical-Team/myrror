@@ -31,7 +31,12 @@ if (getRversion() >= "2.15.1") {
       "N.dfx",
       "N.dfy",
       ".",
-      "df" # not sure why feeling this might be an issue
+      "df",
+      "..vars",
+      "..combo",
+      "percent",
+      "..byvar",
+      "n"# not sure why feeling this might be an issue
     ),
     package = utils::packageName()
   )

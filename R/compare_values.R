@@ -46,6 +46,16 @@ compare_values <- function(dfx = NULL,
                            verbose = getOption("myrror.verbose"),
                            tolerance = getOption("myrror.tolerance")) {
 
+
+  # 0. Digest and exit if identical ----
+  if (!is.null(dfx) && !is.null(dfy)) {
+    digested_identical <- compare_digested(dfx, dfy)
+    if (digested_identical) {
+      cli::cli_alert_success("The two datasets are identical.")
+      return(invisible(NULL))
+    }
+  }
+
   # 0. Name storage ----
 
   if (!is.null(dfx) && !is.null(dfy)) { # because it could be that it is run empty/with myrror_object only

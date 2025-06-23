@@ -21,27 +21,25 @@
 #'
 #' @examples
 #'
-#' # 1. Simple Use Case with interactive output:
-#' myrror(iris, iris_var1)
 #'
-#' # 2. Specifying by, by.x or by.y:
+#' # 1. Specifying by, by.x or by.y:
 #' myrror(survey_data, survey_data_2, by=c('country', 'year'))
 #'
 #' ## These are equivalent:
 #' myrror(survey_data, survey_data_2_cap, by.x=c('country', 'year'), by.y = c('COUNTRY', 'YEAR'))
 #' myrror(survey_data, survey_data_2_cap, by=c('country' = 'COUNTRY', 'year' = 'YEAR'))
 #'
-#' # 3. Turn off interactivity:
+#' # 2. Turn off interactivity:
 #' myrror(survey_data, survey_data_2, by=c('country', 'year'), interactive = FALSE)
 #'
-#' # 4. Turn off factor_to_char (it will treat factors as factors):
+#' # 3. Turn off factor_to_char (it will treat factors as factors):
 #' myrror(survey_data, survey_data_2, by=c('country', 'year'), factor_to_char = FALSE)
 #'
-#' # 5. Turn off compare_type:
+#' # 4. Turn off compare_type:
 #' myrror(survey_data, survey_data_2, by=c('country', 'year'), compare_type = FALSE)
 #' ## Same can be done for compare_values and extract_diff_values.
 #'
-#' # 6. Set tolerance:
+#' # 5. Set tolerance:
 #' myrror(survey_data, survey_data_2, by=c('country', 'year'), tolerance = 1e-5)
 #'
 
@@ -59,18 +57,43 @@ myrror <- function(dfx,
                    tolerance = getOption("myrror.tolerance")
                    ) {
 
-  # 0. Name storage ----
 
-  ## Store for print
+  # 0. Digest and exit if identical ----
+
+  digested_identical <- compare_digested(dfx, dfy)
+  if (digested_identical & !is.null(dfx) & !is.null(dfy)) {
+    cli::cli_alert_success("The two datasets are identical.")
+    return(invisible(NULL))
+  }
+
+  # 1. NULL check ----
+  ## Store name for print
   name_dfx <- deparse(substitute(dfx))
   name_dfy <- deparse(substitute(dfy))
+
+  ## Note: needs to be done at this stage or you cannot set the name.
+  # Check if dfx or dfy are NULL
+  if (is.null(dfx)) {
+    cli::cli_abort(c(x = "{.field {name_dfx}} is NULL.",
+                     i = "Input data frame(s) cannot be NULL."),
+                   call = NULL)
+  }
+
+  if (is.null(dfy)) {
+    cli::cli_abort(c(x = "{.field {name_dfy}} is NULL.",
+                   i = "Input data frame(s) cannot be NULL."),
+                   call = NULL)
+  }
+
+
+  # 2. Name storage ----
 
   ## Store for operations within myrror()
   attr(dfx, "df_name") <- name_dfx
   attr(dfy, "df_name") <- name_dfy
 
 
-  # 1. Create myrror object ----
+  # 3. Create myrror object ----
   myrror_object <- create_myrror_object(dfx = dfx,
                                         dfy = dfy,
                                         by = by,
@@ -83,33 +106,33 @@ myrror <- function(dfx,
   myrror_object$name_dfx <- name_dfx
   myrror_object$name_dfy <- name_dfy
 
-  # 2. Compare Type ----
+  # 4. Compare Type ----
   if (compare_type) {
     myrror_object <- compare_type(myrror_object = myrror_object,
                                   output = "silent")
   }
 
-  # 3. Compare Values ----
+  # 5. Compare Values ----
   if (compare_values) {
     myrror_object <- compare_values(myrror_object = myrror_object,
                                     output = "silent",
                                     tolerance = tolerance)
   }
 
-  # 4. Extract different values ----
+  # 6. Extract different values ----
   if (extract_diff_values) {
     myrror_object <- extract_diff_values(myrror_object = myrror_object,
                                          output = "silent",
                                          tolerance = tolerance)
   }
 
-  # 5. Save whether interactive or not ----
+  # 7. Save whether interactive or not ----
   myrror_object$interactive <- interactive
 
-  # 6. Save to package environment ----
+  # 8. Save to package environment ----
   rlang::env_bind(.myrror_env, last_myrror_object = myrror_object)
 
-  # 6. Return myrror_object ----
+  # 9. Return myrror_object ----
   return(myrror_object)
 
 }

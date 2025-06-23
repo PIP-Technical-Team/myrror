@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_myrror_object.R
 \name{create_myrror_object}
 \alias{create_myrror_object}
-\title{myrror_object constructor (internal)}
+\title{Creates a myrror object for comparing two data frames}
 \usage{
 create_myrror_object(
   dfx,
@@ -34,9 +34,14 @@ create_myrror_object(
 displays by chunks. If \code{FALSE}, everything will be printed at once.}
 }
 \value{
-object of class myrror_object.
+An object of class "myrror" containing comparison results, dataset information,
+and various reports on matching/non-matching observations.
 }
 \description{
-myrror_object constructor (internal)
+This function constructs a myrror object by comparing two data frames.
+It handles the preparation, validation, and joining of datasets, identifies
+matching and non-matching observations, and performs column pairing for comparison.
+The function supports various join types (1:1, 1:m, m:1) and provides detailed
+reports on the comparison results.
 }
 \keyword{internal}

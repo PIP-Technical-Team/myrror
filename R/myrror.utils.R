@@ -9,10 +9,9 @@
 #'
 #' @keywords internal
 check_df <- function(df) {
-  # Check if dfx or dfy are NULL
-  if (is.null(df)) {
-    cli::cli_abort("Input data frame(s) cannot be NULL.")
-  }
+
+  # retrieve names
+  df_name <- attr(df, "df_name")
 
   # Check if dfx or dfy are data frames,
   # if not, try to convert them if they are lists.
@@ -21,21 +20,28 @@ check_df <- function(df) {
       tryCatch({
         df <- as.data.frame(df)
       }, error = function(e) {
-        cli::cli_abort("df is a list but cannot be converted to a data frame.")
+        cli::cli_abort(c(x = "{.field {df_name}} is a list, but cannot be converted to a data frame.",
+                         i = "Please supply a data frame or a convertible list."),
+                       call = NULL)
       })
     } else {
-      cli::cli_abort("df must be a data frame or a convertible list.")
+      cli::cli_abort(c(x = "You supplied a NULL or non-allowed object.",
+                       i = "Please supply a data frame or a convertible list."),
+                     call = NULL)
     }
   }
 
   # Check if dfx is empty
   if ((!is.null(df) && nrow(df) == 0)) {
-    cli::cli_abort("Input data frame(s) cannot be empty.")
+    cli::cli_abort(c(x = "You supplied an empty data frame.",
+                     i = "Please supply a non-empty data frame or a convertible list"),
+                   call = NULL)
   }
 
   return(df)
 
-}
+  }
+
 
 ## 1.2 by.y by.x ----
 #' Check if the by arguments are valid,
@@ -58,13 +64,19 @@ check_set_by <- function(by = NULL,
 
   # Validate inputs are non-empty character vectors if provided
   if (!is.null(by) && (!is.character(by) || length(by) == 0)) {
-    cli::cli_abort("The 'by' argument must be a non-empty character vector.")
+    cli::cli_abort(c(x = "The 'by' argument is empty",
+                     i = "The 'by' argument must be a non-empty character vector."),
+                   call = NULL)
   }
   if (!is.null(by.x) && (!is.character(by.x) || length(by.x) == 0)) {
-    cli::cli_abort("The 'by.x' argument must be a non-empty character vector.")
+    cli::cli_abort(c(x = "The 'by.x' argument is empty",
+                     i = "The 'by.x' argument must be a non-empty character vector."),
+                   call = NULL)
   }
   if (!is.null(by.y) && (!is.character(by.y) || length(by.y) == 0)) {
-    cli::cli_abort("The 'by.y' argument must be a non-empty character vector.")
+    cli::cli_abort(c(x = "The 'by.y' argument is empty",
+                     i = "The 'by.y' argument must be a non-empty character vector."),
+                   call = NULL)
   }
 
 
@@ -79,10 +91,14 @@ check_set_by <- function(by = NULL,
 
  if (is.null(by.x) || is.null(by.y)) {
     if (is.null(by.x) && !is.null(by.y)) {
-      cli::cli_abort("Argument by.x is NULL. If using by.y, by.x also needs to be specified.")
+      cli::cli_abort(c(x = "Argument by.x is NULL.",
+                       i = "If using by.y, by.x also needs to be specified."),
+                     call = NULL)
     }
     if (!is.null(by.x) && is.null(by.y)) {
-      cli::cli_abort("Argument by.y is NULL. If using by.x, by.y also needs to be specified.")
+      cli::cli_abort(c(x = "Argument by.y is NULL.",
+                       i = "If using by.x, by.y also needs to be specified."),
+                     call = NULL)
     }
     # Set defaults if both are NULL
     by.x <- by.y <- "rn"
@@ -94,35 +110,6 @@ check_set_by <- function(by = NULL,
               by.y = by.y))
 }
 
-
-
-# 2. Normalize (column) names based on tolerance settings ----
-# apply_tolerance <- function(names,
-#                             tolerance) {
-#   # Ensure tolerance is treated as a list for uniform processing
-#   if (!is.null(tolerance)) {
-#     if (is.character(tolerance)) {
-#       tolerance <- as.list(tolerance)
-#     }
-#     cli::cli_alert_info('Applying tolerance parameters to dataset.')
-#   }
-#
-#   # Apply tolerance settings to column names
-#   for (tol in tolerance) {
-#     if (tol == "no_underscore") {
-#       names <- gsub("_", "", names, fixed = TRUE)
-#     }
-#     if (tol == "no_cap") {
-#       names <- tolower(names)
-#     }
-#     if (tol == "no_whitespace") {
-#       names <- gsub("\\s+", "", names, fixed = TRUE)
-#     }
-#   }
-#
-#   return(names)
-#
-# }
 
 
 # 3.Prepare dataset for joyn  ----
@@ -147,18 +134,21 @@ prepare_df <- function(df,
 
   ## 1. Check that "rn" is not in the colnames
   if ("rn" %in% colnames(df)) {
-    cli::cli_abort("'rn' present in colnames but it cannot be a column name.")
+    cli::cli_abort(c(x ="'rn' present in colnames but it cannot be a column name."),
+                   call = NULL)
   }
 
   ## 2. Check for duplicate column names in both datasets
   if (length(unique(names(df))) != length(names(df))) {
-    cli::cli_abort("Duplicate column names found in dataframe.")
+    cli::cli_abort(c(x = "Duplicate column names found in dataframe."),
+                   call = NULL)
     # Note: cli additions needed.
   }
 
   ## 3. Check that keys supplied are not the total number of columns
   if (length(by) == ncol(df)) {
-    cli::cli_abort("The by keys cannot be the only columns to compare.")
+    cli::cli_abort(c(x = "The by keys cannot be the only columns to compare."),
+                   call = NULL)
   }
 
   ## 4. Convert DataFrame to Data Table if it's not already.
@@ -182,7 +172,8 @@ prepare_df <- function(df,
 
   ## 4. Ensure the by keys are available in the column names
   if (!all(by %in% names(dt))) {
-    cli::cli_abort("Specified by keys are not all present in the column names.")
+    cli::cli_abort(c(x ="Specified by keys are not all present in the column names."),
+                   call = NULL)
   }
 
 
@@ -190,12 +181,18 @@ prepare_df <- function(df,
   ### 5.1 Get name
   df_name <- attr(df, "df_name")
 
+
   ## 5.2 Check uniqueness of rows when  by == 'rn'
   if ('rn' %in% by){
     all_columns_no_rn <- setdiff(names(dt), c("rn", "row_index"))
-    copies <- joyn::is_id(dt, by = all_columns_no_rn, verbose = FALSE,
-                          return_report = TRUE) |>
-      fsubset(copies > 1)
+
+
+    copies <- joyn::is_id(dt,
+                          by = all_columns_no_rn,
+                          verbose = FALSE,
+                          return_report = TRUE)|>
+      fsubset(copies > 1 & percent != "100%")
+
 
     if (nrow(copies) >= 1) {
       if (verbose) {
@@ -206,7 +203,7 @@ prepare_df <- function(df,
         proceed <- my_menu(c("Yes, continue.", "No, abort."),
                                title = "Do you want to proceed?")
         if (proceed == 2) {
-          cli::cli_abort("Operation aborted by the user.")
+          cli::cli_abort("Operation aborted by the user.", call = NULL)
         }
       } else {
         if (verbose) {
@@ -226,7 +223,8 @@ prepare_df <- function(df,
       proceed <- my_menu(c("Yes, continue.", "No, abort."),
                              title = "The by keys do not uniquely identify the dataset. Do you want to proceed?")
       if (proceed == 2) {
-        cli::cli_abort("Operation aborted by the user.")
+        cli::cli_abort("Operation aborted by the user.",
+                       call = NULL)
       }
     } else {
       if (verbose) {
@@ -254,84 +252,6 @@ prepare_df <- function(df,
 
   return(dt)
   }
-
-
-# # 4. Sorting utils ----
-# ## 4.1 Is it sorted? ----
-# #' Check if a vector is sorted
-# #' @param x vector
-# #' @param ... additional arguments of is.sorted()
-# #' @return logical
-# #' @examples
-# #' is.sorted(iris$Sepal.Length)
-# #'
-# is.sorted <- function(x, ...) {
-#   # Note: I used the ellipsis to pass the options of is.unsorted(.).
-#   !is.unsorted(x, ...) | !is.unsorted(rev(x), ...)
-# }
-
-# ## 4.2 Detect sorting ----
-# #' Detect sorting in a data frame
-# #' @param data data.frame
-# #' @return list
-# #' @examples
-# #' detect_sorting(iris)
-# #'
-# detect_sorting <- function(data) {
-#   sorted <- lapply(data, is.sorted)
-#   sort_variable <- names(which(unlist(sorted) == TRUE))
-#
-#   if (length(sort_variable) == 0) {
-#     return("not sorted")
-#   } else {
-#     return(sort_variable)
-#   }
-# }
-
-## 4.3 Detect sorting in a data frame ----
-# #' Detect sorting in a data frame
-# #' @param df data.frame
-# #' @param by character vector
-# #' @param decreasing logical
-# #' @return list
-# #' @examples
-##' is_dataframe_sorted_by(iris, by = "Sepal.Length")
-##'
-# is_dataframe_sorted_by <- function(df,
-#                                    by = NULL,
-#                                    decreasing = FALSE) {
-#
-#   if (identical(by, "rn")) {
-#
-#     other_sort <- detect_sorting(df)
-#     return(list("not sorted by key", other_sort))
-#
-#   } else {
-#
-#
-#     # Generate the order indices using do.call to pass each by to order()
-#     order_indices <- do.call(order, lapply(by, function(col) df[[col]]))
-#
-#     # Check if the order indices match the original row indices
-#     is_sorted_by <- identical(order_indices, seq_len(nrow(df)))
-#
-#
-#     if (all(by != "rn") & is_sorted_by) {
-#
-#       return(list("sorted by key", by))
-#
-#     } else {
-#
-#       other_sort <- detect_sorting(df)
-#       return(list("not sorted by key", other_sort))
-#     }
-#
-#   }
-#
-#
-# }
-
-
 
 
 # 4. Variable comparison utils ----
@@ -473,7 +393,8 @@ get_correct_myrror_object <- function(myrror_object,
           cli::cli_inform('Last myrror object used for comparison.')
         }
       } else {
-        cli::cli_abort(abort_msg)
+        cli::cli_abort(abort_msg,
+                       call = NULL)
       }
     } else if (!is.null(dfx) && !is.null(dfy)) {
       myrror_object <- create_myrror_object(dfx = dfx,
@@ -485,7 +406,8 @@ get_correct_myrror_object <- function(myrror_object,
                                             interactive = interactive)
 
     } else {
-      cli::cli_abort(abort_msg)
+      cli::cli_abort(abort_msg,
+                     call = NULL)
     }
   }
   myrror_object
@@ -632,4 +554,20 @@ my_menu <- function(...) {
 #' @keywords internal
 my_readline <- function(...) {
   readline(...)
+}
+
+
+# 12. Digest hatch and skip if same ----
+compare_digested <- function(dfx,dfy){
+
+
+
+  digest_dfx <- digest::digest(dfx)
+  digest_dfy <- digest::digest(dfy)
+
+  if (digest_dfx == digest_dfy) {
+    return(TRUE)
+  } else {
+    return(FALSE)
+  }
 }

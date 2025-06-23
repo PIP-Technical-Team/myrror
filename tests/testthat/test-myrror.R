@@ -3,15 +3,15 @@
 # CREATE MYRROR OBJECT TESTS ---------------------------------------------------
 # 1. Test that the function stops for NULL inputs
 test_that("function stops for NULL inputs", {
-  expect_error(create_myrror_object(NULL, iris), "cannot be NULL")
-  expect_error(create_myrror_object(iris, NULL), "cannot be NULL")
+  expect_error(create_myrror_object(NULL, iris), "NULL")
+  expect_error(create_myrror_object(iris, NULL), "NULL")
 })
 
 # 2. Test that the function stops for empty data frames
 test_that("function stops for empty data frames", {
   empty_df <- data.frame()
-  expect_error(create_myrror_object(empty_df, iris), "cannot be empty")
-  expect_error(create_myrror_object(iris, empty_df), "cannot be empty")
+  expect_error(create_myrror_object(empty_df, iris), "empty")
+  expect_error(create_myrror_object(iris, empty_df), "empty")
 })
 
 # 3. Test handling of non-data.frame inputs that are lists
@@ -58,6 +58,11 @@ test_that("function errors correctly with NULL inputs", {
   expect_error(myrror(NULL, NULL))
 })
 
+test_that("function errors correctly with NULL input for dfy", {
+  dfx <- data.frame(a = 1:10, b = 1:10)
+  expect_error(myrror(dfx, NULL))
+})
+
 # Test feature flags
 test_that("compare type is skipped when disabled", {
   dfx <- dfy <- data.frame(a = 1:10, b = 1:10)
@@ -76,18 +81,17 @@ test_that("tolerance is respected", {
 
 # Environment tests
 test_that("object is saved to environment", {
-  dfx <- dfy <- data.frame(a = 1:10, b=1:10)
-  myrror(dfx, dfy)
+  myrror(iris, iris_var2)
   expect_true(exists("last_myrror_object", envir = .myrror_env))
 })
 
 # Output verification
 test_that("returned object has correct properties", {
-  dfx <- dfy <- data.frame(a = 1:10, b=1:10)
-  result <- myrror(dfx, dfy, interactive = TRUE)
-  expect_true(result$interactive)
+  result <- myrror(iris, iris_var2, interactive = FALSE, verbose = FALSE)
+  expect_false(result$interactive)
   expect_type(result, "list")
 })
+
 
 
 

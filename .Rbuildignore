@@ -13,3 +13,5 @@ playground\.R
 ^README\.Rmd$
 ^doc$
 ^Meta$
+^cran-comments\.md$
+^revdep$

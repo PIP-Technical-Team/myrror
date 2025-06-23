@@ -3,14 +3,14 @@
 # Test 1: Input is NULL
 test_that("check_df stops with NULL input", {
   expect_error(check_df(NULL),
-                 "Input data frame(s) cannot be NULL.",
+                 "You supplied a NULL or non-allowed object.",
                fixed = TRUE)
 })
 
 # Test 2: Input is not a data frame or a list
 test_that("check_df stops with non-data frame non-list input", {
-  expect_error(check_df(5), "df must be a data frame or a convertible list.")
-  expect_error(check_df("not a dataframe"), "df must be a data frame or a convertible list.")
+  expect_error(check_df(5), "You supplied a NULL or non-allowed object.")
+  expect_error(check_df("not a dataframe"), "You supplied a NULL or non-allowed object.")
 })
 
 # Test 3: Input is a list that can be converted to a data frame
@@ -28,13 +28,13 @@ test_that("check_df stops with non-convertible list", {
                     b = "two",
                     c = list(1:3))
   expect_error(check_df(test_list),
-               "df is a list but cannot be converted to a data frame.")
+               "but cannot be converted to a data frame.")
 })
 
 # Test 5: Input is an empty data frame
 test_that("check_df stops with empty data frame", {
   empty_df <- data.frame()
-  expect_error(check_df(empty_df), "Input data frame(s) cannot be empty.",
+  expect_error(check_df(empty_df), "You supplied an empty data frame.",
                fixed = TRUE)
 })
 
@@ -314,7 +314,7 @@ test_that("Tolerance works correctly", {
 
 # Test 1: Myrror Object Provided
 test_that("returns the provided myrror_object", {
-  test_object <- create_myrror_object(iris, iris_var1)
+  test_object <- create_myrror_object(iris, iris_var2)
   result <- get_correct_myrror_object(myrror_object = test_object,
                                       dfx = NULL, dfy = NULL, by = NULL, by.x = NULL, by.y = NULL, verbose = FALSE)
   expect_identical(result, test_object)
@@ -322,10 +322,10 @@ test_that("returns the provided myrror_object", {
 
 # Test 2: No Myrror Object, Environment Has Last Myrror Object
 test_that("retrieves last myrror_object from environment", {
-  myrror(iris, iris_var1)
+  myrror(iris, iris_var2)
   result <- get_correct_myrror_object(NULL, NULL, NULL, NULL, NULL, NULL,
                                       verbose = TRUE)
-  expect_identical(result, myrror(iris, iris_var1))
+  expect_identical(result, myrror(iris, iris_var2))
   rlang::env_unbind(.myrror_env, "last_myrror_object")
 })
 
@@ -363,7 +363,7 @@ test_that("aborts if only one dataset provided", {
 # clear_last_myrror_object() ----
 test_that("clear_last_myrror_object clears the environment", {
   # Setup: Ensure an object exists in the environment
-  myrror_object <- create_myrror_object(iris, iris_var1)
+  myrror_object <- create_myrror_object(iris, iris_var2)
   rlang::env_bind(.myrror_env, last_myrror_object = myrror_object)
 
   # Precondition check: Ensure the object is present

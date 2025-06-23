@@ -26,19 +26,27 @@ The assumption is that the user wants the two data frames to be the same.
 
 ## Installation
 
-You can install the development version from [GitHub](https://github.com/) with:
+You can install the released version of myrror from [CRAN](https://CRAN.R-project.org) with:
+
+``` r
+install.packages("myrror")
+```
+
+You can install the development version from [GitHub](https://github.com/PIP-Technical-Team/myrror) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("giorgiacek/myrror")
+devtools::install_github("PIP-Technical-Team/myrror")
 ```
+
 ## Usage
 
 The main function is `myrror()`, which goes through each single step of the comparison:
 
 ```{r}
 library(myrror)
-myrror(iris, iris_var1)
+myrror(survey_data, survey_data_all, by = c('country' = "COUNTRY", "year" = "YEAR"),
+       interactive = FALSE)
 ```
 
 ## Auxiliary functions
@@ -53,4 +61,4 @@ The auxiliary functions go through a specific step of the comparison, and can be
 
 -   `extract_diff_table()`: extract the values that are different between two data frames, returns a data.table with all differences.
 
-See more in the [Get started](https://giocek.github.io/myrror/articles/myrror.html) vignette.
+See more in the [Get started](https://PIP-Technical-team.github.io/myrror/articles/myrror.html) vignette.
