@@ -99,7 +99,7 @@ keys names, which can be supplied to the function like so:</p>
 <span>       interactive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>When running the function in interactive mode, the user will fo
 through this screen:</p>
-<p><img src="images%2Fmyrror-survey_all.gif"></p>
+<p><img src="images/myrror-survey_all.gif"></p>
 <div class="section level3">
 <h3 id="general-overview">General Overview<a class="anchor" aria-label="anchor" href="#general-overview"></a>
 </h3>
@@ -108,7 +108,7 @@ characteristics of the two dataframes, including the number of rows and
 columns, the keys used for the comparison (<code>by</code> argument) ,
 whether there are missing rows or columns, and if so, their number and
 name:</p>
-<p><img src="images%2Fmyrror-survey_all-general.png"> At the end of the
+<p><img src="images/myrror-survey_all-general.png"> At the end of the
 general overview, a ℹ️ <strong>Note</strong> suggests to the user to run
 <code><a href="../reference/extract_diff_rows.html">extract_diff_rows()</a></code> to see the differences in the number of
 rows. More on this function in the article <a href="extract_diff_rows.html">Extract Different Rows</a>.</p>
@@ -118,7 +118,7 @@ rows. More on this function in the article <a href="extract_diff_rows.html">Extr
 </h3>
 <p>The second part of the report shows whether there are columns with
 different types:</p>
-<p><img src="images%2Fmyrror-survey_all-compare_type.png"></p>
+<p><img src="images/myrror-survey_all-compare_type.png"></p>
 </div>
 <div class="section level3">
 <h3 id="compare-values">Compare Values<a class="anchor" aria-label="anchor" href="#compare-values"></a>
@@ -126,13 +126,13 @@ different types:</p>
 <p>Next, the report shows the differences in values between the two data
 frames. The user can see a summary of how many values are different for
 each variable, and which type of difference is present (change in value,
-value to NA, or NA to value): <img src="images%2Fmyrror-survey_all-compare_values.png"></p>
+value to NA, or NA to value): <img src="images/myrror-survey_all-compare_values.png"></p>
 </div>
 <div class="section level3">
 <h3 id="extract-differences">Extract Differences<a class="anchor" aria-label="anchor" href="#extract-differences"></a>
 </h3>
 <p>Finally, user can have a better look at the differences variable by
-variable: <img src="images%2Fmyrror-survey_all-extract.png"> As
+variable: <img src="images/myrror-survey_all-extract.png"> As
 suggested by the ℹ️ Note, the user can run
 <code><a href="../reference/extract_diff_values.html">extract_diff_values()</a></code>/<code>extract_diff_table</code> to
 see the differences in list or table format. More on these functions in
@@ -155,7 +155,7 @@ with the comparison:</p>
 </h3>
 <p>If one of the two data frames is not identified, the user will be
 warned about this issue:</p>
-<p><img src="images%2Fmyrror-warning_1.png"> The warning will be
+<p><img src="images/myrror-warning_1.png"> The warning will be
 repeated if both data frames are not identified.</p>
 </div>
 <div class="section level3">
@@ -166,7 +166,7 @@ repeated if both data frames are not identified.</p>
 between <code>dfx</code> and <code>dfy</code> is <strong>not
 1:1</strong> (either 1:m or m:1), the user will be warned about this
 issue:</p>
-<p><img src="images%2Fmyrror-warning_2.png"></p>
+<p><img src="images/myrror-warning_2.png"></p>
 <p>Note that if the match is <strong>m:m</strong>, comparison will be
 aborted by default. After this series of warnings, the comparison
 proceeds as before. Again, we want to re-iterate that in the case of
@@ -189,7 +189,7 @@ always suggest the user to provide keys, if possible.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer>
