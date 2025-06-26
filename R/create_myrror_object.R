@@ -30,6 +30,11 @@ create_myrror_object <- function(dfx,
   dfx_name <- get_df_name(df = dfx, original_call$dfx)
   dfy_name <- get_df_name(df = dfy, original_call$dfy)
 
+  ## Get reportvar for joyn operations ####
+  report_var <- getOption("joyn.reportvar",
+                          default = ".joyn")
+
+
 
   # If these are data.tables, it is necessary to create a hard copy.Otherwise,
   # the same object will be bound to two different names.
@@ -252,9 +257,20 @@ create_myrror_object <- function(dfx,
   merged_data_report <- list()
 
   # 8. Get matched and non-matched ----
-  matched_data <- merged_data |> fsubset(.joyn == 'x & y')
-  unmatched_data <- merged_data |> fsubset(.joyn != 'x & y')
 
+  # matched expression
+  match_expr   <- expr(!!sym(report_var) == "x & y")
+
+  # unmatched expressions
+  unmatch_expr <- expr(!!sym(report_var) != "x & y")
+
+  # subset
+  matched_data   <- fsubset(merged_data, !!match_expr)
+  unmatched_data <- fsubset(merged_data, !!unmatch_expr)
+
+  # matched_data <- merged_data |> fsubset(.joyn == 'x & y')
+  # unmatched_data <- merged_data |> fsubset(.joyn != 'x & y')
+  #
 
   ## Store
   merged_data_report$keys <- key(merged_data)
