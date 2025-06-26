@@ -65,8 +65,7 @@ extract_diff_rows <- function(dfx = NULL,
 
 
   diff_rows <- myrror_object$merged_data_report$unmatched_data |>
-    fmutate(report_var <- getOption("joyn.reportvar",
-                          default = "report") = ifelse(rlang::eval_tidy(reportvar_as_name) == "x", "dfx", "dfy")) |>
+    fmutate(ifelse(rlang::eval_tidy(reportvar_as_name) == "x", "dfx", "dfy")) |>
     frename(df = rlang::eval_tidy(reportvar_as_name))|>
     fselect(-row_index)|>
     colorder(df)
