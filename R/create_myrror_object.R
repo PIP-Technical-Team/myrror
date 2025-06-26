@@ -32,7 +32,7 @@ create_myrror_object <- function(dfx,
 
   ## Get reportvar for joyn operations ####
   report_var <- getOption("joyn.reportvar",
-                          default = ".joyn")
+                          default = "report")
 
 
 
