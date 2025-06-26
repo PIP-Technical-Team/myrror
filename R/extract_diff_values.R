@@ -207,6 +207,13 @@ extract_diff_table <- function(dfx = NULL,
 extract_diff_int <- function(myrror_object = NULL,
                              tolerance = 1e-07) {
 
+  report_var <- getOption("joyn.reportvar",
+                          default = "report")
+
+  reportvar_as_name <- rlang::parse_expr(report_var)
+
+
+
   # 1. Get indexes and data ----
   compare_values_object <- compare_values_int(myrror_object = myrror_object,
                                               tolerance = tolerance)
@@ -267,7 +274,7 @@ extract_diff_int <- function(myrror_object = NULL,
                    on = c("indexes" = "rn"),
                    how = "left",
                    verbose = 0) |>
-      fselect(-row_index)
+      fselect(-row_index, -rlang::eval_tidy(reportvar_as_name))
 
 
     ## order columns
