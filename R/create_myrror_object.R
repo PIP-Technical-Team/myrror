@@ -256,23 +256,9 @@ create_myrror_object <- function(dfx,
   ## Store
   merged_data_report <- list()
 
-  # 8. Get matched and non-matched ----
+  # 8. Get matched and non-matched ---
 
-  # matched expression
-  # match_expr   <- rlang::expr(!!rlang::sym(report_var) == "x & y")
-  #
-  # # unmatched expressions
-  # unmatch_expr <- rlang::expr(!!rlang::sym(report_var) != "x & y")
-  #
-  # # subset
-  # matched_data   <- fsubset(merged_data, !!match_expr)
-  # unmatched_data <- fsubset(merged_data, !!unmatch_expr)
-
-  # matched_data <- merged_data |> fsubset(.joyn == 'x & y')
-  # unmatched_data <- merged_data |> fsubset(.joyn != 'x & y')
-  #
-
-  reportvar_as_name <- rlang::parse_expr(reportvar)
+  reportvar_as_name <- rlang::parse_expr(report_var)
 
   matched_data <- merged_data |>
     fsubset(rlang::eval_tidy(reportvar_as_name) == 'x & y')
