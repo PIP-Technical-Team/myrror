@@ -261,11 +261,17 @@ create_myrror_object <- function(dfx,
 
   reportvar_as_name <- rlang::parse_expr(report_var)
 
+  # matched_data <- merged_data |>
+  #   fsubset(rlang::eval_tidy(reportvar_as_name) == 'x & y')
+  #
+  # unmatched_data <- merged_data |> fsubset(
+  #   rlang::eval_tidy(reportvar_as_name) == 'x & y')
+
   matched_data <- merged_data |>
-    fsubset(rlang::eval_tidy(reportvar_as_name) == 'x & y')
+    fsubset(.joyn == 'x & y')
 
   unmatched_data <- merged_data |> fsubset(
-    rlang::eval_tidy(reportvar_as_name) == 'x & y')
+    .joyn == 'x & y')
 
 
   ## Store
