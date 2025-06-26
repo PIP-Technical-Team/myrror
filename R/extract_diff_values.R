@@ -208,7 +208,7 @@ extract_diff_int <- function(myrror_object = NULL,
                              tolerance = 1e-07) {
 
   report_var <- getOption("joyn.reportvar",
-                          default = "report")
+                          default = ".joyn")
 
   reportvar_as_name <- rlang::parse_expr(report_var)
 

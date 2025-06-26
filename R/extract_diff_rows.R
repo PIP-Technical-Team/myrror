@@ -51,10 +51,6 @@ extract_diff_rows <- function(dfx = NULL,
   # 1. Arguments check ----
   output <- match.arg(output)
 
-  report_var <- getOption("joyn.reportvar",
-                          default = "report")
-  reportvar_as_name <- rlang::parse_expr(report_var)
-
   # 2. Capture all arguments as a list
   args <- as.list(environment())
 
@@ -65,8 +61,8 @@ extract_diff_rows <- function(dfx = NULL,
 
 
   diff_rows <- myrror_object$merged_data_report$unmatched_data |>
-    fmutate(ifelse(rlang::eval_tidy(reportvar_as_name) == "x", "dfx", "dfy")) |>
-    frename(df = rlang::eval_tidy(reportvar_as_name))|>
+    fmutate(.joyn = ifelse(.joyn == "x", "dfx", "dfy")) |>
+    frename(df = .joyn)|>
     fselect(-row_index)|>
     colorder(df)
 

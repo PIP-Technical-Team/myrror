@@ -32,7 +32,7 @@ create_myrror_object <- function(dfx,
 
   ## Get reportvar for joyn operations ####
   report_var <- getOption("joyn.reportvar",
-                          default = "report")
+                          default = ".joyn")
 
 
 
@@ -235,7 +235,8 @@ create_myrror_object <- function(dfx,
                             keep_common_vars = TRUE,
                             update_values = FALSE,
                             update_NAs = FALSE,
-                            verbose = FALSE)
+                            verbose = FALSE,
+                            reportvar = ".joyn")
 
   ## Adjust rn and row_index:
   if ("rn.x" %in% colnames(merged_data)) {
