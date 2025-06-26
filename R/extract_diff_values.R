@@ -267,7 +267,7 @@ extract_diff_int <- function(myrror_object = NULL,
                    on = c("indexes" = "rn"),
                    how = "left",
                    verbose = 0) |>
-      fselect(-row_index, -.joyn)
+      fselect(-row_index)
 
 
     ## order columns
