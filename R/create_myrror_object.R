@@ -259,10 +259,10 @@ create_myrror_object <- function(dfx,
   # 8. Get matched and non-matched ----
 
   # matched expression
-  match_expr   <- expr(!!sym(report_var) == "x & y")
+  match_expr   <- rlang::expr(!!rlang::sym(report_var) == "x & y")
 
   # unmatched expressions
-  unmatch_expr <- expr(!!sym(report_var) != "x & y")
+  unmatch_expr <- rlang::expr(!!rlang::sym(report_var) != "x & y")
 
   # subset
   matched_data   <- fsubset(merged_data, !!match_expr)
