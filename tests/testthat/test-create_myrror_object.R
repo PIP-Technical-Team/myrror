@@ -166,8 +166,11 @@ test_that("1:m join type does not inform user with interactive = FALSE and verbo
 
 test_that("1:m join type does not inform user with interactive = TRUE and verbose = FALSE", {
   dfx <- create_sample_df()
-  dfy <- create_sample_df()
-
+  dfy <- data.frame(
+    a = c(1, 1, 2, 3, 4, 5, 6, 7, 8, 9),  # Duplicates in key column
+    b = letters[1:10],
+    stringsAsFactors = FALSE
+  )
 
   with_mocked_bindings(
     check_join_type = function(...) "1:m",
