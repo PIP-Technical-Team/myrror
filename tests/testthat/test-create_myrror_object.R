@@ -259,10 +259,131 @@ test_that("different row numbers and no keys -> abort", {
   expect_error(create_myrror_object(dfx, dfy, interactive = FALSE, verbose = FALSE))
 })
 
+# ================================================================
+#  More structural tests
+# ================================================================
 
+test_that("create_myrror_object preserves column names and structure (corrected)", {
+  dfx <- data.frame(
+    id = 1:4,
+    varA = c("x", "y", "z", "w"),
+    numX = c(10, 20, 30, 40),
+    stringsAsFactors = FALSE
+  )
 
+  dfy <- data.frame(
+    id = 1:4,
+    varB = c("a", "b", "c", "d"),
+    numY = c(100, 200, 300, 400),
+    stringsAsFactors = FALSE
+  )
 
+  res <- create_myrror_object(dfx, dfy, by = "id", interactive = FALSE, verbose = FALSE)
 
+  # Check myrror object class
+  expect_s3_class(res, "myrror")
 
+  # Original names preserved are stored in merged_data_report
+  expect_equal(res$merged_data_report$colnames_dfx, names(res$prepared_dfx))
+  expect_equal(res$merged_data_report$colnames_dfy, names(res$prepared_dfy))
 
+  # Key storage correct (top-level)
+  expect_equal(res$set_by.x, "id")
+  expect_equal(res$set_by.y, "id")
 
+  # Merged data contains correct columns after joining (check matched_data)
+  merged <- res$merged_data_report$matched_data
+  expect_true(all(c("id", "varA", "numX", "varB", "numY") %in% names(merged)))
+
+  # Matched rows count correct
+  expect_equal(nrow(merged), 4)
+})
+
+test_that("create_myrror_object generates correct pairs (corrected)", {
+  dfx <- data.frame(id = 1:3, A = c(1,2,3))
+  dfy <- data.frame(id = 1:3, A = c(1,2,4))
+
+  res <- create_myrror_object(dfx, dfy, by = "id", interactive = FALSE)
+
+  # pairs is returned top-level
+  expect_true(is.list(res$pairs))
+  expect_true(all(c("col_x", "col_y") %in% names(res$pairs$pairs)))
+
+  # Pair correctness (variable correspondence) - pair_columns likely returns col names without suffixes;
+  # but create_myrror_object pairs should reference suffixed column names (x/y)
+  expect_true(any(grepl("^A(\\.x|\\.y)$", res$pairs$pairs$col_x)) || any(grepl("^A\\.x$", res$pairs$col_x)))
+  expect_true(any(grepl("^A(\\.y|\\.x)$", res$pairs$pairs$col_y)) || any(grepl("^A\\.y$", res$pairs$col_y)))
+})
+
+test_that("merged_data_report sections are consistent and correct (corrected)", {
+  dfx <- data.frame(id = 1:5, a = rnorm(5))
+  dfy <- data.frame(id = 1:5, a = rnorm(5))
+
+  res <- create_myrror_object(dfx, dfy, by = "id", interactive = FALSE, verbose = FALSE)
+
+  rpt <- res$merged_data_report
+
+  # Correct components exist
+  expect_true(all(c("matched_data", "unmatched_data") %in% names(rpt)))
+
+  # Should match all rows
+  expect_equal(nrow(rpt$matched_data), 5)
+  expect_equal(nrow(rpt$unmatched_data), 0)
+
+  # Ensure keys include the join column (note: keys may be a vector from key())
+  expect_true("id" %in% res$set_by.y)
+  expect_true("id" %in% res$set_by.x)
+
+})
+
+test_that("Row-number fallback produces correct 'rn' keys (corrected)", {
+  dfx <- create_sample_df(5)
+  dfy <- create_sample_df(5)
+
+  res <- create_myrror_object(dfx, dfy, by = NULL, interactive = FALSE)
+
+  expect_equal(res$set_by.x, "rn")
+  expect_equal(res$set_by.y, "rn")
+
+  rpt <- res$merged_data_report$matched_data
+  expect_true("rn" %in% names(rpt))
+  # Ensure rn reflects row order (prepared datasets may have altered types but rn should be 1:n)
+  expect_equal(as.integer(rpt$rn), 1:5)
+})
+
+test_that("Factors are correctly converted to characters when factor_to_char=TRUE (corrected)", {
+  dfx <- data.frame(id = 1:3, fac = factor(c("a", "b", "c")))
+  dfy <- data.frame(id = 1:3, fac = factor(c("a", "b", "d")))
+
+  res <- create_myrror_object(dfx, dfy, by = "id", factor_to_char = TRUE, interactive = FALSE)
+
+  expect_true(is.character(res$prepared_dfx$fac))
+  expect_true(is.character(res$prepared_dfy$fac))
+})
+
+test_that("create_myrror_object output has all required list components (corrected)", {
+  dfx <- create_sample_df()
+  dfy <- create_sample_df()
+
+  res <- create_myrror_object(dfx, dfy, by = "a", interactive = FALSE)
+
+  mandatory <- c(
+    "original_call",
+    "name_dfx",
+    "name_dfy",
+    "prepared_dfy",
+    "prepared_dfx",
+    "original_by.x",
+    "original_by.y",
+    "set_by.y",
+    "set_by.x",
+    "datasets_report",
+    "match_type",
+    "merged_data_report",
+    "pairs",
+    "print",
+    "interactive"
+  )
+
+  expect_true(all(mandatory %in% names(res)))
+})
