@@ -42,7 +42,7 @@ Suggests:
     testthat (>= 3.0.0),
     withr,
 Config/testthat/edition: 3
-URL: https://giorgiacek.github.io/myrror/
+URL: https://pip-technical-team.github.io/myrror/
 Config/Needs/website: 
   rmarkdown,
   tidyverse,

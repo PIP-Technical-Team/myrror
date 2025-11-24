@@ -15,7 +15,8 @@ knitr::opts_chunk$set(
 
 # myrror
 <!-- badges: start -->
-`r badger::badge_cran_release("myrror", "orange")` `r badger::badge_devel("giorgiacek/myrror", "blue")` `r badger::badge_codecov("giorgiacek/myrror")` `r badger::badge_lifecycle("experimental", "orange")`
+
+r badger::badge_devel("PIP-Technical-Team/myrror", "blue") r badger::badge_lifecycle("experimental", "orange")
 
 <!-- badges: end -->
 
