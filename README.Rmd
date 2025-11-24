@@ -15,10 +15,10 @@ knitr::opts_chunk$set(
 
 # myrror
 <!-- badges: start -->
-
-r badger::badge_devel("PIP-Technical-Team/myrror", "blue") r badger::badge_lifecycle("experimental", "orange")
+`r badger::badge_cran_release("myrror", "orange")` `r badger::badge_devel("PIP-Technical-Team/myrror", "blue")` `r badger::badge_codecov("PIP-Technical-Team/myrror")` `r badger::badge_lifecycle("experimental", "orange")`
 
 <!-- badges: end -->
+
 
 A R package to compare data frames in R. 
 The assumption is that the user wants the two data frames to be the same. 
