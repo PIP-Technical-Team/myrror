@@ -2,50 +2,40 @@ Package: myrror
 Title: Compare two Data Frames and Summarize Differences
 Version: 0.0.0.9001
 Authors@R: c(
-    person(given = "Giorgia", 
-           family = "Cecchinato",
-           email = "gcecchinato@worldbank.org", 
-           role = c("aut", "cre")),
-    person(given = "R.Andres", 
-           family = "Castaneda", 
-           email = "acastanedaa@worldbank.org",
-           role = c("aut")),
-    person("Rossana", "Tatulli", 
-            email = "rtatulli@worldbank.org", 
-            role = "ctb"),
-    person(given = "Global Poverty and Inequality Data Team",
-           family = "World Bank",
-           role = "cph",
-           comment = c(ORCID = "https://github.com/GPID-WB")))
-Description: Tools for systematic comparison of data frames, offering functionality to identify, 
-    quantify, and extract differences. Provides functions with user-friendly and interactive 
-    console output for immediate analysis, while also offering options to export differences as 
-    structured data frames that can be easily integrated into existing workflows.
+    person("Giorgia", "Cecchinato", , "gcecchinato@worldbank.org", role = c("aut", "cre")),
+    person("R.Andres", "Castaneda", , "acastanedaa@worldbank.org", role = "aut"),
+    person("Rossana", "Tatulli", , "rtatulli@worldbank.org", role = "ctb"),
+    person("Global Poverty and Inequality Data Team", "World Bank", role = "cph",
+           comment = c(ORCID = "https://github.com/GPID-WB"))
+  )
+Description: Tools for systematic comparison of data frames, offering
+    functionality to identify, quantify, and extract differences. Provides
+    functions with user-friendly and interactive console output for
+    immediate analysis, while also offering options to export differences
+    as structured data frames that can be easily integrated into existing
+    workflows.
 License: MIT + file LICENSE
+URL: https://pip-technical-team.github.io/myrror/
 Depends: 
     R (>= 2.10)
 Imports:
     cli (>= 3.6.2),
-    data.table (>= 1.15.4),
     collapse,
+    data.table (>= 1.15.4),
     digest,
     joyn,
     rlang,
     utils
-Encoding: UTF-8
-LazyData: true
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
 Suggests: 
     knitr,
     rmarkdown,
     testthat (>= 3.0.0),
-    withr,
+    withr
+VignetteBuilder: 
+    knitr
+Config/Needs/website: rmarkdown, tidyverse, gapminder, DT
 Config/testthat/edition: 3
-URL: https://pip-technical-team.github.io/myrror/
-Config/Needs/website: 
-  rmarkdown,
-  tidyverse,
-  gapminder,
-  DT
-VignetteBuilder: knitr
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
