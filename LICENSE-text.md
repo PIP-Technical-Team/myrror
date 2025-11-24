@@ -1,4 +1,4 @@
 # License
 
-    YEAR: 2024
-    COPYRIGHT HOLDER: myrror authors
+    YEAR: 2025
+    COPYRIGHT HOLDER: World bank
