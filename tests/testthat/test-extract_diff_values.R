@@ -132,4 +132,72 @@ test_that("extract_diff_values() returns an invisible myrror_object if silent", 
 
 })
 
+# Additional tests
+test_that("extract_diff_values errors if dfx or dfy is NULL and no myrror_object", {
+  extract_diff_values(dfx = NULL,
+                      dfy = iris) |>
+    expect_error()
+
+  extract_diff_values(dfx = iris,
+                      dfy = NULL) |>
+    expect_error()
+})
+
+test_that("extract_diff_values detects a single row change", {
+  df1 <- iris
+  df2 <- iris
+  df2$Sepal.Length[1] <- df2$Sepal.Length[1] + 1
+
+  res <- extract_diff_values(df1, df2, output = "simple")
+
+  expect_equal(length(res$Sepal.Length$indexes),
+               1)
+
+  expect_equal(res$Sepal.Length$diff[1],
+               "change_in_value")
+})
+
+test_that("extract_diff_values detects NA changes correctly", {
+  df1 <- iris
+  df2 <- iris
+  df2$Sepal.Width[2] <- NA
+  df2$Petal.Width[3] <- NA
+
+  res <- extract_diff_values(df1, df2, output = "simple")
+
+  expect_true(any(
+    res$Sepal.Width$diff == "value_to_na"))
+
+  expect_true(any(
+    res$Petal.Width$diff == "value_to_na"))
+})
+
+test_that("extract_diff_values respects tolerance", {
+  df1 <- iris
+  df2 <- iris
+  df2$Sepal.Length[1] <- df2$Sepal.Length[1] + 1e-8  # smaller than default tolerance
+
+  res <- extract_diff_values(df1, df2, output = "simple")
+  expect_null(res)  # should ignore very small differences
+})
+
+test_that("extract_diff_values outputs have correct structure", {
+  df1 <- iris
+  df2 <- iris
+  df2$Sepal.Length[1] <- df2$Sepal.Length[1] + 1
+
+  mo <- create_myrror_object(df1, df2)
+  res <- extract_diff_values(myrror_object = mo, output = "full")
+
+  # Check that diff_list and diff_table exist
+  expect_true(all(c("diff_list", "diff_table") %in% names(res$extract_diff_values)))
+
+  # diff_list should include only variables that differ
+  expect_true("Sepal.Length" %in% names(res$extract_diff_values$diff_list))
+
+  # diff_table should contain columns for keys + diff info + differing variable
+  expected_cols <- c("diff", "variable", "indexes", "Sepal.Length.x", "Sepal.Length.y")
+  expect_true(all(expected_cols %in% names(res$extract_diff_values$diff_table)))
+})
+
 
