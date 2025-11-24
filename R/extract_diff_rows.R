@@ -66,6 +66,25 @@ extract_diff_rows <- function(dfx = NULL,
     fselect(-row_index)|>
     colorder(df)
 
+  #### TRY HERE
+  ##################
+  ## ------
+
+
+  # ud <- myrror_object$merged_data_report$unmatched_data
+  #
+  # # Add 'df' column based on .joyn values
+  # df_col <- ifelse(ud$.joyn == "x", "dfx", "dfy")
+  #
+  # # Drop .joyn and row_index
+  # ud <- fsubset(ud, -.joyn, -row_index)
+  #
+  # # Add df column and move it to the front
+  # diff_rows <- fsubset(ftransform(ud, df = df_col), df, everything())
+
+
+  #### ----- #### ___ #### ---- ####
+
   myrror_object$extract_diff_rows <- diff_rows
 
   # 5. Save to package environment ----

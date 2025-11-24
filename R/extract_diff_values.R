@@ -1,4 +1,3 @@
-
 # Objective: extract_diff_values() : depends on indexes identified in compare_values(),
 # The function will go through each dataset associated with each variable stored
 # in the output of compare_values() and select the the indexes when count > 0.
