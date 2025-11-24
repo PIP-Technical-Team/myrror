@@ -42,7 +42,6 @@
 #' # 5. Set tolerance:
 #' myrror(survey_data, survey_data_2, by=c('country', 'year'), tolerance = 1e-5)
 #'
-
 myrror <- function(dfx,
                    dfy,
                    by = NULL,

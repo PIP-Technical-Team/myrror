@@ -1,4 +1,3 @@
-
 #' Function to compare type of variables of matched data frames.
 #'
 #' This function compares the types of the columns in the two data frames.
@@ -100,8 +99,6 @@ compare_type <- function(dfx = NULL,
   )
 
 }
-
-
 
 
 #' Compare type of variables, internal function.

@@ -5,9 +5,8 @@
 #'
 #' @docType package
 #' @name myrror
-#' @keywords internal
+#' @keywords package
 #' @references https://pip-technical-team.github.io/myrror/
-#' @keywords internal
 "_PACKAGE"
 
 ## usethis namespace: start
