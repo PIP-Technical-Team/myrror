@@ -7,10 +7,10 @@
 my_menu(...)
 }
 \arguments{
-\item{...}{arguments passed to the menu function.}
+\item{...}{Arguments passed to \code{\link[utils:menu]{utils::menu()}}, including \code{choices} and \code{title}.}
 }
 \value{
-menu
+Integer indicating the selected menu item.
 }
 \description{
 This function is a wrapper around the base R menu function.

@@ -40,7 +40,13 @@ displays by chunks. If \code{FALSE}, everything will be printed at once.}
 \item{tolerance}{numeric, default to 1e-7.}
 }
 \value{
-myrror_object with compare_values slot updated. Or a list of data.tables when \code{output = 'simple'} is selected.
+Depending on \code{output} parameter:
+\itemize{
+\item \code{"full"}: myrror object with \code{compare_values} slot containing a summary tibble of value differences
+\item \code{"simple"}: tibble with columns: variable, change_in_value, na_to_value, value_to_na (counts)
+\item \code{"silent"}: invisibly returns myrror object (same as "full")
+}
+Returns \code{NULL} if no differences are found and \code{output = "simple"}.
 }
 \description{
 Function to compare values of matched data frames.

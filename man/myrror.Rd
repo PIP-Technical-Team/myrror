@@ -48,7 +48,21 @@ displays by chunks. If \code{FALSE}, everything will be printed at once.}
 \item{tolerance}{numeric, default to 1e-7.}
 }
 \value{
-Object of class myrror_object. A comparison report between the two datasets.
+Object of class "myrror" containing:
+\itemize{
+\item \code{name_dfx}, \code{name_dfy}: Names of input data frames
+\item \code{prepared_dfx}, \code{prepared_dfy}: Prepared versions of input data frames
+\item \code{set_by.x}, \code{set_by.y}: Keys used for comparison
+\item \code{datasets_report}: Characteristics of input datasets (rows, columns)
+\item \code{match_type}: Type of join relationship ("1:1", "1:m", "m:1")
+\item \code{merged_data_report}: Information about matched and unmatched data
+\item \code{pairs}: Column pairing information
+\item \code{compare_type}: Results from type comparison (if enabled)
+\item \code{compare_values}: Results from value comparison (if enabled)
+\item \code{extract_diff_values}: Extracted differences (if enabled)
+\item \code{interactive}: Whether interactive mode is enabled
+}
+Returns \code{NULL} invisibly if the two datasets are identical.
 }
 \description{
 \code{myrror} provides tools for comparing data frames, identifying differences,

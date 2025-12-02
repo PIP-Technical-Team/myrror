@@ -16,7 +16,21 @@
 #' @param tolerance numeric, default to 1e-7.
 #'
 #'
-#' @return Object of class myrror_object. A comparison report between the two datasets.
+#' @return Object of class "myrror" containing:
+#' \itemize{
+#'   \item `name_dfx`, `name_dfy`: Names of input data frames
+#'   \item `prepared_dfx`, `prepared_dfy`: Prepared versions of input data frames
+#'   \item `set_by.x`, `set_by.y`: Keys used for comparison
+#'   \item `datasets_report`: Characteristics of input datasets (rows, columns)
+#'   \item `match_type`: Type of join relationship ("1:1", "1:m", "m:1")
+#'   \item `merged_data_report`: Information about matched and unmatched data
+#'   \item `pairs`: Column pairing information
+#'   \item `compare_type`: Results from type comparison (if enabled)
+#'   \item `compare_values`: Results from value comparison (if enabled)
+#'   \item `extract_diff_values`: Extracted differences (if enabled)
+#'   \item `interactive`: Whether interactive mode is enabled
+#' }
+#' Returns `NULL` invisibly if the two datasets are identical.
 #' @export
 #'
 #' @examples
@@ -42,21 +56,20 @@
 #' # 5. Set tolerance:
 #' myrror(survey_data, survey_data_2, by=c('country', 'year'), tolerance = 1e-5)
 #'
-myrror <- function(dfx,
-                   dfy,
-                   by = NULL,
-                   by.x = NULL,
-                   by.y = NULL,
-                   compare_type = TRUE,
-                   compare_values = TRUE,
-                   extract_diff_values = TRUE,
-                   factor_to_char = TRUE,
-                   interactive = getOption("myrror.interactive"),
-                   verbose = getOption("myrror.verbose"),
-                   tolerance = getOption("myrror.tolerance")
-                   ) {
-
-
+myrror <- function(
+  dfx,
+  dfy,
+  by = NULL,
+  by.x = NULL,
+  by.y = NULL,
+  compare_type = TRUE,
+  compare_values = TRUE,
+  extract_diff_values = TRUE,
+  factor_to_char = TRUE,
+  interactive = getOption("myrror.interactive"),
+  verbose = getOption("myrror.verbose"),
+  tolerance = getOption("myrror.tolerance")
+) {
   # 0. Digest and exit if identical ----
 
   digested_identical <- compare_digested(dfx, dfy)
@@ -73,17 +86,24 @@ myrror <- function(dfx,
   ## Note: needs to be done at this stage or you cannot set the name.
   # Check if dfx or dfy are NULL
   if (is.null(dfx)) {
-    cli::cli_abort(c(x = "{.field {name_dfx}} is NULL.",
-                     i = "Input data frame(s) cannot be NULL."),
-                   call = NULL)
+    cli::cli_abort(
+      c(
+        x = "{.field {name_dfx}} is NULL.",
+        i = "Input data frame(s) cannot be NULL."
+      ),
+      call = NULL
+    )
   }
 
   if (is.null(dfy)) {
-    cli::cli_abort(c(x = "{.field {name_dfy}} is NULL.",
-                   i = "Input data frame(s) cannot be NULL."),
-                   call = NULL)
+    cli::cli_abort(
+      c(
+        x = "{.field {name_dfy}} is NULL.",
+        i = "Input data frame(s) cannot be NULL."
+      ),
+      call = NULL
+    )
   }
-
 
   # 2. Name storage ----
 
@@ -91,38 +111,45 @@ myrror <- function(dfx,
   attr(dfx, "df_name") <- name_dfx
   attr(dfy, "df_name") <- name_dfy
 
-
   # 3. Create myrror object ----
-  myrror_object <- create_myrror_object(dfx = dfx,
-                                        dfy = dfy,
-                                        by = by,
-                                        by.x = by.x,
-                                        by.y = by.y,
-                                        factor_to_char = factor_to_char,
-                                        interactive = interactive,
-                                        verbose = verbose)
+  myrror_object <- create_myrror_object(
+    dfx = dfx,
+    dfy = dfy,
+    by = by,
+    by.x = by.x,
+    by.y = by.y,
+    factor_to_char = factor_to_char,
+    interactive = interactive,
+    verbose = verbose
+  )
   ## Store within myrror_object
   myrror_object$name_dfx <- name_dfx
   myrror_object$name_dfy <- name_dfy
 
   # 4. Compare Type ----
   if (compare_type) {
-    myrror_object <- compare_type(myrror_object = myrror_object,
-                                  output = "silent")
+    myrror_object <- compare_type(
+      myrror_object = myrror_object,
+      output = "silent"
+    )
   }
 
   # 5. Compare Values ----
   if (compare_values) {
-    myrror_object <- compare_values(myrror_object = myrror_object,
-                                    output = "silent",
-                                    tolerance = tolerance)
+    myrror_object <- compare_values(
+      myrror_object = myrror_object,
+      output = "silent",
+      tolerance = tolerance
+    )
   }
 
   # 6. Extract different values ----
   if (extract_diff_values) {
-    myrror_object <- extract_diff_values(myrror_object = myrror_object,
-                                         output = "silent",
-                                         tolerance = tolerance)
+    myrror_object <- extract_diff_values(
+      myrror_object = myrror_object,
+      output = "silent",
+      tolerance = tolerance
+    )
   }
 
   # 7. Save whether interactive or not ----
@@ -133,5 +160,4 @@ myrror <- function(dfx,
 
   # 9. Return myrror_object ----
   return(myrror_object)
-
 }

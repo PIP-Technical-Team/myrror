@@ -41,7 +41,13 @@ extract_diff_rows(
 displays by chunks. If \code{FALSE}, everything will be printed at once.}
 }
 \value{
-data.table object with the rows that are missing or new.
+Depending on \code{output} parameter:
+\itemize{
+\item \code{"full"}: myrror object with \code{extract_diff_rows} slot containing a data.table of non-matching rows
+\item \code{"simple"}: data.table with columns: df (indicating 'dfx' or 'dfy'), keys, and all other columns. Contains rows that exist in only one dataset
+\item \code{"silent"}: invisibly returns myrror object (same as "full")
+}
+Returns \code{NULL} if no row differences are found and \code{output = "simple"}.
 }
 \description{
 Extract Different Rows

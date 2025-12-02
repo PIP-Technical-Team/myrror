@@ -7,7 +7,13 @@
 #' @param output character: one of "full" (returns a myrror_object), "simple" (returns a dataframe), "silent" (invisible object returned).
 #' @param verbose logical: If `TRUE` additional information will be displayed.
 #'
-#' @return myrror_object with compare_type slot updated. Or a data.table when `output = 'simple'` is selected.
+#' @return Depending on `output` parameter:
+#' \itemize{
+#'   \item `"full"`: myrror object with `compare_type` slot containing a data.table of column class comparisons
+#'   \item `"simple"`: data.table with columns: variable, class_x, class_y, same_class
+#'   \item `"silent"`: invisibly returns myrror object (same as "full")
+#' }
+#' Returns `NULL` if no differences are found and `output = "simple"`.
 #' @export
 #'
 #' @examples
@@ -31,17 +37,17 @@
 #' myrror(survey_data, survey_data_2, by=c('country', 'year'))
 #' compare_type()
 #'
-compare_type <- function(dfx = NULL,
-                         dfy = NULL,
-                         myrror_object = NULL,
-                         by = NULL,
-                         by.x = NULL,
-                         by.y = NULL,
-                         output = c("full", "simple", "silent"),
-                         interactive = getOption("myrror.interactive"),
-                         verbose = getOption("myrror.verbose")
-                         ){
-
+compare_type <- function(
+  dfx = NULL,
+  dfy = NULL,
+  myrror_object = NULL,
+  by = NULL,
+  by.x = NULL,
+  by.y = NULL,
+  output = c("full", "simple", "silent"),
+  interactive = getOption("myrror.interactive"),
+  verbose = getOption("myrror.verbose")
+) {
   # 0. Digest and exit if identical ----
   if (!is.null(dfx) && !is.null(dfy)) {
     digested_identical <- compare_digested(dfx, dfy)
@@ -53,7 +59,8 @@ compare_type <- function(dfx = NULL,
 
   # 0. Name storage ----
 
-  if (!is.null(dfx) && !is.null(dfy)) { # because it could be that it is run empty/with myrror_object only
+  if (!is.null(dfx) && !is.null(dfy)) {
+    # because it could be that it is run empty/with myrror_object only
     ## Store for print
     name_dfx <- deparse(substitute(dfx))
     name_dfy <- deparse(substitute(dfy))
@@ -62,7 +69,6 @@ compare_type <- function(dfx = NULL,
     attr(dfx, "df_name") <- name_dfx
     attr(dfy, "df_name") <- name_dfy
   }
-
 
   # 1. Arguments check ----
   output <- match.arg(output)
@@ -84,20 +90,20 @@ compare_type <- function(dfx = NULL,
 
   # 7. Output ----
   ## Handle the output type
-  switch(output,
-         full = {
-           myrror_object$print$compare_type <- TRUE
-           return(myrror_object)
-         },
-         silent = {
-           myrror_object$print$compare_type <- TRUE
-           return(invisible(myrror_object))
-         },
-         simple = {
-           return(myrror_object$compare_type)
-         }
+  switch(
+    output,
+    full = {
+      myrror_object$print$compare_type <- TRUE
+      return(myrror_object)
+    },
+    silent = {
+      myrror_object$print$compare_type <- TRUE
+      return(invisible(myrror_object))
+    },
+    simple = {
+      return(myrror_object$compare_type)
+    }
   )
-
 }
 
 
@@ -108,12 +114,10 @@ compare_type <- function(dfx = NULL,
 #' @return data.table object
 #'
 #' @keywords internal
-compare_type_int <- function(myrror_object = NULL){
-
+compare_type_int <- function(myrror_object = NULL) {
   # 1. Pair columns ----
   merged_data_report <- myrror_object$merged_data_report
   pairs <- myrror_object$pairs
-
 
   # 2. Compare types ----
   compare_type <- lapply(seq_len(nrow(pairs$pairs)), function(i) {
@@ -123,17 +127,17 @@ compare_type_int <- function(myrror_object = NULL){
       column_y = row$col_y,
       class_x = class(merged_data_report$matched_data[[row$col_x]]),
       class_y = class(merged_data_report$matched_data[[row$col_y]]),
-      same_class = class(merged_data_report$matched_data[[row$col_x]]) == class(merged_data_report$matched_data[[row$col_y]])
+      same_class = class(merged_data_report$matched_data[[row$col_x]]) ==
+        class(merged_data_report$matched_data[[row$col_y]])
     )
   })
 
   compare_type <- rbindlist(compare_type)
 
   compare_type <- compare_type |>
-    fmutate(variable = gsub(".x", "", column_x))|>
+    fmutate(variable = gsub(".x", "", column_x)) |>
     fselect(variable, class_x, class_y, same_class)
 
   # 3. Resturn results ----
   return(compare_type)
-
 }

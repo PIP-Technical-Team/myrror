@@ -41,7 +41,13 @@ extract_diff_values(
 displays by chunks. If \code{FALSE}, everything will be printed at once.}
 }
 \value{
-list object with two items: diff_list and diff_table
+Depending on \code{output} parameter:
+\itemize{
+\item \code{"full"}: myrror object with \code{extract_diff_values} slot containing a list with \code{diff_list} and \code{diff_table}
+\item \code{"simple"}: named list of data.tables, one per variable with differences. Each table contains columns: diff, indexes, keys, variable.x, variable.y
+\item \code{"silent"}: invisibly returns myrror object (same as "full")
+}
+Returns \code{NULL} if no differences are found and \code{output = "simple"}.
 }
 \description{
 Extract Different Values
