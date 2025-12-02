@@ -95,26 +95,22 @@ test_that("extract_diff_rows works when column order differs", {
 })
 
 test_that("extract_diff_rows identifies extra rows in dfy when using row numbers BUT no keys supplied", {
-  dfx = data.frame(
-    x = 1:3
+  dfx <- data.frame(x = 1:3)
+  dfy <- data.frame(x = 1:4) # row 4 is new
+
+  expect_error(
+    extract_diff_rows(dfx, dfy, output = "simple"),
+    "Different row numbers and no keys supplied"
   )
-
-  dfy = data.frame(
-    x = 1:4   # row 4 is new
-  )
-
-  extract_diff_rows(dfx, dfy, output = "simple") |>
-    expect_error()
-
 })
 
 test_that("extract_diff_rows errors when row counts differ and no keys are supplied", {
-  dfx = data.frame(
+  dfx <- data.frame(
     x = 1:5,
     y = rep("a", 5)
   )
 
-  dfy = data.frame(
+  dfy <- data.frame(
     x = c(1:3, 10, 11, 12),  # different number of rows
     y = rep("a", 6)
   )
