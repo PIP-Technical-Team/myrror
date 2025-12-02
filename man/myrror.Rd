@@ -99,7 +99,7 @@ Authors:
 Other contributors:
 \itemize{
   \item Rossana Tatulli \email{rtatulli@worldbank.org} [contributor]
-  \item Global Poverty and Inequality Data Team World Bank (\href{https://github.com/GPID-WB}{ORCID}) [copyright holder]
+  \item Global Poverty and Inequality Data Team World Bank [copyright holder]
 }
 
 }

@@ -13,7 +13,7 @@ extract_diff_rows(
   by.x = NULL,
   by.y = NULL,
   output = c("simple", "full", "silent"),
-  tolerance = 1e-07,
+  tolerance = 0.0000001,
   verbose = getOption("myrror.verbose"),
   interactive = getOption("myrror.interactive")
 )

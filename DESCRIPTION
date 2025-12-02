@@ -5,8 +5,7 @@ Authors@R: c(
     person("Giorgia", "Cecchinato", , "gcecchinato@worldbank.org", role = c("aut", "cre")),
     person("R.Andres", "Castaneda", , "acastanedaa@worldbank.org", role = "aut"),
     person("Rossana", "Tatulli", , "rtatulli@worldbank.org", role = "ctb"),
-    person("Global Poverty and Inequality Data Team", "World Bank", role = "cph",
-           comment = c(ORCID = "https://github.com/GPID-WB"))
+    person("Global Poverty and Inequality Data Team", "World Bank", role = "cph")
   )
 Description: Tools for systematic comparison of data frames, offering
     functionality to identify, quantify, and extract differences. Provides

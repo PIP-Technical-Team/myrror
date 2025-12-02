@@ -5,7 +5,7 @@
 \title{Are these two values equal with tolerance applied? This function is used to
 apply tolerance to the comparison of two numeric values.}
 \usage{
-equal_with_tolerance(x, y, tolerance = 1e-07)
+equal_with_tolerance(x, y, tolerance = 0.0000001)
 }
 \arguments{
 \item{x}{numeric}
