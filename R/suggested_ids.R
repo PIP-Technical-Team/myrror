@@ -11,27 +11,8 @@
 #'   \item{2}{The first two-column key combination identified (if any)}
 #'   Returns NULL if no valid keys were found.
 #'
-#' @details Uses the joyn::possible_ids function to identify columns or column
-#'   combinations that can uniquely identify rows in the data frame.
-#'
-#' @keywords internal
-#'
-#' Identify Suggested Keys or IDs for Data Frame
-#'
-#' This function attempts to find potential unique identifier columns or combinations
-#' for a given data frame. It first tries to identify single-column keys, then
-#' two-column key combinations that uniquely identify each row in the data frame.
-#'
-#' @param df A data frame for which to identify potential unique identifiers
-#'
-#' @return A list containing up to two elements:
-#'   \item{1}{The first single-column key identified (if any)}
-#'   \item{2}{The first two-column key combination identified (if any)}
-#'   Returns NULL if no valid keys were found.
-#'
 #' @keywords internal
 suggested_ids <- function(df) {
-
   # Handle empty data frames early
   if (ncol(df) == 0 || nrow(df) == 0) {
     return(NULL)
@@ -51,19 +32,23 @@ suggested_ids <- function(df) {
 
   # Try to find possible 1-column IDs
   possible_ids_df_one <- tryCatch(
-    joyn::possible_ids(df,
-                       verbose = FALSE,
-                       min_combination_size = 1,
-                       max_combination_size = 1),
+    joyn::possible_ids(
+      df,
+      verbose = FALSE,
+      min_combination_size = 1,
+      max_combination_size = 1
+    ),
     error = function(e) NULL
   )
 
   # Try to find possible 2-column combinations
   possible_ids_df_combo <- tryCatch(
-    joyn::possible_ids(df,
-                       verbose = FALSE,
-                       min_combination_size = 2,
-                       max_combination_size = 2),
+    joyn::possible_ids(
+      df,
+      verbose = FALSE,
+      min_combination_size = 2,
+      max_combination_size = 2
+    ),
     error = function(e) NULL
   )
 
@@ -85,13 +70,17 @@ suggested_ids <- function(df) {
   suggested_ids_df <- list()
 
   if (!is.null(possible_ids_df_one)) {
-    suggested_ids_df <- append(suggested_ids_df,
-                               list(possible_ids_df_one[[1]][1]))
+    suggested_ids_df <- append(
+      suggested_ids_df,
+      list(possible_ids_df_one[[1]][1])
+    )
   }
 
   if (!is.null(possible_ids_df_combo)) {
-    suggested_ids_df <- append(suggested_ids_df,
-                               list(possible_ids_df_combo[[1]]))
+    suggested_ids_df <- append(
+      suggested_ids_df,
+      list(possible_ids_df_combo[[1]])
+    )
   }
 
   # Return NULL if nothing valid ended up in the list

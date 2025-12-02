@@ -14,56 +14,10 @@ A list containing up to two elements:
 \item{1}{The first single-column key identified (if any)}
 \item{2}{The first two-column key combination identified (if any)}
 Returns NULL if no valid keys were found.
-
-A list containing up to two elements:
-\item{1}{The first single-column key identified (if any)}
-\item{2}{The first two-column key combination identified (if any)}
-Returns NULL if no valid keys were found.
 }
 \description{
 This function attempts to find potential unique identifier columns or combinations
 for a given data frame. It first tries to identify single-column keys, then
 two-column key combinations that uniquely identify each row in the data frame.
 }
-\details{
-Uses the joyn::possible_ids function to identify columns or column
-combinations that can uniquely identify rows in the data frame.
-}
-\keyword{Data}
-\keyword{Frame}
-\keyword{IDs}
-\keyword{Identify}
-\keyword{It}
-\keyword{Keys}
-\keyword{Suggested}
-\keyword{This}
-\keyword{a}
-\keyword{attempts}
-\keyword{columns}
-\keyword{combinations}
-\keyword{data}
-\keyword{each}
-\keyword{find}
-\keyword{first}
-\keyword{for}
-\keyword{frame.}
-\keyword{function}
-\keyword{given}
-\keyword{identifier}
-\keyword{identify}
-\keyword{in}
 \keyword{internal}
-\keyword{key}
-\keyword{keys,}
-\keyword{or}
-\keyword{potential}
-\keyword{row}
-\keyword{single-column}
-\keyword{that}
-\keyword{the}
-\keyword{then}
-\keyword{to}
-\keyword{tries}
-\keyword{two-column}
-\keyword{unique}
-\keyword{uniquely}
