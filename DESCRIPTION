@@ -1,10 +1,10 @@
 Package: myrror
-Title: Compare two Data Frames and Summarize Differences
-Version: 0.0.0.9001
+Title: Compare Two Data Frames and Summarize Differences
+Version: 0.1.0
 Authors@R: c(
-    person("Giorgia", "Cecchinato", , "gcecchinato@worldbank.org", role = c("aut", "cre")),
-    person("R.Andres", "Castaneda", , "acastanedaa@worldbank.org", role = "aut"),
-    person("Rossana", "Tatulli", , "rtatulli@worldbank.org", role = "ctb"),
+    person("Giorgia", "Cecchinato", , "gcecchinato@worldbank.org", role = c("aut")),
+    person("R.Andres", "Castaneda", , "acastanedaa@worldbank.org", role = c("aut", "cre")),
+    person("Rossana", "Tatulli", , "rtatulli@worldbank.org", role = "aut"),
     person("Global Poverty and Inequality Data Team", "World Bank", role = "cph")
   )
 Description: Tools for systematic comparison of data frames, offering
@@ -13,7 +13,7 @@ Description: Tools for systematic comparison of data frames, offering
     immediate analysis, while also offering options to export differences
     as structured data frames that can be easily integrated into existing
     workflows.
-License: MIT + file LICENSE.md
+License: MIT + file LICENSE
 URL: https://pip-technical-team.github.io/myrror/, https://github.com/PIP-Technical-Team/myrror
 Depends: 
     R (>= 2.10)
