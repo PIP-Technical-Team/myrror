@@ -14,7 +14,7 @@ Description: Tools for systematic comparison of data frames, offering
     as structured data frames that can be easily integrated into existing
     workflows.
 License: MIT + file LICENSE.md
-URL: https://pip-technical-team.github.io/myrror/
+URL: https://pip-technical-team.github.io/myrror/, https://github.com/PIP-Technical-Team/myrror
 Depends: 
     R (>= 2.10)
 Imports:
@@ -38,3 +38,4 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
+BugReports: https://github.com/PIP-Technical-Team/myrror/issues
