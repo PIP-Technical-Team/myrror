@@ -7,9 +7,8 @@
 
 [![](https://www.r-pkg.org/badges/version/myrror?color=orange)](https://cran.r-project.org/package=myrror)
 [![](https://img.shields.io/badge/devel%20version-0.0.0.9001-blue.svg)](https://github.com/PIP-Technical-Team/myrror)
-[![](https://codecov.io/gh/PIP-Technical-Team/myrror/branch/main/graph/badge.svg)](https://app.codecov.io/gh/PIP-Technical-Team/myrror)
+[![codecov](https://codecov.io/gh/pip-technical-team/myrror/branch/main/graph/badge.svg)](https://app.codecov.io/gh/pip-technical-team/myrror)
 [![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-
 <!-- badges: end -->
 
 A R package to compare data frames in R. The assumption is that the user
