@@ -99,20 +99,22 @@ https://pip-technical-team.github.io/myrror/
 Useful links:
 \itemize{
   \item \url{https://pip-technical-team.github.io/myrror/}
+  \item \url{https://github.com/PIP-Technical-Team/myrror}
+  \item Report bugs at \url{https://github.com/PIP-Technical-Team/myrror/issues}
 }
 
 }
 \author{
-\strong{Maintainer}: Giorgia Cecchinato \email{gcecchinato@worldbank.org}
+\strong{Maintainer}: R.Andres Castaneda \email{acastanedaa@worldbank.org}
 
 Authors:
 \itemize{
-  \item R.Andres Castaneda \email{acastanedaa@worldbank.org}
+  \item Giorgia Cecchinato \email{gcecchinato@worldbank.org}
+  \item Rossana Tatulli \email{rtatulli@worldbank.org}
 }
 
 Other contributors:
 \itemize{
-  \item Rossana Tatulli \email{rtatulli@worldbank.org} [contributor]
   \item Global Poverty and Inequality Data Team World Bank [copyright holder]
 }
 
