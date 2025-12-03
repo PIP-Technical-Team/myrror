@@ -22,7 +22,7 @@ Imports:
     collapse,
     data.table (>= 1.15.4),
     digest,
-    joyn,
+    joyn (>= 0.3.0),
     rlang,
     utils
 Suggests: 
