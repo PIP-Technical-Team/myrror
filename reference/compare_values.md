@@ -66,8 +66,17 @@ compare_values(
 
 ## Value
 
-myrror_object with compare_values slot updated. Or a list of data.tables
-when `output = 'simple'` is selected.
+Depending on `output` parameter:
+
+- `"full"`: myrror object with `compare_values` slot containing a
+  summary tibble of value differences
+
+- `"simple"`: tibble with columns: variable, change_in_value,
+  na_to_value, value_to_na (counts)
+
+- `"silent"`: invisibly returns myrror object (same as "full")
+
+Returns `NULL` if no differences are found and `output = "simple"`.
 
 ## Examples
 

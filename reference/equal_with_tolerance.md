@@ -6,7 +6,7 @@ to apply tolerance to the comparison of two numeric values.
 ## Usage
 
 ``` r
-equal_with_tolerance(x, y, tolerance = 1e-07)
+equal_with_tolerance(x, y, tolerance = 0.0000001)
 ```
 
 ## Arguments

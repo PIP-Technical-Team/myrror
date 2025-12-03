@@ -30,20 +30,3 @@ A list containing up to two elements:
   The first two-column key combination identified (if any)
 
 Returns NULL if no valid keys were found.
-
-A list containing up to two elements:
-
-- 1:
-
-  The first single-column key identified (if any)
-
-- 2:
-
-  The first two-column key combination identified (if any)
-
-Returns NULL if no valid keys were found.
-
-## Details
-
-Uses the joyn::possible_ids function to identify columns or column
-combinations that can uniquely identify rows in the data frame.

@@ -13,8 +13,10 @@ my_readline(...)
 
 - ...:
 
-  arguments passed to the readline function.
+  Arguments passed to
+  [`base::readline()`](https://rdrr.io/r/base/readline.html),
+  particularly `prompt`.
 
 ## Value
 
-readline
+Character string containing the user's input.

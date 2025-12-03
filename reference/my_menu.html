@@ -9,7 +9,7 @@ It is used to provide a consistent interface for the menu function."></head><bod
 
     <a class="navbar-brand me-2" href="../index.html">myrror</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,6 +29,7 @@ It is used to provide a consistent interface for the menu function."></head><bod
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/PIP-Technical-Team/myrror/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -38,7 +39,7 @@ It is used to provide a consistent interface for the menu function."></head><bod
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Menu wrapper. Internal function.</h1>
-
+      <small class="dont-index">Source: <a href="https://github.com/PIP-Technical-Team/myrror/blob/DEV/R/myrror.utils.R" class="external-link"><code>R/myrror.utils.R</code></a></small>
       <div class="d-none name"><code>my_menu.Rd</code></div>
     </div>
 
@@ -57,12 +58,12 @@ It is used to provide a consistent interface for the menu function.</p>
 
 
 <dl><dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>arguments passed to the menu function.</p></dd>
+<dd><p>Arguments passed to <code><a href="https://rdrr.io/r/utils/menu.html" class="external-link">utils::menu()</a></code>, including <code>choices</code> and <code>title</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>menu</p>
+    <p>Integer indicating the selected menu item.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -70,7 +71,7 @@ It is used to provide a consistent interface for the menu function.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Giorgia Cecchinato, R.Andres Castaneda.</p>
+  <p>Developed by Giorgia Cecchinato, R.Andres Castaneda, Rossana Tatulli.</p>
 </div>
 
 <div class="pkgdown-footer-right">

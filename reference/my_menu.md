@@ -13,8 +13,10 @@ my_menu(...)
 
 - ...:
 
-  arguments passed to the menu function.
+  Arguments passed to
+  [`utils::menu()`](https://rdrr.io/r/utils/menu.html), including
+  `choices` and `title`.
 
 ## Value
 
-menu
+Integer indicating the selected menu item.

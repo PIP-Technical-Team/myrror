@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">myrror</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,6 +46,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/PIP-Technical-Team/myrror/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -62,7 +63,7 @@
       <h1>Myrror Process Flow</h1>
             
       
-
+      <small class="dont-index">Source: <a href="https://github.com/PIP-Technical-Team/myrror/blob/DEV/vignettes/articles/myrror_flow.Rmd" class="external-link"><code>vignettes/articles/myrror_flow.Rmd</code></a></small>
       <div class="d-none name"><code>myrror_flow.Rmd</code></div>
     </div>
 
@@ -145,14 +146,10 @@ compare the values of each matched row.</li>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Only first 5 keys shown:</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;    country   year copies.dfx percent.dfx copies.dfy percent.dfy</span></span>
-<span><span class="co">#&gt;     &lt;char&gt; &lt;char&gt;      &lt;int&gt;      &lt;char&gt;      &lt;int&gt;      &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1:       A   2010          1        6.2%          3        8.3%</span></span>
-<span><span class="co">#&gt; 2:       B   2010          1        6.2%          1        2.8%</span></span>
-<span><span class="co">#&gt; 3:       A   2011          1        6.2%          2        5.6%</span></span>
-<span><span class="co">#&gt; 4:       B   2011          1        6.2%          2        5.6%</span></span>
-<span><span class="co">#&gt; 5:       A   2012          1        6.2%          2        5.6%</span></span>
+<span><span class="co">#&gt; country | year | copies.dfx | percent.dfx | copies.dfy | percent.dfy</span></span>
+<span><span class="co">#&gt; A | 2010 | 1 | 6.2% | 3 | 8.3%</span></span>
 <span><span class="co">#&gt; ...</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Myrror Report</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">General Information:</span> ──</span></span>
@@ -520,7 +517,7 @@ row number.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Giorgia Cecchinato, R.Andres Castaneda.</p>
+  <p>Developed by Giorgia Cecchinato, R.Andres Castaneda, Rossana Tatulli.</p>
 </div>
 
 <div class="pkgdown-footer-right">

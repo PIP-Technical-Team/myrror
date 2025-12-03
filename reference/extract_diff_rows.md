@@ -14,7 +14,7 @@ extract_diff_rows(
   by.x = NULL,
   by.y = NULL,
   output = c("simple", "full", "silent"),
-  tolerance = 1e-07,
+  tolerance = 0.0000001,
   verbose = getOption("myrror.verbose"),
   interactive = getOption("myrror.interactive")
 )
@@ -66,7 +66,18 @@ extract_diff_rows(
 
 ## Value
 
-data.table object with the rows that are missing or new.
+Depending on `output` parameter:
+
+- `"full"`: myrror object with `extract_diff_rows` slot containing a
+  data.table of non-matching rows
+
+- `"simple"`: data.table with columns: df (indicating 'dfx' or 'dfy'),
+  keys, and all other columns. Contains rows that exist in only one
+  dataset
+
+- `"silent"`: invisibly returns myrror object (same as "full")
+
+Returns `NULL` if no row differences are found and `output = "simple"`.
 
 ## Examples
 

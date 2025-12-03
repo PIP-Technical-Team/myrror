@@ -75,8 +75,31 @@ myrror(
 
 ## Value
 
-Object of class myrror_object. A comparison report between the two
-datasets.
+Object of class "myrror" containing:
+
+- `name_dfx`, `name_dfy`: Names of input data frames
+
+- `prepared_dfx`, `prepared_dfy`: Prepared versions of input data frames
+
+- `set_by.x`, `set_by.y`: Keys used for comparison
+
+- `datasets_report`: Characteristics of input datasets (rows, columns)
+
+- `match_type`: Type of join relationship ("1:1", "1:m", "m:1")
+
+- `merged_data_report`: Information about matched and unmatched data
+
+- `pairs`: Column pairing information
+
+- `compare_type`: Results from type comparison (if enabled)
+
+- `compare_values`: Results from value comparison (if enabled)
+
+- `extract_diff_values`: Extracted differences (if enabled)
+
+- `interactive`: Whether interactive mode is enabled
+
+Returns `NULL` invisibly if the two datasets are identical.
 
 ## References
 
@@ -100,8 +123,8 @@ Other contributors:
 
 - Rossana Tatulli <rtatulli@worldbank.org> \[contributor\]
 
-- Global Poverty and Inequality Data Team World Bank
-  ([ORCID](https://github.com/GPID-WB)) \[copyright holder\]
+- Global Poverty and Inequality Data Team World Bank \[copyright
+  holder\]
 
 ## Examples
 

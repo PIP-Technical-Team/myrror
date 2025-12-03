@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Compare two Data Frames and Summarize Differences • myrror</title>
+<title>Compare Two Data Frames and Summarize Differences • myrror</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Compare two Data Frames and Summarize Differences">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Compare Two Data Frames and Summarize Differences">
 <meta name="description" content="Tools for systematic comparison of data frames, offering functionality to identify, quantify, and extract differences. Provides functions with user-friendly and interactive console output for immediate analysis, while also offering options to export differences as structured data frames that can be easily integrated into existing workflows.">
 <meta property="og:description" content="Tools for systematic comparison of data frames, offering functionality to identify, quantify, and extract differences. Provides functions with user-friendly and interactive console output for immediate analysis, while also offering options to export differences as structured data frames that can be easily integrated into existing workflows.">
 </head>
@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">myrror</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,6 +48,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
 </form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/PIP-Technical-Team/myrror/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -60,7 +61,6 @@
 </h1></div>
 <!-- badges: start -->
 
-<!-- badges: end -->
 <p>A R package to compare data frames in R. The assumption is that the user wants the two data frames to be the same. <code><a href="reference/myrror.html">myrror()</a></code> highlights the differences between values. When there is no difference, the comparison is “successful”.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -155,7 +155,15 @@
 <p>See more in the <a href="https://PIP-Technical-team.github.io/myrror/articles/myrror.html" class="external-link">Get started</a> vignette.</p>
 </div>
 </div>
-  </main><aside class="col-md-3"><div class="license">
+  </main><aside class="col-md-3"><div class="links">
+<h2 data-toc-skip>Links</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/PIP-Technical-Team/myrror/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/PIP-Technical-Team/myrror/issues" class="external-link">Report a bug</a></li>
+</ul>
+</div>
+
+<div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
@@ -174,8 +182,9 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Giorgia Cecchinato <br><small class="roles"> Author, maintainer </small>   </li>
-<li>R.Andres Castaneda <br><small class="roles"> Author </small>   </li>
+<li>Giorgia Cecchinato <br><small class="roles"> Author </small>   </li>
+<li>R.Andres Castaneda <br><small class="roles"> Author, maintainer </small>   </li>
+<li>Rossana Tatulli <br><small class="roles"> Author </small>   </li>
 <li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
@@ -185,7 +194,7 @@
 <ul class="list-unstyled">
 <li><a href="https://cran.r-project.org/package=myrror" class="external-link"><img src="https://www.r-pkg.org/badges/version/myrror?color=orange"></a></li>
 <li><a href="https://github.com/PIP-Technical-Team/myrror" class="external-link"><img src="https://img.shields.io/badge/devel%20version-0.0.0.9001-blue.svg"></a></li>
-<li><a href="https://app.codecov.io/gh/PIP-Technical-Team/myrror" class="external-link"><img src="https://codecov.io/gh/PIP-Technical-Team/myrror/branch/main/graph/badge.svg"></a></li>
+<li><a href="https://app.codecov.io/gh/pip-technical-team/myrror" class="external-link"><img src="https://codecov.io/gh/pip-technical-team/myrror/branch/main/graph/badge.svg" alt="codecov"></a></li>
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg"></a></li>
 </ul>
 </div>
@@ -195,7 +204,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Giorgia Cecchinato, R.Andres Castaneda.</p>
+  <p>Developed by Giorgia Cecchinato, R.Andres Castaneda, Rossana Tatulli.</p>
 </div>
 
 <div class="pkgdown-footer-right">

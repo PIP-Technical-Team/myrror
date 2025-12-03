@@ -80,14 +80,10 @@ myrror(survey_data, survey_data_1m, by = c("country", "year"), interactive = FAL
 #> 
 #> Only first 5 keys shown:
 #> 
-#>    country   year copies.dfx percent.dfx copies.dfy percent.dfy
-#>     <char> <char>      <int>      <char>      <int>      <char>
-#> 1:       A   2010          1        6.2%          3        8.3%
-#> 2:       B   2010          1        6.2%          1        2.8%
-#> 3:       A   2011          1        6.2%          2        5.6%
-#> 4:       B   2011          1        6.2%          2        5.6%
-#> 5:       A   2012          1        6.2%          2        5.6%
+#> country | year | copies.dfx | percent.dfx | copies.dfy | percent.dfy
+#> A | 2010 | 1 | 6.2% | 3 | 8.3%
 #> ...
+#> 
 #> ── Myrror Report ───────────────────────────────────────────────────────────────
 #> 
 #> ── General Information: ──

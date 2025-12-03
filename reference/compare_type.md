@@ -61,8 +61,17 @@ compare_type(
 
 ## Value
 
-myrror_object with compare_type slot updated. Or a data.table when
-`output = 'simple'` is selected.
+Depending on `output` parameter:
+
+- `"full"`: myrror object with `compare_type` slot containing a
+  data.table of column class comparisons
+
+- `"simple"`: data.table with columns: variable, class_x, class_y,
+  same_class
+
+- `"silent"`: invisibly returns myrror object (same as "full")
+
+Returns `NULL` if no differences are found and `output = "simple"`.
 
 ## Examples
 

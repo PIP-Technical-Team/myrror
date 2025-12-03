@@ -5,7 +5,7 @@ Extract Different Values - Internal
 ## Usage
 
 ``` r
-extract_diff_int(myrror_object = NULL, tolerance = 1e-07)
+extract_diff_int(myrror_object = NULL, tolerance = 0.0000001)
 ```
 
 ## Arguments

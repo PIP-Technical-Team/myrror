@@ -14,7 +14,7 @@ extract_diff_table(
   by.x = NULL,
   by.y = NULL,
   output = c("simple", "full", "silent"),
-  tolerance = 1e-07,
+  tolerance = 0.0000001,
   verbose = getOption("myrror.verbose"),
   interactive = getOption("myrror.interactive")
 )
@@ -66,8 +66,18 @@ extract_diff_table(
 
 ## Value
 
-data.table object with all observations for which at least 1 value is
-different.
+Depending on `output` parameter:
+
+- `"full"`: myrror object with `extract_diff_values` slot containing a
+  list with `diff_list` and `diff_table`
+
+- `"simple"`: data.table with all observations where at least one value
+  differs. Contains columns: diff, variable, indexes, keys, and all
+  compared variables with .x/.y suffixes
+
+- `"silent"`: invisibly returns myrror object (same as "full")
+
+Returns `NULL` if no differences are found and `output = "simple"`.
 
 ## Examples
 
