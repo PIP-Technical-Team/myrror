@@ -1,4 +1,4 @@
 # License
 
     YEAR: 2025
-    COPYRIGHT HOLDER: World bank
+    COPYRIGHT HOLDER: The World Bank

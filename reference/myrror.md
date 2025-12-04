@@ -111,17 +111,21 @@ Useful links:
 
 - <https://pip-technical-team.github.io/myrror/>
 
+- <https://github.com/PIP-Technical-Team/myrror>
+
+- Report bugs at <https://github.com/PIP-Technical-Team/myrror/issues>
+
 ## Author
 
-**Maintainer**: Giorgia Cecchinato <gcecchinato@worldbank.org>
+**Maintainer**: R.Andres Castaneda <acastanedaa@worldbank.org>
 
 Authors:
 
-- R.Andres Castaneda <acastanedaa@worldbank.org>
+- Giorgia Cecchinato <gcecchinato@worldbank.org>
+
+- Rossana Tatulli <rtatulli@worldbank.org>
 
 Other contributors:
-
-- Rossana Tatulli <rtatulli@worldbank.org> \[contributor\]
 
 - Global Poverty and Inequality Data Team World Bank \[copyright
   holder\]
