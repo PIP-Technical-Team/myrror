@@ -15,3 +15,4 @@ playground\.R
 ^Meta$
 ^cran-comments\.md$
 ^revdep$
+^copilot_logs$
