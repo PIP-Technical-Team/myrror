@@ -1,6 +1,6 @@
 # MIT License
 
-Copyright (c) 2025 The World Bank
+Copyright (c) 2025 Authors of myrror and The World Bank
 
 Permission is hereby granted, free of charge, to any person obtaining a
 copy of this software and associated documentation files (the
