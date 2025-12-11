@@ -16,3 +16,4 @@ playground\.R
 ^cran-comments\.md$
 ^revdep$
 ^copilot_logs$
+^CRAN-SUBMISSION$
