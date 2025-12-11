@@ -147,10 +147,7 @@ check_set_by <- function(by = NULL, by.x = NULL, by.y = NULL) {
 #' @param interactive logical
 #' @param verbose logical
 #'
-#' @examples
-#' # dataset <- data.frame(a = 1:10, b = letters[1:10])
-#' # prepare_df(dataset, by = "a")
-#'
+#' @return data.table
 #' @keywords internal
 prepare_df <- function(
   df,
@@ -299,10 +296,11 @@ prepare_df <- function(
 #' @return paired_columns
 #'
 #' @examples
-#' # mo <- create_myrror_object(iris, iris_var1)
-#' # pair_columns(mo$merged_data_report)
+#' # Create a myrror object and extract column pairs
+#' mo <- create_myrror_object(iris, iris_var1)
+#' pair_columns(mo$merged_data_report)
 #'
-#' @keywords internal
+#' @export
 pair_columns <- function(merged_data_report, suffix_x = ".x", suffix_y = ".y") {
   # Clean up the column names from the suffix
   # Get suffixes
