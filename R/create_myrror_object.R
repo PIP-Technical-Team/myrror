@@ -13,7 +13,12 @@
 #' @return An object of class "myrror" containing comparison results, dataset information,
 #'         and various reports on matching/non-matching observations.
 #'
-#' @keywords internal
+#' @examples
+#' # Create a myrror object directly
+#' mo <- create_myrror_object(iris, iris_var1)
+#' str(mo, max.level = 1)
+#'
+#' @export
 create_myrror_object <- function(
   dfx,
   dfy,
