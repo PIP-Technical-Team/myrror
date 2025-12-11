@@ -44,4 +44,9 @@ matching and non-matching observations, and performs column pairing for comparis
 The function supports various join types (1:1, 1:m, m:1) and provides detailed
 reports on the comparison results.
 }
-\keyword{internal}
+\examples{
+# Create a myrror object directly
+mo <- create_myrror_object(iris, iris_var1)
+str(mo, max.level = 1)
+
+}

@@ -23,12 +23,10 @@ prepare_df(
 
 \item{verbose}{logical}
 }
+\value{
+data.table
+}
 \description{
 Prepares dataset for joyn::joyn(). Internal function.
-}
-\examples{
-# dataset <- data.frame(a = 1:10, b = letters[1:10])
-# prepare_df(dataset, by = "a")
-
 }
 \keyword{internal}

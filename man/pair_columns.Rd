@@ -20,8 +20,8 @@ paired_columns
 Pairs columns and prepares them for comparison.
 }
 \examples{
-# mo <- create_myrror_object(iris, iris_var1)
-# pair_columns(mo$merged_data_report)
+# Create a myrror object and extract column pairs
+mo <- create_myrror_object(iris, iris_var1)
+pair_columns(mo$merged_data_report)
 
 }
-\keyword{internal}
