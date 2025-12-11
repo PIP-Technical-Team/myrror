@@ -1,6 +1,6 @@
 Package: myrror
 Title: Compare Two Data Frames and Summarize Differences
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: c(
     person("Giorgia", "Cecchinato", , "gcecchinato@worldbank.org", role = c("aut")),
     person("R.Andres", "Castaneda", , "acastanedaa@worldbank.org", role = c("aut", "cre")),

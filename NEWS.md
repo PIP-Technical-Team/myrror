@@ -1,3 +1,13 @@
+# myrror 0.1.1
+
+CRAN resubmission with requested fixes:
+
+* Added missing `\value` documentation to `print.myrror()` (#CRAN-1)
+* Exported `create_myrror_object()`, `pair_columns()`, and `prepare_df()` functions (#CRAN-2)
+* Replaced `\dontrun{}` with `\donttest{}` in examples (#CRAN-3)
+* Uncommented all examples and made them executable (#CRAN-4)
+* Fixed examples that referenced unexported functions (#CRAN-5)
+
 # myrror 0.1.0
 
 Initial release of `myrror`, a package for comparing data frames in R.
