@@ -14,14 +14,9 @@ pair_columns(merged_data_report, suffix_x = ".x", suffix_y = ".y")
 \item{suffix_y}{suffix for dfy (default .y)}
 }
 \value{
-paired_columns
+list of paired_columns
 }
 \description{
 Pairs columns and prepares them for comparison.
 }
-\examples{
-# Create a myrror object and extract column pairs
-mo <- create_myrror_object(iris, iris_var1)
-pair_columns(mo$merged_data_report)
-
-}
+\keyword{internal}

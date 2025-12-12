@@ -293,14 +293,8 @@ prepare_df <- function(
 #' @param suffix_x suffix for dfx (default .x)
 #' @param suffix_y suffix for dfy (default .y)
 #'
-#' @return paired_columns
-#'
-#' @examples
-#' # Create a myrror object and extract column pairs
-#' mo <- create_myrror_object(iris, iris_var1)
-#' pair_columns(mo$merged_data_report)
-#'
-#' @export
+#' @return list of paired_columns
+#' @keywords internal
 pair_columns <- function(merged_data_report, suffix_x = ".x", suffix_y = ".y") {
   # Clean up the column names from the suffix
   # Get suffixes
