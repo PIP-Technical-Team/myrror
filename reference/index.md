@@ -24,6 +24,8 @@
   comparing two data frames.
 - [`clear_last_myrror_object()`](https://PIP-Technical-Team.github.io/myrror/reference/clear_last_myrror_object.md)
   : Clear last myrror object. Internal Function.
+- [`create_myrror_object()`](https://PIP-Technical-Team.github.io/myrror/reference/create_myrror_object.md)
+  : Creates a myrror object for comparing two data frames
 
 ## Package Datasets: simulated survey data.
 

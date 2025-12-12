@@ -24,11 +24,4 @@ pair_columns(merged_data_report, suffix_x = ".x", suffix_y = ".y")
 
 ## Value
 
-paired_columns
-
-## Examples
-
-``` r
-# mo <- create_myrror_object(iris, iris_var1)
-# pair_columns(mo$merged_data_report)
-```
+list of paired_columns

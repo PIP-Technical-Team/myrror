@@ -60,3 +60,38 @@ create_myrror_object(
 
 An object of class "myrror" containing comparison results, dataset
 information, and various reports on matching/non-matching observations.
+
+## Examples
+
+``` r
+# convert rownames of mtcars to a column
+mtcars2 <- mtcars
+mtcars2$car_name <- rownames(mtcars2)
+rownames(mtcars2) <- NULL
+# modify mtcars2 slightly by remove one row and changing one value
+mtcars3 <- mtcars2[-1, ]
+mtcars3$mpg[1] <- mtcars3$mpg[1] + 1
+
+mo <- create_myrror_object(mtcars2, mtcars3, by = "car_name")
+mo
+#> 
+#> ── Myrror Report ───────────────────────────────────────────────────────────────
+#> 
+#> ── General Information: ──
+#> 
+#> dfx: mtcars2 with 32 rows and 12 columns.
+#> dfy: mtcars3 with 31 rows and 12 columns.
+#> keys: car_name.
+#> 
+#> ── Note: comparison is done for shared columns and rows. ──
+#> 
+#> ✔ Total shared columns (no keys): 11
+#> ! Non-shared columns in mtcars2: 0 ()
+#> ! Non-shared columns in mtcars3: 0 ()
+#> 
+#> ✔ Total shared rows: 31
+#> ! Non-shared rows in mtcars2: 1.
+#> ! Non-shared rows in mtcars3: 0.
+#> 
+#> ℹ Note: run `extract_diff_rows()` to extract the missing/new rows.
+```

@@ -36,9 +36,6 @@ prepare_df(
 
   logical
 
-## Examples
+## Value
 
-``` r
-# dataset <- data.frame(a = 1:10, b = letters[1:10])
-# prepare_df(dataset, by = "a")
-```
+data.table
