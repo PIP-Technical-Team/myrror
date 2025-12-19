@@ -158,12 +158,5 @@ print(m2)
 #> ℹ Note: run `extract_diff_values()` or `extract_diff_table()` to access the results in list or table format.
 #> 
 #> ✔ End of Myrror Report.
-
-# Print without value comparison
-m3 <- myrror(dfx, dfy, by.x = "id", by.y = "id",
-             print = list(compare_values = FALSE))
-#> Error in myrror(dfx, dfy, by.x = "id", by.y = "id", print = list(compare_values = FALSE)): unused argument (print = list(compare_values = FALSE))
-print(m3)
-#> Error: object 'm3' not found
 # }
 ```
