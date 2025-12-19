@@ -1,5 +1,3 @@
-# myrror 0.2.0
-
 # myrror 0.1.1
 
 CRAN resubmission with requested fixes:
