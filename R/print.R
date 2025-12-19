@@ -27,11 +27,6 @@
 #' # With interactive mode disabled
 #' m2 <- myrror(dfx, dfy, by.x = "id", by.y = "id", interactive = FALSE)
 #' print(m2)
-#'
-#' # Print without value comparison
-#' m3 <- myrror(dfx, dfy, by.x = "id", by.y = "id",
-#'              print = list(compare_values = FALSE))
-#' print(m3)
 #' }
 #'
 #' @export
