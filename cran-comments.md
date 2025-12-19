@@ -1,13 +1,21 @@
-## Resubmission (Second)
+## Resubmission
+Package: myrror
+Version: 0.1.2
+Maintainer: R.Andres Castaneda <acastanedaa@worldbank.org>
+
+* Fixed `\dontrun{}` issue in `print.myrror.Rd`. The problem was that after editing the source file (`R/print.R`), we failed to run `devtools::document()` to regenerate the `.Rd` file. This has now been corrected - `\dontrun{}` is replaced with `\donttest{}` in both the source and the generated documentation.
+
+* Fixed vignette build failure caused by undefined variables in `print.myrror()`. During `devtools::check()`, the vignette building failed with error "object 'name_dfx' not found". The issue was that `print.myrror()` used `name_dfx` and `name_dfy` variables in `cli::cli_text()` calls without first extracting them from the myrror object. Added variable assignments (`name_dfx <- x$name_dfx`, `name_dfy <- x$name_dfy`) to fix the scope issue. Also cleaned up duplicate line assignments that were present in the function.
+
+
+* Additionally, `pair_columns()` — which had been temporarily exported to assist with example testing — has been converted back to an internal helper. Examples that previously relied on `pair_columns()` were modified to use exported wrappers or to demonstrate the same workflows using public functions, so no examples call unexported helpers directly.
+
+---
+
+## Resubmission
 Package: myrror
 Version: 0.1.1
 Maintainer: R.Andres Castaneda <acastanedaa@worldbank.org>
-
-**Second resubmission note:** Fixed `\dontrun{}` issue in `print.myrror.Rd`. The problem was that after editing the source file (`R/print.R`), we failed to run `devtools::document()` to regenerate the `.Rd` file. This has now been corrected - `\dontrun{}` is replaced with `\donttest{}` in both the source and the generated documentation.
-
-Additionally, `pair_columns()` — which had been temporarily exported to assist with example testing — has been converted back to an internal helper. Examples that previously relied on `pair_columns()` were modified to use exported wrappers or to demonstrate the same workflows using public functions, so no examples call unexported helpers directly.
-
----
 
 **First resubmission - addressed all initial CRAN reviewer comments:**
 

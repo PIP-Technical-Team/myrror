@@ -162,6 +162,56 @@ This caused `devtools::check()` to fail because `myrror()` has no `print` parame
 
 ---
 
+## 2E. Third Resubmission Fixes (December 19, 2025 - Vignette Build)
+
+### Overview: Vignette Build Failure Discovery
+
+After fixing the second resubmission issues (roxygen2 regeneration and invalid examples), we ran `devtools::check()` to validate all changes. The check revealed a **new issue** that had not been caught in previous testing: vignette building failed during the R CMD check process.
+
+**Error encountered:**
+```
+Error: ! ! Could not evaluate cli `{}` expression: `name_dfx`.
+Caused by error in `eval(expr, envir = envir)`:
+! object 'name_dfx' not found
+```
+
+**Context:** This error occurred at line 70-72 of `vignettes/myrror.Rmd` when the vignette attempted to print a myrror object, which triggered the `print.myrror()` S3 method.
+
+---
+
+### Issue #3: Undefined Variables in `print.myrror()` Function
+
+**Problem:** The `print.myrror()` function used `{name_dfx}` and `{name_dfy}` in `cli::cli_text()` calls (lines 50-51 and 55-56 of `R/print.R`), but these variables were never defined in the function scope. The `cli` package uses glue syntax `{}` for variable interpolation, which evaluates expressions in the current environment. When these variables didn't exist, the evaluation failed.
+
+**Root Cause:** The myrror object stores data frame names in `x$name_dfx` and `x$name_dfy` fields, but the print method was trying to use `name_dfx` and `name_dfy` directly without first extracting them from the object.
+
+**Why it wasn't caught earlier:** 
+- Initial CRAN submission likely didn't run full vignette builds
+- Local testing may have used cached vignettes
+- The error only manifests during actual vignette rendering, not when running examples
+
+**Resolution:**
+1. Added variable extraction immediately after other variable assignments (around line 48-49):
+   ```r
+   name_dfx <- x$name_dfx
+   name_dfy <- x$name_dfy
+   ```
+2. Removed duplicate line assignments that were present in the function:
+   - Lines 40-41 and 43-44 had duplicate assignments for `nonshared_dfy_cols`, `nonshared_dfx_cols`, and their counts
+   - Kept only the first set of assignments
+3. Ran `devtools::document()` to regenerate documentation
+4. Ran `devtools::check()` which now passes with **0 errors, 0 warnings, 0 notes**
+
+**Technical explanation:** The `cli::cli_text()` function uses glue-style interpolation where `{variable_name}` is replaced with the value of `variable_name` from the current environment. Since `name_dfx` and `name_dfy` were not defined as local variables, the glue evaluation failed with "object not found" error.
+
+**Verification:**
+- ✅ All vignettes build successfully
+- ✅ R CMD check passes completely (Duration: 10m 14.3s)
+- ✅ No errors, warnings, or notes
+- ✅ Both examples and vignettes execute without errors
+
+---
+
 ## 2C. Detailed Changes Since First Submission
 
 This section provides a file-by-file comparison of what changed between the first submission (that was rejected) and the second submission (ready to go).
@@ -495,10 +545,10 @@ Not applicable - This task addressed documentation only. No performance-sensitiv
 ## Summary
 
 **Task:** fix_cran_comments  
-**Result:** ✅ All CRAN reviewer comments successfully addressed (first + second resubmission)  
-**Version:** 0.1.0 → 0.1.1  
-**Status:** Ready for CRAN resubmission (second attempt)  
-**Check Results:** Pending final `devtools::check()` validation  
+**Result:** ✅ All CRAN reviewer comments successfully addressed (first + second + third resubmission)  
+**Version:** 0.1.0 → 0.1.1 → 0.1.2  
+**Status:** ✅ Ready for CRAN resubmission (third attempt) - All checks pass  
+**Check Results:** ✅ `devtools::check()` passed with 0 errors, 0 warnings, 0 notes  
 
 **Key Achievements (First Resubmission):**
 1. Added missing `\value` documentation
@@ -514,6 +564,15 @@ Not applicable - This task addressed documentation only. No performance-sensitiv
 3. **Corrected documentation:** Fixed `NEWS.md` and `cran-comments.md` incorrectly stating `pair_columns()` was exported
 4. **Verification:** Confirmed no `\dontrun{}` instances remain in any `.Rd` files
 
-**Critical Lesson Learned:** Always run `devtools::document()` immediately after editing roxygen comments in source files. Source changes do NOT automatically propagate to generated `.Rd` documentation.
+**Key Fixes (Third Resubmission - December 19, 2025):**
+1. **Vignette build failure:** Fixed undefined variables (`name_dfx`, `name_dfy`) in `print.myrror()` function
+2. **Variable scope issue:** Added explicit variable assignments extracting values from myrror object before use in `cli::cli_text()`
+3. **Code cleanup:** Removed duplicate line assignments in `print.myrror()` function
+4. **Validation:** Successfully passed complete `devtools::check()` including vignette builds
 
-**Validation:** Ready for final `devtools::check()` run to confirm package is ready for CRAN resubmission.
+**Critical Lessons Learned:** 
+- Always run `devtools::document()` immediately after editing roxygen comments in source files
+- Always run full `devtools::check()` including vignette builds before CRAN submission
+- When using cli package with glue syntax `{}`, ensure all referenced variables are defined in function scope
+
+**Final Status:** Package myrror v0.1.2 is fully validated and ready for CRAN submission. Duration: 10m 14.3s check time with 0 errors, 0 warnings, 0 notes.
