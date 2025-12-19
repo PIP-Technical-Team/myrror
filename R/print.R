@@ -23,7 +23,7 @@
 #' m
 #'
 #' # Create object with different print settings
-#' \dontrun{
+#' \donttest{
 #' # With interactive mode disabled
 #' m2 <- myrror(dfx, dfy, by.x = "id", by.y = "id", interactive = FALSE)
 #' print(m2)

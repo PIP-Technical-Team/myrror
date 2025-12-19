@@ -3,10 +3,11 @@
 CRAN resubmission with requested fixes:
 
 * Added missing `\value` documentation to `print.myrror()` (#CRAN-1)
-* Exported `create_myrror_object()`, `pair_columns()`, and `prepare_df()` functions (#CRAN-2)
-* Replaced `\dontrun{}` with `\donttest{}` in examples (#CRAN-3)
+* Exported `create_myrror_object()` function; `pair_columns()` remains internal (not exported) (#CRAN-2)
+* Replaced `\dontrun{}` with `\donttest{}` in examples and regenerated documentation with `devtools::document()` (#CRAN-3)
 * Uncommented all examples and made them executable (#CRAN-4)
 * Fixed examples that referenced unexported functions (#CRAN-5)
+* **Second resubmission fix:** Properly regenerated `.Rd` files after source edits using roxygen2
 
 # myrror 0.1.0
 
