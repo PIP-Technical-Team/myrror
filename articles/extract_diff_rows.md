@@ -76,8 +76,6 @@ separately to see the extracted rows.
 # First run the function in full mode:
 extract_diff_rows(survey_data, survey_data_4, by = c('country', 'year'), output = "full")
 #> 
-#> ── Myrror Report ───────────────────────────────────────────────────────────────
-#> 
 #> ── General Information: ──
 #> 
 #> dfx: dfx with 16 rows and 6 columns.

@@ -23,8 +23,6 @@ will proceed by joining the two datasets by the keys:
 ``` r
 myrror(survey_data, survey_data_3, by = c("country", "year"), interactive = FALSE)
 #> 
-#> ── Myrror Report ───────────────────────────────────────────────────────────────
-#> 
 #> ── General Information: ──
 #> 
 #> dfx: survey_data with 16 rows and 6 columns.
@@ -83,8 +81,6 @@ myrror(survey_data, survey_data_1m, by = c("country", "year"), interactive = FAL
 #> country | year | copies.dfx | percent.dfx | copies.dfy | percent.dfy
 #> A | 2010 | 1 | 6.2% | 3 | 8.3%
 #> ...
-#> 
-#> ── Myrror Report ───────────────────────────────────────────────────────────────
 #> 
 #> ── General Information: ──
 #> 
@@ -250,8 +246,6 @@ myrror(survey_data, survey_data_2, interactive = FALSE)
 #> ℹ Possible keys found in survey_data_2: variable1 and c("country", "year")
 #> ℹ Consider using these keys for the comparison. The comparison will go ahead using row numbers.
 #> 
-#> ── Myrror Report ───────────────────────────────────────────────────────────────
-#> 
 #> ── General Information: ──
 #> 
 #> dfx: survey_data with 16 rows and 6 columns.
@@ -323,10 +317,10 @@ row_to_remove <- sample(setdiff(1:nrow(survey_data_copy), row_to_duplicate), 1)
 survey_data_copy <- survey_data_copy[-row_to_remove, ]
 
 myrror(survey_data, survey_data_copy, interactive = FALSE)
+#> ! No keys supplied. Possible keys found in survey_data: variable1 and c("country", "year"), but not in survey_data_copy.
+#> ℹ Consider supplying explicit keys or aligning datasets. The comparison will proceed using row numbers.
 #> ! There are duplicates in the dataset (survey_data_copy).
 #> ! Proceeding with the operation despite non-unique rows.
-#> 
-#> ── Myrror Report ───────────────────────────────────────────────────────────────
 #> 
 #> ── General Information: ──
 #> 

@@ -75,8 +75,6 @@ mtcars3$mpg[1] <- mtcars3$mpg[1] + 1
 mo <- create_myrror_object(mtcars2, mtcars3, by = "car_name")
 mo
 #> 
-#> ── Myrror Report ───────────────────────────────────────────────────────────────
-#> 
 #> ── General Information: ──
 #> 
 #> dfx: mtcars2 with 32 rows and 12 columns.

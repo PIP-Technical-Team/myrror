@@ -85,8 +85,6 @@ Returns `NULL` if no differences are found and `output = "simple"`.
 # 1. Standard report, after running myrror() or compare_values():
 myrror(survey_data, survey_data_2, by=c('country', 'year'))
 #> 
-#> ── Myrror Report ───────────────────────────────────────────────────────────────
-#> 
 #> ── General Information: ──
 #> 
 #> dfx: survey_data with 16 rows and 6 columns.

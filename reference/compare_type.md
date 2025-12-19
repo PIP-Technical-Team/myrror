@@ -79,8 +79,6 @@ Returns `NULL` if no differences are found and `output = "simple"`.
 # 1. Standard report, myrror_object output:
 compare_type(survey_data, survey_data_2, by=c('country', 'year'))
 #> 
-#> ── Myrror Report ───────────────────────────────────────────────────────────────
-#> 
 #> ── General Information: ──
 #> 
 #> dfx: survey_data with 16 rows and 6 columns.
@@ -118,8 +116,6 @@ compare_type(survey_data, survey_data_2, by=c('country', 'year'),
 compare_type(survey_data, survey_data_2, by=c('country', 'year'),
              interactive = FALSE)
 #> 
-#> ── Myrror Report ───────────────────────────────────────────────────────────────
-#> 
 #> ── General Information: ──
 #> 
 #> dfx: survey_data with 16 rows and 6 columns.
@@ -147,8 +143,6 @@ compare_type(survey_data, survey_data_2, by=c('country', 'year'),
 compare_type(survey_data, survey_data_2_cap,
              by.x = c('country', 'year'), by.y = c('COUNTRY', 'YEAR'))
 #> 
-#> ── Myrror Report ───────────────────────────────────────────────────────────────
-#> 
 #> ── General Information: ──
 #> 
 #> dfx: survey_data with 16 rows and 6 columns.
@@ -175,8 +169,6 @@ compare_type(survey_data, survey_data_2_cap,
 
 # 5. Using existing myrror object created by myrror():
 myrror(survey_data, survey_data_2, by=c('country', 'year'))
-#> 
-#> ── Myrror Report ───────────────────────────────────────────────────────────────
 #> 
 #> ── General Information: ──
 #> 
@@ -236,8 +228,6 @@ myrror(survey_data, survey_data_2, by=c('country', 'year'))
 #> ✔ End of Myrror Report.
 compare_type()
 #> Last myrror object used for comparison.
-#> 
-#> ── Myrror Report ───────────────────────────────────────────────────────────────
 #> 
 #> ── General Information: ──
 #> 

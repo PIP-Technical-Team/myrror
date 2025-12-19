@@ -84,8 +84,6 @@ Returns `NULL` if no differences are found and `output = "simple"`.
 # 1. Standard report, myrror_object output:
 compare_values(survey_data, survey_data_2, by=c('country', 'year'))
 #> 
-#> ── Myrror Report ───────────────────────────────────────────────────────────────
-#> 
 #> ── General Information: ──
 #> 
 #> dfx: survey_data with 16 rows and 6 columns.
@@ -130,8 +128,6 @@ compare_values(survey_data, survey_data_2, by=c('country', 'year'),
 compare_values(survey_data, survey_data_2, by=c('country', 'year'),
                tolerance = 1e-5)
 #> 
-#> ── Myrror Report ───────────────────────────────────────────────────────────────
-#> 
 #> ── General Information: ──
 #> 
 #> dfx: survey_data with 16 rows and 6 columns.
@@ -167,8 +163,6 @@ compare_values(survey_data, survey_data_2, by=c('country', 'year'),
 # 4. Toggle interactvity:
 compare_values(survey_data, survey_data_2, by=c('country', 'year'),
                interactive = FALSE)
-#> 
-#> ── Myrror Report ───────────────────────────────────────────────────────────────
 #> 
 #> ── General Information: ──
 #> 
@@ -206,8 +200,6 @@ compare_values(survey_data, survey_data_2, by=c('country', 'year'),
 compare_values(survey_data, survey_data_2_cap,
                by.x = c('country', 'year'), by.y = c('COUNTRY', 'YEAR'))
 #> 
-#> ── Myrror Report ───────────────────────────────────────────────────────────────
-#> 
 #> ── General Information: ──
 #> 
 #> dfx: survey_data with 16 rows and 6 columns.
@@ -243,8 +235,6 @@ compare_values(survey_data, survey_data_2_cap,
 
 # 6. Using existing myrror object created by myrror():
 myrror(survey_data, survey_data_2, by=c('country', 'year'))
-#> 
-#> ── Myrror Report ───────────────────────────────────────────────────────────────
 #> 
 #> ── General Information: ──
 #> 
@@ -304,8 +294,6 @@ myrror(survey_data, survey_data_2, by=c('country', 'year'))
 #> ✔ End of Myrror Report.
 compare_values()
 #> Last myrror object used for comparison.
-#> 
-#> ── Myrror Report ───────────────────────────────────────────────────────────────
 #> 
 #> ── General Information: ──
 #> 

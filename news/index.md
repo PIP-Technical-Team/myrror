@@ -1,5 +1,20 @@
 # Changelog
 
+## myrror 0.1.2
+
+CRAN resubmission with vignette build fix:
+
+- Fixed vignette build failure caused by undefined variables in
+  [`print.myrror()`](https://PIP-Technical-Team.github.io/myrror/reference/print.myrror.md)
+  (#CRAN-6)
+- Added missing variable assignments (`name_dfx <- x$name_dfx`,
+  `name_dfy <- x$name_dfy`) to ensure variables are in scope when used
+  in [`cli::cli_text()`](https://cli.r-lib.org/reference/cli_text.html)
+  calls
+- Removed duplicate line assignments in
+  [`print.myrror()`](https://PIP-Technical-Team.github.io/myrror/reference/print.myrror.md)
+  function
+
 ## myrror 0.1.1
 
 CRAN resubmission with requested fixes:

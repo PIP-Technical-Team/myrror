@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">myrror</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -92,8 +92,6 @@ matched row.</li>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/myrror.html">myrror</a></span><span class="op">(</span><span class="va">survey_data</span>, <span class="va">survey_data_3</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"country"</span>, <span class="st">"year"</span><span class="op">)</span>, interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Myrror Report</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────────────────</span></span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">General Information:</span> ──</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;">dfx</span>: <span style="color: #00BB00;">survey_data</span> with 16 rows and 6 columns.</span></span>
@@ -149,8 +147,6 @@ compare the values of each matched row.</li>
 <span><span class="co">#&gt; country | year | copies.dfx | percent.dfx | copies.dfy | percent.dfy</span></span>
 <span><span class="co">#&gt; A | 2010 | 1 | 6.2% | 3 | 8.3%</span></span>
 <span><span class="co">#&gt; ...</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Myrror Report</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">General Information:</span> ──</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -319,8 +315,6 @@ numbers.</li>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Possible keys found in <span style="color: #00BB00;">survey_data_2</span>: <span style="color: #0000BB;">variable1</span> and <span style="color: #0000BB;">c("country", "year")</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Consider using these keys for the comparison. The comparison will go ahead using row numbers.</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Myrror Report</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────────────────</span></span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">General Information:</span> ──</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;">dfx</span>: <span style="color: #00BB00;">survey_data</span> with 16 rows and 6 columns.</span></span>
@@ -390,10 +384,10 @@ row number.</p>
 <span><span class="va">survey_data_copy</span> <span class="op">&lt;-</span> <span class="va">survey_data_copy</span><span class="op">[</span><span class="op">-</span><span class="va">row_to_remove</span>, <span class="op">]</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/myrror.html">myrror</a></span><span class="op">(</span><span class="va">survey_data</span>, <span class="va">survey_data_copy</span>, interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> No keys supplied. Possible keys found in <span style="color: #00BB00;">survey_data</span>: <span style="color: #0000BB;">variable1</span> and <span style="color: #0000BB;">c("country", "year")</span>, but not in <span style="color: #00BB00;">survey_data_copy</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Consider supplying explicit keys or aligning datasets. The comparison will proceed using row numbers.</span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> There are duplicates in the dataset (<span style="color: #00BB00;">survey_data_copy</span>).</span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Proceeding with the operation despite non-unique rows.</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Myrror Report</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">General Information:</span> ──</span></span>
 <span><span class="co">#&gt; </span></span>

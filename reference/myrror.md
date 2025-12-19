@@ -137,8 +137,6 @@ Other contributors:
 # 1. Specifying by, by.x or by.y:
 myrror(survey_data, survey_data_2, by=c('country', 'year'))
 #> 
-#> ── Myrror Report ───────────────────────────────────────────────────────────────
-#> 
 #> ── General Information: ──
 #> 
 #> dfx: survey_data with 16 rows and 6 columns.
@@ -199,8 +197,6 @@ myrror(survey_data, survey_data_2, by=c('country', 'year'))
 ## These are equivalent:
 myrror(survey_data, survey_data_2_cap, by.x=c('country', 'year'), by.y = c('COUNTRY', 'YEAR'))
 #> 
-#> ── Myrror Report ───────────────────────────────────────────────────────────────
-#> 
 #> ── General Information: ──
 #> 
 #> dfx: survey_data with 16 rows and 6 columns.
@@ -259,8 +255,6 @@ myrror(survey_data, survey_data_2_cap, by.x=c('country', 'year'), by.y = c('COUN
 #> 
 #> ✔ End of Myrror Report.
 myrror(survey_data, survey_data_2_cap, by=c('country' = 'COUNTRY', 'year' = 'YEAR'))
-#> 
-#> ── Myrror Report ───────────────────────────────────────────────────────────────
 #> 
 #> ── General Information: ──
 #> 
@@ -323,8 +317,6 @@ myrror(survey_data, survey_data_2_cap, by=c('country' = 'COUNTRY', 'year' = 'YEA
 # 2. Turn off interactivity:
 myrror(survey_data, survey_data_2, by=c('country', 'year'), interactive = FALSE)
 #> 
-#> ── Myrror Report ───────────────────────────────────────────────────────────────
-#> 
 #> ── General Information: ──
 #> 
 #> dfx: survey_data with 16 rows and 6 columns.
@@ -384,8 +376,6 @@ myrror(survey_data, survey_data_2, by=c('country', 'year'), interactive = FALSE)
 
 # 3. Turn off factor_to_char (it will treat factors as factors):
 myrror(survey_data, survey_data_2, by=c('country', 'year'), factor_to_char = FALSE)
-#> 
-#> ── Myrror Report ───────────────────────────────────────────────────────────────
 #> 
 #> ── General Information: ──
 #> 
@@ -447,8 +437,6 @@ myrror(survey_data, survey_data_2, by=c('country', 'year'), factor_to_char = FAL
 # 4. Turn off compare_type:
 myrror(survey_data, survey_data_2, by=c('country', 'year'), compare_type = FALSE)
 #> 
-#> ── Myrror Report ───────────────────────────────────────────────────────────────
-#> 
 #> ── General Information: ──
 #> 
 #> dfx: survey_data with 16 rows and 6 columns.
@@ -504,8 +492,6 @@ myrror(survey_data, survey_data_2, by=c('country', 'year'), compare_type = FALSE
 
 # 5. Set tolerance:
 myrror(survey_data, survey_data_2, by=c('country', 'year'), tolerance = 1e-5)
-#> 
-#> ── Myrror Report ───────────────────────────────────────────────────────────────
 #> 
 #> ── General Information: ──
 #> 

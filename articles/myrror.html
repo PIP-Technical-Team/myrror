@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">myrror</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -167,10 +167,7 @@ get a complete report of the differences between
 <code>survey_data</code> and <code>survey_data_2</code> the user can
 run:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/myrror.html">myrror</a></span><span class="op">(</span><span class="va">survey_data</span>, <span class="va">survey_data_2</span>, </span>
-<span>       by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"country"</span>, <span class="st">"year"</span><span class="op">)</span><span class="op">)</span> </span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Myrror Report</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────────────────</span></span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/myrror.html">myrror</a></span><span class="op">(</span><span class="va">survey_data</span>, <span class="va">survey_data_2</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"country"</span>, <span class="st">"year"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">General Information:</span> ──</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -258,8 +255,7 @@ different comparison, one can simply re-run
 <code><a href="../reference/extract_diff_values.html">extract_diff_values()</a></code> with the appropriate arguments, for
 example:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/extract_diff_values.html">extract_diff_values</a></span><span class="op">(</span><span class="va">survey_data</span>, <span class="va">survey_data_2</span>, </span>
-<span>                    by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"country"</span>, <span class="st">"year"</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/extract_diff_values.html">extract_diff_values</a></span><span class="op">(</span><span class="va">survey_data</span>, <span class="va">survey_data_2</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"country"</span>, <span class="st">"year"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $variable2</span></span>
 <span><span class="co">#&gt;                diff indexes country  year variable2.x variable2.y</span></span>
 <span><span class="co">#&gt;              &lt;char&gt;  &lt;char&gt;  &lt;char&gt; &lt;int&gt;       &lt;num&gt;       &lt;num&gt;</span></span>
@@ -295,8 +291,7 @@ the two datasets.</p>
 <p>The user can then extract the rows missing from one of the two
 datasets:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/extract_diff_rows.html">extract_diff_rows</a></span><span class="op">(</span><span class="va">survey_data</span>, <span class="va">survey_data_4</span>, </span>
-<span>                  by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"country"</span>, <span class="st">"year"</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/extract_diff_rows.html">extract_diff_rows</a></span><span class="op">(</span><span class="va">survey_data</span>, <span class="va">survey_data_4</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"country"</span>, <span class="st">"year"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;        df country  year variable1.x variable2.x variable3.x variable4.x</span></span>
 <span><span class="co">#&gt;    &lt;char&gt;  &lt;char&gt; &lt;int&gt;       &lt;num&gt;       &lt;num&gt;       &lt;num&gt;       &lt;num&gt;</span></span>
 <span><span class="co">#&gt; 1:    dfx       A  2010 -0.56047565   0.4978505   0.8951257  0.77996512</span></span>

@@ -107,10 +107,7 @@ the differences between `survey_data` and `survey_data_2` the user can
 run:
 
 ``` r
-myrror(survey_data, survey_data_2, 
-       by = c("country", "year")) 
-#> 
-#> ── Myrror Report ───────────────────────────────────────────────────────────────
+myrror(survey_data, survey_data_2, by = c("country", "year"))
 #> 
 #> ── General Information: ──
 #> 
@@ -208,8 +205,7 @@ differences from a different comparison, one can simply re-run
 with the appropriate arguments, for example:
 
 ``` r
-extract_diff_values(survey_data, survey_data_2, 
-                    by = c("country", "year"))
+extract_diff_values(survey_data, survey_data_2, by = c("country", "year"))
 #> $variable2
 #>                diff indexes country  year variable2.x variable2.y
 #>              <char>  <char>  <char> <int>       <num>       <num>
@@ -249,8 +245,7 @@ providing a complete report of the differences between the two datasets.
 The user can then extract the rows missing from one of the two datasets:
 
 ``` r
-extract_diff_rows(survey_data, survey_data_4, 
-                  by=c("country", "year"))
+extract_diff_rows(survey_data, survey_data_4, by = c("country", "year"))
 #>        df country  year variable1.x variable2.x variable3.x variable4.x
 #>    <char>  <char> <int>       <num>       <num>       <num>       <num>
 #> 1:    dfx       A  2010 -0.56047565   0.4978505   0.8951257  0.77996512

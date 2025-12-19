@@ -43,8 +43,6 @@ m <- myrror(dfx, dfy, by.x = "id", by.y = "id")
 # Print the myrror object (happens automatically)
 m
 #> 
-#> ── Myrror Report ───────────────────────────────────────────────────────────────
-#> 
 #> ── General Information: ──
 #> 
 #> dfx: dfx with 5 rows and 3 columns.
@@ -103,8 +101,6 @@ m
 # With interactive mode disabled
 m2 <- myrror(dfx, dfy, by.x = "id", by.y = "id", interactive = FALSE)
 print(m2)
-#> 
-#> ── Myrror Report ───────────────────────────────────────────────────────────────
 #> 
 #> ── General Information: ──
 #> 
