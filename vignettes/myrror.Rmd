@@ -68,8 +68,7 @@ all.equal(survey_data, survey_data_2)
 `myrror()` helps the user diagnosing this difference. To get a complete report of the differences between `survey_data` and `survey_data_2` the user can run:
 
 ```{r}
-myrror(survey_data, survey_data_2, 
-       by = c("country", "year")) 
+myrror(survey_data, survey_data_2, by = c("country", "year"))
 ```
 
 By setting the `by` argument, the user can specify the unique keys that identify each row. This is useful when the user wants to compare two datasets that have the same structure but different order or number of rows.
@@ -83,8 +82,7 @@ extract_diff_values()
 The function `extract_diff_values()` operates on the comparison object created by `myrror()` and stored in the environment. If the user wants to extract the differences from a different comparison, one can simply re-run `extract_diff_values()` with the appropriate arguments, for example:
 
 ```{r}
-extract_diff_values(survey_data, survey_data_2, 
-                    by = c("country", "year"))
+extract_diff_values(survey_data, survey_data_2, by = c("country", "year"))
 ```
 
 ## Workflow Example 2
@@ -99,7 +97,6 @@ These two datasets have a different number of rows. `myrror()` can help by ident
 
 The user can then extract the rows missing from one of the two datasets:
 ```{r}
-extract_diff_rows(survey_data, survey_data_4, 
-                  by=c("country", "year"))
+extract_diff_rows(survey_data, survey_data_4, by = c("country", "year"))
 
 ```
