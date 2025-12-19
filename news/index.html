@@ -44,10 +44,12 @@
 <h2 class="pkg-version" data-toc-text="0.1.1" id="myrror-011">myrror 0.1.1<a class="anchor" aria-label="anchor" href="#myrror-011"></a></h2>
 <p>CRAN resubmission with requested fixes:</p>
 <ul><li>Added missing <code>\value</code> documentation to <code><a href="../reference/print.myrror.html">print.myrror()</a></code> (#CRAN-1)</li>
-<li>Exported <code><a href="../reference/create_myrror_object.html">create_myrror_object()</a></code>, <code><a href="../reference/pair_columns.html">pair_columns()</a></code>, and <code><a href="../reference/prepare_df.html">prepare_df()</a></code> functions (#CRAN-2)</li>
-<li>Replaced <code>\dontrun{}</code> with <code>\donttest{}</code> in examples (#CRAN-3)</li>
+<li>Exported <code><a href="../reference/create_myrror_object.html">create_myrror_object()</a></code> function; <code><a href="../reference/pair_columns.html">pair_columns()</a></code> remains internal (not exported) (#CRAN-2)</li>
+<li>Replaced <code>\dontrun{}</code> with <code>\donttest{}</code> in examples and regenerated documentation with <code>devtools::document()</code> (#CRAN-3)</li>
 <li>Uncommented all examples and made them executable (#CRAN-4)</li>
 <li>Fixed examples that referenced unexported functions (#CRAN-5)</li>
+<li>
+<strong>Second resubmission fix:</strong> Properly regenerated <code>.Rd</code> files after source edits using roxygen2</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0" id="myrror-010">myrror 0.1.0<a class="anchor" aria-label="anchor" href="#myrror-010"></a></h2>

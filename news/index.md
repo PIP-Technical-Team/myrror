@@ -8,14 +8,16 @@ CRAN resubmission with requested fixes:
   [`print.myrror()`](https://PIP-Technical-Team.github.io/myrror/reference/print.myrror.md)
   (#CRAN-1)
 - Exported
-  [`create_myrror_object()`](https://PIP-Technical-Team.github.io/myrror/reference/create_myrror_object.md),
-  [`pair_columns()`](https://PIP-Technical-Team.github.io/myrror/reference/pair_columns.md),
-  and
-  [`prepare_df()`](https://PIP-Technical-Team.github.io/myrror/reference/prepare_df.md)
-  functions (#CRAN-2)
-- Replaced `\dontrun{}` with `\donttest{}` in examples (#CRAN-3)
+  [`create_myrror_object()`](https://PIP-Technical-Team.github.io/myrror/reference/create_myrror_object.md)
+  function;
+  [`pair_columns()`](https://PIP-Technical-Team.github.io/myrror/reference/pair_columns.md)
+  remains internal (not exported) (#CRAN-2)
+- Replaced `\dontrun{}` with `\donttest{}` in examples and regenerated
+  documentation with `devtools::document()` (#CRAN-3)
 - Uncommented all examples and made them executable (#CRAN-4)
 - Fixed examples that referenced unexported functions (#CRAN-5)
+- **Second resubmission fix:** Properly regenerated `.Rd` files after
+  source edits using roxygen2
 
 ## myrror 0.1.0
 
