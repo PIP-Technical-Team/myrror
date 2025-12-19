@@ -92,36 +92,51 @@ create_myrror_object <- function(
     if (nrow(dfx) == nrow(dfy)) {
       # 4. Check if possible keys are found in both datasets
       if (length(suggested_ids_dfx) > 0 & length(suggested_ids_dfy) > 0) {
-        cli::cli_alert_info(
-          "No keys supplied, but possible keys found in both datasets."
-        )
-        cli::cli_alert_info(
-          "Possible keys found in {.field {dfx_name}}: {.val {suggested_ids_dfx}}"
-        )
-        cli::cli_alert_info(
-          "Possible keys found in {.field {dfy_name}}: {.val {suggested_ids_dfy}}"
-        )
-        cli::cli_alert_info(
-          "Consider using these keys for the comparison. The comparison will go ahead using row numbers."
-        )
+      cli::cli_alert_info(
+        "No keys supplied, but possible keys found in both datasets."
+      )
+      cli::cli_alert_info(
+        "Possible keys found in {.field {dfx_name}}: {.val {suggested_ids_dfx}}"
+      )
+      cli::cli_alert_info(
+        "Possible keys found in {.field {dfy_name}}: {.val {suggested_ids_dfy}}"
+      )
+      cli::cli_alert_info(
+        "Consider using these keys for the comparison. The comparison will go ahead using row numbers."
+      )
 
-        # If no possible keys are found in either dataset
+      # If no possible keys are found in either dataset
       } else if (
-        length(suggested_ids_dfx) == 0 & length(suggested_ids_dfy) == 0
+      length(suggested_ids_dfx) == 0 & length(suggested_ids_dfy) == 0
       ) {
-        cli::cli_alert_info(
-          "No keys supplied, and no possible keys found. The comparison will go ahead using row numbers."
+      cli::cli_alert_info(
+        "No keys supplied, and no possible keys found. The comparison will go ahead using row numbers."
+      )
+      
+      # Handle asymmetric case: keys found in only one dataset
+      } else {
+      if (length(suggested_ids_dfx) > 0) {
+        cli::cli_alert_warning(
+        "No keys supplied. Possible keys found in {.field {dfx_name}}: {.val {suggested_ids_dfx}}, but not in {.field {dfy_name}}."
         )
+      } else {
+        cli::cli_alert_warning(
+        "No keys supplied. Possible keys found in {.field {dfy_name}}: {.val {suggested_ids_dfy}}, but not in {.field {dfx_name}}."
+        )
+      }
+      cli::cli_alert_info(
+        "Consider supplying explicit keys or aligning datasets. The comparison will proceed using row numbers."
+      )
       }
 
       # If the row numbers do not match, abort the process
     } else {
       cli::cli_abort(
-        c(
-          x = "Different row numbers and no keys supplied.",
-          i = "The comparison will be aborted."
-        ),
-        call = NULL
+      c(
+        x = "Different row numbers and no keys supplied.",
+        i = "The comparison will be aborted."
+      ),
+      call = NULL
       )
     }
   }

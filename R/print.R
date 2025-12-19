@@ -39,12 +39,10 @@ print.myrror <- function(x, ...) {
   nonshared_dfx_cols_n <- length(nonshared_dfx_cols)
   nonshared_dfy_cols_n <- length(nonshared_dfy_cols)
   nonshared_dfy_cols <- setdiff(x$pairs$nonshared_cols_dfy, x$set_by.y)
+  nonshared_dfy_cols <- setdiff(x$pairs$nonshared_cols_dfy, x$set_by.y)
   nonshared_dfx_cols <- setdiff(x$pairs$nonshared_cols_dfx, x$set_by.x)
-  name_dfx <- x$name_dfx
-  name_dfy <- x$name_dfy
-
-  cli::cli_h1("Myrror Report")
-
+  nonshared_dfx_cols_n <- length(nonshared_dfx_cols)
+  nonshared_dfy_cols_n <- length(nonshared_dfy_cols)
   cli::cli_h2("General Information:")
   cli::cli_text(
     "{.strong dfx}: {.field {name_dfx}} with {x$datasets_report$dfx_char$nrow} rows and {x$datasets_report$dfx_char$ncol} columns."
