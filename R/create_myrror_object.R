@@ -181,7 +181,7 @@ create_myrror_object <- function(
   by_joyn_arg <- sapply(names(by_joyn_arg), function(n) {
     paste(by_joyn_arg[n], n, sep = " = ")
   })
-  by_joyn_arg <- paste(unname(by_joyn_arg))
+  by_joyn_arg <- unname(by_joyn_arg)
 
   ## 7.3 Check join type ----
   ## TO DO: Next version we will add options for 1:m and m:1 joins.

@@ -185,10 +185,10 @@ prepare_df <- function(
   # We keep rownames ("rn") regardless.
   if (data.table::is.data.table(df)) {
     dt <- data.table::copy(df)
-    dt <- df |>
-      collapse::fmutate(rn = row.names(df), row_index = 1:nrow(df))
+    dt <- dt |>
+      collapse::fmutate(rn = row.names(dt), row_index = 1:nrow(dt))
   } else {
-    dt <- copy(df)
+    dt <- data.table::copy(df)
     data.table::setDT(dt, keep.rownames = TRUE)
     dt <- dt |>
       collapse::fmutate(row_index = 1:nrow(dt))

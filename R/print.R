@@ -39,15 +39,10 @@ print.myrror <- function(x, ...) {
   # 1. General ----
   shared_cols_n <- nrow(x$pairs$pairs)
   shared_rows_n <- nrow(x$merged_data_report$matched_data)
-  keys_n <- min(length(setdiff(c(x$set_by.x, x$set_by.y), "rn")), 2)
-  nonshared_dfx_cols_n <- max(
-    x$datasets_report$dfx_char$ncol - shared_cols_n - keys_n,
-    0
-  )
-  nonshared_dfy_cols_n <- max(
-    x$datasets_report$dfy_char$ncol - shared_cols_n - keys_n,
-    0
-  )
+  nonshared_dfy_cols <- setdiff(x$pairs$nonshared_cols_dfy, x$set_by.y)
+  nonshared_dfx_cols <- setdiff(x$pairs$nonshared_cols_dfx, x$set_by.x)
+  nonshared_dfx_cols_n <- length(nonshared_dfx_cols)
+  nonshared_dfy_cols_n <- length(nonshared_dfy_cols)
   nonshared_dfy_cols <- setdiff(x$pairs$nonshared_cols_dfy, x$set_by.y)
   nonshared_dfx_cols <- setdiff(x$pairs$nonshared_cols_dfx, x$set_by.x)
   name_dfx <- x$name_dfx
