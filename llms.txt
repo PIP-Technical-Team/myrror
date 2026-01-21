@@ -34,8 +34,6 @@ library(myrror)
 myrror(survey_data, survey_data_all, by = c('country' = "COUNTRY", "year" = "YEAR"),
        interactive = FALSE)
 #> 
-#> ── Myrror Report ───────────────────────────────────────────────────────────────
-#> 
 #> ── General Information: ──
 #> 
 #> dfx: survey_data with 16 rows and 6 columns.
