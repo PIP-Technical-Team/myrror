@@ -13,23 +13,33 @@
 #' @return An object of class "myrror" containing comparison results, dataset information,
 #'         and various reports on matching/non-matching observations.
 #'
-#' @keywords internal
-create_myrror_object <- function(dfx,
-                                 dfy,
-                                 by = NULL,
-                                 by.x = NULL,
-                                 by.y = NULL,
-                                 factor_to_char = TRUE,
-                                 verbose = getOption("myrror.verbose"),
-                                 interactive = getOption("myrror.interactive")) {
-
+#' @examples
+#' # convert rownames of mtcars to a column
+#' mtcars2 <- mtcars
+#' mtcars2$car_name <- rownames(mtcars2)
+#' rownames(mtcars2) <- NULL
+#' # modify mtcars2 slightly by remove one row and changing one value
+#' mtcars3 <- mtcars2[-1, ]
+#' mtcars3$mpg[1] <- mtcars3$mpg[1] + 1
+#'
+#' mo <- create_myrror_object(mtcars2, mtcars3, by = "car_name")
+#' mo
+#' @export
+create_myrror_object <- function(
+  dfx,
+  dfy,
+  by = NULL,
+  by.x = NULL,
+  by.y = NULL,
+  factor_to_char = TRUE,
+  verbose = getOption("myrror.verbose"),
+  interactive = getOption("myrror.interactive")
+) {
   # 0. Store original datasets and orginal dataset characteristics ----
   original_call <- match.call()
 
-
   dfx_name <- get_df_name(df = dfx, original_call$dfx)
   dfy_name <- get_df_name(df = dfy, original_call$dfy)
-
 
   # If these are data.tables, it is necessary to create a hard copy.Otherwise,
   # the same object will be bound to two different names.
@@ -48,7 +58,6 @@ create_myrror_object <- function(dfx,
   # - by, by.x, by.y needs to be of 'character' type.
   # - either by specified, or by.y AND by.x specified, or NULL.
   # - if NULL, it will become a row.names comparison (by = "rn")
-
 
   set_by <- check_set_by(by, by.x, by.y)
 
@@ -73,38 +82,64 @@ create_myrror_object <- function(dfx,
   datasets_report$dfx_char <- dfx_char
   datasets_report$dfy_char <- dfy_char
 
-
   # 5. No keys check ----
   ## If no keys supplied
   if ("rn" %in% set_by$by.x) {
-
     suggested_ids_dfx <- suggested_ids(dfx)
     suggested_ids_dfy <- suggested_ids(dfy)
 
-
-  # 3. Check if the row numbers match
-  if (nrow(dfx) == nrow(dfy)) {
-
-    # 4. Check if possible keys are found in both datasets
-    if (length(suggested_ids_dfx) > 0 & length(suggested_ids_dfy) > 0) {
-      cli::cli_alert_info("No keys supplied, but possible keys found in both datasets.")
-      cli::cli_alert_info("Possible keys found in {.field {dfx_name}}: {.val {suggested_ids_dfx}}")
-      cli::cli_alert_info("Possible keys found in {.field {dfy_name}}: {.val {suggested_ids_dfy}}")
-      cli::cli_alert_info("Consider using these keys for the comparison. The comparison will go ahead using row numbers.")
+    # 3. Check if the row numbers match
+    if (nrow(dfx) == nrow(dfy)) {
+      # 4. Check if possible keys are found in both datasets
+      if (length(suggested_ids_dfx) > 0 & length(suggested_ids_dfy) > 0) {
+      cli::cli_alert_info(
+        "No keys supplied, but possible keys found in both datasets."
+      )
+      cli::cli_alert_info(
+        "Possible keys found in {.field {dfx_name}}: {.val {suggested_ids_dfx}}"
+      )
+      cli::cli_alert_info(
+        "Possible keys found in {.field {dfy_name}}: {.val {suggested_ids_dfy}}"
+      )
+      cli::cli_alert_info(
+        "Consider using these keys for the comparison. The comparison will go ahead using row numbers."
+      )
 
       # If no possible keys are found in either dataset
-    } else if (length(suggested_ids_dfx) == 0 & length(suggested_ids_dfy) == 0){
-      cli::cli_alert_info("No keys supplied, and no possible keys found. The comparison will go ahead using row numbers.")
+      } else if (
+      length(suggested_ids_dfx) == 0 & length(suggested_ids_dfy) == 0
+      ) {
+      cli::cli_alert_info(
+        "No keys supplied, and no possible keys found. The comparison will go ahead using row numbers."
+      )
+      
+      # Handle asymmetric case: keys found in only one dataset
+      } else {
+      if (length(suggested_ids_dfx) > 0) {
+        cli::cli_alert_warning(
+        "No keys supplied. Possible keys found in {.field {dfx_name}}: {.val {suggested_ids_dfx}}, but not in {.field {dfy_name}}."
+        )
+      } else {
+        cli::cli_alert_warning(
+        "No keys supplied. Possible keys found in {.field {dfy_name}}: {.val {suggested_ids_dfy}}, but not in {.field {dfx_name}}."
+        )
+      }
+      cli::cli_alert_info(
+        "Consider supplying explicit keys or aligning datasets. The comparison will proceed using row numbers."
+      )
+      }
+
+      # If the row numbers do not match, abort the process
+    } else {
+      cli::cli_abort(
+      c(
+        x = "Different row numbers and no keys supplied.",
+        i = "The comparison will be aborted."
+      ),
+      call = NULL
+      )
     }
-
-    # If the row numbers do not match, abort the process
-  } else {
-    cli::cli_abort(c(x = "Different row numbers and no keys supplied.",
-                     i ="The comparison will be aborted."),
-                   call = NULL)
   }
-  }
-
 
   # 6. Prepare Datasets for Join ----
   # - make into data.table.
@@ -117,18 +152,21 @@ create_myrror_object <- function(dfx,
   # --- If not, abort.
   # --- If yes, proceed as default.
   # - factor to character (keep track of this), default = TRUE.
-  prepared_dfx <- prepare_df(dfx,
-                             by = set_by$by.x,
-                             factor_to_char = factor_to_char,
-                             interactive = interactive,
-                             verbose = verbose)
+  prepared_dfx <- prepare_df(
+    dfx,
+    by = set_by$by.x,
+    factor_to_char = factor_to_char,
+    interactive = interactive,
+    verbose = verbose
+  )
 
-
-  prepared_dfy <- prepare_df(dfy,
-                             by = set_by$by.y,
-                             factor_to_char = factor_to_char,
-                             interactive = interactive,
-                             verbose = verbose)
+  prepared_dfy <- prepare_df(
+    dfy,
+    by = set_by$by.y,
+    factor_to_char = factor_to_char,
+    interactive = interactive,
+    verbose = verbose
+  )
 
   # 7. Pre-merge checks ----
 
@@ -136,12 +174,16 @@ create_myrror_object <- function(dfx,
   # Note: this step needs to be done here because the column names might
   # change in the prepare_df() function.
   if (any(set_by$by.x %in% setdiff(names(prepared_dfy), set_by$by.y))) {
-    cli::cli_abort(c(x = "by.x is part of the non-index columns of dfy."),
-                   call = NULL)
+    cli::cli_abort(
+      c(x = "by.x is part of the non-index columns of dfy."),
+      call = NULL
+    )
   }
   if (any(set_by$by.y %in% setdiff(names(prepared_dfx), set_by$by.x))) {
-    cli::cli_abort(c(x ="by.y is part of the non-index columns of dfx."),
-    call = NULL)
+    cli::cli_abort(
+      c(x = "by.y is part of the non-index columns of dfx."),
+      call = NULL
+    )
   }
 
   ## 7.2 Create dynamic 'by' argument for joyn (giving a name) ----
@@ -151,44 +193,61 @@ create_myrror_object <- function(dfx,
   by_joyn_arg <- set_by$by.x
   names(by_joyn_arg) <- set_by$by.y
 
-
-  by_joyn_arg <- sapply(names(by_joyn_arg), function(n) paste(by_joyn_arg[n], n,
-                                                              sep = " = "))
-  by_joyn_arg <- paste(unname(by_joyn_arg))
-
+  by_joyn_arg <- sapply(names(by_joyn_arg), function(n) {
+    paste(by_joyn_arg[n], n, sep = " = ")
+  })
+  by_joyn_arg <- unname(by_joyn_arg)
 
   ## 7.3 Check join type ----
   ## TO DO: Next version we will add options for 1:m and m:1 joins.
-  match_type <- check_join_type(prepared_dfx,
-                                prepared_dfy,
-                                by.x = set_by$by.x,
-                                by.y = set_by$by.y)
+  match_type <- check_join_type(
+    prepared_dfx,
+    prepared_dfy,
+    by.x = set_by$by.x,
+    by.y = set_by$by.y
+  )
 
+  is_id_dfx <- joyn::is_id(
+    prepared_dfx,
+    by = set_by$by.x,
+    return_report = TRUE,
+    verbose = FALSE
+  )
+  is_id_dfy <- joyn::is_id(
+    prepared_dfy,
+    by = set_by$by.y,
+    return_report = TRUE,
+    verbose = FALSE
+  )
 
-  is_id_dfx <- joyn::is_id(prepared_dfx, by = set_by$by.x, return_report = TRUE, verbose = FALSE)
-  is_id_dfy <- joyn::is_id(prepared_dfy, by = set_by$by.y, return_report = TRUE, verbose = FALSE)
-
-
-
-  is_id_report <- collapse::join(is_id_dfx, is_id_dfy,
-                                 on = on_join_arg,
-                                 how = "full",
-                                 suffix = c(".dfx", ".dfy"),
-                                 verbose = FALSE)
+  is_id_report <- collapse::join(
+    is_id_dfx,
+    is_id_dfy,
+    on = on_join_arg,
+    how = "full",
+    suffix = c(".dfx", ".dfy"),
+    verbose = FALSE
+  )
 
   # Proceed without interruption if the match type is 1:1
   if (match_type == "1:1") {
     # No special action needed for 1:1 joins
-
   } else if (match_type %in% c("1:m", "m:1")) {
     # Conditional warnings based on verbose setting
     if (verbose == TRUE) {
       message_type <- ifelse(match_type == "1:m", "1:m", "m:1")
-      cli::cli_alert_warning("When comparing the data, the join is {.strong {message_type}} between {.field {dfx_name}} and {.field {dfy_name}}.")
+      cli::cli_alert_warning(
+        "When comparing the data, the join is {.strong {message_type}} between {.field {dfx_name}} and {.field {dfy_name}}."
+      )
       cli::cli_h2("Identification Report:")
       cli::cli_text("Only first 5 keys shown:")
       cli::cli_text("\n")
-      print(is_id_report[1:5])
+      # Display first 5 rows of identification report
+      for (i in 1:min(5, nrow(is_id_report))) {
+        cli::cli_text(paste(names(is_id_report), collapse = " | "))
+        cli::cli_text(paste(is_id_report[i, ], collapse = " | "))
+        break # Just show header and first row for brevity
+      }
       cli::cli_text("...")
       cli::cli_text("\n")
     }
@@ -200,37 +259,40 @@ create_myrror_object <- function(dfx,
         title = "The join type is not 1:1. Do you want to proceed?"
       )
       if (proceed == 2) {
-        cli::cli_abort("Operation aborted by the user.",
-                       call = NULL)
+        cli::cli_abort("Operation aborted by the user.", call = NULL)
       }
     }
-
   } else {
     # Abort if the join type is m:m, consider verbosity
     if (verbose == TRUE) {
-      cli::cli_abort(c(x = "When comparing the datasets, the join is {.strong m:m} between {.field {dfx_name}} and {.field {dfy_name}}.",
-                       i ="The comparison will stop here."),
-                     call = NULL)
+      cli::cli_abort(
+        c(
+          x = "When comparing the datasets, the join is {.strong m:m} between {.field {dfx_name}} and {.field {dfy_name}}.",
+          i = "The comparison will stop here."
+        ),
+        call = NULL
+      )
     } else {
       stop("Join type m:m, operation aborted.")
     }
   }
-
 
   #cli::cli_alert_info("You could use `check_join_type()` to check identified and non-identified observations.")
 
   # 6. Merge ----
   ## Use joyn to merge and keep matching and non-matching observations.
 
-  merged_data <- joyn::joyn(prepared_dfx,
-                            prepared_dfy,
-                            by = by_joyn_arg,
-                            match_type = match_type,
-                            keep = "full",
-                            keep_common_vars = TRUE,
-                            update_values = FALSE,
-                            update_NAs = FALSE,
-                            verbose = FALSE)
+  merged_data <- joyn::joyn(
+    prepared_dfx,
+    prepared_dfy,
+    by = by_joyn_arg,
+    match_type = match_type,
+    keep = "full",
+    keep_common_vars = TRUE,
+    update_values = FALSE,
+    update_NAs = FALSE,
+    verbose = FALSE
+  )
 
   ## Adjust rn and row_index:
   if ("rn.x" %in% colnames(merged_data)) {
@@ -239,14 +301,11 @@ create_myrror_object <- function(dfx,
       fselect(-rn.x, -rn.y)
   }
 
-
   if ("row_index.x" %in% colnames(merged_data)) {
     merged_data <- merged_data |>
       fmutate(row_index = row_index.x) |>
       fselect(-row_index.x, -row_index.y)
   }
-
-
 
   ## Store
   merged_data_report <- list()
@@ -254,7 +313,6 @@ create_myrror_object <- function(dfx,
   # 8. Get matched and non-matched ----
   matched_data <- merged_data |> fsubset(.joyn == 'x & y')
   unmatched_data <- merged_data |> fsubset(.joyn != 'x & y')
-
 
   ## Store
   merged_data_report$keys <- key(merged_data)
@@ -265,7 +323,6 @@ create_myrror_object <- function(dfx,
 
   # 9. Pair columns ----
   pairs <- pair_columns(merged_data_report)
-
 
   # 10. Set-up output structure ----
   ## GC Note: this is a draft, we might reduce the number of items stored.
@@ -292,7 +349,5 @@ create_myrror_object <- function(dfx,
   )
 
   # 11. Return myrror object (invisible) ----
-  return(invisible(structure(output,
-                             class = "myrror")))
-
+  return(invisible(structure(output, class = "myrror")))
 }

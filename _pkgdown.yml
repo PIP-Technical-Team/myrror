@@ -26,6 +26,7 @@ reference:
       - extract_diff_table
       - extract_diff_rows
       - clear_last_myrror_object
+      - create_myrror_object
 
   - title: "Package Datasets: simulated survey data."
     contents:

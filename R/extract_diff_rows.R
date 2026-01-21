@@ -11,7 +11,13 @@
 #' @param verbose logical: If `TRUE` additional information will be displayed.
 #' @param tolerance numeric, default to 1e-7.
 #'
-#' @return data.table object with the rows that are missing or new.
+#' @return Depending on `output` parameter:
+#' \itemize{
+#'   \item `"full"`: myrror object with `extract_diff_rows` slot containing a data.table of non-matching rows
+#'   \item `"simple"`: data.table with columns: df (indicating 'dfx' or 'dfy'), keys, and all other columns. Contains rows that exist in only one dataset
+#'   \item `"silent"`: invisibly returns myrror object (same as "full")
+#' }
+#' Returns `NULL` if no row differences are found and `output = "simple"`.
 #' @export
 #'
 #' @examples
@@ -28,17 +34,18 @@
 #' extract_diff_rows(survey_data, survey_data_2, by=c('country', 'year'),
 #'                     tolerance = 1e-5)
 #'
-extract_diff_rows <- function(dfx = NULL,
-                              dfy = NULL,
-                              myrror_object = NULL,
-                              by = NULL,
-                              by.x = NULL,
-                              by.y = NULL,
-                              output = c("simple", "full", "silent"),
-                              tolerance = 1e-7,
-                              verbose = getOption("myrror.verbose"),
-                              interactive = getOption("myrror.interactive")){
-
+extract_diff_rows <- function(
+  dfx = NULL,
+  dfy = NULL,
+  myrror_object = NULL,
+  by = NULL,
+  by.x = NULL,
+  by.y = NULL,
+  output = c("simple", "full", "silent"),
+  tolerance = 1e-7,
+  verbose = getOption("myrror.verbose"),
+  interactive = getOption("myrror.interactive")
+) {
   # 0. Digest and exit if identical ----
   if (!is.null(dfx) && !is.null(dfy)) {
     digested_identical <- compare_digested(dfx, dfy)
@@ -59,12 +66,13 @@ extract_diff_rows <- function(dfx = NULL,
 
   # 4. Extract different rows using unmatched_data ----
 
-
   diff_rows <- myrror_object$merged_data_report$unmatched_data |>
     fmutate(.joyn = ifelse(.joyn == "x", "dfx", "dfy")) |>
-    frename(df = .joyn)|>
-    fselect(-row_index)|>
+    frename(df = .joyn) |>
+    fselect(-row_index) |>
     colorder(df)
+
+  #### ----- #### ___ #### ---- ####
 
   myrror_object$extract_diff_rows <- diff_rows
 
@@ -72,9 +80,10 @@ extract_diff_rows <- function(dfx = NULL,
   rlang::env_bind(.myrror_env, last_myrror_object = myrror_object)
 
   # Check if results are empty and adjust accordingly
-  if(nrow(myrror_object$extract_diff_rows) == 0) {
-    if(output == "simple") {
-      return(NULL)}  # Return NULL for "simple" if no differences are found
+  if (nrow(myrror_object$extract_diff_rows) == 0) {
+    if (output == "simple") {
+      return(NULL)
+    } # Return NULL for "simple" if no differences are found
     # } else {
     #   myrror_object$extract_diff_rows <- list(message = "No differences in rows.")
     # }
@@ -83,18 +92,18 @@ extract_diff_rows <- function(dfx = NULL,
   # 6. Output ----
 
   ## Handle the output type
-  switch(output,
-         full = {
-           myrror_object$print$extract_diff_rows <- TRUE
-           return(myrror_object)
-         },
-         silent = {
-           myrror_object$print$extract_diff_rows <- TRUE
-           return(invisible(myrror_object))
-         },
-         simple = {
-           return(myrror_object$extract_diff_rows)
-         }
+  switch(
+    output,
+    full = {
+      myrror_object$print$extract_diff_rows <- TRUE
+      return(myrror_object)
+    },
+    silent = {
+      myrror_object$print$extract_diff_rows <- TRUE
+      return(invisible(myrror_object))
+    },
+    simple = {
+      return(myrror_object$extract_diff_rows)
+    }
   )
-
 }

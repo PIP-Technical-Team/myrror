@@ -37,7 +37,13 @@ displays by chunks. If \code{FALSE}, everything will be printed at once.}
 \item{verbose}{logical: If \code{TRUE} additional information will be displayed.}
 }
 \value{
-myrror_object with compare_type slot updated. Or a data.table when \code{output = 'simple'} is selected.
+Depending on \code{output} parameter:
+\itemize{
+\item \code{"full"}: myrror object with \code{compare_type} slot containing a data.table of column class comparisons
+\item \code{"simple"}: data.table with columns: variable, class_x, class_y, same_class
+\item \code{"silent"}: invisibly returns myrror object (same as "full")
+}
+Returns \code{NULL} if no differences are found and \code{output = "simple"}.
 }
 \description{
 This function compares the types of the columns in the two data frames.

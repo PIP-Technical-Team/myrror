@@ -7,10 +7,10 @@
 my_readline(...)
 }
 \arguments{
-\item{...}{arguments passed to the readline function.}
+\item{...}{Arguments passed to \code{\link[base:readline]{base::readline()}}, particularly \code{prompt}.}
 }
 \value{
-readline
+Character string containing the user's input.
 }
 \description{
 This function is a wrapper around the base R readline function.

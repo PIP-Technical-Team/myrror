@@ -13,7 +13,7 @@ extract_diff_table(
   by.x = NULL,
   by.y = NULL,
   output = c("simple", "full", "silent"),
-  tolerance = 1e-07,
+  tolerance = 0.0000001,
   verbose = getOption("myrror.verbose"),
   interactive = getOption("myrror.interactive")
 )
@@ -41,7 +41,13 @@ extract_diff_table(
 displays by chunks. If \code{FALSE}, everything will be printed at once.}
 }
 \value{
-data.table object with all observations for which at least 1 value is different.
+Depending on \code{output} parameter:
+\itemize{
+\item \code{"full"}: myrror object with \code{extract_diff_values} slot containing a list with \code{diff_list} and \code{diff_table}
+\item \code{"simple"}: data.table with all observations where at least one value differs. Contains columns: diff, variable, indexes, keys, and all compared variables with .x/.y suffixes
+\item \code{"silent"}: invisibly returns myrror object (same as "full")
+}
+Returns \code{NULL} if no differences are found and \code{output = "simple"}.
 }
 \description{
 Extract Different Values in Table Format

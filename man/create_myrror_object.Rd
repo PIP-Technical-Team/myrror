@@ -44,4 +44,15 @@ matching and non-matching observations, and performs column pairing for comparis
 The function supports various join types (1:1, 1:m, m:1) and provides detailed
 reports on the comparison results.
 }
-\keyword{internal}
+\examples{
+# convert rownames of mtcars to a column
+mtcars2 <- mtcars
+mtcars2$car_name <- rownames(mtcars2)
+rownames(mtcars2) <- NULL
+# modify mtcars2 slightly by remove one row and changing one value
+mtcars3 <- mtcars2[-1, ]
+mtcars3$mpg[1] <- mtcars3$mpg[1] + 1
+
+mo <- create_myrror_object(mtcars2, mtcars3, by = "car_name")
+mo
+}

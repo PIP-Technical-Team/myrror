@@ -20,8 +20,4 @@ This function attempts to find potential unique identifier columns or combinatio
 for a given data frame. It first tries to identify single-column keys, then
 two-column key combinations that uniquely identify each row in the data frame.
 }
-\details{
-Uses the joyn::possible_ids function to identify columns or column
-combinations that can uniquely identify rows in the data frame.
-}
 \keyword{internal}

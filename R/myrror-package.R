@@ -1,4 +1,12 @@
-#' @keywords internal
+#' myrror: Compare Data Frames
+#'
+#' `myrror` provides tools for comparing data frames, identifying differences,
+#' and extracting summary tables or lists of differences.
+#'
+#' @docType package
+#' @name myrror
+#' @keywords package
+#' @references https://pip-technical-team.github.io/myrror/
 "_PACKAGE"
 
 ## usethis namespace: start
