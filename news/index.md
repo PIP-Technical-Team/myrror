@@ -2,6 +2,8 @@
 
 ## myrror 0.1.2
 
+CRAN release: 2026-01-06
+
 CRAN resubmission with vignette build fix:
 
 - Fixed vignette build failure caused by undefined variables in
