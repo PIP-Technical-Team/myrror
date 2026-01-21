@@ -6,7 +6,7 @@
 <!-- badges: start -->
 
 [![](https://www.r-pkg.org/badges/version/myrror?color=orange)](https://cran.r-project.org/package=myrror)
-[![](https://img.shields.io/badge/devel%20version-0.0.0.9001-blue.svg)](https://github.com/PIP-Technical-Team/myrror)
+[![](https://img.shields.io/badge/devel%20version-0.1.2.9000-blue.svg)](https://github.com/PIP-Technical-Team/myrror)
 [![codecov](https://codecov.io/gh/pip-technical-team/myrror/branch/main/graph/badge.svg)](https://app.codecov.io/gh/pip-technical-team/myrror)
 [![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
@@ -42,8 +42,6 @@ the comparison:
 library(myrror)
 myrror(survey_data, survey_data_all, by = c('country' = "COUNTRY", "year" = "YEAR"),
        interactive = FALSE)
-#> 
-#> ── Myrror Report ───────────────────────────────────────────────────────────────
 #> 
 #> ── General Information: ──
 #> 
