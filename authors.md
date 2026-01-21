@@ -14,7 +14,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/PIP-Technical-Team/myrror/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/PIP-Technical-Team/myrror/blob/DEV/DESCRIPTION)
 
 Cecchinato G, Castaneda R, Tatulli R (2026). *myrror: Compare Two Data
 Frames and Summarize Differences*. R package version 0.1.2.9000,
